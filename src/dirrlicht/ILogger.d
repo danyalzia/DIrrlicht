@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class ILogger
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        logger = irr_IrrlichtDevice_getLogger(device.device);
+        logger = irr_IrrlichtDevice_getLogger(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_ILogger* logger;
 };

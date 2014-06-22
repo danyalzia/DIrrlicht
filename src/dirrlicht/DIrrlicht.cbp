@@ -34,6 +34,8 @@
 					<Add option="-march=pentium4" />
 					<Add option="-O" />
 					<Add option="-funittest" />
+					<Add option="-fdoc" />
+					<Add option="-fdoc-dir=../../doc" />
 					<Add directory="../" />
 				</Compiler>
 				<Linker>
@@ -72,7 +74,18 @@
 		<Unit filename="gui/ICursorControl.d" />
 		<Unit filename="gui/IGUIEnvironment.d" />
 		<Unit filename="io/IFileSystem.d" />
+		<Unit filename="scene/IAnimatedMesh.d" />
+		<Unit filename="scene/IAnimatedMeshMD2.d" />
+		<Unit filename="scene/IAnimatedMeshMD3.d" />
+		<Unit filename="scene/IAnimatedMeshSceneNode.d" />
+		<Unit filename="scene/ICameraSceneNode.d" />
+		<Unit filename="scene/IMesh.d" />
+		<Unit filename="scene/IMeshSceneNode.d" />
 		<Unit filename="scene/ISceneManager.d" />
+		<Unit filename="scene/ISceneNode.d" />
+		<Unit filename="scene/ISceneNodeAnimator.d" />
+		<Unit filename="scene/ITriangleSelector.d" />
+		<Unit filename="video/ITexture.d" />
 		<Unit filename="video/IVideoDriver.d" />
 		<Unit filename="video/IVideoModeList.d" />
 		<Unit filename="video/SColor.d" />

@@ -33,13 +33,14 @@ import dirrlicht.core.dimension2d;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.io.IFileSystem;
 import dirrlicht.video.SColor;
+import dirrlicht.video.ITexture;
 
 class IVideoDriver
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        driver = irr_IrrlichtDevice_getVideoDriver(device.device);
+        driver = irr_IrrlichtDevice_getVideoDriver(device.ptr);
     }
 
     bool beginScene(bool backBuffer, bool zBuffer, SColor col)
@@ -52,7 +53,12 @@ class IVideoDriver
         return irr_IVideoDriver_endScene(driver);
     }
 
-private:
-    IrrlichtDevice* device;
+    ITexture getTexture(string file)
+    {
+        ITexture texture = new ITexture(&this, file);
+        return cast(ITexture)(texture);
+    }
+
+    IrrlichtDevice device;
     irr_IVideoDriver* driver;
 };

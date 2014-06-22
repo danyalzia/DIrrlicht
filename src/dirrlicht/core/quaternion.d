@@ -25,3 +25,8 @@
 */
 
 module dirrlicht.core.quaternion;
+
+struct quaternion
+{
+    float x, y, z, w;
+}

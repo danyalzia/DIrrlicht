@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class ITimer
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        timer = irr_IrrlichtDevice_getTimer(device.device);
+        ptr = irr_IrrlichtDevice_getTimer(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
-    irr_ITimer* timer;
+    IrrlichtDevice device;
+    irr_ITimer* ptr;
 };

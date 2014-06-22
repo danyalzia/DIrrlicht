@@ -35,7 +35,7 @@ class IVideoModeList
     this(IrrlichtDevice* dev)
     {
         device = dev;
-        videolist = irr_IrrlichtDevice_getVideoModeList(device.device);
+        videolist = irr_IrrlichtDevice_getVideoModeList(device.ptr);
     }
 
 private:

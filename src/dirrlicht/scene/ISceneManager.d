@@ -29,13 +29,36 @@ module dirrlicht.scene.ISceneManager;
 import dirrlicht.c.scene;
 import dirrlicht.c.irrlicht;
 import dirrlicht.IrrlichtDevice;
+import dirrlicht.scene.IMesh;
+import dirrlicht.scene.IAnimatedMesh;
+import dirrlicht.scene.IAnimatedMeshSceneNode;
+import dirrlicht.scene.ICameraSceneNode;
+import dirrlicht.core.vector3d;
 
 class ISceneManager
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        smgr = irr_IrrlichtDevice_getSceneManager(device.device);
+        smgr = irr_IrrlichtDevice_getSceneManager(device.ptr);
+    }
+
+    IAnimatedMesh getMesh(string filename)
+    {
+        IAnimatedMesh mesh = new IAnimatedMesh(this, filename);
+        return mesh;
+    }
+
+    IAnimatedMeshSceneNode addAnimatedMeshSceneNode(IAnimatedMesh mesh)
+    {
+        IAnimatedMeshSceneNode meshnode = new IAnimatedMeshSceneNode(this, mesh);
+        return cast(IAnimatedMeshSceneNode)(meshnode);
+    }
+
+    ICameraSceneNode addCameraSceneNode(IAnimatedMeshSceneNode* node, vector3df pos, vector3df lookAt)
+    {
+        ICameraSceneNode cameranode = new ICameraSceneNode(this, node, pos, lookAt);
+        return cast(ICameraSceneNode)(cameranode);
     }
 
     void drawAll()
@@ -43,7 +66,6 @@ class ISceneManager
         irr_ISceneManager_drawAll(smgr);
     }
 
-private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_ISceneManager* smgr;
 };

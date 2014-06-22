@@ -36,10 +36,10 @@ import dirrlicht.core.rect;
 
 class IGUIEnvironment
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        env = irr_IrrlichtDevice_getGUIEnvironment(device.device);
+        env = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
     }
 
     void addStaticText(const wchar* text, recti rec, bool border=false)
@@ -54,6 +54,6 @@ class IGUIEnvironment
         irr_IGUIEnvironment_drawAll(env);
     }
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_IGUIEnvironment* env;
 };

@@ -80,7 +80,7 @@ enum ECOLOR_FORMAT
 	//! 128 bit floating point format. 32 bits are used for the red, green, blue and alpha channels.
 	ECF_A32B32G32R32F,
 
-	//! Unknown color format:
+	/** Unknown color format */
 	ECF_UNKNOWN
 };
 

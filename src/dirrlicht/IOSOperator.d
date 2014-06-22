@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class IOSOperator
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        operator = irr_IrrlichtDevice_getOSOperator(device.device);
+        operator = irr_IrrlichtDevice_getOSOperator(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_IOSOperator* operator;
 };

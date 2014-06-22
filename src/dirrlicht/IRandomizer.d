@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class IRandomizer
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        randomizer = irr_IrrlichtDevice_getRandomizer(device.device);
+        randomizer = irr_IrrlichtDevice_getRandomizer(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_IRandomizer* randomizer;
 };

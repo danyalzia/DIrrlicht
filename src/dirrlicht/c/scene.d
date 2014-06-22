@@ -29,6 +29,7 @@ module dirrlicht.c.scene;
 import dirrlicht.c.irrlicht;
 import dirrlicht.c.core;
 import dirrlicht.c.io;
+import dirrlicht.c.video;
 
 extern (C)
 {
@@ -425,7 +426,6 @@ extern (C)
     struct irr_ISceneManager;
     struct irr_ITriangleSelector;
     struct irr_SMaterial;
-    struct irr_ITexture;
 
     irr_ICameraSceneNode* irr_ISceneManager_addCameraSceneNode(irr_ISceneManager* smgr, irr_IAnimatedMeshSceneNode* parent, irr_vector3df pos, irr_vector3df lookAt);
     irr_ICameraSceneNode* irr_ISceneManager_addCameraSceneNodeFPS(irr_ISceneManager* smgr);
@@ -481,7 +481,7 @@ extern (C)
     void irr_IAnimatedMeshSceneNode_addAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
     const ref irr_list irr_IAnimatedMeshSceneNode_getAnimators(irr_IAnimatedMeshSceneNode* node);
     void irr_IAnimatedMeshSceneNode_removeAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
-    irr_IAnimatedMesh* irr_ISceneManager_getMesh(irr_ISceneManager* smgr, const char* file);
+    irr_IAnimatedMesh* irr_ISceneManager_getMesh(irr_ISceneManager* smgr, const(char)* file);
     irr_IAnimatedMeshSceneNode* irr_ISceneManager_addAnimatedMeshSceneNode(irr_ISceneManager* smgr, irr_IAnimatedMesh* mesh);
     void irr_IAnimatedMeshSceneNode_setPosition(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df newpos);
     void irr_IAnimatedMeshSceneNode_setMaterialFlag(irr_IAnimatedMeshSceneNode* node, E_MATERIAL_FLAG flag, bool newvalue);

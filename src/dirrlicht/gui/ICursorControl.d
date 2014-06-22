@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class ICursorControl
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        cursorctl = irr_IrrlichtDevice_getCursorControl(device.device);
+        cursorctl = irr_IrrlichtDevice_getCursorControl(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_ICursorControl* cursorctl;
 };

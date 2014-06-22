@@ -46,10 +46,9 @@ class IEventReceiver
     this(IrrlichtDevice* dev)
     {
         device = dev;
-        receiver = irr_IrrlichtDevice_getEventReceiver(device.device);
+        receiver = irr_IrrlichtDevice_getEventReceiver(device.ptr);
     }
 
-private:
     IrrlichtDevice* device;
     irr_IEventReceiver* receiver;
 };

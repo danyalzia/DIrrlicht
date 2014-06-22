@@ -32,13 +32,13 @@ import dirrlicht.IrrlichtDevice;
 
 class IFileSystem
 {
-    this(IrrlichtDevice* dev)
+    this(IrrlichtDevice dev)
     {
         device = dev;
-        filesystem = irr_IrrlichtDevice_getFileSystem(device.device);
+        filesystem = irr_IrrlichtDevice_getFileSystem(device.ptr);
     }
 
 private:
-    IrrlichtDevice* device;
+    IrrlichtDevice device;
     irr_IFileSystem* filesystem;
 };

@@ -26,7 +26,16 @@
 
 module dirrlicht.core.vector3d;
 
+import std.math;
 import core.simd;
+
+/***********************************
+ * SIMD recognized 3D vector class. The fourth component is unused and set to 0.
+ * Params:
+ *  x = x component
+ *  y = y component
+ *  z = z component
+ */
 
 struct vector3d(T)
 {
@@ -35,6 +44,11 @@ struct vector3d(T)
     {
         vec.array = [x, y, z, 0];
     }
+    this(T n)
+    {
+		vec.array = [n, n, n, n];
+	}
+
 	@property T x() { return cast(T)vec.array[0]; }
 	@property T y() { return cast(T)vec.array[1]; }
 	@property T z() { return cast(T)vec.array[2]; }
@@ -51,11 +65,14 @@ struct vector3d(T)
 
 private:
     float4 vec;
+
+    int dummy0, dummy1, dummy2, dummy3;
 }
 
 alias vector3df = vector3d!(float);
 alias vector3di = vector3d!(int);
 
+/** Usage: */
 unittest
 {
 	auto vecf = vector3df(4.0,4.0,4.0);
