@@ -32,8 +32,10 @@ import dirrlicht.c.video;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.IAnimatedMesh;
+import dirrlicht.scene.IAnimatedMeshMD2;
 import dirrlicht.scene.IAnimatedMeshSceneNode;
 import dirrlicht.video.ITexture;
+import dirrlicht.video.EMaterialFlags;
 
 class IAnimatedMeshSceneNode
 {

@@ -26,7 +26,16 @@
 
 module dirrlicht.core.quaternion;
 
+import dirrlicht.core.SIMDMath;
+import dirrlicht.core.vector3d;
+
 struct quaternion
 {
-    float x, y, z, w;
+    this(float x, float y, float z, float w)
+    {
+        vec = [x, y, z, w];
+    }
+
+private:
+    float4 vec;
 }

@@ -30,20 +30,10 @@ import dirrlicht.c.video;
 import dirrlicht.c.scene;
 import dirrlicht.c.gui;
 import dirrlicht.c.io;
+import dirrlicht.video.EDriverTypes;
 
 extern (C)
 {
-    enum E_DRIVER_TYPE
-	{
-	    EDT_NULL,
-		EDT_SOFTWARE,
-		EDT_BURNINGSVIDEO,
-		EDT_DIRECT3D8,
-		EDT_DIRECT3D9,
-		EDT_OPENGL,
-		EDT_COUNT
-	};
-
     struct irr_IrrlichtDevice;
     struct irr_ILogger;
     struct irr_IVideoModeList;
@@ -260,7 +250,7 @@ extern (C)
     irr_IRandomizer* irr_IrrlichtDevice_getRandomizer(irr_IrrlichtDevice* device);
     void irr_IrrlichtDevice_setRandomizer(irr_IrrlichtDevice* device, irr_IRandomizer* randomizer);
     irr_IRandomizer* irr_IrrlichtDevice_createDefaultRandomizer(irr_IrrlichtDevice* device);
-    void irr_IrrlichtDevice_setWindowCaption(irr_IrrlichtDevice* device, const wchar* text);
+    void irr_IrrlichtDevice_setWindowCaption(irr_IrrlichtDevice* device, const(dchar)* text);
     bool irr_IrrlichtDevice_isWindowActive(irr_IrrlichtDevice* device);
     bool irr_IrrlichtDevice_isWindowFocused(irr_IrrlichtDevice* device);
     bool irr_IrrlichtDevice_isWindowMinimized(irr_IrrlichtDevice* device);

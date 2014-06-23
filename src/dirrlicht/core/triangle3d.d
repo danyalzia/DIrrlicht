@@ -25,3 +25,21 @@
 */
 
 module dirrlicht.core.triangle3d;
+
+import dirrlicht.core.SIMDMath;
+import dirrlicht.core.vector3d;
+
+struct triangle3d(T)
+{
+    @disable this();
+    this(vector3d!(T) v1, vector3d!(T) v2, vector3d!(T) v3)
+    {
+        PointA = v1;
+        PointB = v2;
+        PointC = v3;
+    }
+private:
+    vector3d!(T) PointA;
+    vector3d!(T) PointB;
+    vector3d!(T) PointC;
+}

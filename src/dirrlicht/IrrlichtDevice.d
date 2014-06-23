@@ -33,6 +33,7 @@ import dirrlicht.c.scene;
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.vector2d;
 import dirrlicht.video.IVideoDriver;
+import dirrlicht.video.EDriverTypes;
 import dirrlicht.io.IFileSystem;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.gui.ICursorControl;
@@ -140,11 +141,9 @@ class IrrlichtDevice
         return cast(IRandomizer)(irr_IrrlichtDevice_createDefaultRandomizer(ptr));
     }
 
-    void setWindowCaption(string text)
+    void setWindowCaption(dstring text)
     {
-        char[] buffer = to!(char[])(text.dup);
-        buffer ~= '\0';
-        irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(wchar)*)(buffer));
+        irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text));
     }
 
     bool isWindowActice()

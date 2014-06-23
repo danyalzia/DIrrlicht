@@ -36,7 +36,7 @@ extern (C)
     struct irr_IGUIStaticText;
     struct irr_IGUIImage;
 
-    irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const wchar* text, const ref irr_recti rectangle, bool border=false);
+    irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const(dchar)* text, const ref irr_recti rectangle, bool border=false);
     irr_IGUIImage* irr_IGUIEnvironment_addImage(irr_IGUIEnvironment* env, irr_ITexture* textures, irr_vector2di pos);
 
     void irr_IGUIStaticText_setOverrideColor(irr_IGUIStaticText* txt, irr_SColor col);

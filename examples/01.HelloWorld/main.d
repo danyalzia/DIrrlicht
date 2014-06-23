@@ -1,13 +1,9 @@
 
-import dirrlicht.IrrlichtDevice;
-import dirrlicht.core.dimension2d;
-import dirrlicht.core.vector3d;
-import dirrlicht.core.rect;
-import dirrlicht.video.IVideoDriver;
-import dirrlicht.video.SColor;
-import dirrlicht.c.all;
-
-import std.stdio;
+import dirrlicht;
+import dirrlicht.core;
+import dirrlicht.video;
+import dirrlicht.scene;
+import dirrlicht.gui;
 
 void main()
 {
@@ -31,7 +27,7 @@ void main()
 
     smgr.addCameraSceneNode(null, vector3df(0,30,-40), vector3df(0,5,0));
 
-    SColor col = {255,100,101,140};
+    auto col = SColor(255,100,101,140);
     while (device.run())
     {
         driver.beginScene(true, true, col);
@@ -39,5 +35,4 @@ void main()
         gui.drawAll();
         driver.endScene();
     }
-
 }

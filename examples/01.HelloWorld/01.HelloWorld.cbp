@@ -10,37 +10,36 @@
 				<Option output="../../bin/Win32-gdc/HelloWorld" prefix_auto="1" extension_auto="1" />
 				<Option object_output=".obj/" />
 				<Option type="1" />
-				<Option compiler="gdc" />
+				<Option compiler="ldc" />
 				<Compiler>
-					<Add option="-march=pentium4" />
-					<Add option="-O3" />
+					<Add option="-O" />
+					<Add option="-D" />
+					<Add option="-Dd=../../doc" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
-					<Add library="libDIrrlicht.a" />
-					<Add library="libCIrrlicht.a" />
-					<Add library="libIrrlicht.a" />
-					<Add library="libstdc++.a" />
-					<Add directory="../../lib" />
+					<Add library="DIrrlicht" />
+					<Add library="CIrrlicht" />
+					<Add library="Irrlicht" />
+					<Add directory="../../lib/Win32-gdc" />
 					<Add directory="$(IRRLICHT_ROOT)/lib/Win32-gcc" />
-					<Add directory="E:/De-Irrlicht/C-Irrlicht/lib" />
+					<Add directory="$(CIRRLICHT_ROOT)/lib/Win32-gcc" />
 				</Linker>
 			</Target>
 			<Target title="Linux - Release">
 				<Option output="../../bin/Linux/HelloWorld" prefix_auto="1" extension_auto="1" />
 				<Option object_output=".obj/" />
 				<Option type="1" />
-				<Option compiler="gdc" />
-				<Option projectCompilerOptionsRelation="2" />
+				<Option compiler="ldc" />
+				<Option projectCompilerOptionsRelation="1" />
 				<Option projectIncludeDirsRelation="2" />
 				<Compiler>
-					<Add option="-march=pentium4" />
-					<Add option="-O3" />
+					<Add option="-O" />
+					<Add option="-D" />
+					<Add option="-Dd=../../doc" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="DIrrlicht" />
 					<Add library="CIrrlicht" />
 					<Add library="Irrlicht" />
@@ -49,8 +48,8 @@
 					<Add library="Xxf86vm" />
 					<Add library="X11" />
 					<Add directory="../../lib/Linux" />
-					<Add directory="/home/danyalzia/irrlicht/lib/Linux" />
-					<Add directory="/home/danyalzia/CIrrlicht/lib/Linux" />
+					<Add directory="$(HOME)/irrlicht/lib/Linux" />
+					<Add directory="$(HOME)/CIrrlicht/lib/Linux" />
 				</Linker>
 			</Target>
 		</Build>

@@ -11,10 +11,11 @@
 				<Option working_dir="" />
 				<Option object_output=".obj/" />
 				<Option type="2" />
-				<Option compiler="gdc" />
+				<Option compiler="ldc" />
 				<Compiler>
-					<Add option="-march=pentium4" />
 					<Add option="-O" />
+					<Add option="-D" />
+					<Add option="-Dd=../../doc" />
 				</Compiler>
 				<Linker>
 					<Add library="libCIrrlicht.a" />
@@ -29,13 +30,11 @@
 				<Option working_dir="" />
 				<Option object_output=".obj/" />
 				<Option type="2" />
-				<Option compiler="gdc" />
+				<Option compiler="ldc" />
 				<Compiler>
-					<Add option="-march=pentium4" />
 					<Add option="-O" />
-					<Add option="-funittest" />
-					<Add option="-fdoc" />
-					<Add option="-fdoc-dir=../../doc" />
+					<Add option="-D" />
+					<Add option="-Dd=../../doc" />
 					<Add directory="../" />
 				</Compiler>
 				<Linker>
@@ -60,11 +59,13 @@
 		<Unit filename="c/irrlicht.d" />
 		<Unit filename="c/scene.d" />
 		<Unit filename="c/video.d" />
+		<Unit filename="core/SIMDMath.d" />
 		<Unit filename="core/aabbox3d.d" />
 		<Unit filename="core/dimension2d.d" />
 		<Unit filename="core/line2d.d" />
 		<Unit filename="core/line3d.d" />
 		<Unit filename="core/matrix4.d" />
+		<Unit filename="core/package.d" />
 		<Unit filename="core/plane3d.d" />
 		<Unit filename="core/quaternion.d" />
 		<Unit filename="core/rect.d" />
@@ -73,7 +74,10 @@
 		<Unit filename="core/vector3d.d" />
 		<Unit filename="gui/ICursorControl.d" />
 		<Unit filename="gui/IGUIEnvironment.d" />
+		<Unit filename="gui/package.d" />
 		<Unit filename="io/IFileSystem.d" />
+		<Unit filename="io/package.d" />
+		<Unit filename="package.d" />
 		<Unit filename="scene/IAnimatedMesh.d" />
 		<Unit filename="scene/IAnimatedMeshMD2.d" />
 		<Unit filename="scene/IAnimatedMeshMD3.d" />
@@ -85,10 +89,14 @@
 		<Unit filename="scene/ISceneNode.d" />
 		<Unit filename="scene/ISceneNodeAnimator.d" />
 		<Unit filename="scene/ITriangleSelector.d" />
+		<Unit filename="scene/package.d" />
+		<Unit filename="video/EDriverTypes.d" />
+		<Unit filename="video/EMaterialFlags.d" />
 		<Unit filename="video/ITexture.d" />
 		<Unit filename="video/IVideoDriver.d" />
 		<Unit filename="video/IVideoModeList.d" />
 		<Unit filename="video/SColor.d" />
+		<Unit filename="video/package.d" />
 		<Extensions>
 			<code_completion />
 			<envvars />

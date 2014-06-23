@@ -24,17 +24,46 @@
        source distribution.
 */
 
-module dirrlicht.core.plane3d;
+module dirrlicht.core.SIMDMath;
 
-import dirrlicht.core.vector3d;
+import core.cpuid;
+import std.math;
+public import core.simd;
 
-struct plane3d(T)
+/***********************************
+ * Helper functions for SIMD based core classes
+ * GDC Assembly isn't supported yet!
+ */
+
+float SQRT(float n)
 {
-    @delete this();
-private:
-    vector3d!(T) Normal;
-    T D;
+    version(LDC)
+    {
+        asm
+        {
+            fld n;
+            fsqrt;
+            fst n;
+        }
+        return n;
+    }
+
+    version(GNU)
+    {
+        return sqrt(n);
+    }
 }
 
-alias plane3df = plane3d!(float);
-alias plane3di = plane3d!(int);
+/** Not implemented yet! */
+int FLOOR(int n)
+{
+    version(LDC)
+    {
+        return cast(int)(n);
+    }
+
+    version(GNU)
+    {
+        return cast(int)(n);
+    }
+}

@@ -34,26 +34,30 @@ import dirrlicht.IrrlichtDevice;
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.rect;
 
+import std.string;
+import std.conv;
+import std.utf;
+
 class IGUIEnvironment
 {
     this(IrrlichtDevice dev)
     {
         device = dev;
-        env = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
+        ptr = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
     }
 
-    void addStaticText(const wchar* text, recti rec, bool border=false)
+    void addStaticText(dstring text, recti rec, bool border=false)
     {
         irr_recti re = irr_recti(rec.x, rec.y, rec.x1, rec.y1);
-        const wchar* txt = "Hello World!";
-        irr_IGUIEnvironment_addStaticText(env, text, re, border);
+        irr_IGUIEnvironment_addStaticText(ptr, toUTFz!(const(dchar)*)(text), re, border);
     }
 
     void drawAll()
     {
-        irr_IGUIEnvironment_drawAll(env);
+        irr_IGUIEnvironment_drawAll(ptr);
     }
+
+    irr_IGUIEnvironment* ptr;
 private:
     IrrlichtDevice device;
-    irr_IGUIEnvironment* env;
 };

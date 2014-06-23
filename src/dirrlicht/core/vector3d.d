@@ -26,46 +26,100 @@
 
 module dirrlicht.core.vector3d;
 
-import std.math;
-import core.simd;
+import dirrlicht.core.SIMDMath;
 
 /***********************************
  * SIMD recognized 3D vector class. The fourth component is unused and set to 0.
- * Params:
- *  x = x component
- *  y = y component
- *  z = z component
  */
-
 struct vector3d(T)
 {
     @disable this();
     this(T x, T y, T z)
     {
-        vec.array = [x, y, z, 0];
+        vec = [x, y, z, 0];
     }
     this(T n)
     {
-		vec.array = [n, n, n, n];
+		vec = [n, n, n, n];
 	}
 
-	@property T x() { return cast(T)vec.array[0]; }
+    this(float4 vec)
+    {
+        this.vec = vec;
+    }
+
+    void opOpAssign(string op)(vector3d vector)
+    {
+        mixin("vec" ~ op ~ "=vector.vec;");
+    }
+
+    vector3d!(T) opBinary(string op)(vector3d!(T) rhs)
+    {
+        static if (op == "+")
+        {
+            return new vector3d(vec + rhs.vec);
+        }
+
+        else static if (op == "-")
+        {
+            return new vector3d(vec - rhs.vec);
+        }
+
+        else static if (op == "*")
+        {
+            return new vector3d(vec * rhs.vec);
+        }
+
+        else static if (op == "/")
+        {
+            return new vector3d(vec / rhs.vec);
+        }
+    }
+
+    /** Very slow! */
+	T getLength()
+	{
+		return cast(T)(SQRT(cast(float)getLengthSQ()));
+	}
+
+    /** Very slow! */
+    T getLengthSQ()
+    {
+        return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+    }
+
+    /** Extremely slow! */
+	T dotProduct(vector3d!(T) other)
+	{
+		return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+	}
+
+    vector3d!(T) normalize()
+    {
+        auto length = cast(T)(getLength());
+        static if (is (T == float))
+            float4 mul = [length, length, length, 0];
+        else
+            int4 mul = [length, length, length, 0];
+
+        static if (is (T == float))
+            vec *= mul;
+        return vector3d(vec);
+    }
+
+    @property T x() { return cast(T)vec.array[0]; }
 	@property T y() { return cast(T)vec.array[1]; }
 	@property T z() { return cast(T)vec.array[2]; }
 
-	T getLength()
-	{
-		return cast(T)vec.array[2];
-	}
-
-	T dotProduct()
-	{
-		return cast(T)vec.array[2];
-	}
-
+    /** get the SIMD float4 */
+	@property float4 vecSIMD() { return vec; }
 private:
-    float4 vec;
+    static if (is (T == float))
+        float4 vec;
+    else
+        int4 vec;
 
+    /** Padding for correctly passing vectors into function */
     int dummy0, dummy1, dummy2, dummy3;
 }
 
@@ -80,4 +134,8 @@ unittest
 
 	auto veci = vector3di(4,4,4);
 	assert(veci.x == 4 && veci.y == 4 && veci.z == 4);
+	auto veci2 = vector3di(5,5,5);
+	veci = veci2;
+	assert(veci.x == 5 || veci.y == 5  || veci.z == 5 );
+	veci += veci2;
 }
