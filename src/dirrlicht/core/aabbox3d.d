@@ -25,3 +25,29 @@
 */
 
 module dirrlicht.core.aabbox3d;
+
+import dirrlicht.core.SIMDMath;
+import dirrlicht.core.vector3d;
+
+/** Has some useful methods used with occlusion culling or clipping.
+*/
+struct aabbox3d(T)
+{
+    @disable this();
+    this(vector3d!(T) min, vector3d!(T) max)
+    {
+        MinEdge = min;
+        MaxEdge = max;
+    }
+    this(vector3d!(T) init)
+    {
+        MinEdge = init;
+        MaxEdge = init;
+    }
+private:
+    vector3d!(T) MinEdge;
+    vector3d!(T) MaxEdge;
+}
+
+alias aabbox3df = aabbox3d!(float);
+alias aabbox3di = aabbox3d!(int);

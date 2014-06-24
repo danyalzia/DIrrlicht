@@ -35,22 +35,26 @@ import dirrlicht.io.IFileSystem;
 import dirrlicht.video.SColor;
 import dirrlicht.video.ITexture;
 
+import std.conv;
+import std.utf;
+import std.string;
+
 class IVideoDriver
 {
     this(IrrlichtDevice dev)
     {
         device = dev;
-        driver = irr_IrrlichtDevice_getVideoDriver(device.ptr);
+        ptr = irr_IrrlichtDevice_getVideoDriver(device.ptr);
     }
 
     bool beginScene(bool backBuffer, bool zBuffer, SColor col)
     {
-        return irr_IVideoDriver_beginScene(driver, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
+        return irr_IVideoDriver_beginScene(ptr, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
     }
 
     bool endScene()
     {
-        return irr_IVideoDriver_endScene(driver);
+        return irr_IVideoDriver_endScene(ptr);
     }
 
     ITexture getTexture(string file)
@@ -59,6 +63,18 @@ class IVideoDriver
         return cast(ITexture)(texture);
     }
 
+    int getFPS()
+    {
+        return irr_IVideoDriver_getFPS(ptr);
+    }
+
+    /// Bugs: Doesn't work correctly!!
+    dstring getName()
+    {
+        auto temp = irr_IVideoDriver_getName(ptr);
+        return to!dstring(toUTF32(to!string(temp)));
+    }
+
     IrrlichtDevice device;
-    irr_IVideoDriver* driver;
+    irr_IVideoDriver* ptr;
 };

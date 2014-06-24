@@ -25,3 +25,39 @@
 */
 
 module dirrlicht.scene.ISceneNode;
+
+import dirrlicht.c.core;
+import dirrlicht.c.scene;
+import dirrlicht.scene.ISceneManager;
+import dirrlicht.core.vector3d;
+import dirrlicht.video.EMaterialFlags;
+import dirrlicht.video.ITexture;
+
+class ISceneNode
+{
+    this(ISceneNode parent, ISceneManager s, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1,1,1))
+    {
+        smgr = s;
+
+    }
+
+    void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)
+    {
+        irr_ISceneNode_setMaterialFlag(ptr, flag, newvalue);
+    }
+
+    void setMaterialTexture(int n, ITexture texture)
+    {
+        irr_ISceneNode_setMaterialTexture(ptr, n, texture.ptr);
+    }
+
+    void setPosition(vector3df pos)
+    {
+        irr_vector3df temp = {pos.x, pos.y, pos.z};
+        irr_ISceneNode_setPosition(ptr, temp);
+    }
+
+    irr_ISceneNode* ptr;
+private:
+    ISceneManager smgr;
+}

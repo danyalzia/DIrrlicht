@@ -9,7 +9,7 @@ DIrrlicht is the D Bindings for Irrlicht Engine which makes it possible to use I
 Installation
 ------------
 
-DIrrlicht relies on CIrrlicht, so you have to install CIrrlicht in order to compile DIrrlicht. On Linux, currently the Code::Blocks is supported. It assumes that Irrlicht and CIrrlicht are installed in "$HOME" directory, so you have to place them in that directory and then open the Code::Blocks project and compile. At later time, building with dub will also be supported.
+DIrrlicht relies on CIrrlicht, so you have to install CIrrlicht in order to compile DIrrlicht. On Linux, currently the Code::Blocks is supported. It assumes that Irrlicht and CIrrlicht are installed in "$HOME" directory, so you have to place them in that directory and then open the Code::Blocks project and compile. At later time, building with dub and Visual D will also be supported.
 
 License
 -------

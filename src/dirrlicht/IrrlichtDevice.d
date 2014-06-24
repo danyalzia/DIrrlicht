@@ -146,7 +146,7 @@ class IrrlichtDevice
         irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text));
     }
 
-    bool isWindowActice()
+    bool isWindowActive()
     {
         return irr_IrrlichtDevice_isWindowActive(ptr);
     }

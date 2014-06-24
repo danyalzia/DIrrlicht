@@ -35,10 +35,14 @@ class ICursorControl
     this(IrrlichtDevice dev)
     {
         device = dev;
-        cursorctl = irr_IrrlichtDevice_getCursorControl(device.ptr);
+        ptr = irr_IrrlichtDevice_getCursorControl(device.ptr);
     }
 
+    void setVisible(bool value)
+    {
+        irr_ICursorControl_setVisible(ptr, value);
+    }
 private:
     IrrlichtDevice device;
-    irr_ICursorControl* cursorctl;
+    irr_ICursorControl* ptr;
 };

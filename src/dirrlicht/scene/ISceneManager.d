@@ -61,6 +61,12 @@ class ISceneManager
         return cast(ICameraSceneNode)(cameranode);
     }
 
+    ICameraSceneNode addCameraSceneNodeFPS()
+    {
+        ICameraSceneNode cameranode = new ICameraSceneNode(this);
+        return cast(ICameraSceneNode)(cameranode);
+    }
+
     void drawAll()
     {
         irr_ISceneManager_drawAll(smgr);

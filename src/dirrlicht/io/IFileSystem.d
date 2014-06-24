@@ -30,15 +30,22 @@ import dirrlicht.c.irrlicht;
 import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
+import std.string;
+
 class IFileSystem
 {
     this(IrrlichtDevice dev)
     {
         device = dev;
-        filesystem = irr_IrrlichtDevice_getFileSystem(device.ptr);
+        ptr = irr_IrrlichtDevice_getFileSystem(device.ptr);
     }
 
+    void addFileArchive(string file)
+    {
+        irr_IFileSystem_addFileArchive(ptr, toStringz(file));
+    }
+
+    irr_IFileSystem* ptr;
 private:
     IrrlichtDevice device;
-    irr_IFileSystem* filesystem;
 };

@@ -28,6 +28,7 @@ module dirrlicht.scene;
 
 public
 {
+    import dirrlicht.scene.ESceneNodeTypes;
 	import dirrlicht.scene.IAnimatedMesh;
 	import dirrlicht.scene.IAnimatedMeshMD2;
 	import dirrlicht.scene.IAnimatedMeshMD3;

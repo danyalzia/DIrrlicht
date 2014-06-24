@@ -7,7 +7,7 @@
 		<Option compiler="dmd" />
 		<Build>
 			<Target title="Win32 - Release">
-				<Option output="../../lib/Win32-gdc/DIrrlicht" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/Win32-ldc/DIrrlicht" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output=".obj/" />
 				<Option type="2" />
@@ -78,6 +78,7 @@
 		<Unit filename="io/IFileSystem.d" />
 		<Unit filename="io/package.d" />
 		<Unit filename="package.d" />
+		<Unit filename="scene/ESceneNodeTypes.d" />
 		<Unit filename="scene/IAnimatedMesh.d" />
 		<Unit filename="scene/IAnimatedMeshMD2.d" />
 		<Unit filename="scene/IAnimatedMeshMD3.d" />
@@ -90,6 +91,7 @@
 		<Unit filename="scene/ISceneNodeAnimator.d" />
 		<Unit filename="scene/ITriangleSelector.d" />
 		<Unit filename="scene/package.d" />
+		<Unit filename="video/EDriverFeatures.d" />
 		<Unit filename="video/EDriverTypes.d" />
 		<Unit filename="video/EMaterialFlags.d" />
 		<Unit filename="video/ITexture.d" />

@@ -40,7 +40,7 @@ class ITexture
     this(IVideoDriver* _driver, string file)
     {
         driver = _driver;
-        ptr = irr_IVideoDriver_getTexture(driver.driver, file.ptr);
+        ptr = irr_IVideoDriver_getTexture(driver.ptr, file.ptr);
     }
 
     IVideoDriver* driver;

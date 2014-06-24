@@ -31,6 +31,13 @@ import dirrlicht.core.SIMDMath;
 /***********************************
  * SIMD recognized 3D vector class. The fourth component is unused and set to 0.
  */
+
+version(DigitalMars)
+{
+	alias float4 = float[4];
+	alias int4 = int[4];
+}
+
 struct vector3d(T)
 {
     @disable this();
@@ -43,7 +50,25 @@ struct vector3d(T)
 		vec = [n, n, n, n];
 	}
 
+	version(DigitalMars)
+    {
+        this(float4 vec)
+        {
+            this.vec = cast(T[])vec;
+        }
+
+        this(int4 vec)
+        {
+            this.vec = cast(T[])vec;
+        }
+    }
+
     this(float4 vec)
+    {
+        this.vec = vec;
+    }
+
+	this(int4 vec)
     {
         this.vec = vec;
     }
@@ -76,6 +101,12 @@ struct vector3d(T)
         }
     }
 
+    vector3d!(T) set(T nx, T ny, T nz)
+    {
+        vec = [nx, ny, nz, 0];
+        return vector3d(vec);
+    }
+
     /** Very slow! */
 	T getLength()
 	{
@@ -85,14 +116,82 @@ struct vector3d(T)
     /** Very slow! */
     T getLengthSQ()
     {
-        return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+		version(DigitalMars)
+		{
+			return cast(T)(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+		}
+
+		version (LDC)
+		{
+			return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+		}
     }
 
     /** Extremely slow! */
 	T dotProduct(vector3d!(T) other)
 	{
-		return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+		version(DigitalMars)
+		{
+			return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
+		}
+
+		version (LDC)
+		{
+			return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+		}
 	}
+
+    T getDistanceFrom(vector3d!(T) other)
+    {
+		version(DigitalMars)
+		{
+			float4 arr;
+			for (int i = 0; i < 4; i++)
+			{
+				arr = vec[i] - other.vec[i];
+			}
+
+			return vector3d(arr).getLength();
+		}
+
+		version (LDC)
+		{
+			return vector3d(vec - other.vec).getLength();
+		}
+
+    }
+
+    T getDistanceFromSQ(vector3d!(T) other)
+    {
+		version(DigitalMars)
+		{
+			float4 arr;
+			for (int i = 0; i < 4; i++)
+			{
+				arr = vec[i] - other.vec[i];
+			}
+
+			return vector3d(arr).getLengthSQ();
+		}
+
+		version (LDC)
+		{
+			return vector3d(vec - other.vec).getLengthSQ();
+		}
+
+    }
+
+    vector3d!(T) crossProduct(vector3d!(T) p)
+    {
+        return vector3d(vec);
+    }
+
+    bool isBetweenPoints(vector3d!(T) begin, vector3d!(T) end)
+    {
+        return true;
+        //const T f = (end - begin).getLengthSQ();
+        //return getDistanceFromSQ(begin) <= f && getDistanceFromSQ(end) <= f;
+    }
 
     vector3d!(T) normalize()
     {
@@ -103,16 +202,76 @@ struct vector3d(T)
             int4 mul = [length, length, length, 0];
 
         static if (is (T == float))
-            vec *= mul;
+        {
+			version(DigitalMars)
+			{
+				float4 arr;
+				for (int i = 0; i < 4; i++)
+				{
+					vec[i] *= mul[i];
+				}
+			}
+
+			version (LDC)
+			{
+				vec *= mul;
+			}
+         }
+
         return vector3d(vec);
     }
 
-    @property T x() { return cast(T)vec.array[0]; }
-	@property T y() { return cast(T)vec.array[1]; }
-	@property T z() { return cast(T)vec.array[2]; }
+    vector3d!(T) setLength(T newlength)
+    {
+        normalize();
+        static if (is (T == float))
+        {
+            float4 vec2 = [newlength, newlength, newlength, 0];
+            version(DigitalMars)
+			{
+				foreach(i; 0..4)
+					vec[i] *= vec2[i];
+			}
+
+			version (LDC)
+			{
+				vec *= vec2;
+			}
+
+        }
+        else
+        {
+            int4 vec2 = [newlength, newlength, newlength, 0];
+        }
+
+        return vector3d(vec);
+    }
+
+	version(DigitalMars)
+	{
+		@property T x() { return cast(T)vec[0]; }
+		@property T y() { return cast(T)vec[1]; }
+		@property T z() { return cast(T)vec[2]; }
+	}
+
+	version (LDC)
+	{
+		@property T x() { return cast(T)vec.array[0]; }
+		@property T y() { return cast(T)vec.array[1]; }
+		@property T z() { return cast(T)vec.array[2]; }
+	}
 
     /** get the SIMD float4 */
-	@property float4 vecSIMD() { return vec; }
+    version(DigitalMars)
+	{
+		@property float4 vecSIMD() { return cast(float[4])vec; }
+	}
+
+	version (LDC)
+	{
+		@property float4 vecSIMD() { return vec; }
+	}
+
 private:
     static if (is (T == float))
         float4 vec;

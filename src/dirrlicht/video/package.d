@@ -32,6 +32,7 @@ public
 	import dirrlicht.video.IVideoDriver;
 	import dirrlicht.video.IVideoModeList;
 	import dirrlicht.video.SColor;
+	import dirrlicht.video.EDriverFeatures;
 	import dirrlicht.video.EDriverTypes;
 	import dirrlicht.video.EMaterialFlags;
 }

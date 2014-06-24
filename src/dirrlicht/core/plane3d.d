@@ -30,7 +30,7 @@ import dirrlicht.core.vector3d;
 
 struct plane3d(T)
 {
-    @delete this();
+    @disable this();
 private:
     vector3d!(T) Normal;
     T D;

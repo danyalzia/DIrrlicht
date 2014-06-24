@@ -30,36 +30,34 @@ import dirrlicht.c.scene;
 import dirrlicht.c.irrlicht;
 import dirrlicht.c.video;
 import dirrlicht.IrrlichtDevice;
+import dirrlicht.core.vector3d;
 import dirrlicht.scene.ISceneManager;
+import dirrlicht.scene.ISceneNode;
 import dirrlicht.scene.IAnimatedMesh;
 import dirrlicht.scene.IAnimatedMeshMD2;
 import dirrlicht.scene.IAnimatedMeshSceneNode;
 import dirrlicht.video.ITexture;
 import dirrlicht.video.EMaterialFlags;
 
-class IAnimatedMeshSceneNode
+class IAnimatedMeshSceneNode : ISceneNode
 {
     this(ISceneManager _smgr, IAnimatedMesh _mesh)
     {
         smgr = _smgr;
-        mesh = irr_ISceneManager_addAnimatedMeshSceneNode(smgr.smgr, _mesh.mesh);
-    }
+        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.smgr, _mesh.mesh);
 
-    void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)
-    {
-        irr_IAnimatedMeshSceneNode_setMaterialFlag(mesh, flag, newvalue);
+        auto pos = vector3df(0,0,0);
+        auto rot = vector3df(0,0,0);
+        auto scale = vector3df(1,1,1);
+        super(null, smgr);
     }
 
     void setMD2Animation(EMD2_ANIMATION_TYPE value)
     {
-        irr_IAnimatedMeshSceneNode_setMD2Animation(mesh, value);
-    }
-
-    void setMaterialTexture(int n, ITexture texture)
-    {
-        irr_IAnimatedMeshSceneNode_setMaterialTexture(mesh, n, texture.ptr);
+        ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
+        irr_IAnimatedMeshSceneNode_setMD2Animation(ptr, value);
     }
 
     ISceneManager smgr;
-    irr_IAnimatedMeshSceneNode* mesh;
+    irr_IAnimatedMeshSceneNode* ptr;
 };

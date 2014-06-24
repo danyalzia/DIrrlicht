@@ -36,23 +36,34 @@ import dirrlicht.video.SColor;
 import dirrlicht.video.IVideoDriver;
 
 import dirrlicht.scene.ISceneManager;
+import dirrlicht.scene.ISceneNode;
 import dirrlicht.scene.IAnimatedMeshSceneNode;
 
 import dirrlicht.core.vector3d;
 import dirrlicht.c.scene;
 import dirrlicht.c.core;
 
-class ICameraSceneNode
+class ICameraSceneNode : ISceneNode
 {
     this(ISceneManager _smgr, IAnimatedMeshSceneNode* node, vector3df pos, vector3df lookAt)
     {
         smgr = _smgr;
         if (node != null)
-            camera = irr_ISceneManager_addCameraSceneNode(smgr.smgr, node.mesh, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
+            ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.smgr, cast(irr_IAnimatedMeshSceneNode*)node.ptr, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
         else
-            camera = irr_ISceneManager_addCameraSceneNode(smgr.smgr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
+            ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.smgr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
+
+        super(null, smgr);
+    }
+
+    /// CameraNodeFPS
+    this(ISceneManager _smgr)
+    {
+        smgr = _smgr;
+        ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNodeFPS(smgr.smgr);
+        super(null, smgr);
     }
 
     ISceneManager smgr;
-    irr_ICameraSceneNode* camera;
+    //irr_ICameraSceneNode* camera;
 };

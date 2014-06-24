@@ -29,6 +29,11 @@ module dirrlicht.core.quaternion;
 import dirrlicht.core.SIMDMath;
 import dirrlicht.core.vector3d;
 
+version(DigitalMars)
+{
+	alias float4 = float[4];
+}
+
 struct quaternion
 {
     this(float x, float y, float z, float w)
