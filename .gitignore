@@ -49,5 +49,8 @@ Release
 *.depend
 *.cscope_file_list
 
+#D
+*.swp
+
 #Ddoc
 *.html

@@ -16,13 +16,14 @@
 					<Add option="-O" />
 					<Add option="-D" />
 					<Add option="-Dd=../../doc" />
+					<Add directory="../" />
 				</Compiler>
 				<Linker>
 					<Add library="libCIrrlicht.a" />
 					<Add library="libstdc++.a" />
 					<Add library="libIrrlicht.a" />
-					<Add directory="E:/De-Irrlicht/C-Irrlicht/lib" />
-					<Add directory="F:/Irrlicht/lib/Win32-gcc" />
+					<Add directory="../../CIrrlicht/Win32-gcc" />
+					<Add directory="$(IRRLICHT_ROOT)/lib/Win32-gcc" />
 				</Linker>
 			</Target>
 			<Target title="Linux - LDC_Release">
@@ -41,7 +42,7 @@
 					<Add library="libCIrrlicht.a" />
 					<Add library="libstdc++.a" />
 					<Add library="libIrrlicht.a" />
-					<Add directory="$(HOME)/C-Irrlicht/lib/Linux/" />
+					<Add directory="../../CIrrlicht/lib/Linux" />
 					<Add directory="$(HOME)/irrlicht/lib/Linux" />
 				</Linker>
 			</Target>
@@ -60,6 +61,13 @@
 					<Add option="-unittest" />
 					<Add directory="../" />
 				</Compiler>
+				<Linker>
+					<Add library="libCIrrlicht.a" />
+					<Add library="libstdc++.a" />
+					<Add library="libIrrlicht.a" />
+					<Add directory="../../CIrrlicht/lib/Linux" />
+					<Add directory="$(HOME)/irrlicht/lib/Linux" />
+				</Linker>
 			</Target>
 			<Target title="Linux - GDC_Release">
 				<Option output="../../lib/Linux/DIrrlicht" prefix_auto="1" extension_auto="1" />
@@ -77,7 +85,7 @@
 					<Add library="libCIrrlicht.a" />
 					<Add library="libstdc++.a" />
 					<Add library="libIrrlicht.a" />
-					<Add directory="$(HOME)/C-Irrlicht/lib/Linux/" />
+					<Add directory="../../CIrrlicht/lib/Linux/" />
 					<Add directory="$(HOME)/irrlicht/lib/Linux" />
 				</Linker>
 			</Target>
@@ -112,6 +120,8 @@
 		<Unit filename="gui/IGUIEnvironment.d" />
 		<Unit filename="gui/package.d" />
 		<Unit filename="io/EAttributes.d" />
+		<Unit filename="io/IAttributeExchangingObject.d" />
+		<Unit filename="io/IAttributes.d" />
 		<Unit filename="io/IFileSystem.d" />
 		<Unit filename="io/package.d" />
 		<Unit filename="package.d" />

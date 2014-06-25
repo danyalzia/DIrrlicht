@@ -23,7 +23,7 @@
 					<Add library="Irrlicht" />
 					<Add directory="../../lib/Win32-gdc" />
 					<Add directory="$(IRRLICHT_ROOT)/lib/Win32-gcc" />
-					<Add directory="$(CIRRLICHT_ROOT)/lib/Win32-gcc" />
+					<Add directory="../../CIrrlicht/lib/Win32-gcc" />
 				</Linker>
 			</Target>
 			<Target title="Linux - LDC_Release">
@@ -47,7 +47,7 @@
 					<Add library="X11" />
 					<Add directory="../../lib/Linux" />
 					<Add directory="$(HOME)/irrlicht/lib/Linux" />
-					<Add directory="$(HOME)/CIrrlicht/lib/Linux" />
+					<Add directory="../../CIrrlicht/lib/Linux" />
 				</Linker>
 			</Target>
 			<Target title="Linux - GDC_Release">
@@ -58,7 +58,6 @@
 				<Option projectCompilerOptionsRelation="1" />
 				<Option projectIncludeDirsRelation="2" />
 				<Compiler>
-					<Add option="-O" />
 					<Add option="-O" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -72,7 +71,7 @@
 					<Add library="X11" />
 					<Add directory="../../lib/Linux" />
 					<Add directory="$(HOME)/irrlicht/lib/Linux" />
-					<Add directory="$(HOME)/CIrrlicht/lib/Linux" />
+					<Add directory="../../CIrrlicht/lib/Linux" />
 				</Linker>
 			</Target>
 			<Target title="Linux - DMD_Release">
@@ -85,7 +84,6 @@
 				<Compiler>
 					<Add option="-O" />
 					<Add option="-D" />
-					<Add option="-O" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -98,7 +96,7 @@
 					<Add library="X11" />
 					<Add directory="../../lib/Linux" />
 					<Add directory="$(HOME)/irrlicht/lib/Linux" />
-					<Add directory="$(HOME)/CIrrlicht/lib/Linux" />
+					<Add directory="../../CIrrlicht/lib/Linux" />
 				</Linker>
 			</Target>
 		</Build>

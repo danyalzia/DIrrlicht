@@ -24,16 +24,16 @@
        source distribution.
 */
 
+/***********************************
+ * Helper functions for SIMD based core classes
+ * GDC Assembly isn't supported yet!
+ */
+
 module dirrlicht.core.SIMDMath;
 
 import core.cpuid;
 import std.math;
 public import core.simd;
-
-/***********************************
- * Helper functions for SIMD based core classes
- * GDC Assembly isn't supported yet!
- */
 
 float SQRT(float n)
 {

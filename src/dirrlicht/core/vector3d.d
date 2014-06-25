@@ -24,14 +24,15 @@
        source distribution.
 */
 
-module dirrlicht.core.vector3d;
-
-import dirrlicht.core.SIMDMath;
-
 /***********************************
  * SIMD recognized 3D vector class. The fourth component is unused and set to 0.
  */
 
+module dirrlicht.core.vector3d;
+
+import dirrlicht.core.SIMDMath;
+
+/// DMD doesn't support simd types for x86
 version(DigitalMars)
 {
     alias float4 = float[4];
@@ -368,7 +369,7 @@ private:
 alias vector3df = vector3d!(float);
 alias vector3di = vector3d!(int);
 
-/** Usage: */
+/** Example: */
 unittest
 {
     auto vecf = vector3df(4.0,4.0,4.0);

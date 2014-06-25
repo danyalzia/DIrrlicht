@@ -1,0 +1,3 @@
+[submodule "CIrrlicht"]
+	path = CIrrlicht
+	url = git://github.com/danyalzia/CIrrlicht.git

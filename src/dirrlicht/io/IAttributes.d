@@ -24,22 +24,12 @@
        source distribution.
 */
 
-module dirrlicht.core.vector2d;
+module dirrlicht.io.IAttributes;
 
-struct vector2d(T)
+class IAttributes
 {
-    T x, y;
-}
-
-alias vector2df = vector2d!(float);
-alias vector2di = vector2d!(int);
-
-/** Example: */
-unittest
-{
-    auto veci = vector2di(2, 4);
-    assert(veci.x == 2 && veci.y == 4);
-
-    auto vecf = vector2df(2.0, 4.0);
-    assert(veci.x == 2.0 && veci.y == 4.0);
+    uint getAttributeCount()
+    {
+        return 0;
+    }
 }

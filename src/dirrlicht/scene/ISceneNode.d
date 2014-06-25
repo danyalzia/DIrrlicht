@@ -31,9 +31,15 @@ import dirrlicht.c.scene;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.core.vector3d;
 import dirrlicht.video.EMaterialFlags;
+import dirrlicht.video.EMaterialTypes;
 import dirrlicht.video.ITexture;
 import dirrlicht.scene.ISceneNodeAnimator;
 import dirrlicht.video.SMaterial;
+import dirrlicht.scene.ITriangleSelector;
+import dirrlicht.scene.ESceneNodeTypes;
+import dirrlicht.io.IAttributes;
+import dirrlicht.io.IAttributeExchangingObject;
+import dirrlicht.c.io;
 
 class ISceneNode
 {
@@ -81,11 +87,129 @@ class ISceneNode
         irr_ISceneNode_setMaterialTexture(ptr, n, texture.ptr);
     }
 
+    void setMaterialType(E_MATERIAL_TYPE newType)
+    {
+        irr_ISceneNode_setMaterialType(ptr, newType);
+    }
+
+    vector3df getScale()
+    {
+        auto temp = irr_ISceneNode_getScale(ptr);
+        auto scale = vector3df(temp.x, temp.y, temp.z);
+        return scale;
+    }
+
+    void setScale(vector3df scale)
+    {
+        irr_vector3df temp = {scale.x, scale.y, scale.z};
+        irr_ISceneNode_setScale(ptr, temp);
+    }
+
+    vector3df getRotation()
+    {
+        auto temp = irr_ISceneNode_getRotation(ptr);
+        auto rot = vector3df(temp.x, temp.y, temp.z);
+        return rot;
+    }
+
+    void setRotation(vector3df rotation)
+    {
+        irr_vector3df temp = {rotation.x, rotation.y, rotation.z};
+        irr_ISceneNode_setRotation(ptr, temp);
+    }
+
+    vector3df getPosition()
+    {
+        auto temp = irr_ISceneNode_getPosition(ptr);
+        auto pos = vector3df(temp.x, temp.y, temp.z);
+        return pos;
+    }
+
     void setPosition(vector3df pos)
     {
         irr_vector3df temp = {pos.x, pos.y, pos.z};
         irr_ISceneNode_setPosition(ptr, temp);
     }
+
+    vector3df getAbsolutePosition()
+    {
+        auto temp = irr_ISceneNode_getAbsolutePosition(ptr);
+        auto pos = vector3df(temp.x, temp.y, temp.z);
+        return pos;
+    }
+
+    void setAutomaticCulling(uint state)
+    {
+        irr_ISceneNode_setAutomaticCulling(ptr, state);
+    }
+
+    uint getAutomaticCulling()
+    {
+        return irr_ISceneNode_getAutomaticCulling(ptr);
+    }
+
+    void setDebugDataVisible(uint state)
+    {
+        irr_ISceneNode_setDebugDataVisible(ptr, state);
+    }
+
+    uint isDebugDataVisible()
+    {
+        return irr_ISceneNode_isDebugDataVisible(ptr);
+    }
+
+    void setIsDebugObject(bool debugObject)
+    {
+        irr_ISceneNode_setIsDebugObject(ptr, debugObject);
+    }
+
+    bool isDebugObject()
+    {
+        return irr_ISceneNode_isDebugObject(ptr);
+    }
+
+//    const ref ISceneNode[] getChildren()
+//    {
+//        irr_ISceneNode_getChildren(ptr);
+//    }
+
+    void setParent(ISceneNode newParent)
+    {
+        irr_ISceneNode_setParent(ptr, cast(irr_ISceneNode*)newParent);
+    }
+
+    ITriangleSelector getTriangleSelector()
+    {
+        auto temp = cast(ITriangleSelector)irr_ISceneNode_getTriangleSelector(ptr);
+        return temp;
+    }
+
+    void setTriangleSelector(ITriangleSelector selector)
+    {
+        irr_ISceneNode_setTriangleSelector(ptr, cast(irr_ITriangleSelector*)selector);
+    }
+
+    void updateAbsolutePosition()
+    {
+        irr_ISceneNode_updateAbsolutePosition(ptr);
+    }
+
+    ISceneNode getParent()
+    {
+        auto temp = cast(ISceneNode)irr_ISceneNode_getParent(ptr);
+        return temp;
+    }
+
+    ESCENE_NODE_TYPE getType()
+    {
+        return irr_ISceneNode_getType(ptr);
+    }
+
+//    void serializeAttributes(out IAttributes att, SAttributeReadWriteOptions options=SAttributeReadWriteOptions(0, null))
+//    {
+//        irr_SAttributeReadWriteOptions temp = {options, options};
+//        irr_ISceneNode_serializeAttributes(ptr, cast(irr_IAttributes*)att, cast(irr_SAttributeReadWriteOptions*)options);
+//    }
 
     irr_ISceneNode* ptr;
 private:

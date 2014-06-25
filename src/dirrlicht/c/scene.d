@@ -63,7 +63,6 @@ extern (C)
     irr_ISceneNodeAnimator* irr_ISceneManager_createFlyCircleAnimator(irr_ISceneManager* smgr, const ref irr_vector3df center, float radius=100);
     irr_ISceneNodeAnimator* irr_ISceneManager_createFlyStraightAnimator(irr_ISceneManager* smgr, const ref irr_vector3df startPoint, const ref irr_vector3df endPoint, uint timeForWay, bool loop=false, bool pingpong = false);
 
-    struct irr_IAttributes;
     struct irr_IShadowVolumeSceneNode;
     struct irr_IBoneSceneNode;
     struct irr_IAnimationEndCallBack;
