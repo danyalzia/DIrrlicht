@@ -48,8 +48,8 @@ float SQRT(float n)
         return n;
     }
 
-	version(DigitalMars)
-	{
+    version(DigitalMars)
+    {
         asm
         {
             fld n;
@@ -58,7 +58,7 @@ float SQRT(float n)
         }
         return n;
     }
-    
+
     version(GNU)
     {
         return sqrt(n);
@@ -73,11 +73,11 @@ int FLOOR(int n)
         return cast(int)(n);
     }
 
-	version(DigitalMars)
+    version(DigitalMars)
     {
         return cast(int)(n);
     }
-    
+
     version(GNU)
     {
         return cast(int)(n);

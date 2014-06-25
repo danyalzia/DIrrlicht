@@ -41,4 +41,4 @@ class IVideoModeList
 private:
     IrrlichtDevice* device;
     irr_IVideoModeList* videolist;
-};
+}

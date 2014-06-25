@@ -48,4 +48,4 @@ class IFileSystem
     irr_IFileSystem* ptr;
 private:
     IrrlichtDevice device;
-};
+}

@@ -38,7 +38,7 @@ class ITimer
         ptr = irr_IrrlichtDevice_getTimer(device.ptr);
     }
 
+    irr_ITimer* ptr;
 private:
     IrrlichtDevice device;
-    irr_ITimer* ptr;
-};
+}

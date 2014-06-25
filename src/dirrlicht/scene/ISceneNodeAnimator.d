@@ -25,3 +25,14 @@
 */
 
 module dirrlicht.scene.ISceneNodeAnimator;
+
+import dirrlicht.c.scene;
+
+class ISceneNodeAnimator
+{
+    this()
+    {
+    }
+private:
+    irr_ISceneNodeAnimator* ptr;
+}

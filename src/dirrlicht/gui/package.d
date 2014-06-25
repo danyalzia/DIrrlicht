@@ -28,6 +28,6 @@ module dirrlicht.gui;
 
 public
 {
-	import dirrlicht.gui.ICursorControl;
-	import dirrlicht.gui.IGUIEnvironment;
+    import dirrlicht.gui.ICursorControl;
+    import dirrlicht.gui.IGUIEnvironment;
 }

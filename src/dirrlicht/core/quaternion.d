@@ -31,7 +31,7 @@ import dirrlicht.core.vector3d;
 
 version(DigitalMars)
 {
-	alias float4 = float[4];
+    alias float4 = float[4];
 }
 
 struct quaternion

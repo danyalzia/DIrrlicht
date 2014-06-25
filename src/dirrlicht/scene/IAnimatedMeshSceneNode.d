@@ -60,4 +60,4 @@ class IAnimatedMeshSceneNode : ISceneNode
 
     ISceneManager smgr;
     irr_IAnimatedMeshSceneNode* ptr;
-};
+}

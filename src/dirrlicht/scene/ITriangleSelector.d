@@ -25,3 +25,17 @@
 */
 
 module dirrlicht.scene.ITriangleSelector;
+
+import dirrlicht.scene.ISceneManager;
+import dirrlicht.c.scene;
+
+class ITriangleSelector
+{
+    this()
+    {
+    }
+
+    irr_ITriangleSelector* ptr;
+private:
+    ISceneManager smgr;
+}

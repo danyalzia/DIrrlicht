@@ -45,4 +45,4 @@ class IAnimatedMesh
 
     ISceneManager smgr;
     irr_IAnimatedMesh* mesh;
-};
+}

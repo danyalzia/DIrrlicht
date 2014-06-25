@@ -66,4 +66,4 @@ class ICameraSceneNode : ISceneNode
 
     ISceneManager smgr;
     //irr_ICameraSceneNode* camera;
-};
+}

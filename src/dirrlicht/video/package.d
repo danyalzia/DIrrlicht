@@ -28,11 +28,13 @@ module dirrlicht.video;
 
 public
 {
-	import dirrlicht.video.ITexture;
-	import dirrlicht.video.IVideoDriver;
-	import dirrlicht.video.IVideoModeList;
-	import dirrlicht.video.SColor;
-	import dirrlicht.video.EDriverFeatures;
-	import dirrlicht.video.EDriverTypes;
-	import dirrlicht.video.EMaterialFlags;
+    import dirrlicht.video.EDriverFeatures;
+    import dirrlicht.video.EDriverTypes;
+    import dirrlicht.video.EMaterialFlags;
+    import dirrlicht.video.EMaterialTypes;
+    import dirrlicht.video.ITexture;
+    import dirrlicht.video.IVideoDriver;
+    import dirrlicht.video.IVideoModeList;
+    import dirrlicht.video.SColor;
+    import dirrlicht.video.SMaterial;
 }

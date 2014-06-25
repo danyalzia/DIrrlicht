@@ -32,13 +32,43 @@ import dirrlicht.scene.ISceneManager;
 import dirrlicht.core.vector3d;
 import dirrlicht.video.EMaterialFlags;
 import dirrlicht.video.ITexture;
+import dirrlicht.scene.ISceneNodeAnimator;
+import dirrlicht.video.SMaterial;
 
 class ISceneNode
 {
     this(ISceneNode parent, ISceneManager s, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1,1,1))
     {
         smgr = s;
+    }
 
+    void addAnimator(ISceneNodeAnimator animator)
+    {
+        auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
+        irr_ISceneNode_addAnimator(ptr, animptr);
+    }
+
+//    ISceneNodeAnimator[] getAnimators()
+//    {
+//        auto list = cast(ISceneNodeAnimator[])irr_ISceneNode_getAnimators(ptr);
+//        return list;
+//    }
+
+    void removeAnimator(ISceneNodeAnimator animator)
+    {
+        auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
+        irr_ISceneNode_removeAnimator(ptr, animptr);
+    }
+
+    void removeAnimators()
+    {
+        irr_ISceneNode_removeAnimators(ptr);
+    }
+
+    SMaterial getMaterial(uint num)
+    {
+        SMaterial mat = new SMaterial(this, num);
+        return cast(SMaterial)(mat);
     }
 
     void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)

@@ -24,25 +24,27 @@
        source distribution.
 */
 
-module dirrlicht.video.ITexture;
+module dirrlicht.video.SMaterial;
 
 import dirrlicht.c.video;
-import dirrlicht.c.irrlicht;
+import dirrlicht.c.scene;
+import dirrlicht.scene.ISceneNode;
 
-import dirrlicht.core.dimension2d;
-import dirrlicht.IrrlichtDevice;
-import dirrlicht.io.IFileSystem;
-import dirrlicht.video.SColor;
-import dirrlicht.video.IVideoDriver;
+/******************************
+ * Struct for holding parameters for a material renderer
+ */
 
-class ITexture
+class SMaterial
 {
-    this(IVideoDriver* _driver, string file)
+    this(ISceneNode n, uint num)
     {
-        driver = _driver;
-        ptr = irr_IVideoDriver_getTexture(driver.ptr, file.ptr);
+        node = n;
+        ptr = irr_ISceneNode_getMaterial(node.ptr, num);
     }
 
-    IVideoDriver* driver;
-    irr_ITexture* ptr;
+    irr_SMaterial* ptr;
+private:
+    ISceneNode node;
 }
+
+

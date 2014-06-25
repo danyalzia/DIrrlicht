@@ -61,74 +61,74 @@ class IrrlichtDevice
         return irr_IrrlichtDevice_run(ptr);
     }
 
-	void yield()
-	{
-		irr_IrrlichtDevice_yield(ptr);
-	}
+    void yield()
+    {
+        irr_IrrlichtDevice_yield(ptr);
+    }
 
-	void sleep(uint timeMs, bool pauseTimer=false)
-	{
-		irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
-	}
+    void sleep(uint timeMs, bool pauseTimer=false)
+    {
+        irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
+    }
 
     IVideoDriver getVideoDriver()
     {
-        IVideoDriver dri = new IVideoDriver(this);
-        return cast(IVideoDriver)(dri);
+        auto dri = new IVideoDriver(this);
+        return dri;
     }
 
     IFileSystem getFileSystem()
     {
-        IFileSystem file = new IFileSystem(this);
-        return cast(IFileSystem)(file);
+        auto file = new IFileSystem(this);
+        return file;
     }
 
     IGUIEnvironment getGUIEnvironment()
     {
-        IGUIEnvironment env = new IGUIEnvironment(this);
-        return cast(IGUIEnvironment)(env);
+        auto env = new IGUIEnvironment(this);
+        return env;
     }
 
     ISceneManager getSceneManager()
     {
-        ISceneManager smgr = new ISceneManager(this);
-        return cast(ISceneManager)(smgr);
+        auto smgr = new ISceneManager(this);
+        return smgr;
     }
 
     ICursorControl getCursorControl()
     {
-        ICursorControl cursor = new ICursorControl(this);
-        return cast(ICursorControl)(cursor);
+        auto cursor = new ICursorControl(this);
+        return cursor;
     }
 
     ILogger getLogger()
     {
-        ILogger logger = new ILogger(this);
-        return cast(ILogger)(logger);
+        auto logger = new ILogger(this);
+        return logger;
     }
 
     IVideoModeList getVideoModeList()
     {
-        IVideoModeList videolist = new IVideoModeList(&this);
-        return cast(IVideoModeList)(videolist);
+        auto videolist = new IVideoModeList(&this);
+        return videolist;
     }
 
     IOSOperator getOSOperator()
     {
-        IOSOperator operator = new IOSOperator(this);
-        return cast(IOSOperator)(operator);
+        auto operator = new IOSOperator(this);
+        return operator;
     }
 
     ITimer getTimer()
     {
-        ITimer operator = new ITimer(this);
-        return cast(ITimer)(operator);
+        auto operator = new ITimer(this);
+        return operator;
     }
 
     IRandomizer getRandomizer()
     {
-        IRandomizer randomizer = new IRandomizer(this);
-        return cast(IRandomizer)(randomizer);
+        auto randomizer = new IRandomizer(this);
+        return randomizer;
     }
 
     void setRandomizer(IRandomizer randomizer)
@@ -189,8 +189,8 @@ class IrrlichtDevice
 
     IEventReceiver getEventReceiver()
     {
-        IEventReceiver receiver = new IEventReceiver(&this);
-        return cast(IEventReceiver)(receiver);
+        auto receiver = new IEventReceiver(&this);
+        return receiver;
     }
 
     bool postEventFromUser(SEvent event)

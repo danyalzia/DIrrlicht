@@ -32,6 +32,6 @@ struct rect(T)
     T y;
     T x1;
     T y1;
-};
+}
 
 alias recti = rect!(int);

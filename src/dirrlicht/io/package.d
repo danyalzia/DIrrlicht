@@ -28,5 +28,6 @@ module dirrlicht.io;
 
 public
 {
-	import dirrlicht.io.IFileSystem;
+    import dirrlicht.io.EAttributes;
+    import dirrlicht.io.IFileSystem;
 }

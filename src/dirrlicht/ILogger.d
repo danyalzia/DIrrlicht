@@ -35,10 +35,10 @@ class ILogger
     this(IrrlichtDevice dev)
     {
         device = dev;
-        logger = irr_IrrlichtDevice_getLogger(device.ptr);
+        ptr = irr_IrrlichtDevice_getLogger(device.ptr);
     }
 
+    irr_ILogger* ptr;
 private:
     IrrlichtDevice device;
-    irr_ILogger* logger;
-};
+}

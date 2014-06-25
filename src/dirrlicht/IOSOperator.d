@@ -35,10 +35,10 @@ class IOSOperator
     this(IrrlichtDevice dev)
     {
         device = dev;
-        operator = irr_IrrlichtDevice_getOSOperator(device.ptr);
+        ptr = irr_IrrlichtDevice_getOSOperator(device.ptr);
     }
 
+    irr_IOSOperator* ptr;
 private:
     IrrlichtDevice device;
-    irr_IOSOperator* operator;
-};
+}

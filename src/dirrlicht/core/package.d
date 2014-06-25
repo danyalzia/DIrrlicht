@@ -29,15 +29,15 @@ module dirrlicht.core;
 public
 {
     import dirrlicht.core.SIMDMath;
-	import dirrlicht.core.aabbox3d;
-	import dirrlicht.core.dimension2d;
-	import dirrlicht.core.line2d;
-	import dirrlicht.core.line3d;
-	import dirrlicht.core.matrix4;
-	import dirrlicht.core.plane3d;
-	import dirrlicht.core.quaternion;
-	import dirrlicht.core.rect;
-	import dirrlicht.core.triangle3d;
-	import dirrlicht.core.vector2d;
-	import dirrlicht.core.vector3d;
+    import dirrlicht.core.aabbox3d;
+    import dirrlicht.core.dimension2d;
+    import dirrlicht.core.line2d;
+    import dirrlicht.core.line3d;
+    import dirrlicht.core.matrix4;
+    import dirrlicht.core.plane3d;
+    import dirrlicht.core.quaternion;
+    import dirrlicht.core.rect;
+    import dirrlicht.core.triangle3d;
+    import dirrlicht.core.vector2d;
+    import dirrlicht.core.vector3d;
 }

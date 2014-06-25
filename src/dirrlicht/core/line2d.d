@@ -25,3 +25,23 @@
 */
 
 module dirrlicht.core.line2d;
+
+import dirrlicht.core.vector2d;
+
+struct line2d(T)
+{
+    @disable this();
+    this(T xa, T ya, T xb, T yb)
+    {
+        start = vector2d!(T)(xa, ya);
+        end = vector2d!(T)(xb, yb);
+    }
+
+    this(vector2d!(T) start, vector2d!(T) end)
+    {
+        this.start = start;
+        this.end = end;
+    }
+    vector2d!(T) start;
+    vector2d!(T) end;
+}

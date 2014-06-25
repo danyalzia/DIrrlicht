@@ -68,13 +68,21 @@ class IVideoDriver
         return irr_IVideoDriver_getFPS(ptr);
     }
 
-    /// Bugs: Doesn't work correctly!!
     dstring getName()
     {
         auto temp = irr_IVideoDriver_getName(ptr);
-        return to!dstring(toUTF32(to!string(temp)));
+        dstring text = temp[0..strlen(temp)].idup;
+        return text;
     }
 
     IrrlichtDevice device;
     irr_IVideoDriver* ptr;
-};
+}
+
+/// strlen for dchar*
+size_t strlen(const(dchar)* str)
+{
+    size_t n = 0;
+    for (; str[n] != 0; ++n) {}
+    return n;
+}

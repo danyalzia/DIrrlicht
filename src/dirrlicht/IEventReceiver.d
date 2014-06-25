@@ -39,16 +39,17 @@ class SEvent
 
 private:
     IrrlichtDevice* device;
-};
+}
 
 class IEventReceiver
 {
     this(IrrlichtDevice* dev)
     {
         device = dev;
-        receiver = irr_IrrlichtDevice_getEventReceiver(device.ptr);
+        ptr = irr_IrrlichtDevice_getEventReceiver(device.ptr);
     }
 
+    irr_IEventReceiver* ptr;
+private:
     IrrlichtDevice* device;
-    irr_IEventReceiver* receiver;
-};
+}

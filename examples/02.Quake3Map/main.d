@@ -11,7 +11,6 @@ void main()
 {
     auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(640, 480), 16, false, false, false);
 
-    device.setWindowCaption("Hello World!");
     device.setResizable(true);
 
     auto driver = device.getVideoDriver();
@@ -46,7 +45,7 @@ void main()
 
             if (lastFPS != fps)
             {
-                dstring str = "Irrlicht Engine - Quake 3 Map example [";
+                dstring str = "DIrrlicht - Quake 3 Map example [";
                 str ~= driver.getName();
 				str ~= "] FPS:";
 				str ~= to!dstring(fps);

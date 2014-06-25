@@ -74,4 +74,4 @@ class ISceneManager
 
     IrrlichtDevice device;
     irr_ISceneManager* smgr;
-};
+}

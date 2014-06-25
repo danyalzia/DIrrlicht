@@ -34,8 +34,8 @@ import dirrlicht.core.SIMDMath;
 
 version(DigitalMars)
 {
-	alias float4 = float[4];
-	alias int4 = int[4];
+    alias float4 = float[4];
+    alias int4 = int[4];
 }
 
 struct vector3d(T)
@@ -47,10 +47,10 @@ struct vector3d(T)
     }
     this(T n)
     {
-		vec = [n, n, n, n];
-	}
+        vec = [n, n, n, n];
+    }
 
-	version(DigitalMars)
+    version(DigitalMars)
     {
         this(float4 vec)
         {
@@ -63,14 +63,30 @@ struct vector3d(T)
         }
     }
 
-    this(float4 vec)
+    version (LDC)
     {
-        this.vec = vec;
+        this(float4 vec)
+        {
+            this.vec = vec;
+        }
+
+        this(int4 vec)
+        {
+            this.vec = vec;
+        }
     }
 
-	this(int4 vec)
+    version (GNU)
     {
-        this.vec = vec;
+        this(float4 vec)
+        {
+            this.vec = vec;
+        }
+
+        this(int4 vec)
+        {
+            this.vec = vec;
+        }
     }
 
     void opOpAssign(string op)(vector3d vector)
@@ -108,76 +124,95 @@ struct vector3d(T)
     }
 
     /** Very slow! */
-	T getLength()
-	{
-		return cast(T)(SQRT(cast(float)getLengthSQ()));
-	}
+    T getLength()
+    {
+        return cast(T)(SQRT(cast(float)getLengthSQ()));
+    }
 
     /** Very slow! */
     T getLengthSQ()
     {
-		version(DigitalMars)
-		{
-			return cast(T)(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
-		}
+        version(DigitalMars)
+        {
+            return cast(T)(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+        }
 
-		version (LDC)
-		{
-			return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
-		}
+        version (GNU)
+        {
+            return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+        }
+        version (LDC)
+        {
+            return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+        }
     }
 
     /** Extremely slow! */
-	T dotProduct(vector3d!(T) other)
-	{
-		version(DigitalMars)
-		{
-			return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
-		}
+    T dotProduct(vector3d!(T) other)
+    {
+        version(DigitalMars)
+        {
+            return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
+        }
 
-		version (LDC)
-		{
-			return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
-		}
-	}
+        version (GNU)
+        {
+            return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+        }
+
+        version (LDC)
+        {
+            return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+        }
+    }
 
     T getDistanceFrom(vector3d!(T) other)
     {
-		version(DigitalMars)
-		{
-			float4 arr;
-			for (int i = 0; i < 4; i++)
-			{
-				arr = vec[i] - other.vec[i];
-			}
+        version(DigitalMars)
+        {
+            float4 arr;
+            for (int i = 0; i < 4; i++)
+            {
+                arr = vec[i] - other.vec[i];
+            }
 
-			return vector3d(arr).getLength();
-		}
+            return vector3d(arr).getLength();
+        }
 
-		version (LDC)
-		{
-			return vector3d(vec - other.vec).getLength();
-		}
+        version (GNU)
+        {
+            return vector3d(vec - other.vec).getLength();
+        }
+
+        version (LDC)
+        {
+            return vector3d(vec - other.vec).getLength();
+        }
 
     }
 
     T getDistanceFromSQ(vector3d!(T) other)
     {
-		version(DigitalMars)
-		{
-			float4 arr;
-			for (int i = 0; i < 4; i++)
-			{
-				arr = vec[i] - other.vec[i];
-			}
+        version(DigitalMars)
+        {
+            float4 arr;
+            for (int i = 0; i < 4; i++)
+            {
+                arr = vec[i] - other.vec[i];
+            }
 
-			return vector3d(arr).getLengthSQ();
-		}
+            return vector3d(arr).getLengthSQ();
+        }
 
-		version (LDC)
-		{
-			return vector3d(vec - other.vec).getLengthSQ();
-		}
+        version (GNU)
+        {
+            return vector3d(vec - other.vec).getLengthSQ();
+        }
+
+        version (LDC)
+        {
+            return vector3d(vec - other.vec).getLengthSQ();
+        }
 
     }
 
@@ -203,20 +238,20 @@ struct vector3d(T)
 
         static if (is (T == float))
         {
-			version(DigitalMars)
-			{
-				float4 arr;
-				for (int i = 0; i < 4; i++)
-				{
-					vec[i] *= mul[i];
-				}
-			}
+            version(DigitalMars)
+            {
+                float4 arr;
+                for (int i = 0; i < 4; i++)
+                {
+                    vec[i] *= mul[i];
+                }
+            }
 
-			version (LDC)
-			{
-				vec *= mul;
-			}
-         }
+            version (LDC)
+            {
+                vec *= mul;
+            }
+        }
 
         return vector3d(vec);
     }
@@ -228,15 +263,15 @@ struct vector3d(T)
         {
             float4 vec2 = [newlength, newlength, newlength, 0];
             version(DigitalMars)
-			{
-				foreach(i; 0..4)
-					vec[i] *= vec2[i];
-			}
+            {
+                foreach(i; 0..4)
+                vec[i] *= vec2[i];
+            }
 
-			version (LDC)
-			{
-				vec *= vec2;
-			}
+            version (LDC)
+            {
+                vec *= vec2;
+            }
 
         }
         else
@@ -247,30 +282,78 @@ struct vector3d(T)
         return vector3d(vec);
     }
 
-	version(DigitalMars)
-	{
-		@property T x() { return cast(T)vec[0]; }
-		@property T y() { return cast(T)vec[1]; }
-		@property T z() { return cast(T)vec[2]; }
-	}
+    version(DigitalMars)
+    {
+        @property T x()
+        {
+            return cast(T)vec[0];
+        }
+        @property T y()
+        {
+            return cast(T)vec[1];
+        }
+        @property T z()
+        {
+            return cast(T)vec[2];
+        }
+    }
 
-	version (LDC)
-	{
-		@property T x() { return cast(T)vec.array[0]; }
-		@property T y() { return cast(T)vec.array[1]; }
-		@property T z() { return cast(T)vec.array[2]; }
-	}
+    version (GNU)
+    {
+        @property T x()
+        {
+            return cast(T)vec.array[0];
+        }
+        @property T y()
+        {
+            return cast(T)vec.array[1];
+        }
+        @property T z()
+        {
+            return cast(T)vec.array[2];
+        }
+    }
+
+    version (LDC)
+    {
+        @property T x()
+        {
+            return cast(T)vec.array[0];
+        }
+        @property T y()
+        {
+            return cast(T)vec.array[1];
+        }
+        @property T z()
+        {
+            return cast(T)vec.array[2];
+        }
+    }
 
     /** get the SIMD float4 */
     version(DigitalMars)
-	{
-		@property float4 vecSIMD() { return cast(float[4])vec; }
-	}
+    {
+        @property float4 vecSIMD()
+        {
+            return cast(float[4])vec;
+        }
+    }
 
-	version (LDC)
-	{
-		@property float4 vecSIMD() { return vec; }
-	}
+    version (GNU)
+    {
+        @property float4 vecSIMD()
+        {
+            return vec;
+        }
+    }
+
+    version (LDC)
+    {
+        @property float4 vecSIMD()
+        {
+            return vec;
+        }
+    }
 
 private:
     static if (is (T == float))
@@ -279,7 +362,7 @@ private:
         int4 vec;
 
     /** Padding for correctly passing vectors into function */
-    int dummy0, dummy1, dummy2, dummy3;
+    void* padding[12];
 }
 
 alias vector3df = vector3d!(float);
@@ -288,13 +371,13 @@ alias vector3di = vector3d!(int);
 /** Usage: */
 unittest
 {
-	auto vecf = vector3df(4.0,4.0,4.0);
-	assert(vecf.x == 4.0 && vecf.y == 4.0 && vecf.z == 4.0);
+    auto vecf = vector3df(4.0,4.0,4.0);
+    assert(vecf.x == 4.0 && vecf.y == 4.0 && vecf.z == 4.0);
 
-	auto veci = vector3di(4,4,4);
-	assert(veci.x == 4 && veci.y == 4 && veci.z == 4);
-	auto veci2 = vector3di(5,5,5);
-	veci = veci2;
-	assert(veci.x == 5 || veci.y == 5  || veci.z == 5 );
-	veci += veci2;
+    auto veci = vector3di(4,4,4);
+    assert(veci.x == 4 && veci.y == 4 && veci.z == 4);
+    auto veci2 = vector3di(5,5,5);
+    veci = veci2;
+    assert(veci.x == 5 || veci.y == 5  || veci.z == 5 );
+    veci += veci2;
 }

@@ -28,10 +28,10 @@ module dirrlicht;
 
 public
 {
-	import dirrlicht.IEventReceiver;
-	import dirrlicht.ILogger;
-	import dirrlicht.IOSOperator;
-	import dirrlicht.IRandomizer;
-	import dirrlicht.IrrlichtDevice;
-	import dirrlicht.ITimer;
+    import dirrlicht.IEventReceiver;
+    import dirrlicht.ILogger;
+    import dirrlicht.IOSOperator;
+    import dirrlicht.IRandomizer;
+    import dirrlicht.IrrlichtDevice;
+    import dirrlicht.ITimer;
 }

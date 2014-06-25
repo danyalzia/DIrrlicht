@@ -45,4 +45,4 @@ class ICursorControl
 private:
     IrrlichtDevice device;
     irr_ICursorControl* ptr;
-};
+}

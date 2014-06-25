@@ -24,13 +24,13 @@
        source distribution.
 */
 
+/** Has some useful methods used with occlusion culling or clipping.
+*/
 module dirrlicht.core.aabbox3d;
 
 import dirrlicht.core.SIMDMath;
 import dirrlicht.core.vector3d;
 
-/** Has some useful methods used with occlusion culling or clipping.
-*/
 struct aabbox3d(T)
 {
     @disable this();

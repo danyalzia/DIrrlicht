@@ -60,4 +60,4 @@ class IGUIEnvironment
     irr_IGUIEnvironment* ptr;
 private:
     IrrlichtDevice device;
-};
+}

@@ -46,6 +46,7 @@ extern (C)
     struct irr_IrrlichtDevice;
     struct irr_IVideoDriver;
     struct irr_Attributes;
+    struct irr_SMaterial;
 
     bool irr_IVideoDriver_beginScene(irr_IVideoDriver* driver, bool backBuffer, bool zBuffer, irr_SColor color);
     bool irr_IVideoDriver_endScene(irr_IVideoDriver* driver);
