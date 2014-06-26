@@ -34,7 +34,7 @@ struct vector2d(T)
 alias vector2df = vector2d!(float);
 alias vector2di = vector2d!(int);
 
-/** Example: */
+///
 unittest
 {
     auto veci = vector2di(2, 4);

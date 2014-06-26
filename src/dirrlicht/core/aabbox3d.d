@@ -44,7 +44,7 @@ struct aabbox3d(T)
         MinEdge = init;
         MaxEdge = init;
     }
-private:
+
     vector3d!(T) MinEdge;
     vector3d!(T) MaxEdge;
 }

@@ -24,21 +24,26 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.gui.EGUIAlignment;
 
-public
+enum EGUI_ALIGNMENT
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
-}
+	/// Aligned to parent's top or left side (default)
+	EGUIA_UPPERLEFT=0,
+	/// Aligned to parent's bottom or right side
+	EGUIA_LOWERRIGHT,
+	/// Aligned to the center of parent
+	EGUIA_CENTER,
+	/// Stretched to fit parent
+	EGUIA_SCALE
+};
+
+/// Names for alignments
+const char* GUIAlignmentNames[] =
+[
+	"upperLeft",
+	"lowerRight",
+	"center",
+	"scale",
+	"0"
+];

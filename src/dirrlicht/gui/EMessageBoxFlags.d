@@ -24,21 +24,23 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.gui.EMessageBoxFlags;
 
-public
+/// enumeration for message box layout flags
+enum EMESSAGE_BOX_FLAG
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
+	/// Flag for the ok button
+	EMBF_OK = 0x1,
+	
+	/// Flag for the cancel button
+	EMBF_CANCEL = 0x2,
+
+	/// Flag for the yes button
+	EMBF_YES = 0x4,
+
+	/// Flag for the no button
+	EMBF_NO = 0x8,
+
+	/// This value is not used. It only forces this enumeration to compile in 32 bit.
+	EMBF_FORCE_32BIT = 0x7fffffff
 }

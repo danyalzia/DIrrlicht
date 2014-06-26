@@ -38,7 +38,7 @@ class IMeshSceneNode : ISceneNode
         super(null, smgr);
     }
 
-//    irr_IMeshSceneNode* ptr;
+    //irr_IMeshSceneNode* ptr;
 private:
     ISceneManager smgr;
 }

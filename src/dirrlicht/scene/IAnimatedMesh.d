@@ -28,19 +28,74 @@ module dirrlicht.scene.IAnimatedMesh;
 
 import dirrlicht.c.scene;
 import dirrlicht.c.irrlicht;
+import dirrlicht.scene.IMesh;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.scene.ISceneManager;
+import dirrlicht.scene.IMeshBuffer;
+import dirrlicht.video.SMaterial;
+import dirrlicht.core.aabbox3d;
+import dirrlicht.video.EMaterialFlags;
+import dirrlicht.scene.EHardwareBufferFlags;
+import dirrlicht.video.SVertexIndex;
 
 import std.conv;
 
-class IAnimatedMesh
+/// Possible types of (animated) meshes.
+enum E_ANIMATED_MESH_TYPE
+{
+	/// Unknown animated mesh type.
+	EAMT_UNKNOWN = 0,
+
+	/// Quake 2 MD2 model file
+	EAMT_MD2,
+
+	/// Quake 3 MD3 model file
+	EAMT_MD3,
+
+	/// Maya .obj static model
+	EAMT_OBJ,
+
+	/// Quake 3 .bsp static Map
+	EAMT_BSP,
+
+	/// 3D Studio .3ds file
+	EAMT_3DS,
+
+	/// My3D Mesh, the file format by Zhuck Dimitry
+	EAMT_MY3D,
+
+	/// Pulsar LMTools .lmts file. This Irrlicht loader was written by Jonas Petersen
+	EAMT_LMTS,
+
+	/// Cartography Shop .csm file. This loader was created by Saurav Mohapatra.
+	EAMT_CSM,
+
+	/// .oct file for Paul Nette's FSRad or from Murphy McCauley's Blender .oct exporter.
+	/** The oct file format contains 3D geometry and lightmaps and
+	can be loaded directly by Irrlicht */
+	EAMT_OCT,
+
+	/// Halflife MDL model file
+	EAMT_MDL_HALFLIFE,
+
+	/// generic skinned mesh
+	EAMT_SKINNED
+}
+
+class IAnimatedMesh : IMesh
 {
     this(ISceneManager _smgr, string file)
     {
-        smgr = _smgr;
-        char[] buffer = to!(char[])(file.dup);
-        buffer ~= '\0';
-        mesh = irr_ISceneManager_getMesh(smgr.smgr, cast(const char*)buffer);
+        super(_smgr, file);
+    }
+
+    uint getFrameCount();
+    float getAnimationSpeed();
+    void setAnimationSpeed(float fps);
+    IMesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1);
+    E_ANIMATED_MESH_TYPE getMeshType()
+    {
+        return E_ANIMATED_MESH_TYPE.EAMT_UNKNOWN;
     }
 
     ISceneManager smgr;

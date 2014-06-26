@@ -24,21 +24,23 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.video.S3DVertex;
 
-public
+/// Enumeration for all vertex types there are.
+enum E_VERTEX_TYPE
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
+	/// Standard vertex type used by the Irrlicht engine, video::S3DVertex.
+	EVT_STANDARD = 0,
+
+	/// Vertex with two texture coordinates, video::S3DVertex2TCoords.
+	/** Usually used for geometry with lightmaps or other special materials. */
+	EVT_2TCOORDS,
+
+	/// Vertex with a tangent and binormal vector, video::S3DVertexTangents.
+	/** Usually used for tangent space normal mapping. */
+	EVT_TANGENTS
+};
+
+class S3DVertex
+{
 }

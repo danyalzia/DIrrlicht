@@ -88,6 +88,18 @@ extern (C)
         irr_vector3df pointC;
     }
 
+    struct irr_aabbox3di
+    {
+        irr_vector3di MinEdge;
+        irr_vector3di MaxEdge;
+    }
+
+    struct irr_aabbox3df
+    {
+        irr_vector3df MinEdge;
+        irr_vector3df MaxEdge;
+    }
+
     struct irr_list
     {
         void* data;

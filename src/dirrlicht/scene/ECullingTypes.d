@@ -24,21 +24,25 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.scene.ECullingTypes;
 
-public
+/// An enumeration for all types of automatic culling for built-in scene nodes
+enum E_CULLING_TYPE
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
+	EAC_OFF = 0,
+	EAC_BOX = 1,
+	EAC_FRUSTUM_BOX = 2,
+	EAC_FRUSTUM_SPHERE = 4,
+	EAC_OCC_QUERY = 8
 }
+
+/// Names for culling type
+const char* AutomaticCullingNames[] =
+[
+	"false",
+	"box",			/// camera box against node box
+	"frustum_box",		///  camera frustum against node box
+	"frustum_sphere",	///  camera frustum against node sphere
+	"occ_query",		///  occlusion query
+	"0"
+];

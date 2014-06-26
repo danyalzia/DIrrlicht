@@ -34,10 +34,18 @@ module dirrlicht.core.SIMDMath;
 import core.cpuid;
 import std.math;
 public import core.simd;
+public import dirrlicht.CompileConfig;
+
+/// DMD doesn't support simd types for x86
+static if (DigitalMars || GDC)
+{
+    alias float4 = float[4];
+    alias int4 = int[4];
+}
 
 float SQRT(float n)
 {
-    version(LDC)
+    static if(DigitalMars || LDC)
     {
         asm
         {
@@ -48,38 +56,30 @@ float SQRT(float n)
         return n;
     }
 
-    version(DigitalMars)
-    {
-        asm
-        {
-            fld n;
-            fsqrt;
-            fst n;
-        }
-        return n;
-    }
-
-    version(GNU)
+    else
     {
         return sqrt(n);
     }
 }
 
-/** Not implemented yet! */
+/// Not implemented yet!
 int FLOOR(int n)
 {
-    version(LDC)
+    return cast(int)(n);
+}
+
+void MOV(T)(T n)
+{
+    static if(DigitalMars || LDC)
     {
-        return cast(int)(n);
+        asm
+        {
+            mov EAX, n;
+        }
     }
 
-    version(DigitalMars)
+    else
     {
-        return cast(int)(n);
-    }
 
-    version(GNU)
-    {
-        return cast(int)(n);
     }
 }

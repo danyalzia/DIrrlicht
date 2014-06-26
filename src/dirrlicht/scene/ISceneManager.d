@@ -43,11 +43,11 @@ class ISceneManager
         smgr = irr_IrrlichtDevice_getSceneManager(device.ptr);
     }
 
-    IAnimatedMesh getMesh(string filename)
-    {
-        IAnimatedMesh mesh = new IAnimatedMesh(this, filename);
-        return mesh;
-    }
+//    IAnimatedMesh getMesh(string filename)
+//    {
+//        IAnimatedMesh mesh = new IAnimatedMesh(this, filename);
+//        return mesh;
+//    }
 
     IAnimatedMeshSceneNode addAnimatedMeshSceneNode(IAnimatedMesh mesh)
     {

@@ -10,7 +10,10 @@ Installation
 ------------
 
 Clone the repository:
-`$ git clone git://github.com/danyalzia/DIrrlicht.git DIrrlicht`
+
+```
+$ git clone git://github.com/danyalzia/DIrrlicht.git DIrrlicht
+```
 
 DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to not forget to update submodules:
 

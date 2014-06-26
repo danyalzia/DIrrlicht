@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.IAnimatedMeshMD2;
 
+import dirrlicht.scene.ISceneManager;
+import dirrlicht.scene.IMesh;
+import dirrlicht.scene.IAnimatedMesh;
+
 /// Types of standard md2 animations
 enum EMD2_ANIMATION_TYPE
 {
@@ -53,4 +57,17 @@ enum EMD2_ANIMATION_TYPE
 
     /// Not an animation, but amount of animation types.
     EMAT_COUNT
+}
+
+class IAnimatedMeshMD2 : IAnimatedMesh
+{
+    this(ISceneManager _smgr, string file)
+    {
+        smgr = _smgr;
+        super(smgr, file);
+    }
+
+    //irr_IAnimatedMeshMD2* ptr;
+private:
+    ISceneManager smgr;
 }

@@ -24,21 +24,35 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.scene.EDebugSceneTypes;
 
-public
+/// An enumeration for all types of debug data for built-in scene nodes (flags)
+enum E_DEBUG_SCENE_TYPE
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
+	/// No Debug Data ( Default )
+	EDS_OFF = 0,
+
+	/// Show Bounding Boxes of SceneNode
+	EDS_BBOX = 1,
+
+	/// Show Vertex Normals
+	EDS_NORMALS = 2,
+
+	/// Shows Skeleton/Tags
+	EDS_SKELETON = 4,
+
+	/// Overlays Mesh Wireframe
+	EDS_MESH_WIRE_OVERLAY = 8,
+
+	/// Temporary use transparency Material Type
+	EDS_HALF_TRANSPARENCY = 16,
+
+	/// Show Bounding Boxes of all MeshBuffers
+	EDS_BBOX_BUFFERS = 32,
+
+	/// EDS_BBOX | EDS_BBOX_BUFFERS
+	EDS_BBOX_ALL = EDS_BBOX | EDS_BBOX_BUFFERS,
+
+	/// Show all debug infos
+	EDS_FULL = 0xffffffff
 }

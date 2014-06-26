@@ -28,17 +28,30 @@ module dirrlicht.scene;
 
 public
 {
+    import dirrlicht.scene.CDynamicMeshBuffer;
+    import dirrlicht.scene.CIndexBuffer;
+    import dirrlicht.scene.CVertexBuffer;
+    import dirrlicht.scene.ECullingTypes;
+    import dirrlicht.scene.EDebugSceneTypes;
+    import dirrlicht.scene.EHardwareBufferFlags;
+    import dirrlicht.scene.EMeshWriterEnums;
     import dirrlicht.scene.ESceneNodeTypes;
+    import dirrlicht.scene.ESceneNodeAnimatorTypes;
+    import dirrlicht.scene.EPrimitiveTypes;
+    import dirrlicht.scene.ETerrainElements;
     import dirrlicht.scene.IAnimatedMesh;
     import dirrlicht.scene.IAnimatedMeshMD2;
     import dirrlicht.scene.IAnimatedMeshMD3;
     import dirrlicht.scene.IAnimatedMeshMD3;
     import dirrlicht.scene.IAnimatedMeshSceneNode;
     import dirrlicht.scene.ICameraSceneNode;
+    import dirrlicht.scene.IIndexBuffer;
     import dirrlicht.scene.IMesh;
+    import dirrlicht.scene.IMeshBuffer;
     import dirrlicht.scene.IMeshSceneNode;
     import dirrlicht.scene.ISceneManager;
     import dirrlicht.scene.ISceneNode;
     import dirrlicht.scene.ISceneNodeAnimator;
     import dirrlicht.scene.ITriangleSelector;
+    import dirrlicht.scene.IVertexBuffer;
 }

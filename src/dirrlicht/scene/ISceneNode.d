@@ -211,6 +211,11 @@ class ISceneNode
 //        irr_ISceneNode_serializeAttributes(ptr, cast(irr_IAttributes*)att, cast(irr_SAttributeReadWriteOptions*)options);
 //    }
 
+    ISceneManager getSceneManager()
+    {
+        return cast(ISceneManager)irr_ISceneNode_getSceneManager(ptr);
+    }
+
     irr_ISceneNode* ptr;
 private:
     ISceneManager smgr;

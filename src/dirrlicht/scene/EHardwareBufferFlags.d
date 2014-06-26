@@ -24,21 +24,31 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.scene.EHardwareBufferFlags;
 
-public
+enum E_HARDWARE_MAPPING
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
-}
+	/// Don't store on the hardware
+	EHM_NEVER=0,
+
+	/// Rarely changed, usually stored completely on the hardware
+	EHM_STATIC,
+
+	/// Sometimes changed, driver optimized placement
+	EHM_DYNAMIC,
+
+	/// Always changed, cache optimizing on the GPU
+	EHM_STREAM
+};
+
+enum E_BUFFER_TYPE
+{
+	/// Does not change anything
+	EBT_NONE=0,
+	/// Change the vertex mapping
+	EBT_VERTEX,
+	/// Change the index mapping
+	EBT_INDEX,
+	/// Change both vertex and index mapping to the same value
+	EBT_VERTEX_AND_INDEX
+};

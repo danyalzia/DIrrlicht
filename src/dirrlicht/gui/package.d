@@ -28,6 +28,10 @@ module dirrlicht.gui;
 
 public
 {
+    import dirrlicht.gui.EFocusFlags;
+    import dirrlicht.gui.EGUIAlignment;
+    import dirrlicht.gui.EGUIElementTypes;
+    import dirrlicht.gui.EMessageBoxFlags;
     import dirrlicht.gui.ICursorControl;
     import dirrlicht.gui.IGUIEnvironment;
 }

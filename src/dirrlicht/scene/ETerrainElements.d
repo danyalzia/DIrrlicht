@@ -24,21 +24,23 @@
        source distribution.
 */
 
-module dirrlicht.video;
+module dirrlicht.scene.ETerrainElements;
 
-public
+/// enumeration for patch sizes specifying the size of patches in the TerrainSceneNode
+enum E_TERRAIN_PATCH_SIZE
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
-    import dirrlicht.video.SMaterial;
+	/// patch size of 9, at most, use 4 levels of detail with this patch size.
+	ETPS_9 = 9,
+
+	/// patch size of 17, at most, use 5 levels of detail with this patch size.
+	ETPS_17 = 17,
+
+	/// patch size of 33, at most, use 6 levels of detail with this patch size.
+	ETPS_33 = 33,
+
+	/// patch size of 65, at most, use 7 levels of detail with this patch size.
+	ETPS_65 = 65,
+
+	/// patch size of 129, at most, use 8 levels of detail with this patch size.
+	ETPS_129 = 129
 }
