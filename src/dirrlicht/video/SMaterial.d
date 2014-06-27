@@ -26,8 +26,6 @@
 
 module dirrlicht.video.SMaterial;
 
-import dirrlicht.c.video;
-import dirrlicht.c.scene;
 import dirrlicht.scene.ISceneNode;
 
 /******************************
@@ -47,4 +45,7 @@ private:
     ISceneNode node;
 }
 
+package extern(C):
+
+struct irr_SMaterial;
 

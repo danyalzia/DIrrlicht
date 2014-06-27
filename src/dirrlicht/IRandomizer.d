@@ -26,8 +26,6 @@
 
 module dirrlicht.IRandomizer;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 class IRandomizer
@@ -42,3 +40,7 @@ class IRandomizer
 private:
     IrrlichtDevice device;
 }
+
+package extern (C):
+
+struct irr_IRandomizer;

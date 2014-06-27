@@ -37,38 +37,89 @@ import dirrlicht.video.SVertexIndex;
 
 class CIndexBuffer : IIndexBuffer
 {
-    void* getData();
+    void* getData()
+    {
+        return Indices.pointer();
+    }
 
-	E_INDEX_TYPE getType();
-	void setType(E_INDEX_TYPE IndexType);
+	E_INDEX_TYPE getType()
+	{
+        return Indices.getType();
+	}
 
-	uint stride();
+	void setType(E_INDEX_TYPE IndexType) {}
 
-	uint size();
-	void push_back (uint element);
+	uint stride()
+	{
+        return Indices.stride();
+	}
+
+	uint size()
+	{
+        return Indices.size();
+	}
+
+	void push_back (uint element)
+	{
+        Indices.push_back(element);
+	}
 
 	//uint operator [](uint index);
 
-	uint getLast();
-	void setValue(uint index, uint value);
-	void set_used(uint usedNow);
-	void reallocate(uint new_size);
-	uint allocated_size();
+	uint getLast()
+	{
+        return Indices.getLast();
+	}
 
-	void* pointer();
+	void setValue(uint index, uint value)
+	{
+        Indices.setValue(index, value);
+	}
+
+	void set_used(uint usedNow)
+	{
+        Indices.set_used(usedNow);
+	}
+
+	void reallocate(uint new_size)
+	{
+        Indices.reallocate(new_size);
+	}
+
+	uint allocated_size()
+	{
+        return Indices.allocated_size();
+	}
+
+	void* pointer()
+	{
+        return Indices.pointer();
+	}
 
 	/// get the current hardware mapping hint
-	E_HARDWARE_MAPPING getHardwareMappingHint();
+	E_HARDWARE_MAPPING getHardwareMappingHint()
+	{
+        return MappingHint;
+	}
 
 	/// set the hardware mapping hint, for driver
-	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint );
+	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
+	{
+        MappingHint=NewMappingHint;
+	}
 
 	/// flags the meshbuffer as changed, reloads hardware buffers
-	void setDirty();
+	void setDirty()
+	{
+        ++ChangedID;
+	}
 
 	/// Get the currently used ID for identification of changes.
 	/** This shouldn't be used for anything outside the VideoDriver. */
-	uint getChangedID();
+	uint getChangedID()
+	{
+        return ChangedID;
+	}
 
     interface IIndexList
     {

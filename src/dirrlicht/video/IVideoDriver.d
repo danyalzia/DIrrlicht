@@ -26,13 +26,14 @@
 
 module dirrlicht.video.IVideoDriver;
 
-import dirrlicht.c.video;
-import dirrlicht.c.irrlicht;
-
 import dirrlicht.core.dimension2d;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.io.IFileSystem;
 import dirrlicht.video.SColor;
+import dirrlicht.video.ITexture;
+import dirrlicht.video.EDriverFeatures;
+import dirrlicht.io.IAttributes;
+import dirrlicht.video.SMaterial;
 import dirrlicht.video.ITexture;
 
 import std.conv;
@@ -59,7 +60,7 @@ class IVideoDriver
 
     ITexture getTexture(string file)
     {
-        ITexture texture = new ITexture(&this, file);
+        ITexture texture = new ITexture(this, file);
         return cast(ITexture)(texture);
     }
 
@@ -86,3 +87,20 @@ size_t strlen(const(dchar)* str)
     for (; str[n] != 0; ++n) {}
     return n;
 }
+
+
+
+package extern(C):
+
+struct irr_IVideoDriver;
+
+bool irr_IVideoDriver_beginScene(irr_IVideoDriver* driver, bool backBuffer, bool zBuffer, irr_SColor color);
+bool irr_IVideoDriver_endScene(irr_IVideoDriver* driver);
+bool irr_IVideoDriver_queryFeature(irr_IVideoDriver* driver, E_VIDEO_DRIVER_FEATURE feature);
+void irr_IVideoDriver_disableFeature(irr_IVideoDriver* driver, E_VIDEO_DRIVER_FEATURE feature, bool flag=true);
+const irr_IAttributes* irr_IVideoDriver_getDriverAttributes(irr_IVideoDriver* driver);
+bool irr_IVideoDriver_checkDriverReset(irr_IVideoDriver* driver);
+
+irr_ITexture* irr_IVideoDriver_getTexture(irr_IVideoDriver* driver, const char* file);
+int irr_IVideoDriver_getFPS(irr_IVideoDriver* driver);
+const(dchar)* irr_IVideoDriver_getName(irr_IVideoDriver* driver);

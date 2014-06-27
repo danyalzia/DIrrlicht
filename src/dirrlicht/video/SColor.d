@@ -91,3 +91,13 @@ struct SColor
     int g;
     int r;
 }
+
+package extern (C):
+
+struct irr_SColor
+{
+    int a;
+    int b;
+    int g;
+    int r;
+};;

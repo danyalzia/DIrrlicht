@@ -24,10 +24,12 @@
        source distribution.
 */
 
+/+ A timer class useful for time independent algorithms
+ +
+ +/
+ 
 module dirrlicht.ITimer;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 class ITimer
@@ -42,3 +44,7 @@ class ITimer
 private:
     IrrlichtDevice device;
 }
+
+package extern(C):
+
+struct irr_ITimer;

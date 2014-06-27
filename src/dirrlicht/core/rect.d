@@ -35,3 +35,13 @@ struct rect(T)
 }
 
 alias recti = rect!(int);
+
+package extern (C):
+
+struct irr_recti
+{
+	int x;
+	int y;
+	int x1;
+	int y1;
+}

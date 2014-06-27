@@ -26,9 +26,6 @@
 
 module dirrlicht.video.ITexture;
 
-import dirrlicht.c.video;
-import dirrlicht.c.irrlicht;
-
 import dirrlicht.core.dimension2d;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.io.IFileSystem;
@@ -37,12 +34,17 @@ import dirrlicht.video.IVideoDriver;
 
 class ITexture
 {
-    this(IVideoDriver* _driver, string file)
+    this(IVideoDriver _driver, string file)
     {
         driver = _driver;
         ptr = irr_IVideoDriver_getTexture(driver.ptr, file.ptr);
     }
 
-    IVideoDriver* driver;
     irr_ITexture* ptr;
+private:
+    IVideoDriver driver;
 }
+
+package extern(C):
+
+struct irr_ITexture;

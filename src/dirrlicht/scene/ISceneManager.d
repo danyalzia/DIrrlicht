@@ -26,9 +26,9 @@
 
 module dirrlicht.scene.ISceneManager;
 
-import dirrlicht.c.scene;
-import dirrlicht.c.irrlicht;
 import dirrlicht.IrrlichtDevice;
+import dirrlicht.scene.ISceneNodeAnimator;
+import dirrlicht.scene.ISceneNode;
 import dirrlicht.scene.IMesh;
 import dirrlicht.scene.IAnimatedMesh;
 import dirrlicht.scene.IAnimatedMeshSceneNode;
@@ -43,11 +43,11 @@ class ISceneManager
         smgr = irr_IrrlichtDevice_getSceneManager(device.ptr);
     }
 
-//    IAnimatedMesh getMesh(string filename)
-//    {
-//        IAnimatedMesh mesh = new IAnimatedMesh(this, filename);
-//        return mesh;
-//    }
+    IAnimatedMesh getMesh(string filename)
+    {
+        IAnimatedMesh mesh = new IAnimatedMesh(this, filename);
+        return mesh;
+    }
 
     IAnimatedMeshSceneNode addAnimatedMeshSceneNode(IAnimatedMesh mesh)
     {
@@ -75,3 +75,16 @@ class ISceneManager
     IrrlichtDevice device;
     irr_ISceneManager* smgr;
 }
+
+package extern (C):
+
+struct irr_ISceneManager;
+
+irr_IAnimatedMesh* irr_ISceneManager_getMesh(irr_ISceneManager* smgr, const char* file);
+irr_ICameraSceneNode* irr_ISceneManager_addCameraSceneNode(irr_ISceneManager* smgr, irr_IAnimatedMeshSceneNode* parent, irr_vector3df pos, irr_vector3df lookAt);
+irr_ICameraSceneNode* irr_ISceneManager_addCameraSceneNodeFPS(irr_ISceneManager* smgr);
+irr_ISceneNode* irr_ISceneManager_addSphereSceneNode(irr_ISceneManager* smgr);
+irr_ISceneNode* irr_ISceneManager_addCubeSceneNode(irr_ISceneManager* smgr);
+void irr_ISceneManager_drawAll(irr_ISceneManager* smgr);
+irr_ISceneNodeAnimator* irr_ISceneManager_createFlyCircleAnimator(irr_ISceneManager* smgr, const ref irr_vector3df center, float radius=100);
+irr_ISceneNodeAnimator* irr_ISceneManager_createFlyStraightAnimator(irr_ISceneManager* smgr, const ref irr_vector3df startPoint, const ref irr_vector3df endPoint, uint timeForWay, bool loop=false, bool pingpong = false);

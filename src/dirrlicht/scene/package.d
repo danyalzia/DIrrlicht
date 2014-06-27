@@ -44,6 +44,7 @@ public
     import dirrlicht.scene.IAnimatedMeshMD3;
     import dirrlicht.scene.IAnimatedMeshMD3;
     import dirrlicht.scene.IAnimatedMeshSceneNode;
+    import dirrlicht.scene.IBoneSceneNode;
     import dirrlicht.scene.ICameraSceneNode;
     import dirrlicht.scene.IIndexBuffer;
     import dirrlicht.scene.IMesh;
@@ -52,6 +53,7 @@ public
     import dirrlicht.scene.ISceneManager;
     import dirrlicht.scene.ISceneNode;
     import dirrlicht.scene.ISceneNodeAnimator;
+    import dirrlicht.scene.IShadowVolumeSceneNode;
     import dirrlicht.scene.ITriangleSelector;
     import dirrlicht.scene.IVertexBuffer;
 }

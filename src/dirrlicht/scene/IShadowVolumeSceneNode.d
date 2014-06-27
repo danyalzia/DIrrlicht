@@ -24,21 +24,14 @@
        source distribution.
 */
 
-module dirrlicht.scene.ITriangleSelector;
+module dirrlicht.scene.IShadowVolumeSceneNode;
 
-import dirrlicht.scene.ISceneManager;
+import dirrlicht.scene.ISceneNode;
 
-class ITriangleSelector
+class IShadowVolumeSceneNode : ISceneNode
 {
-    this()
-    {
-    }
-
-    irr_ITriangleSelector* ptr;
-private:
-    ISceneManager smgr;
 }
 
 extern (C):
 
-struct irr_ITriangleSelector;
+struct irr_IShadowVolumeSceneNode;

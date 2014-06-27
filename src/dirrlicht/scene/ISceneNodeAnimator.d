@@ -26,8 +26,6 @@
 
 module dirrlicht.scene.ISceneNodeAnimator;
 
-import dirrlicht.c.scene;
-
 class ISceneNodeAnimator
 {
     this()
@@ -36,3 +34,7 @@ class ISceneNodeAnimator
 private:
     irr_ISceneNodeAnimator* ptr;
 }
+
+package extern (C):
+
+struct irr_ISceneNodeAnimator;

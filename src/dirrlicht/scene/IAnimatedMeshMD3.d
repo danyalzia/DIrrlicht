@@ -25,3 +25,7 @@
 */
 
 module dirrlicht.scene.IAnimatedMeshMD3;
+
+extern (C):
+
+struct irr_SMD3QuaternionTag;

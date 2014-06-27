@@ -37,46 +37,96 @@ import dirrlicht.video.S3DVertex;
 
 class CVertexBuffer : IVertexBuffer
 {
-    void* getData();
-	E_VERTEX_TYPE getType();
-	void setType(E_VERTEX_TYPE vertexType);
-	uint stride();
-	uint size();
-	void push_back(S3DVertex element);
+    void* getData()
+    {
+        return Vertices.pointer();
+    }
+
+	E_VERTEX_TYPE getType()
+    {
+        return Vertices.getType();
+    }
+
+	void setType(E_VERTEX_TYPE vertexType) { }
+
+	uint stride()
+    {
+        return Vertices.stride();
+    }
+
+	uint size()
+    {
+        return Vertices.size();
+    }
+
+	void push_back(S3DVertex element)
+    {
+        Vertices.push_back(element);
+    }
 
 	//S3DVertex operator [](const uint index);
 
-	S3DVertex getLast();
-	void set_used(uint usedNow);
-	void reallocate(uint new_size);
-	uint allocated_size();
-	S3DVertex* pointer();
+	S3DVertex getLast()
+	{
+        return Vertices.getLast();
+    }
+
+	void set_used(uint usedNow)
+    {
+        Vertices.set_used(usedNow);
+    }
+
+	void reallocate(uint new_size)
+    {
+        Vertices.reallocate(new_size);
+    }
+
+	uint allocated_size()
+    {
+        return Vertices.allocated_size();
+    }
+
+	S3DVertex* pointer()
+	{
+        return Vertices.pointer();
+    }
 
 	/// get the current hardware mapping hint
-	E_HARDWARE_MAPPING getHardwareMappingHint();
+	E_HARDWARE_MAPPING getHardwareMappingHint()
+    {
+        return MappingHint;
+    }
 
 	/// set the hardware mapping hint, for driver
-	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint);
+	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
+    {
+        MappingHint=NewMappingHint;
+    }
 
 	/// flags the meshbuffer as changed, reloads hardware buffers
-	void setDirty();
+	void setDirty()
+	{
+        ++ChangedID;
+    }
 
 	/// Get the currently used ID for identification of changes.
 	/** This shouldn't be used for anything outside the VideoDriver. */
-	uint getChangedID();
+	uint getChangedID()
+	{
+        return ChangedID;
+    }
 
     interface IVertexList
     {
         uint stride();
         uint size();
-        void push_back(uint element);
+        void push_back(S3DVertex element);
         //u32 operator [](u32 index);
-        uint getLast();
-        void setValue(uint index, uint value);
+        S3DVertex getLast();
         void set_used(uint usedNow);
         void reallocate(uint new_size);
         uint allocated_size();
-        void* pointer();
+        S3DVertex* pointer();
         E_VERTEX_TYPE getType();
     };
 

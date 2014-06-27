@@ -24,9 +24,10 @@
        source distribution.
 */
 
-/***********************************
- * SIMD recognized 3D vector class. The fourth component is unused and set to 0.
- */
+/++++
+ + SIMD recognized 3D vector class. The fourth component is unused and set to 0.
+ + Authors: Danyal Zia
+ +/
 
 module dirrlicht.core.vector3d;
 
@@ -388,4 +389,20 @@ unittest
     assert(veci.x == 25 || veci.y == 25  || veci.z == 25 );
     veci /= veci2;
     assert(veci.x == 5 || veci.y == 5  || veci.z == 5 );
+}
+
+package extern (C):
+
+struct irr_vector3di
+{
+	int x;
+	int y;
+	int z;
+}
+
+struct irr_vector3df
+{
+	float x;
+	float y;
+	float z;
 }

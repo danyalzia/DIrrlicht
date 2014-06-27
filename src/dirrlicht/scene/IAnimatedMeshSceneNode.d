@@ -26,38 +26,90 @@
 
 module dirrlicht.scene.IAnimatedMeshSceneNode;
 
-import dirrlicht.c.scene;
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.video;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.core.vector3d;
+import dirrlicht.scene.IBoneSceneNode;
+import dirrlicht.scene.ISceneNodeAnimator;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.ISceneNode;
+import dirrlicht.scene.IShadowVolumeSceneNode;
+import dirrlicht.scene.IMesh;
 import dirrlicht.scene.IAnimatedMesh;
 import dirrlicht.scene.IAnimatedMeshMD2;
+import dirrlicht.scene.IAnimatedMeshMD3;
 import dirrlicht.scene.IAnimatedMeshSceneNode;
 import dirrlicht.video.ITexture;
 import dirrlicht.video.EMaterialFlags;
+
+enum E_JOINT_UPDATE_ON_RENDER
+{
+	/// do nothing
+	EJUOR_NONE = 0,
+
+	/// get joints positions from the mesh (for attached nodes, etc)
+	EJUOR_READ,
+
+	/// control joint positions in the mesh (eg. ragdolls, or set the animation from animateJoints() )
+	EJUOR_CONTROL
+};
 
 class IAnimatedMeshSceneNode : ISceneNode
 {
     this(ISceneManager _smgr, IAnimatedMesh _mesh)
     {
         smgr = _smgr;
-        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.smgr, _mesh.mesh);
-
-        auto pos = vector3df(0,0,0);
-        auto rot = vector3df(0,0,0);
-        auto scale = vector3df(1,1,1);
-        super(null, smgr);
+        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.smgr, _mesh.ptr);
+        ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
     }
 
     void setMD2Animation(EMD2_ANIMATION_TYPE value)
     {
-        ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
         irr_IAnimatedMeshSceneNode_setMD2Animation(ptr, value);
     }
 
     ISceneManager smgr;
     irr_IAnimatedMeshSceneNode* ptr;
 }
+
+package extern (C):
+
+struct irr_IAnimationEndCallBack;
+struct irr_IAnimatedMeshSceneNode;
+struct irr_list;
+
+void irr_IAnimatedMeshSceneNode_addAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
+irr_list* irr_IAnimatedMeshSceneNode_getAnimators(irr_IAnimatedMeshSceneNode* node);
+void irr_IAnimatedMeshSceneNode_removeAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
+irr_IAnimatedMesh* irr_ISceneManager_getMesh(irr_ISceneManager* smgr, const(char)* file);
+irr_IAnimatedMeshSceneNode* irr_ISceneManager_addAnimatedMeshSceneNode(irr_ISceneManager* smgr, irr_IAnimatedMesh* mesh);
+void irr_IAnimatedMeshSceneNode_setPosition(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df newpos);
+void irr_IAnimatedMeshSceneNode_setMaterialFlag(irr_IAnimatedMeshSceneNode* node, E_MATERIAL_FLAG flag, bool newvalue);
+void irr_IAnimatedMeshSceneNode_setMaterialTexture(irr_IAnimatedMeshSceneNode* node, int c, irr_ITexture* texture);
+void irr_IAnimatedMeshSceneNode_setScale(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df scale);
+void irr_IAnimatedMeshSceneNode_setRotation(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df rotation);
+
+void irr_IAnimatedMeshSceneNode_setCurrentFrame(irr_IAnimatedMeshSceneNode* node, float frame);
+void irr_IAnimatedMeshSceneNode_setFrameLoop(irr_IAnimatedMeshSceneNode* node, int begin, int end);
+void irr_IAnimatedMeshSceneNode_setAnimationSpeed(irr_IAnimatedMeshSceneNode* node, float framesPerSecond);
+float irr_IAnimatedMeshSceneNode_getAnimationSpeed(irr_IAnimatedMeshSceneNode* node);
+irr_IShadowVolumeSceneNode* irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(irr_IAnimatedMeshSceneNode* node, const irr_IMesh* shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f);
+irr_IBoneSceneNode* irr_IAnimatedMeshSceneNode_getJointNode(irr_IAnimatedMeshSceneNode* node, const char* jointName);
+irr_IBoneSceneNode* irr_IAnimatedMeshSceneNode_getJointNodeByID(irr_IAnimatedMeshSceneNode* node, uint jointID);
+uint irr_IAnimatedMeshSceneNode_getJointCount(irr_IAnimatedMeshSceneNode* node);
+void irr_IAnimatedMeshSceneNode_setMD2Animation(irr_IAnimatedMeshSceneNode* node, EMD2_ANIMATION_TYPE value);
+bool irr_IAnimatedMeshSceneNode_setMD2AnimationByName(irr_IAnimatedMeshSceneNode* node, const char* animationName);
+float irr_IAnimatedMeshSceneNode_getFrameNr(irr_IAnimatedMeshSceneNode* node);
+int irr_IAnimatedMeshSceneNode_getStartFrame(irr_IAnimatedMeshSceneNode* node);
+int irr_IAnimatedMeshSceneNode_getEndFrame(irr_IAnimatedMeshSceneNode* node);
+void irr_IAnimatedMeshSceneNode_setLoopMode(irr_IAnimatedMeshSceneNode* node, bool playAnimationLooped);
+bool irr_IAnimatedMeshSceneNode_getLoopMode(irr_IAnimatedMeshSceneNode* node);
+void irr_IAnimatedMeshSceneNode_setAnimationEndCallback(irr_IAnimatedMeshSceneNode* node, irr_IAnimationEndCallBack* callback=null);
+void irr_IAnimatedMeshSceneNode_setReadOnlyMaterials(irr_IAnimatedMeshSceneNode* node, bool readonly);
+bool irr_IAnimatedMeshSceneNode_isReadOnlyMaterials(irr_IAnimatedMeshSceneNode* node);
+void irr_IAnimatedMeshSceneNode_setMesh(irr_IAnimatedMeshSceneNode* node, irr_IAnimatedMesh* mesh);
+irr_IAnimatedMesh* irr_IAnimatedMeshSceneNode_getMesh(irr_IAnimatedMeshSceneNode* node);
+const irr_SMD3QuaternionTag* irr_IAnimatedMeshSceneNode_getMD3TagTransformation(irr_IAnimatedMeshSceneNode* node, const char* tagname);
+void irr_IAnimatedMeshSceneNode_setJointMode(irr_IAnimatedMeshSceneNode* node, E_JOINT_UPDATE_ON_RENDER mode);
+void irr_IAnimatedMeshSceneNode_setTransitionTime(irr_IAnimatedMeshSceneNode* node, float Time);
+void irr_IAnimatedMeshSceneNode_animateJoints(irr_IAnimatedMeshSceneNode* node, bool CalculateAbsolutePositions=true);
+void irr_IAnimatedMeshSceneNode_setRenderFromIdentity(irr_IAnimatedMeshSceneNode* node, bool On);

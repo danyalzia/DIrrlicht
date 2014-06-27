@@ -43,3 +43,17 @@ unittest
     auto vecf = vector2df(2.0, 4.0);
     assert(veci.x == 2.0 && veci.y == 4.0);
 }
+
+package extern (C):
+
+struct irr_vector2di
+{
+	int x;
+	int y;
+}
+
+struct irr_vector2df
+{
+	float x;
+	float y;
+}

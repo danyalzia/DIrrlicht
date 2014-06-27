@@ -33,3 +33,7 @@ class IAttributes
         return 0;
     }
 }
+
+package extern(C):
+
+struct irr_IAttributes;

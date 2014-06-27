@@ -67,5 +67,8 @@ public:
 	scripting languages, editors, debuggers or xml deserialization purposes.
 	*/
 	void deserializeAttributes(in IAttributes att, SAttributeReadWriteOptions options=SAttributeReadWriteOptions(0, null)) {}
-
 };
+
+package extern (C):
+
+struct irr_SAttributeReadWriteOptions;

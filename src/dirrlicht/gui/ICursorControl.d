@@ -26,8 +26,6 @@
 
 module dirrlicht.gui.ICursorControl;
 
-import dirrlicht.c.gui;
-import dirrlicht.c.irrlicht;
 import dirrlicht.IrrlichtDevice;
 
 class ICursorControl
@@ -46,3 +44,8 @@ private:
     IrrlichtDevice device;
     irr_ICursorControl* ptr;
 }
+
+package extern (C):
+
+struct irr_ICursorControl;
+void irr_ICursorControl_setVisible(irr_ICursorControl* cursor, bool value);

@@ -62,10 +62,27 @@ float SQRT(float n)
     }
 }
 
-/// Not implemented yet!
 int FLOOR(int n)
 {
-    return cast(int)(n);
+    static if(DigitalMars || LDC)
+    {
+		const float h = 0.5f;
+		int t;
+		
+        asm
+        {
+            fld n;
+            fsub h;
+            fistp t;
+        }
+
+        return t;
+    }
+
+    else
+    {
+
+    }
 }
 
 void MOV(T)(T n)

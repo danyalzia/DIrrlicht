@@ -26,11 +26,12 @@
 
 module dirrlicht.gui.IGUIEnvironment;
 
-import dirrlicht.c.gui;
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.core;
-
 import dirrlicht.IrrlichtDevice;
+import dirrlicht.gui.IGUIStaticText;
+import dirrlicht.gui.IGUIImage;
+import dirrlicht.video.SColor;
+import dirrlicht.video.ITexture;
+import dirrlicht.core.vector2d;
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.rect;
 
@@ -46,10 +47,16 @@ class IGUIEnvironment
         ptr = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
     }
 
-    void addStaticText(dstring text, recti rec, bool border=false)
+    IGUIStaticText addStaticText(dstring text, recti rec, bool border=false)
     {
-        irr_recti re = irr_recti(rec.x, rec.y, rec.x1, rec.y1);
-        irr_IGUIEnvironment_addStaticText(ptr, toUTFz!(const(dchar)*)(text), re, border);
+        auto statictext = new IGUIStaticText(this, text, rec, border);
+        return statictext;
+    }
+
+    IGUIImage addImage(ITexture texture, vector2di pos)
+    {
+        auto image = new IGUIImage(this, texture, pos);
+        return image;
     }
 
     void drawAll()
@@ -61,3 +68,12 @@ class IGUIEnvironment
 private:
     IrrlichtDevice device;
 }
+
+package extern (C):
+
+struct irr_IGUIEnvironment;
+
+irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const(dchar)* text, const ref irr_recti rectangle, bool border=false);
+irr_IGUIImage* irr_IGUIEnvironment_addImage(irr_IGUIEnvironment* env, irr_ITexture* textures, irr_vector2di pos);
+
+void irr_IGUIEnvironment_drawAll(irr_IGUIEnvironment* env);

@@ -26,8 +26,6 @@
 
 module dirrlicht.scene.IMesh;
 
-import dirrlicht.c.scene;
-import dirrlicht.c.core;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.IMeshBuffer;
 import dirrlicht.video.SMaterial;
@@ -99,8 +97,14 @@ class IMesh
     }
 
     irr_IMesh* ptr;
+
 private:
     ISceneManager smgr;
+}
+
+unittest
+{
+
 }
 
 package extern(C):

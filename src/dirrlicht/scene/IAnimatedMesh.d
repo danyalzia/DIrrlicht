@@ -26,8 +26,6 @@
 
 module dirrlicht.scene.IAnimatedMesh;
 
-import dirrlicht.c.scene;
-import dirrlicht.c.irrlicht;
 import dirrlicht.scene.IMesh;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.scene.ISceneManager;
@@ -86,18 +84,47 @@ class IAnimatedMesh : IMesh
 {
     this(ISceneManager _smgr, string file)
     {
-        super(_smgr, file);
+        smgr = _smgr;
+        super(smgr, file);
+        ptr = cast(irr_IAnimatedMesh*)super.ptr;
     }
 
-    uint getFrameCount();
-    float getAnimationSpeed();
-    void setAnimationSpeed(float fps);
-    IMesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1);
+    uint getFrameCount()
+    {
+        return irr_IAnimatedMesh_getFrameCount(ptr);
+    }
+
+    float getAnimationSpeed()
+    {
+        return irr_IAnimatedMesh_getAnimationSpeed(ptr);
+    }
+
+    void setAnimationSpeed(float fps)
+    {
+        irr_IAnimatedMesh_setAnimationSpeed(ptr, fps);
+    }
+
+    IMesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1)
+    {
+        auto temp = irr_IAnimatedMesh_getMesh(ptr, detailLevel, startFrameLoop, endFrameLoop);
+        return cast(IMesh)(temp);
+    }
+
     E_ANIMATED_MESH_TYPE getMeshType()
     {
         return E_ANIMATED_MESH_TYPE.EAMT_UNKNOWN;
     }
 
     ISceneManager smgr;
-    irr_IAnimatedMesh* mesh;
+    irr_IAnimatedMesh* ptr;
 }
+
+package extern (C):
+
+struct irr_IAnimatedMesh;
+
+uint irr_IAnimatedMesh_getFrameCount(irr_IAnimatedMesh* mesh);
+float irr_IAnimatedMesh_getAnimationSpeed(irr_IAnimatedMesh* mesh);
+void irr_IAnimatedMesh_setAnimationSpeed(irr_IAnimatedMesh* mesh, float fps);
+irr_IMesh* irr_IAnimatedMesh_getMesh(irr_IAnimatedMesh* mesh, int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1);
+

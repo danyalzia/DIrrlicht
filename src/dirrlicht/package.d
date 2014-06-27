@@ -34,4 +34,5 @@ public
     import dirrlicht.IRandomizer;
     import dirrlicht.IrrlichtDevice;
     import dirrlicht.ITimer;
+    import dirrlicht.KeyCodes;
 }

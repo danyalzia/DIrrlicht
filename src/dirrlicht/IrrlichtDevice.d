@@ -26,12 +26,10 @@
 
 module dirrlicht.IrrlichtDevice;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.core;
-import dirrlicht.c.scene;
-
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.vector2d;
+import dirrlicht.video.EDeviceTypes;
+import dirrlicht.video.SColor;
 import dirrlicht.video.IVideoDriver;
 import dirrlicht.video.EDriverTypes;
 import dirrlicht.io.IFileSystem;
@@ -279,3 +277,57 @@ IrrlichtDevice createDevice(E_DRIVER_TYPE type, dimension2du dim, uint bits = 16
     auto device = new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
     return device;
 }
+
+unittest
+{
+    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
+    assert(device !is null);
+}
+
+package extern (C):
+
+struct irr_IrrlichtDevice;
+
+irr_IrrlichtDevice* irr_createDevice(E_DRIVER_TYPE driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, irr_IEventReceiver* receiver=null);
+bool irr_IrrlichtDevice_run(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_yield(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_sleep(irr_IrrlichtDevice* device, uint timeMs, bool pauseTimer=false);
+irr_IVideoDriver* irr_IrrlichtDevice_getVideoDriver(irr_IrrlichtDevice* device);
+irr_IFileSystem* irr_IrrlichtDevice_getFileSystem(irr_IrrlichtDevice* device);
+irr_IGUIEnvironment* irr_IrrlichtDevice_getGUIEnvironment(irr_IrrlichtDevice* device);
+irr_ISceneManager* irr_IrrlichtDevice_getSceneManager(irr_IrrlichtDevice* device);
+irr_ICursorControl* irr_IrrlichtDevice_getCursorControl(irr_IrrlichtDevice* device);
+irr_ILogger* irr_IrrlichtDevice_getLogger(irr_IrrlichtDevice* device);
+irr_IVideoModeList* irr_IrrlichtDevice_getVideoModeList(irr_IrrlichtDevice* device);
+irr_IOSOperator* irr_IrrlichtDevice_getOSOperator(irr_IrrlichtDevice* device);
+irr_ITimer* irr_IrrlichtDevice_getTimer(irr_IrrlichtDevice* device);
+irr_IRandomizer* irr_IrrlichtDevice_getRandomizer(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_setRandomizer(irr_IrrlichtDevice* device, irr_IRandomizer* randomizer);
+irr_IRandomizer* irr_IrrlichtDevice_createDefaultRandomizer(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_setWindowCaption(irr_IrrlichtDevice* device, const(dchar)* text);
+bool irr_IrrlichtDevice_isWindowActive(irr_IrrlichtDevice* device);
+bool irr_IrrlichtDevice_isWindowFocused(irr_IrrlichtDevice* device);
+bool irr_IrrlichtDevice_isWindowMinimized(irr_IrrlichtDevice* device);
+bool irr_IrrlichtDevice_isFullscreen(irr_IrrlichtDevice* device);
+ECOLOR_FORMAT irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
+const char* irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
+irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
+bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, irr_SEvent* event);
+void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
+void irr_IrrlichtDevice_setResizable(irr_IrrlichtDevice* device, bool value = false);
+void irr_IrrlichtDevice_setWindowSize(irr_IrrlichtDevice* device, irr_dimension2du* size);
+void irr_IrrlichtDevice_minimizeWindow(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_maximizeWindow(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_restoreWindow(irr_IrrlichtDevice* device);
+irr_vector2di irr_IrrlichtDevice_getWindowPosition(irr_IrrlichtDevice* device);
+//bool activateJoysticks
+bool irr_IrrlichtDevice_setGammaRamp(irr_IrrlichtDevice* device, float red, float green, float blue, float relativebrightness, float relativecontrast);
+bool irr_IrrlichtDevice_getGammaRamp(irr_IrrlichtDevice* device, ref float red, ref float green, ref float blue, ref float relativebrightness, ref float relativecontrast);
+void irr_IrrlichtDevice_setDoubleClickTime(irr_IrrlichtDevice* device, uint timeMs);
+uint irr_IrrlichtDevice_getDoubleClickTime(irr_IrrlichtDevice* device);
+void irr_IrrlichtDevice_clearSystemMessages(irr_IrrlichtDevice* device);
+E_DEVICE_TYPE irr_IrrlichtDevice_getType(irr_IrrlichtDevice* device);
+bool irr_IrrlichtDevice_isDriverSupported(irr_IrrlichtDevice* device, E_DRIVER_TYPE type);
+void irr_IrrlichtDevice_drop(irr_IrrlichtDevice* device);

@@ -98,7 +98,6 @@
 				<Option compiler="ldc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-O" />
 					<Add option="-unittest" />
 					<Add directory="../" />
 				</Compiler>
@@ -125,6 +124,7 @@
 					<Add option="-inline" />
 					<Add option="-O" />
 					<Add option="-w" />
+					<Add option="-unittest" />
 					<Add option="-unittest" />
 					<Add directory="../" />
 				</Compiler>
@@ -170,18 +170,13 @@
 		<Unit filename="IRandomizer.d" />
 		<Unit filename="ITimer.d" />
 		<Unit filename="IrrlichtDevice.d" />
-		<Unit filename="c/all.d" />
-		<Unit filename="c/core.d" />
-		<Unit filename="c/gui.d" />
-		<Unit filename="c/io.d" />
-		<Unit filename="c/irrlicht.d" />
-		<Unit filename="c/scene.d" />
-		<Unit filename="c/video.d" />
+		<Unit filename="KeyCodes.d" />
 		<Unit filename="core/SIMDMath.d" />
 		<Unit filename="core/aabbox3d.d" />
 		<Unit filename="core/dimension2d.d" />
 		<Unit filename="core/line2d.d" />
 		<Unit filename="core/line3d.d" />
+		<Unit filename="core/list.d" />
 		<Unit filename="core/matrix4.d" />
 		<Unit filename="core/package.d" />
 		<Unit filename="core/plane3d.d" />
@@ -196,6 +191,8 @@
 		<Unit filename="gui/EMessageBoxFlags.d" />
 		<Unit filename="gui/ICursorControl.d" />
 		<Unit filename="gui/IGUIEnvironment.d" />
+		<Unit filename="gui/IGUIImage.d" />
+		<Unit filename="gui/IGUIStaticText.d" />
 		<Unit filename="gui/package.d" />
 		<Unit filename="io/EAttributes.d" />
 		<Unit filename="io/IAttributeExchangingObject.d" />
@@ -218,6 +215,7 @@
 		<Unit filename="scene/IAnimatedMeshMD2.d" />
 		<Unit filename="scene/IAnimatedMeshMD3.d" />
 		<Unit filename="scene/IAnimatedMeshSceneNode.d" />
+		<Unit filename="scene/IBoneSceneNode.d" />
 		<Unit filename="scene/ICameraSceneNode.d" />
 		<Unit filename="scene/IIndexBuffer.d" />
 		<Unit filename="scene/IMesh.d" />
@@ -226,6 +224,7 @@
 		<Unit filename="scene/ISceneManager.d" />
 		<Unit filename="scene/ISceneNode.d" />
 		<Unit filename="scene/ISceneNodeAnimator.d" />
+		<Unit filename="scene/IShadowVolumeSceneNode.d" />
 		<Unit filename="scene/ITriangleSelector.d" />
 		<Unit filename="scene/IVertexBuffer.d" />
 		<Unit filename="scene/package.d" />

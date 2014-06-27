@@ -39,10 +39,40 @@ struct aabbox3d(T)
         MinEdge = min;
         MaxEdge = max;
     }
+
     this(vector3d!(T) init)
     {
         MinEdge = init;
         MaxEdge = init;
+    }
+
+    void opOpAssign(string op)(aabbox3d rhs)
+    {
+        mixin("MinEdge" ~ op ~ "=rhs.MinEdge;");
+        mixin("MaxEdge" ~ op ~ "=rhs.MaxEdge;");
+    }
+
+    aabbox3d!(T) opBinary(string op)(aabbox3d!(T) rhs)
+    {
+        static if (op == "+")
+        {
+            return new aabbox3d(MinEdge + rhs.MinEdge, MaxEdge + rhs.MaxEdge);
+        }
+
+        else static if (op == "-")
+        {
+            return new aabbox3d(MinEdge - rhs.MinEdge, MaxEdge - rhs.MaxEdge);
+        }
+
+        else static if (op == "*")
+        {
+            return new aabbox3d(MinEdge * rhs.MinEdge, MaxEdge * rhs.MaxEdge);
+        }
+
+        else static if (op == "/")
+        {
+            return new aabbox3d(MinEdge / rhs.MinEdge, MaxEdge / rhs.MaxEdge);
+        }
     }
 
     vector3d!(T) MinEdge;
@@ -51,3 +81,30 @@ struct aabbox3d(T)
 
 alias aabbox3df = aabbox3d!(float);
 alias aabbox3di = aabbox3d!(int);
+
+///
+unittest
+{
+    auto box = aabbox3di(vector3di(2,2,2), vector3di(4,4,4));
+    assert(box.MinEdge.x == 2 || box.MinEdge.y == 2 || box.MinEdge.z == 2
+    || box.MaxEdge.x == 4 || box.MaxEdge.y == 4 || box.MaxEdge.z == 4);
+
+    auto box2 = aabbox3di(vector3di(4,4,4), vector3di(6,6,6));
+    box += box2;
+    assert(box.MinEdge.x == 6 || box.MinEdge.y == 6 || box.MinEdge.z == 6
+    || box.MaxEdge.x == 10 || box.MaxEdge.y == 10 || box.MaxEdge.z == 10);
+}
+
+package extern(C):
+
+struct irr_aabbox3di
+{
+	irr_vector3di MinEdge;
+	irr_vector3di MaxEdge;
+}
+
+struct irr_aabbox3df
+{
+	irr_vector3df MinEdge;
+	irr_vector3df MaxEdge;
+}

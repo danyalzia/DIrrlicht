@@ -26,9 +26,9 @@
 
 module dirrlicht.scene.ISceneNode;
 
-import dirrlicht.c.core;
-import dirrlicht.c.scene;
+import dirrlicht.scene.ISceneNodeAnimator;
 import dirrlicht.scene.ISceneManager;
+import dirrlicht.core.list;
 import dirrlicht.core.vector3d;
 import dirrlicht.video.EMaterialFlags;
 import dirrlicht.video.EMaterialTypes;
@@ -39,26 +39,16 @@ import dirrlicht.scene.ITriangleSelector;
 import dirrlicht.scene.ESceneNodeTypes;
 import dirrlicht.io.IAttributes;
 import dirrlicht.io.IAttributeExchangingObject;
-import dirrlicht.c.io;
 
 class ISceneNode
 {
-    this(ISceneNode parent, ISceneManager s, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1,1,1))
-    {
-        smgr = s;
-    }
+    this() {}
 
     void addAnimator(ISceneNodeAnimator animator)
     {
         auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
         irr_ISceneNode_addAnimator(ptr, animptr);
     }
-
-//    ISceneNodeAnimator[] getAnimators()
-//    {
-//        auto list = cast(ISceneNodeAnimator[])irr_ISceneNode_getAnimators(ptr);
-//        return list;
-//    }
 
     void removeAnimator(ISceneNodeAnimator animator)
     {
@@ -168,11 +158,6 @@ class ISceneNode
         return irr_ISceneNode_isDebugObject(ptr);
     }
 
-//    const ref ISceneNode[] getChildren()
-//    {
-//        irr_ISceneNode_getChildren(ptr);
-//    }
-
     void setParent(ISceneNode newParent)
     {
         irr_ISceneNode_setParent(ptr, cast(irr_ISceneNode*)newParent);
@@ -205,12 +190,6 @@ class ISceneNode
         return irr_ISceneNode_getType(ptr);
     }
 
-//    void serializeAttributes(out IAttributes att, SAttributeReadWriteOptions options=SAttributeReadWriteOptions(0, null))
-//    {
-//        irr_SAttributeReadWriteOptions temp = {options, options};
-//        irr_ISceneNode_serializeAttributes(ptr, cast(irr_IAttributes*)att, cast(irr_SAttributeReadWriteOptions*)options);
-//    }
-
     ISceneManager getSceneManager()
     {
         return cast(ISceneManager)irr_ISceneNode_getSceneManager(ptr);
@@ -220,3 +199,62 @@ class ISceneNode
 private:
     ISceneManager smgr;
 }
+
+unittest
+{
+    import dirrlicht;
+    import dirrlicht.video;
+    import dirrlicht.scene;
+    import dirrlicht.core;
+    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
+
+    auto driver = device.getVideoDriver();
+    auto smgr = device.getSceneManager();
+
+    assert(smgr.smgr != null);
+
+    auto mesh = smgr.getMesh("../../media/sydney.md2");
+    assert(mesh.ptr != null);
+    auto node = smgr.addAnimatedMeshSceneNode(mesh);
+
+    assert(node.ptr != null);
+    node.setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
+}
+
+extern (C):
+
+struct irr_ISceneNode;
+
+void irr_ISceneNode_addAnimator(irr_ISceneNode* node, irr_ISceneNodeAnimator* animator);
+//irr_list* irr_ISceneNode_getAnimators(irr_ISceneNode* node);
+void irr_ISceneNode_removeAnimator(irr_ISceneNode* node, irr_ISceneNodeAnimator* animator);
+void irr_ISceneNode_removeAnimators(irr_ISceneNode* node);
+ref irr_SMaterial* irr_ISceneNode_getMaterial(irr_ISceneNode* node, uint num);
+uint irr_ISceneNode_getMaterialCount(irr_ISceneNode* node);
+void irr_ISceneNode_setMaterialFlag(irr_ISceneNode* node, E_MATERIAL_FLAG flag, bool newvalue);
+void irr_ISceneNode_setMaterialTexture(irr_ISceneNode* node, int c, irr_ITexture* texture);
+void irr_ISceneNode_setMaterialType(irr_ISceneNode* node, E_MATERIAL_TYPE newType);
+irr_vector3df irr_ISceneNode_getScale(irr_ISceneNode* node);
+void irr_ISceneNode_setScale(irr_ISceneNode* node, irr_vector3df scale);
+irr_vector3df irr_ISceneNode_getRotation(irr_ISceneNode* node);
+void irr_ISceneNode_setRotation(irr_ISceneNode* node, irr_vector3df rotation);
+irr_vector3df irr_ISceneNode_getPosition(irr_ISceneNode* node);
+void irr_ISceneNode_setPosition(irr_ISceneNode* node, irr_vector3df newpos);
+irr_vector3df irr_ISceneNode_getAbsolutePosition(irr_ISceneNode* node);
+void irr_ISceneNode_setAutomaticCulling(irr_ISceneNode* node, uint state);
+uint irr_ISceneNode_getAutomaticCulling(irr_ISceneNode* node);
+void irr_ISceneNode_setDebugDataVisible(irr_ISceneNode* node, uint state);
+uint irr_ISceneNode_isDebugDataVisible(irr_ISceneNode* node);
+void irr_ISceneNode_setIsDebugObject(irr_ISceneNode* node, bool debugObject);
+bool irr_ISceneNode_isDebugObject(irr_ISceneNode* node);
+//irr_list* irr_ISceneNode_getChildren(irr_ISceneNode* node);
+void irr_ISceneNode_setParent(irr_ISceneNode* node, irr_ISceneNode* newParent);
+irr_ITriangleSelector* irr_ISceneNode_getTriangleSelector(irr_ISceneNode* node);
+void irr_ISceneNode_setTriangleSelector(irr_ISceneNode* node, irr_ITriangleSelector* selector);
+void irr_ISceneNode_updateAbsolutePosition(irr_ISceneNode* node);
+irr_ISceneNode* irr_ISceneNode_getParent(irr_ISceneNode* node);
+ESCENE_NODE_TYPE irr_ISceneNode_getType(irr_ISceneNode* node);
+void irr_ISceneNode_serializeAttributes(irr_ISceneNode* node, irr_IAttributes*, irr_SAttributeReadWriteOptions*);
+void irr_ISceneNode_deserializeAttributes(irr_ISceneNode* node, irr_IAttributes*, irr_SAttributeReadWriteOptions*);
+irr_ISceneNode* irr_ISceneNode_clone(irr_ISceneNode* node, irr_ISceneNode*, irr_ISceneManager*);
+irr_ISceneManager* irr_ISceneNode_getSceneManager(irr_ISceneNode* node);

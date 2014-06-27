@@ -26,8 +26,6 @@
 
 module dirrlicht.io.IFileSystem;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 import std.string;
@@ -49,3 +47,8 @@ class IFileSystem
 private:
     IrrlichtDevice device;
 }
+
+package extern (C):
+
+struct irr_IFileSystem;
+void irr_IFileSystem_addFileArchive(irr_IFileSystem* filesystem, const char* text);

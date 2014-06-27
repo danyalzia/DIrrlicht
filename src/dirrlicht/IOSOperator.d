@@ -26,8 +26,6 @@
 
 module dirrlicht.IOSOperator;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 class IOSOperator
@@ -42,3 +40,7 @@ class IOSOperator
 private:
     IrrlichtDevice device;
 }
+
+package extern (C):
+
+struct irr_IOSOperator;

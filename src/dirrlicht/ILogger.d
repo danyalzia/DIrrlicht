@@ -26,8 +26,6 @@
 
 module dirrlicht.ILogger;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 class ILogger
@@ -42,3 +40,7 @@ class ILogger
 private:
     IrrlichtDevice device;
 }
+
+package extern (C):
+
+struct irr_ILogger;

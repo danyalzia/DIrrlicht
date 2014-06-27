@@ -24,12 +24,52 @@
        source distribution.
 */
 
-module dirrlicht.c.io;
+module dirrlicht.scene.IBoneSceneNode;
 
-extern (C)
+/// Enumeration for different bone animation modes
+enum E_BONE_ANIMATION_MODE
 {
-    struct irr_IFileSystem;
-    void irr_IFileSystem_addFileArchive(irr_IFileSystem* filesystem, const char* text);
-    struct irr_IAttributes;
-    struct irr_SAttributeReadWriteOptions;
+	/// The bone is usually animated, unless it's parent is not animated
+	EBAM_AUTOMATIC=0,
+
+	/// The bone is animated by the skin, if it's parent is not animated then animation will resume from this bone onward
+	EBAM_ANIMATED,
+
+	/// The bone is not animated by the skin
+	EBAM_UNANIMATED,
+
+	/// Not an animation mode, just here to count the available modes
+	EBAM_COUNT
+
 }
+
+enum E_BONE_SKINNING_SPACE
+{
+	/// local skinning, standard
+	EBSS_LOCAL=0,
+
+	/// global skinning
+	EBSS_GLOBAL,
+
+	EBSS_COUNT
+}
+
+/// Names for bone animation modes
+const char* BoneAnimationModeNames[] =
+[
+	"automatic",
+	"animated",
+	"unanimated",
+	"0",
+];
+
+import dirrlicht.scene.ISceneNode;
+
+class IBoneSceneNode : ISceneNode
+{
+}
+
+extern (C):
+
+struct irr_IBoneSceneNode;
+

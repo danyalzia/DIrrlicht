@@ -28,14 +28,12 @@ module dirrlicht.scene.IMeshSceneNode;
 
 import dirrlicht.scene.ISceneNode;
 import dirrlicht.scene.ISceneManager;
-import dirrlicht.c.scene;
 
 class IMeshSceneNode : ISceneNode
 {
     this(ISceneManager _smgr)
     {
         smgr = _smgr;
-        super(null, smgr);
     }
 
     //irr_IMeshSceneNode* ptr;

@@ -26,8 +26,6 @@
 
 module dirrlicht.video.IVideoModeList;
 
-import dirrlicht.c.irrlicht;
-import dirrlicht.c.io;
 import dirrlicht.IrrlichtDevice;
 
 class IVideoModeList
@@ -42,3 +40,8 @@ private:
     IrrlichtDevice* device;
     irr_IVideoModeList* videolist;
 }
+
+package extern (C):
+
+struct irr_IVideoModeList;
+
