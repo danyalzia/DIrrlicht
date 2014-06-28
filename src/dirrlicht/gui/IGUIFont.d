@@ -24,15 +24,13 @@
        source distribution.
 */
 
-module dirrlicht.gui;
+module dirrlicht.gui.IGUIFont;
 
-public
+class IGUIFont
 {
-    import dirrlicht.gui.EFocusFlags;
-    import dirrlicht.gui.EGUIAlignment;
-    import dirrlicht.gui.EGUIElementTypes;
-    import dirrlicht.gui.EMessageBoxFlags;
-    import dirrlicht.gui.ICursorControl;
-    import dirrlicht.gui.IGUIEnvironment;
-    import dirrlicht.gui.IGUIFont;
+    
 }
+
+package extern (C):
+
+struct irr_IGUIFont;

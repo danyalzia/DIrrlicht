@@ -98,6 +98,9 @@
 				<Option compiler="ldc" />
 				<Option use_console_runner="0" />
 				<Compiler>
+					<Add option="-march=x86" />
+					<Add option="-O0" />
+					<Add option="-d-debug" />
 					<Add option="-unittest" />
 					<Add directory="../" />
 				</Compiler>
@@ -124,7 +127,6 @@
 					<Add option="-inline" />
 					<Add option="-O" />
 					<Add option="-w" />
-					<Add option="-unittest" />
 					<Add option="-unittest" />
 					<Add directory="../" />
 				</Compiler>
@@ -191,6 +193,7 @@
 		<Unit filename="gui/EMessageBoxFlags.d" />
 		<Unit filename="gui/ICursorControl.d" />
 		<Unit filename="gui/IGUIEnvironment.d" />
+		<Unit filename="gui/IGUIFont.d" />
 		<Unit filename="gui/IGUIImage.d" />
 		<Unit filename="gui/IGUIStaticText.d" />
 		<Unit filename="gui/package.d" />

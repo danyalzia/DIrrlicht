@@ -93,6 +93,18 @@ unittest
     box += box2;
     assert(box.MinEdge.x == 6 || box.MinEdge.y == 6 || box.MinEdge.z == 6
     || box.MaxEdge.x == 10 || box.MaxEdge.y == 10 || box.MaxEdge.z == 10);
+
+    box -= box2;
+    assert(box.MinEdge.x == 2 || box.MinEdge.y == 2 || box.MinEdge.z == 2
+    || box.MaxEdge.x == 4 || box.MaxEdge.y == 4 || box.MaxEdge.z == 4);
+
+    box *= box2;
+    assert(box.MinEdge.x == 8 || box.MinEdge.y == 8 || box.MinEdge.z == 8
+    || box.MaxEdge.x == 24 || box.MaxEdge.y == 24 || box.MaxEdge.z == 24);
+
+    box /= box2;
+    assert(box.MinEdge.x == 2 || box.MinEdge.y == 2 || box.MinEdge.z == 2
+    || box.MaxEdge.x == 4 || box.MaxEdge.y == 4 || box.MaxEdge.z == 4);
 }
 
 package extern(C):

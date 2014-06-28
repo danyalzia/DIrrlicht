@@ -26,15 +26,75 @@
 
 module dirrlicht.core.rect;
 
+import dirrlicht.core.vector2d;
+
 struct rect(T)
 {
-    T x;
-    T y;
-    T x1;
-    T y1;
+    @disable this();
+
+    this(T x, T y, T x2, T y2)
+    {
+        UpperLeftCorner = vector2d!(T)(x, y);
+        LowerRightCorner = vector2d!(T)(x2, y2);
+    }
+
+    this(vector2d!(T) upper, vector2d!(T) lower)
+    {
+        UpperLeftCorner = upper;
+        LowerRightCorner = lower;
+    }
+
+    void opOpAssign(string op)(rect rhs)
+    {
+        mixin("UpperLeftCorner" ~ op ~ "=rhs.UpperLeftCorner;");
+        mixin("LowerRightCorner" ~ op ~ "=rhs.LowerRightCorner;");
+    }
+
+    rect!(T) opBinary(string op)(rect!(T) rhs)
+    {
+        static if (op == "+")
+        {
+            return new rect(UpperLeftCorner + rhs.UpperLeftCorner, LowerRightCorner + rhs.LowerRightCorner);
+        }
+
+        else static if (op == "-")
+        {
+            return new rect(UpperLeftCorner - rhs.UpperLeftCorner, LowerRightCorner - rhs.LowerRightCorner);
+        }
+
+        else static if (op == "*")
+        {
+            return new rect(UpperLeftCorner * rhs.UpperLeftCorner, LowerRightCorner * rhs.LowerRightCorner);
+        }
+
+        else static if (op == "/")
+        {
+            return new rect(UpperLeftCorner / rhs.UpperLeftCorner, LowerRightCorner / rhs.LowerRightCorner);
+        }
+    }
+
+    @property T x() { return UpperLeftCorner.x; };
+    @property T y() { return UpperLeftCorner.y; };
+    @property T x1() { return LowerRightCorner.x; };
+    @property T y1() { return LowerRightCorner.y; };
+
+    @property T x(T _x) { return UpperLeftCorner.x = _x; };
+    @property T y(T _y) { return UpperLeftCorner.y = _y; };
+    @property T x1(T _x) { return LowerRightCorner.x = _x; };
+    @property T y1(T _y) { return LowerRightCorner.y = _y; };
+
+    vector2d!(T) UpperLeftCorner;
+    vector2d!(T) LowerRightCorner;
 }
 
 alias recti = rect!(int);
+alias rectf = rect!(float);
+
+///
+unittest
+{
+    auto rec = recti(4, 4, 4, 4);
+}
 
 package extern (C):
 
@@ -44,4 +104,12 @@ struct irr_recti
 	int y;
 	int x1;
 	int y1;
+}
+
+struct irr_rectf
+{
+	float x;
+	float y;
+	float x1;
+	float y1;
 }

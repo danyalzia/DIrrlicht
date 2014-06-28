@@ -86,18 +86,18 @@ enum ECOLOR_FORMAT
 
 struct SColor
 {
-    int a;
-    int b;
-    int g;
-    int r;
+    uint a;
+    uint b;
+    uint g;
+    uint r;
 }
 
 package extern (C):
 
 struct irr_SColor
 {
-    int a;
-    int b;
-    int g;
-    int r;
+    uint a;
+    uint b;
+    uint g;
+    uint r;
 };;
