@@ -35,4 +35,6 @@ public
     import dirrlicht.gui.ICursorControl;
     import dirrlicht.gui.IGUIEnvironment;
     import dirrlicht.gui.IGUIFont;
+    import dirrlicht.gui.IGUIImage;
+    import dirrlicht.gui.IGUIStaticText;
 }

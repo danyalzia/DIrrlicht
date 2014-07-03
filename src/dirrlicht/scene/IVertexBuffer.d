@@ -37,31 +37,31 @@ import dirrlicht.video.S3DVertex;
 
 interface IVertexBuffer
 {
-	void* getData();
-	E_VERTEX_TYPE getType();
-	void setType(E_VERTEX_TYPE vertexType);
-	uint stride();
-	uint size();
-	void push_back(S3DVertex element);
+    void* getData();
+    E_VERTEX_TYPE getType();
+    void setType(E_VERTEX_TYPE vertexType);
+    uint stride();
+    uint size();
+    void push_back(S3DVertex element);
 
-	//S3DVertex operator [](const uint index);
+    //S3DVertex operator [](const uint index);
 
-	S3DVertex getLast();
-	void set_used(uint usedNow);
-	void reallocate(uint new_size);
-	uint allocated_size();
-	S3DVertex* pointer();
+    S3DVertex getLast();
+    void set_used(uint usedNow);
+    void reallocate(uint new_size);
+    uint allocated_size();
+    S3DVertex* pointer();
 
-	/// get the current hardware mapping hint
-	E_HARDWARE_MAPPING getHardwareMappingHint();
+    /// get the current hardware mapping hint
+    E_HARDWARE_MAPPING getHardwareMappingHint();
 
-	/// set the hardware mapping hint, for driver
-	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint);
+    /// set the hardware mapping hint, for driver
+    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint);
 
-	/// flags the meshbuffer as changed, reloads hardware buffers
-	void setDirty();
+    /// flags the meshbuffer as changed, reloads hardware buffers
+    void setDirty();
 
-	/// Get the currently used ID for identification of changes.
-	/** This shouldn't be used for anything outside the VideoDriver. */
-	uint getChangedID();
+    /// Get the currently used ID for identification of changes.
+    /** This shouldn't be used for anything outside the VideoDriver. */
+    uint getChangedID();
 }

@@ -88,7 +88,8 @@ pure nothrow float[4] SQRT(float[4] vec)
     }
 }
 
-pure nothrow float4 SQRT(float4 vec)
+static if (LDC)
+    pure nothrow float4 SQRT(float4 vec)
 {
     static if(DigitalMars || LDC)
     {
@@ -125,18 +126,21 @@ unittest
     assert(arr == [2,2,2,2]);
     debug writeln("SQRT([4,4,4,4]): ", arr);
 
-    float4 vec = [4,4,4,4];
-    vec = SQRT(vec);
-    assert(vec.array == [2,2,2,2]);
-    debug writeln("SQRT(float4[4,4,4,4]): ", vec.array);
+    static if (LDC)
+    {
+        float4 vec = [4,4,4,4];
+        vec = SQRT(vec);
+        assert(vec.array == [2,2,2,2]);
+        debug writeln("SQRT(float4[4,4,4,4]): ", vec.array);
+    }
 }
 
 pure nothrow int FLOOR(float n)
 {
     static if(DigitalMars || LDC)
     {
-		const float h = 0.5f;
-		int t;
+        const float h = 0.5f;
+        int t;
 
         asm
         {
@@ -150,7 +154,7 @@ pure nothrow int FLOOR(float n)
 
     else
     {
-
+        return cast(int)n;
     }
 }
 
@@ -160,20 +164,4 @@ unittest
     int a = FLOOR(2.5);
     assert(a == 2);
     debug writeln("(a = FLOOR(2.5)= ", a);
-}
-
-pure nothrow void MOV(T)(T n)
-{
-    static if(DigitalMars || LDC)
-    {
-        asm
-        {
-            mov EAX, n;
-        }
-    }
-
-    else
-    {
-
-    }
 }

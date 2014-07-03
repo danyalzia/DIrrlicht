@@ -34,4 +34,4 @@ class IShadowVolumeSceneNode : ISceneNode
 
 extern (C):
 
-struct irr_IShadowVolumeSceneNode;
+    struct irr_IShadowVolumeSceneNode;

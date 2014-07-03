@@ -42,77 +42,77 @@ class CVertexBuffer : IVertexBuffer
         return Vertices.pointer();
     }
 
-	E_VERTEX_TYPE getType()
+    E_VERTEX_TYPE getType()
     {
         return Vertices.getType();
     }
 
-	void setType(E_VERTEX_TYPE vertexType) { }
+    void setType(E_VERTEX_TYPE vertexType) { }
 
-	uint stride()
+    uint stride()
     {
         return Vertices.stride();
     }
 
-	uint size()
+    uint size()
     {
         return Vertices.size();
     }
 
-	void push_back(S3DVertex element)
+    void push_back(S3DVertex element)
     {
         Vertices.push_back(element);
     }
 
-	//S3DVertex operator [](const uint index);
+    //S3DVertex operator [](const uint index);
 
-	S3DVertex getLast()
-	{
+    S3DVertex getLast()
+    {
         return Vertices.getLast();
     }
 
-	void set_used(uint usedNow)
+    void set_used(uint usedNow)
     {
         Vertices.set_used(usedNow);
     }
 
-	void reallocate(uint new_size)
+    void reallocate(uint new_size)
     {
         Vertices.reallocate(new_size);
     }
 
-	uint allocated_size()
+    uint allocated_size()
     {
         return Vertices.allocated_size();
     }
 
-	S3DVertex* pointer()
-	{
+    S3DVertex* pointer()
+    {
         return Vertices.pointer();
     }
 
-	/// get the current hardware mapping hint
-	E_HARDWARE_MAPPING getHardwareMappingHint()
+    /// get the current hardware mapping hint
+    E_HARDWARE_MAPPING getHardwareMappingHint()
     {
         return MappingHint;
     }
 
-	/// set the hardware mapping hint, for driver
-	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
+    /// set the hardware mapping hint, for driver
+    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
     {
         MappingHint=NewMappingHint;
     }
 
-	/// flags the meshbuffer as changed, reloads hardware buffers
-	void setDirty()
-	{
+    /// flags the meshbuffer as changed, reloads hardware buffers
+    void setDirty()
+    {
         ++ChangedID;
     }
 
-	/// Get the currently used ID for identification of changes.
-	/** This shouldn't be used for anything outside the VideoDriver. */
-	uint getChangedID()
-	{
+    /// Get the currently used ID for identification of changes.
+    /** This shouldn't be used for anything outside the VideoDriver. */
+    uint getChangedID()
+    {
         return ChangedID;
     }
 

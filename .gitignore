@@ -51,6 +51,11 @@ Release
 
 #D
 *.swp
+*.build.lnkarg
+*.build.rsp
 
 #Ddoc
 *.html
+
+# Dub
+.dub

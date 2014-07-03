@@ -37,4 +37,4 @@ private:
 
 package extern (C):
 
-struct irr_ISceneNodeAnimator;
+    struct irr_ISceneNodeAnimator;

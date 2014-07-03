@@ -26,6 +26,7 @@
 
 module dirrlicht.scene.IMesh;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.IMeshBuffer;
 import dirrlicht.video.SMaterial;
@@ -39,12 +40,13 @@ import std.conv;
 
 class IMesh
 {
+    /// this constructor takes the ISceneManager object and file
     this(ISceneManager _smgr, string file)
     {
         smgr = _smgr;
         char[] buffer = to!(char[])(file.dup);
         buffer ~= '\0';
-        ptr = cast(irr_IMesh*)irr_ISceneManager_getMesh(smgr.smgr, cast(const char*)buffer);
+        ptr = cast(irr_IMesh*)irr_ISceneManager_getMesh(smgr.ptr, cast(const char*)buffer);
     }
 
     uint getMeshBufferCount()
@@ -102,16 +104,26 @@ private:
     ISceneManager smgr;
 }
 
+/// IMesh example
 unittest
 {
+    mixin(TestPrerequisite);
 
+
+    /// smgr.getMesh() gives IAnimatedMesh instead so will test IMesh only
+    auto mesh = new IMesh(smgr, "../../media/sydney.md2");
+    assert(mesh !is null);
+
+    auto count = mesh.getMeshBufferCount();
+    debug writeln("BufferCount: ", count);
+
+    auto meshbuffer = mesh.getMeshBuffer(5);
+    assert(meshbuffer !is null);
 }
 
 package extern(C):
 
-struct irr_IMesh;
-struct irr_IMeshBuffer;
-struct irr_SMaterial;
+    struct irr_IMesh;
 
 uint irr_IMesh_getMeshBufferCount(irr_IMesh* mesh);
 irr_IMeshBuffer* irr_IMesh_getMeshBuffer(irr_IMesh* mesh, uint nr);

@@ -32,17 +32,18 @@ struct dimension2d(T)
 }
 
 alias dimension2du = dimension2d!(uint);
+alias dimension2df = dimension2d!(float);
 
 package extern(C):
 
 struct irr_dimension2du
 {
-	uint Width;
-	uint Height;
+    uint Width;
+    uint Height;
 }
 
 struct irr_dimension2df
 {
-	uint Width;
-	uint Height;
+    float Width;
+    float Height;
 }

@@ -35,4 +35,6 @@ public
     import dirrlicht.IrrlichtDevice;
     import dirrlicht.ITimer;
     import dirrlicht.KeyCodes;
+    import dirrlicht.SIrrCreationParameters;
+    import dirrlicht.SKeyMap;
 }

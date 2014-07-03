@@ -42,84 +42,84 @@ class CIndexBuffer : IIndexBuffer
         return Indices.pointer();
     }
 
-	E_INDEX_TYPE getType()
-	{
+    E_INDEX_TYPE getType()
+    {
         return Indices.getType();
-	}
+    }
 
-	void setType(E_INDEX_TYPE IndexType) {}
+    void setType(E_INDEX_TYPE IndexType) {}
 
-	uint stride()
-	{
+    uint stride()
+    {
         return Indices.stride();
-	}
+    }
 
-	uint size()
-	{
+    uint size()
+    {
         return Indices.size();
-	}
+    }
 
-	void push_back (uint element)
-	{
+    void push_back (uint element)
+    {
         Indices.push_back(element);
-	}
+    }
 
-	//uint operator [](uint index);
+    //uint operator [](uint index);
 
-	uint getLast()
-	{
+    uint getLast()
+    {
         return Indices.getLast();
-	}
+    }
 
-	void setValue(uint index, uint value)
-	{
+    void setValue(uint index, uint value)
+    {
         Indices.setValue(index, value);
-	}
+    }
 
-	void set_used(uint usedNow)
-	{
+    void set_used(uint usedNow)
+    {
         Indices.set_used(usedNow);
-	}
+    }
 
-	void reallocate(uint new_size)
-	{
+    void reallocate(uint new_size)
+    {
         Indices.reallocate(new_size);
-	}
+    }
 
-	uint allocated_size()
-	{
+    uint allocated_size()
+    {
         return Indices.allocated_size();
-	}
+    }
 
-	void* pointer()
-	{
+    void* pointer()
+    {
         return Indices.pointer();
-	}
+    }
 
-	/// get the current hardware mapping hint
-	E_HARDWARE_MAPPING getHardwareMappingHint()
-	{
+    /// get the current hardware mapping hint
+    E_HARDWARE_MAPPING getHardwareMappingHint()
+    {
         return MappingHint;
-	}
+    }
 
-	/// set the hardware mapping hint, for driver
-	void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
-	{
+    /// set the hardware mapping hint, for driver
+    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
+    {
         MappingHint=NewMappingHint;
-	}
+    }
 
-	/// flags the meshbuffer as changed, reloads hardware buffers
-	void setDirty()
-	{
+    /// flags the meshbuffer as changed, reloads hardware buffers
+    void setDirty()
+    {
         ++ChangedID;
-	}
+    }
 
-	/// Get the currently used ID for identification of changes.
-	/** This shouldn't be used for anything outside the VideoDriver. */
-	uint getChangedID()
-	{
+    /// Get the currently used ID for identification of changes.
+    /** This shouldn't be used for anything outside the VideoDriver. */
+    uint getChangedID()
+    {
         return ChangedID;
-	}
+    }
 
     interface IIndexList
     {

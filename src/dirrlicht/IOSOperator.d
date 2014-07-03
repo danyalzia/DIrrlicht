@@ -43,4 +43,4 @@ private:
 
 package extern (C):
 
-struct irr_IOSOperator;
+    struct irr_IOSOperator;

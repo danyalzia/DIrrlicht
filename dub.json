@@ -1,0 +1,16 @@
+{
+	"name": "dirrlicht",
+	"description": "D Bindings for Irrlicht Engine",
+	"authors": ["Danyal Zia"],
+	"homepage": "http://github.com/danyalzia/DIrrlicht",
+	"license": "zlib",
+	
+	"targetName": "DIrrlicht",
+	"targetType": "library",
+	"targetPath": "lib/Linux",
+
+	"sourcePaths": ["src"],
+	"importPaths": ["src"],
+	"lflags": ["-LCIrrlicht/lib/Linux", "-L../irrlicht/lib/Linux"],
+	"libs": [ "CIrrlicht" , "Irrlicht" ,  "stdc++", "GL", "Xxf86vm", "X11"],
+}

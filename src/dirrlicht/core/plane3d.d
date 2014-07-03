@@ -38,3 +38,8 @@ private:
 
 alias plane3df = plane3d!(float);
 alias plane3di = plane3d!(int);
+
+extern (C):
+
+    struct irr_plane3d;
+struct irr_plane3df;

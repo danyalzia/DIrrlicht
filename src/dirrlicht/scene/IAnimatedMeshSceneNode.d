@@ -26,6 +26,7 @@
 
 module dirrlicht.scene.IAnimatedMeshSceneNode;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.IrrlichtDevice;
 import dirrlicht.core.vector3d;
 import dirrlicht.scene.IBoneSceneNode;
@@ -43,22 +44,29 @@ import dirrlicht.video.EMaterialFlags;
 
 enum E_JOINT_UPDATE_ON_RENDER
 {
-	/// do nothing
-	EJUOR_NONE = 0,
+    /// do nothing
+    EJUOR_NONE = 0,
 
-	/// get joints positions from the mesh (for attached nodes, etc)
-	EJUOR_READ,
+    /// get joints positions from the mesh (for attached nodes, etc)
+    EJUOR_READ,
 
-	/// control joint positions in the mesh (eg. ragdolls, or set the animation from animateJoints() )
-	EJUOR_CONTROL
-};
+    /// control joint positions in the mesh (eg. ragdolls, or set the animation from animateJoints() )
+    EJUOR_CONTROL
+}
 
 class IAnimatedMeshSceneNode : ISceneNode
 {
-    this(ISceneManager _smgr, IAnimatedMesh _mesh)
+    this(ISceneManager _smgr, IAnimatedMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
     {
         smgr = _smgr;
-        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.smgr, _mesh.ptr);
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        if (parent is null)
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+        else
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
         ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
     }
 
@@ -67,26 +75,39 @@ class IAnimatedMeshSceneNode : ISceneNode
         irr_IAnimatedMeshSceneNode_setMD2Animation(ptr, value);
     }
 
-    ISceneManager smgr;
+    void setFrameLoop(int begin, int end)
+    {
+        irr_IAnimatedMeshSceneNode_setFrameLoop(ptr, begin, end);
+    }
+
+    void setAnimationSpeed(float fps)
+    {
+        irr_IAnimatedMeshSceneNode_setAnimationSpeed(ptr, fps);
+    }
+
     irr_IAnimatedMeshSceneNode* ptr;
+private:
+    ISceneManager smgr;
+}
+
+unittest
+{
+mixin(TestPrerequisite);
+
+    /// IAnimatedMesh test starts here
+    auto mesh = smgr.getMesh("../../media/sydney.md2");
+    assert(mesh !is null);
+    assert(mesh.ptr != null);
+
+    auto node = smgr.addAnimatedMeshSceneNode(mesh);
+    assert(node !is null);
+    assert(node.ptr != null);
 }
 
 package extern (C):
 
-struct irr_IAnimationEndCallBack;
 struct irr_IAnimatedMeshSceneNode;
-struct irr_list;
-
-void irr_IAnimatedMeshSceneNode_addAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
-irr_list* irr_IAnimatedMeshSceneNode_getAnimators(irr_IAnimatedMeshSceneNode* node);
-void irr_IAnimatedMeshSceneNode_removeAnimator(irr_IAnimatedMeshSceneNode* node, irr_ISceneNodeAnimator* animator);
-irr_IAnimatedMesh* irr_ISceneManager_getMesh(irr_ISceneManager* smgr, const(char)* file);
-irr_IAnimatedMeshSceneNode* irr_ISceneManager_addAnimatedMeshSceneNode(irr_ISceneManager* smgr, irr_IAnimatedMesh* mesh);
-void irr_IAnimatedMeshSceneNode_setPosition(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df newpos);
-void irr_IAnimatedMeshSceneNode_setMaterialFlag(irr_IAnimatedMeshSceneNode* node, E_MATERIAL_FLAG flag, bool newvalue);
-void irr_IAnimatedMeshSceneNode_setMaterialTexture(irr_IAnimatedMeshSceneNode* node, int c, irr_ITexture* texture);
-void irr_IAnimatedMeshSceneNode_setScale(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df scale);
-void irr_IAnimatedMeshSceneNode_setRotation(irr_IAnimatedMeshSceneNode* node, const ref irr_vector3df rotation);
+struct irr_IAnimationEndCallBack;
 
 void irr_IAnimatedMeshSceneNode_setCurrentFrame(irr_IAnimatedMeshSceneNode* node, float frame);
 void irr_IAnimatedMeshSceneNode_setFrameLoop(irr_IAnimatedMeshSceneNode* node, int begin, int end);

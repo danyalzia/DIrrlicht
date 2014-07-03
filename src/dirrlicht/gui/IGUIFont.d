@@ -26,11 +26,21 @@
 
 module dirrlicht.gui.IGUIFont;
 
+import dirrlicht.gui.IGUIStaticText;
+
 class IGUIFont
 {
-    
+    this(IGUIStaticText t)
+    {
+        text = t;
+
+    }
+
+    irr_IGUIFont* ptr;
+private:
+    IGUIStaticText text;
 }
 
 package extern (C):
 
-struct irr_IGUIFont;
+    struct irr_IGUIFont;

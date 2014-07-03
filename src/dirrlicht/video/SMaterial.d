@@ -47,5 +47,5 @@ private:
 
 package extern(C):
 
-struct irr_SMaterial;
+    struct irr_SMaterial;
 

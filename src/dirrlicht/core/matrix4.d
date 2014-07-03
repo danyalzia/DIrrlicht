@@ -25,3 +25,32 @@
 */
 
 module dirrlicht.core.matrix4;
+
+struct matrix4
+{
+    float opIndex(uint i)
+    {
+        return M[i];
+    }
+    float[16] M;
+}
+
+unittest
+{
+    import std.stdio;
+
+    matrix4 mat;
+    foreach(i; 0..16)
+    {
+        mat.M[i] = 20;
+    }
+
+    writeln(mat);
+}
+
+extern (C):
+
+    struct irr_matrix4
+{
+    float M[16];
+}

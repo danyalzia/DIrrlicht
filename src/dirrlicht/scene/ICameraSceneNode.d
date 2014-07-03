@@ -38,20 +38,20 @@ import dirrlicht.core.vector3d;
 
 class ICameraSceneNode : ISceneNode
 {
-    this(ISceneManager _smgr, IAnimatedMeshSceneNode* node, vector3df pos, vector3df lookAt)
+    this(ISceneManager _smgr, IAnimatedMeshSceneNode* node, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
     {
         smgr = _smgr;
         if (node != null)
-            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.smgr, cast(irr_IAnimatedMeshSceneNode*)node.ptr, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.ptr, cast(irr_ISceneNode*)node.ptr, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z), id, makeActive);
         else
-            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.smgr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z));
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.ptr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z), id, makeActive);
     }
 
     /// CameraNodeFPS
     this(ISceneManager _smgr)
     {
         smgr = _smgr;
-        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNodeFPS(smgr.smgr);
+        super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNodeFPS(smgr.ptr);
     }
 
     ISceneManager smgr;

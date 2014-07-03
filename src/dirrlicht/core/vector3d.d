@@ -25,21 +25,26 @@
 */
 
 /++++
- + SIMD recognized 3D vector class. The fourth component is unused and set to 0.
- + Authors: Danyal Zia
- +/
++ SIMD recognized 3D vector class. The fourth component is unused and set to 0.
++ Authors:
+Danyal Zia
++/
 
 module dirrlicht.core.vector3d;
 
 import dirrlicht.core.SIMDMath;
+import std.traits;
 
 struct vector3d(T)
+{
+static if(__traits(isArithmetic, T))
 {
     @disable this();
     this(T x, T y, T z)
     {
         vec = [x, y, z, 0];
     }
+
     this(T n)
     {
         vec = [n, n, n, n];
@@ -355,6 +360,7 @@ private:
     static if (LDC)
         void* padding[12];
 }
+}
 
 alias vector3df = vector3d!(float);
 alias vector3di = vector3d!(int);
@@ -393,16 +399,16 @@ unittest
 
 package extern (C):
 
-struct irr_vector3di
+    struct irr_vector3di
 {
-	int x;
-	int y;
-	int z;
+    int x;
+    int y;
+    int z;
 }
 
 struct irr_vector3df
 {
-	float x;
-	float y;
-	float z;
+    float x;
+    float y;
+    float z;
 }

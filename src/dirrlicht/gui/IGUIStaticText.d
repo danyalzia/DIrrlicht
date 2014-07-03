@@ -26,6 +26,7 @@
 
 module dirrlicht.gui.IGUIStaticText;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.gui.IGUIEnvironment;
 import dirrlicht.gui.IGUIFont;
 import dirrlicht.gui.EGUIAlignment;
@@ -123,8 +124,14 @@ class IGUIStaticText
         return irr_IGUIStaticText_isWordWrapEnabled(ptr);
     }
 
-    @property Height() { return irr_IGUIStaticText_getTextHeight(ptr); }
-    @property Width() { return irr_IGUIStaticText_getTextWidth(ptr); }
+    @property Height()
+    {
+        return irr_IGUIStaticText_getTextHeight(ptr);
+    }
+    @property Width()
+    {
+        return irr_IGUIStaticText_getTextWidth(ptr);
+    }
 
     bool isTextRestrainedInside()
     {
@@ -141,27 +148,16 @@ class IGUIStaticText
         return irr_IGUIStaticText_isRightToLeft(ptr);
     }
 
-	irr_IGUIStaticText* ptr;
+    irr_IGUIStaticText* ptr;
 private:
-	IGUIEnvironment env;
+    IGUIEnvironment env;
 }
 
 unittest
 {
-    import dirrlicht;
-    import dirrlicht.core;
-    import dirrlicht.video;
-    import dirrlicht.gui;
+    mixin(TestPrerequisite);
 
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
-    assert(device !is null);
-
-    auto driver = device.getVideoDriver();
-    assert(driver !is null);
-    auto env = device.getGUIEnvironment();
-    assert(env !is null);
-
-    auto text = env.addStaticText("Hello World!", recti(20,20,200,200), true);
+    auto text = gui.addStaticText("Hello World!", recti(20,20,200,200), true);
     assert(text !is null);
 
     auto col = SColor(255, 0, 0, 0);

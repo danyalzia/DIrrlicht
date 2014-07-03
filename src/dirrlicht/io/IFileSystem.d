@@ -50,5 +50,5 @@ private:
 
 package extern (C):
 
-struct irr_IFileSystem;
+    struct irr_IFileSystem;
 void irr_IFileSystem_addFileArchive(irr_IFileSystem* filesystem, const char* text);

@@ -47,5 +47,5 @@ private:
 
 package extern (C):
 
-struct irr_ICursorControl;
+    struct irr_ICursorControl;
 void irr_ICursorControl_setVisible(irr_ICursorControl* cursor, bool value);

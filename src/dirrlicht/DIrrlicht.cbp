@@ -173,6 +173,8 @@
 		<Unit filename="ITimer.d" />
 		<Unit filename="IrrlichtDevice.d" />
 		<Unit filename="KeyCodes.d" />
+		<Unit filename="SIrrCreationParameters.d" />
+		<Unit filename="SKeyMap.d" />
 		<Unit filename="core/SIMDMath.d" />
 		<Unit filename="core/aabbox3d.d" />
 		<Unit filename="core/dimension2d.d" />
@@ -223,6 +225,7 @@
 		<Unit filename="scene/IIndexBuffer.d" />
 		<Unit filename="scene/IMesh.d" />
 		<Unit filename="scene/IMeshBuffer.d" />
+		<Unit filename="scene/IMeshManipulator.d" />
 		<Unit filename="scene/IMeshSceneNode.d" />
 		<Unit filename="scene/ISceneManager.d" />
 		<Unit filename="scene/ISceneNode.d" />
@@ -230,6 +233,13 @@
 		<Unit filename="scene/IShadowVolumeSceneNode.d" />
 		<Unit filename="scene/ITriangleSelector.d" />
 		<Unit filename="scene/IVertexBuffer.d" />
+		<Unit filename="scene/SAnimatedMesh.d" />
+		<Unit filename="scene/SMesh.d" />
+		<Unit filename="scene/SParticle.d" />
+		<Unit filename="scene/SSkinMeshBuffer.d" />
+		<Unit filename="scene/SVertexManipulator.d" />
+		<Unit filename="scene/SViewFrustum.d" />
+		<Unit filename="scene/SceneParameters.d" />
 		<Unit filename="scene/package.d" />
 		<Unit filename="video/EDeviceTypes.d" />
 		<Unit filename="video/EDriverFeatures.d" />
@@ -237,12 +247,20 @@
 		<Unit filename="video/EMaterialFlags.d" />
 		<Unit filename="video/EMaterialTypes.d" />
 		<Unit filename="video/EShaderTypes.d" />
+		<Unit filename="video/IGPUProgrammingServices.d" />
+		<Unit filename="video/IImage.d" />
+		<Unit filename="video/IImageLoader.d" />
+		<Unit filename="video/IImageWriter.d" />
+		<Unit filename="video/IMaterialRenderer.d" />
 		<Unit filename="video/ITexture.d" />
 		<Unit filename="video/IVideoDriver.d" />
 		<Unit filename="video/IVideoModeList.d" />
 		<Unit filename="video/S3DVertex.d" />
 		<Unit filename="video/SColor.d" />
+		<Unit filename="video/SExposedVideoData.d" />
+		<Unit filename="video/SLight.d" />
 		<Unit filename="video/SMaterial.d" />
+		<Unit filename="video/SMaterialLayer.d" />
 		<Unit filename="video/SVertexIndex.d" />
 		<Unit filename="video/package.d" />
 		<Extensions>

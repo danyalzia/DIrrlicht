@@ -30,6 +30,9 @@ import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.IMesh;
 import dirrlicht.scene.IAnimatedMesh;
 
+import std.string;
+import std.conv;
+
 /// Types of standard md2 animations
 enum EMD2_ANIMATION_TYPE
 {
@@ -67,7 +70,39 @@ class IAnimatedMeshMD2 : IAnimatedMesh
         super(smgr, file);
     }
 
-    //irr_IAnimatedMeshMD2* ptr;
+    void getFrameLoop(EMD2_ANIMATION_TYPE l, ref int outBegin, ref int outEnd, ref int outFPS)
+    {
+        irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
+    }
+
+    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS)
+    {
+        return irr_IAnimatedMeshMD2_getFrameLoopByName(ptr, toStringz(name), outBegin, outEnd, outFPS);
+    }
+
+    int getAnimationCount()
+    {
+        return irr_IAnimatedMeshMD2_getAnimationCount(ptr);
+    }
+
+    string getAnimationName(int nr)
+    {
+        auto str = irr_IAnimatedMeshMD2_getAnimationName(ptr, nr);
+        string name = to!string(str);
+        return name;
+    }
+
+    irr_IAnimatedMeshMD2* ptr;
 private:
     ISceneManager smgr;
 }
+
+extern (C):
+
+struct irr_IAnimatedMeshMD2;
+
+void irr_IAnimatedMeshMD2_getFrameLoop(irr_IAnimatedMeshMD2* mesh, EMD2_ANIMATION_TYPE l, ref int outBegin, ref int outEnd, ref int outFPS);
+bool irr_IAnimatedMeshMD2_getFrameLoopByName(irr_IAnimatedMeshMD2* mesh, const char* name, ref int outBegin, ref int outEnd, ref int outFPS);
+int irr_IAnimatedMeshMD2_getAnimationCount(irr_IAnimatedMeshMD2* mesh);
+const char* irr_IAnimatedMeshMD2_getAnimationName(irr_IAnimatedMeshMD2* mesh, int nr);
+

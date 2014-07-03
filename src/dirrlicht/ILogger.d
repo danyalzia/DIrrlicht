@@ -43,4 +43,4 @@ private:
 
 package extern (C):
 
-struct irr_ILogger;
+    struct irr_ILogger;

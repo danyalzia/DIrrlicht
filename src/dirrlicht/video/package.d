@@ -34,11 +34,19 @@ public
     import dirrlicht.video.EMaterialFlags;
     import dirrlicht.video.EMaterialTypes;
     import dirrlicht.video.EShaderTypes;
+    import dirrlicht.video.IGPUProgrammingServices;
+    import dirrlicht.video.IImage;
+    import dirrlicht.video.IImageLoader;
+    import dirrlicht.video.IImageWriter;
+    import dirrlicht.video.IMaterialRenderer;
     import dirrlicht.video.ITexture;
     import dirrlicht.video.IVideoDriver;
     import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.SColor;
     import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SVertexIndex;
+    import dirrlicht.video.SColor;
+    import dirrlicht.video.SExposedVideoData;
+    import dirrlicht.video.SLight;
     import dirrlicht.video.SMaterial;
+    import dirrlicht.video.SMaterialLayer;
+    import dirrlicht.video.SVertexIndex;
 }

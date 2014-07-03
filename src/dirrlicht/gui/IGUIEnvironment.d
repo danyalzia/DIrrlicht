@@ -71,7 +71,7 @@ private:
 
 package extern (C):
 
-struct irr_IGUIEnvironment;
+    struct irr_IGUIEnvironment;
 
 irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const(dchar)* text, const ref irr_recti rectangle, bool border=false);
 irr_IGUIImage* irr_IGUIEnvironment_addImage(irr_IGUIEnvironment* env, irr_ITexture* textures, irr_vector2di pos);

@@ -106,9 +106,9 @@ class IGUIImage
         return rectf(temp.x, temp.y, temp.x1, temp.y1);
     }
 
-	irr_IGUIImage* ptr;
+    irr_IGUIImage* ptr;
 private:
-	IGUIEnvironment env;
+    IGUIEnvironment env;
 }
 
 unittest
@@ -118,7 +118,7 @@ unittest
     import dirrlicht.video;
     import dirrlicht.gui;
 
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
+    auto device = createDevice(E_DRIVER_TYPE.EDT_NULL, dimension2du(800,600));
     assert(device !is null);
 
     auto driver = device.getVideoDriver();
@@ -131,7 +131,7 @@ unittest
 
 extern (C):
 
-struct irr_IGUIImage;
+    struct irr_IGUIImage;
 
 void irr_IGUIImage_setImage(irr_IGUIImage* img, irr_ITexture* tex);
 irr_ITexture* irr_IGUIImage_getImage(irr_IGUIImage* img);

@@ -41,4 +41,4 @@ private:
 
 extern (C):
 
-struct irr_ITriangleSelector;
+    struct irr_ITriangleSelector;

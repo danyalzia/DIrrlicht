@@ -73,15 +73,39 @@ struct rect(T)
         }
     }
 
-    @property T x() { return UpperLeftCorner.x; };
-    @property T y() { return UpperLeftCorner.y; };
-    @property T x1() { return LowerRightCorner.x; };
-    @property T y1() { return LowerRightCorner.y; };
+    @property T x()
+    {
+        return UpperLeftCorner.x;
+    };
+    @property T y()
+    {
+        return UpperLeftCorner.y;
+    };
+    @property T x1()
+    {
+        return LowerRightCorner.x;
+    };
+    @property T y1()
+    {
+        return LowerRightCorner.y;
+    };
 
-    @property T x(T _x) { return UpperLeftCorner.x = _x; };
-    @property T y(T _y) { return UpperLeftCorner.y = _y; };
-    @property T x1(T _x) { return LowerRightCorner.x = _x; };
-    @property T y1(T _y) { return LowerRightCorner.y = _y; };
+    @property T x(T _x)
+    {
+        return UpperLeftCorner.x = _x;
+    };
+    @property T y(T _y)
+    {
+        return UpperLeftCorner.y = _y;
+    };
+    @property T x1(T _x)
+    {
+        return LowerRightCorner.x = _x;
+    };
+    @property T y1(T _y)
+    {
+        return LowerRightCorner.y = _y;
+    };
 
     vector2d!(T) UpperLeftCorner;
     vector2d!(T) LowerRightCorner;
@@ -94,22 +118,25 @@ alias rectf = rect!(float);
 unittest
 {
     auto rec = recti(4, 4, 4, 4);
+    assert(rec.x == 4 || rec.y == 4 || rec.x1 == 4 || rec.y1 == 4);
+    rec += recti(4,4,4,4);
+    assert(rec.x == 8 || rec.y == 8 || rec.x1 == 8 || rec.y1 == 8);
 }
 
 package extern (C):
 
-struct irr_recti
+    struct irr_recti
 {
-	int x;
-	int y;
-	int x1;
-	int y1;
+    int x;
+    int y;
+    int x1;
+    int y1;
 }
 
 struct irr_rectf
 {
-	float x;
-	float y;
-	float x1;
-	float y1;
+    float x;
+    float y;
+    float x1;
+    float y1;
 }

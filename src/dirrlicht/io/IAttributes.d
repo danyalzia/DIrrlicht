@@ -36,4 +36,4 @@ class IAttributes
 
 package extern(C):
 
-struct irr_IAttributes;
+    struct irr_IAttributes;

@@ -26,6 +26,7 @@
 
 module dirrlicht.scene.ISceneNode;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.scene.ISceneNodeAnimator;
 import dirrlicht.scene.ISceneManager;
 import dirrlicht.core.list;
@@ -195,23 +196,14 @@ class ISceneNode
         return cast(ISceneManager)irr_ISceneNode_getSceneManager(ptr);
     }
 
-    irr_ISceneNode* ptr;
+    irr_ISceneNode* ptr = null;
 private:
     ISceneManager smgr;
 }
 
 unittest
 {
-    import dirrlicht;
-    import dirrlicht.video;
-    import dirrlicht.scene;
-    import dirrlicht.core;
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
-
-    auto driver = device.getVideoDriver();
-    auto smgr = device.getSceneManager();
-
-    assert(smgr.smgr != null);
+    mixin(TestPrerequisite);
 
     auto mesh = smgr.getMesh("../../media/sydney.md2");
     assert(mesh.ptr != null);

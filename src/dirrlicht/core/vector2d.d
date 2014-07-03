@@ -85,14 +85,14 @@ unittest
 
 package extern (C):
 
-struct irr_vector2di
+    struct irr_vector2di
 {
-	int x;
-	int y;
+    int x;
+    int y;
 }
 
 struct irr_vector2df
 {
-	float x;
-	float y;
+    float x;
+    float y;
 }

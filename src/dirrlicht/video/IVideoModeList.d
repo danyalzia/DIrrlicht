@@ -43,5 +43,5 @@ private:
 
 package extern (C):
 
-struct irr_IVideoModeList;
+    struct irr_IVideoModeList;
 

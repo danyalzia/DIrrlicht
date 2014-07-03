@@ -46,16 +46,16 @@ private:
 
 package extern (C):
 
-struct irr_triangle3di
+    struct irr_triangle3di
 {
-	irr_vector3di pointA;
-	irr_vector3di pointB;
-	irr_vector3di pointC;
+    irr_vector3di pointA;
+    irr_vector3di pointB;
+    irr_vector3di pointC;
 }
 
 struct irr_triangle3df
 {
-	irr_vector3df pointA;
-	irr_vector3df pointB;
-	irr_vector3df pointC;
+    irr_vector3df pointA;
+    irr_vector3df pointB;
+    irr_vector3df pointC;
 }

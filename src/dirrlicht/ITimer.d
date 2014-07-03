@@ -25,16 +25,16 @@
 */
 
 /+ A timer class useful for time independent algorithms
- +
- +/
- 
-module dirrlicht.ITimer;
+        +
+        +/
+
+        module dirrlicht.ITimer;
 
 import dirrlicht.IrrlichtDevice;
 
 class ITimer
 {
-    this(IrrlichtDevice dev)
+this(IrrlichtDevice dev)
     {
         device = dev;
         ptr = irr_IrrlichtDevice_getTimer(device.ptr);
@@ -47,4 +47,4 @@ private:
 
 package extern(C):
 
-struct irr_ITimer;
+    struct irr_ITimer;

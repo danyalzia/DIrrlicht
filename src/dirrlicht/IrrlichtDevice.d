@@ -26,6 +26,7 @@
 
 module dirrlicht.IrrlichtDevice;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.vector2d;
 import dirrlicht.video.EDeviceTypes;
@@ -278,10 +279,10 @@ IrrlichtDevice createDevice(E_DRIVER_TYPE type, dimension2du dim, uint bits = 16
     return device;
 }
 
+/// IrrlichtDevice example
 unittest
 {
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
-    assert(device !is null);
+    mixin(TestPrerequisite);
 }
 
 package extern (C):
