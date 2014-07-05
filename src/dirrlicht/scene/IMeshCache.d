@@ -26,6 +26,9 @@
 
 module dirrlicht.scene.IMeshCache;
 
+class IMeshCache
+{
+}
 extern (C):
 
 struct irr_IMeshCache;

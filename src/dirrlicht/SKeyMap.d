@@ -44,9 +44,9 @@ enum EKEY_ACTION
 }
 
 /// Struct storing which key belongs to which action.
-struct SKeyMap
+class SKeyMap
 {
-    @disable this();
+    //@disable this();
     this(EKEY_ACTION action, EKEY_CODE keyCode)
     {
         Action = action;
@@ -59,4 +59,8 @@ struct SKeyMap
 
 extern (C):
 
-struct irr_SKeyMap;
+struct irr_SKeyMap
+{
+    EKEY_ACTION Action;
+    EKEY_CODE KeyCode;
+}

@@ -45,3 +45,7 @@ struct line2d(T)
     vector2d!(T) start;
     vector2d!(T) end;
 }
+
+extern (C):
+
+struct irr_line2d;

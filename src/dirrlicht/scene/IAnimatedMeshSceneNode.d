@@ -64,10 +64,11 @@ class IAnimatedMeshSceneNode : ISceneNode
         auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
 
         if (parent is null)
-            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
         else
-            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
-        ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
+            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+
+        super.ptr = cast(irr_ISceneNode*)ptr;
     }
 
     void setMD2Animation(EMD2_ANIMATION_TYPE value)
@@ -92,7 +93,7 @@ private:
 
 unittest
 {
-mixin(TestPrerequisite);
+    mixin(TestPrerequisite);
 
     /// IAnimatedMesh test starts here
     auto mesh = smgr.getMesh("../../media/sydney.md2");
@@ -102,6 +103,8 @@ mixin(TestPrerequisite);
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
     assert(node !is null);
     assert(node.ptr != null);
+
+    node.setMD2Animation(EMD2_ANIMATION_TYPE.EMAT_STAND);
 }
 
 package extern (C):

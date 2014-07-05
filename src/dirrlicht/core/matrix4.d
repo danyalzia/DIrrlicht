@@ -32,6 +32,12 @@ struct matrix4
     {
         return M[i];
     }
+
+    float opIndexAssign(uint i, float n)
+    {
+        return M[i] = n;
+    }
+
     float[16] M;
 }
 
@@ -42,7 +48,7 @@ unittest
     matrix4 mat;
     foreach(i; 0..16)
     {
-        mat.M[i] = 20;
+        mat[i] = 20;
     }
 
     writeln(mat);
@@ -50,7 +56,7 @@ unittest
 
 extern (C):
 
-    struct irr_matrix4
+struct irr_matrix4
 {
     float M[16];
 }

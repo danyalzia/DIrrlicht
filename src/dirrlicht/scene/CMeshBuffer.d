@@ -24,9 +24,4 @@
        source distribution.
 */
 
-
-module dirrlicht.SEvent;
-
-extern (C):
-
-struct irr_SEvent;
+module dirrlicht.scene.CMeshBuffer;

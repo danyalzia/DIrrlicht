@@ -33,15 +33,15 @@ class IVideoModeList
     this(IrrlichtDevice* dev)
     {
         device = dev;
-        videolist = irr_IrrlichtDevice_getVideoModeList(device.ptr);
+        ptr = irr_IrrlichtDevice_getVideoModeList(device.ptr);
     }
 
+    irr_IVideoModeList* ptr;
 private:
     IrrlichtDevice* device;
-    irr_IVideoModeList* videolist;
 }
 
 package extern (C):
 
-    struct irr_IVideoModeList;
+struct irr_IVideoModeList;
 

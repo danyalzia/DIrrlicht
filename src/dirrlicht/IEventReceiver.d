@@ -26,7 +26,9 @@
 
 module dirrlicht.IEventReceiver;
 
+import dirrlicht.CompileConfig;
 import dirrlicht.IrrlichtDevice;
+import dirrlicht.KeyCodes;
 
 enum EEVENT_TYPE
 {
@@ -265,33 +267,36 @@ enum EGUI_EVENT_TYPE
 
     /// No real event. Just for convenience to get number of events
     EGET_COUNT
-};
+}
 
+/// SEvents hold information about an event. See irr::IEventReceiver for details on event handling.
 class SEvent
 {
-    this(IrrlichtDevice* dev)
-    {
-        device = dev;
-    }
-
 private:
-    IrrlichtDevice* device;
+	IrrlichtDevice device;
 }
 
 class IEventReceiver
 {
-    this(IrrlichtDevice* dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getEventReceiver(device.ptr);
-    }
-
-    irr_IEventReceiver* ptr;
+	this(IrrlichtDevice dev)
+	{
+		device = dev;
+		ptr = irr_IrrlichtDevice_getEventReceiver(dev.ptr);
+	}
+	
+	irr_IEventReceiver* ptr;
 private:
-    IrrlichtDevice* device;
+	IrrlichtDevice device;
 }
 
-package extern (C):
+unittest
+{
+	mixin(TestPrerequisite);
+}
 
-    struct irr_SEvent;
+extern (C):
+
+struct irr_SEvent;
 struct irr_IEventReceiver;
+
+bool irr_IEventReceiver_OnEvent(irr_IEventReceiver* receiver, const irr_SEvent* event);

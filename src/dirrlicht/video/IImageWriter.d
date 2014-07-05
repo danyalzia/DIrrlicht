@@ -28,4 +28,4 @@ module dirrlicht.video.IImageWriter;
 
 extern (C):
 
-    struct irr_IImageWriter;
+struct irr_IImageWriter;

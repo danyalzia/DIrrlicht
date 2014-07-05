@@ -205,12 +205,16 @@ unittest
 {
     mixin(TestPrerequisite);
 
+
     auto mesh = smgr.getMesh("../../media/sydney.md2");
     assert(mesh.ptr != null);
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
 
-    assert(node.ptr != null);
-    node.setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
+    with(node)
+    {
+        assert(ptr != null);
+        setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
+    }
 }
 
 extern (C):

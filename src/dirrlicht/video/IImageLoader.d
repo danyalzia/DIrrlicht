@@ -28,4 +28,4 @@ module dirrlicht.video.IImageLoader;
 
 extern (C):
 
-    struct irr_IImageLoader;
+struct irr_IImageLoader;

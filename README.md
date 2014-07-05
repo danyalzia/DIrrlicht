@@ -8,6 +8,11 @@ Details
 
 DIrrlicht is the D Bindings for Irrlicht Engine which makes it possible to use Irrlicht Engine from D. It copies the API of Irrlicht Engine, but in a way that makes sense in D.
 
+Status
+------
+
+It's in very early beta stage. Several functions still aren't wrapped. It is subject to API changes.
+
 Installation
 ------------
 

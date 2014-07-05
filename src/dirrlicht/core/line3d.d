@@ -50,3 +50,7 @@ struct line3d(T)
     vector3d!(T) start;
     vector3d!(T) end;
 }
+
+extern (C):
+
+struct irr_line3d;

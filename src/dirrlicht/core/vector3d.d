@@ -399,7 +399,7 @@ unittest
 
 package extern (C):
 
-    struct irr_vector3di
+struct irr_vector3di
 {
     int x;
     int y;

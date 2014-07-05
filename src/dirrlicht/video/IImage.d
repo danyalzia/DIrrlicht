@@ -28,4 +28,4 @@ module dirrlicht.video.IImage;
 
 extern (C):
 
-    struct irr_IImage;
+struct irr_IImage;

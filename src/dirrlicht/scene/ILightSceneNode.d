@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.ILightSceneNode;
 
+class ILightSceneNode
+{
+}
+
 extern (C):
 
 struct irr_ILightSceneNode;

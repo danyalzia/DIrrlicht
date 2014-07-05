@@ -15,8 +15,13 @@ version(LDC)
 else
     enum LDC = false;
 
+template checkNull(string name)
+{
+	const char[] checkNull = "assert(" ~ name ~ " !is null);" ~ "assert(" ~ name ~ ".ptr" ~ "!= null);";
+}
+
 enum TestPrerequisite =
-    `
+`
     import std.stdio;
     import dirrlicht;
     import dirrlicht.scene;
@@ -26,18 +31,22 @@ enum TestPrerequisite =
     import dirrlicht.io;
 
     auto device = createDevice(E_DRIVER_TYPE.EDT_NULL, dimension2du(800,600));
-    assert(device !is null);
-    device.setWindowCaption("NULL");
+    mixin(checkNull!("device"));
 
     auto driver = device.getVideoDriver();
-    assert(driver !is null);
+    mixin(checkNull!("driver"));
 
     auto smgr = device.getSceneManager();
-    assert(smgr !is null);
+    mixin(checkNull!("smgr"));
 
     auto gui = device.getGUIEnvironment();
-    assert(gui !is null);
+    mixin(checkNull!("gui"));
+
 
     writeln();
-    writeln("TESTING: ", __MODULE__);
+    writeln("=====================");
+    writeln("TESTING ", __MODULE__);
+    writeln(__TIME__);
+    writeln("=====================");
+    writeln();
 `;

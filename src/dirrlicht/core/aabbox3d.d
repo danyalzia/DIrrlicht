@@ -109,7 +109,7 @@ unittest
 
 package extern(C):
 
-    struct irr_aabbox3di
+struct irr_aabbox3di
 {
     irr_vector3di MinEdge;
     irr_vector3di MaxEdge;

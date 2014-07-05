@@ -28,4 +28,4 @@ module dirrlicht.video.IMaterialRenderer;
 
 extern (C):
 
-    struct irr_IMaterialRenderer;
+struct irr_IMaterialRenderer;

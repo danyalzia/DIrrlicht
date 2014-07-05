@@ -181,14 +181,14 @@ class IrrlichtDevice
         return to!string(str);
     }
 
-    void setEventReceiver(IEventReceiver* receiver)
+    void setEventReceiver(IEventReceiver receiver)
     {
         irr_IrrlichtDevice_setEventReceiver(ptr, cast(irr_IEventReceiver*)(receiver));
     }
 
     IEventReceiver getEventReceiver()
     {
-        auto receiver = new IEventReceiver(&this);
+        auto receiver = new IEventReceiver(this);
         return receiver;
     }
 
@@ -270,6 +270,11 @@ class IrrlichtDevice
         return irr_IrrlichtDevice_isDriverSupported(ptr, type);
     }
 
+    void drop()
+    {
+        irr_IrrlichtDevice_drop(ptr);
+    }
+
     irr_IrrlichtDevice* ptr;
 }
 
@@ -283,6 +288,99 @@ IrrlichtDevice createDevice(E_DRIVER_TYPE type, dimension2du dim, uint bits = 16
 unittest
 {
     mixin(TestPrerequisite);
+
+    try
+    {
+        with (device)
+        {
+            run();
+            yield();
+            sleep(1);
+            auto videodriver = getVideoDriver();
+            assert(videodriver !is null);
+            assert(videodriver.ptr != null);
+
+            auto filesystem = getFileSystem();
+            assert(filesystem !is null);
+            assert(filesystem.ptr != null);
+
+            auto guienv = getGUIEnvironment();
+            assert(guienv !is null);
+            assert(guienv.ptr != null);
+
+            auto scenemgr = getSceneManager();
+            assert(scenemgr !is null);
+            assert(scenemgr.ptr != null);
+
+            auto cursorcontrol = getCursorControl();
+            assert(cursorcontrol !is null);
+            assert(cursorcontrol.ptr != null);
+
+            auto logger = getLogger();
+            assert(logger !is null);
+            assert(logger.ptr != null);
+
+            auto videolist = getVideoModeList();
+            assert(videolist !is null);
+            assert(videolist.ptr != null);
+
+            auto osoperator = getOSOperator();
+            assert(osoperator !is null);
+            assert(osoperator.ptr != null);
+
+            auto timer = getTimer();
+            assert(timer !is null);
+            assert(timer.ptr != null);
+
+            auto randomizer = getRandomizer();
+            assert(randomizer !is null);
+            assert(randomizer.ptr != null);
+
+            setRandomizer(randomizer);
+            createDefaultRandomizer();
+            setWindowCaption("Hello");
+            isWindowActive();
+            isWindowFocused();
+            isWindowMinimized();
+            isFullscreen();
+            getColorFormat();
+            closeDevice();
+            getVersion();
+            auto reventreceiver = getEventReceiver();
+            assert(reventreceiver !is null);
+            assert(reventreceiver.ptr != null);
+
+            setEventReceiver(reventreceiver);
+            setInputReceivingSceneManager(smgr);
+            setResizable(true);
+            setWindowSize(dimension2du(800,600));
+            minimizeWindow();
+            maximizeWindow();
+            restoreWindow();
+            getWindowPosition();
+            float red;
+            float green;
+            float blue;
+            float bright;
+            float contrast;
+            setGammaRamp(red, green, blue, bright, contrast);
+            getGammaRamp(red, green, blue, bright, contrast);
+            setDoubleClickTime(1);
+            getDoubleClickTime();
+            clearSystemMessages();
+            getType();
+            isDriverSupported(E_DRIVER_TYPE.EDT_OPENGL);
+            drop();
+        }
+    }
+
+    catch (Exception e)
+    {
+        writeln("Error caught!");
+        throw e;
+    }
+
+    scope(failure) writeln("Error caught!");
 }
 
 package extern (C):

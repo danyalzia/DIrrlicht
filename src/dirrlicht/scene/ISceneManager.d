@@ -67,7 +67,7 @@ import dirrlicht.scene.IMeshLoader;
 import dirrlicht.scene.ISceneLoader;
 import dirrlicht.scene.ISceneCollisionManager;
 import dirrlicht.scene.IMeshManipulator;
-import dirrlicht.SEvent;
+import dirrlicht.IEventReceiver;
 import dirrlicht.io.IAttributes;
 import dirrlicht.scene.ISceneNodeFactory;
 import dirrlicht.scene.ISceneNodeAnimatorFactory;
@@ -138,34 +138,174 @@ class ISceneManager
         return mesh;
     }
 
-    IAnimatedMeshSceneNode addAnimatedMeshSceneNode(IAnimatedMesh mesh)
+    IMeshCache getMeshCache()
     {
-        IAnimatedMeshSceneNode meshnode = new IAnimatedMeshSceneNode(this, mesh);
-        return cast(IAnimatedMeshSceneNode)(meshnode);
+        auto cache = irr_ISceneManager_getMeshCache(ptr);
+        return cast(IMeshCache)cache;
     }
 
-    ICameraSceneNode addCameraSceneNode(IAnimatedMeshSceneNode* node, vector3df pos, vector3df lookAt)
+    IVideoDriver getVideoDriver()
     {
-        ICameraSceneNode cameranode = new ICameraSceneNode(this, node, pos, lookAt);
-        return cast(ICameraSceneNode)(cameranode);
+        auto driver = irr_ISceneManager_getVideoDriver(ptr);
+        return cast(IVideoDriver)driver;
     }
 
-    ICameraSceneNode addCameraSceneNodeFPS()
+    IGUIEnvironment getGUIEnvironment()
     {
-        ICameraSceneNode cameranode = new ICameraSceneNode(this);
-        return cast(ICameraSceneNode)(cameranode);
+        auto env = irr_ISceneManager_getGUIEnvironment(ptr);
+        return cast(IGUIEnvironment)env;
     }
 
-    ISceneNode addSphereSceneNode()
+    IFileSystem getFileSystem()
     {
-        auto node = irr_ISceneManager_addSphereSceneNode(ptr);
+        auto file = irr_ISceneManager_getFileSystem(ptr);
+        return cast(IFileSystem)file;
+    }
+
+    IVolumeLightSceneNode addVolumeLightSceneNode(ISceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, SColor foot = SColor(51, 0, 230, 180), SColor tail = SColor(0, 0, 0, 0), vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    {
+        auto tempfoot = irr_SColor(foot.a, foot.b, foot.g, foot.r);
+        auto temptail = irr_SColor(tail.a, tail.b, tail.g, tail.r);
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, parent.ptr, id, subdivU, subdivV, tempfoot, temptail, temppos, temprot, tempscale);
+        return cast(IVolumeLightSceneNode)node;
+    }
+
+    IMeshSceneNode addCubeSceneNode(float size=10.0, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    {
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        irr_IMeshSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addCubeSceneNode(ptr, size, null, id, temppos, temprot, tempscale);
+        else
+            node = irr_ISceneManager_addCubeSceneNode(ptr, size, parent.ptr, id, temppos, temprot, tempscale);
+
+        return cast(IMeshSceneNode)node;
+    }
+
+    IMeshSceneNode addSphereSceneNode(float radius=5.0, int polycount=16, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    {
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        irr_IMeshSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, null, id, temppos, temprot, tempscale);
+        else
+            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.ptr, id, temppos, temprot, tempscale);
+
+        return cast(IMeshSceneNode)node;
+    }
+
+    IAnimatedMeshSceneNode addAnimatedMeshSceneNode(IAnimatedMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+    {
+        return new IAnimatedMeshSceneNode(this, mesh, parent, id, position, rotation, scale, alsoAddIfMeshPointerZero);
+    }
+
+    IMeshSceneNode addMeshSceneNode(IMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+    {
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        irr_IMeshSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+        else
+            node = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+
+        return cast(IMeshSceneNode)node;
+    }
+
+    ISceneNode addWaterSurfaceSceneNode(IMesh mesh,
+            float waveHeight=2.0f, float waveSpeed=300.0f, float waveLength=10.0f,
+            ISceneNode parent=null, int id=-1,
+            vector3df position = vector3df(0,0,0),
+            vector3df rotation = vector3df(0,0,0),
+            vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    {
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
+        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
+
+        irr_ISceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, null, id, temppos, temprot, tempscale);
+        else
+            node = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, parent.ptr, id, temppos, temprot, tempscale);
+
         return cast(ISceneNode)node;
     }
 
-    ISceneNode addCubeSceneNode()
+    IMeshSceneNode addOctreeSceneNode(IAnimatedMesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
     {
-        auto node = irr_ISceneManager_addCubeSceneNode(ptr);
-        return cast(ISceneNode)node;
+        irr_IMeshSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+        else
+            node = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+
+        return cast(IMeshSceneNode)node;
+    }
+
+    IMeshSceneNode addOctreeSceneNode(IMesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
+    {
+        irr_IMeshSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+        else
+            node = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+
+        return cast(IMeshSceneNode)node;
+    }
+
+    ICameraSceneNode addCameraSceneNode(ISceneNode parent, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
+    {
+        auto temppos = irr_vector3df(pos.x, pos.y, pos.z);
+        auto templookAt = irr_vector3df(lookAt.x, lookAt.y, lookAt.z);
+
+        auto cameranode = irr_ISceneManager_addCameraSceneNode(ptr, parent.ptr, temppos, templookAt, id, makeActive);
+        return cast(ICameraSceneNode)(cameranode);
+    }
+
+    ICameraSceneNode addCameraSceneNodeFPS(ISceneNode parent = null,
+            float rotateSpeed = 100.0, float moveSpeed = 0.5, int id=-1,
+            SKeyMap keyMapArray=null, int keyMapSize=0, bool noVerticalMovement=false,
+            float jumpSpeed = 0, bool invertMouse=false,
+            bool makeActive=true)
+    {
+        auto tempmap = irr_SKeyMap(keyMapArray.Action, keyMapArray.KeyCode);
+        irr_ICameraSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addCameraSceneNodeFPS(ptr, null, rotateSpeed, moveSpeed, id, &tempmap, keyMapSize, noVerticalMovement, jumpSpeed, invertMouse, makeActive);
+        else
+            node = irr_ISceneManager_addCameraSceneNodeFPS(ptr, parent.ptr, rotateSpeed, moveSpeed, id, &tempmap, keyMapSize, noVerticalMovement, jumpSpeed, invertMouse, makeActive);
+
+        return cast(ICameraSceneNode)node;
+    }
+
+    ILightSceneNode addLightSceneNode(ISceneNode parent = null,
+            vector3df position = vector3df(0,0,0),
+            SColorf color = SColorf(1.0f, 1.0f, 1.0f),
+            float radius=100., int id=-1)
+    {
+        auto temppos = irr_vector3df(position.x, position.y, position.z);
+        auto tempcolor = irr_SColorf(color.a, color.b, color.g, color.r);
+
+        irr_ILightSceneNode* node = null;
+        if (parent is null)
+            node = irr_ISceneManager_addLightSceneNode(ptr, null, temppos, tempcolor, radius, id);
+        else
+            node = irr_ISceneManager_addLightSceneNode(ptr, parent.ptr, temppos, tempcolor, radius, id);
+
+        return cast(ILightSceneNode)node;
     }
 
     ISceneNodeAnimator createFlyCircleAnimator(vector3df center, float radius=100)
@@ -188,6 +328,11 @@ class ISceneManager
         irr_ISceneManager_drawAll(ptr);
     }
 
+    bool isCulled(ISceneNode node)
+    {
+        return irr_ISceneManager_isCulled(ptr, node.ptr);
+    }
+
     irr_ISceneManager* ptr;
 private:
     IrrlichtDevice device;
@@ -197,17 +342,35 @@ unittest
 {
     mixin(TestPrerequisite);
 
-    auto sphere = smgr.addSphereSceneNode();
-    assert(sphere !is null);
+    scope(success)
+    {
+        auto mesh = smgr.getMesh("../../media/sydney.md2");
+        assert(mesh !is null);
 
-    auto cube = smgr.addCubeSceneNode();
-    assert(cube !is null);
+        auto meshcache = smgr.getMeshCache();
+        assert(meshcache !is null);
 
-    auto flycircleanim = smgr.createFlyCircleAnimator(vector3df(0,0,30), 20.0);
-    assert(flycircleanim !is null);
+        auto videodriver = smgr.getVideoDriver();
+        assert(videodriver !is null);
 
-    auto flystraightanim = smgr.createFlyStraightAnimator(vector3df(100,0,60), vector3df(-100,0,60), 3500, true);
-    assert(flystraightanim !is null);
+        auto guienv = smgr.getGUIEnvironment();
+        assert(guienv !is null);
+
+        auto filesystem = smgr.getFileSystem();
+        assert(filesystem !is null);
+
+        auto cube = smgr.addCubeSceneNode();
+        assert(cube !is null);
+
+        auto sphere = smgr.addSphereSceneNode();
+        assert(sphere !is null);
+
+        auto flycircleanim = smgr.createFlyCircleAnimator(vector3df(0,0,30), 20.0);
+        assert(flycircleanim !is null);
+
+        auto flystraightanim = smgr.createFlyStraightAnimator(vector3df(100,0,60), vector3df(-100,0,60), 3500, true);
+        assert(flystraightanim !is null);
+    }
 }
 
 package extern (C):

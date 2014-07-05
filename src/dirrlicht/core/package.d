@@ -42,9 +42,9 @@ public
     import dirrlicht.core.vector3d;
 }
 
-version(unittest)
-{
-    void main()
-    {
-    }
-}
+//version(unittest)
+//{
+//    void main()
+//    {
+//    }
+//}

@@ -92,9 +92,17 @@ struct SColor
     uint r;
 }
 
+struct SColorf
+{
+    float a;
+    float b;
+    float g;
+    float r;
+}
+
 package extern (C):
 
-    struct irr_SColor
+struct irr_SColor
 {
     uint a;
     uint b;

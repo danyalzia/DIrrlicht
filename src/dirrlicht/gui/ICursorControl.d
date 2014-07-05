@@ -40,12 +40,13 @@ class ICursorControl
     {
         irr_ICursorControl_setVisible(ptr, value);
     }
+
+    irr_ICursorControl* ptr;
 private:
     IrrlichtDevice device;
-    irr_ICursorControl* ptr;
 }
 
 package extern (C):
 
-    struct irr_ICursorControl;
+struct irr_ICursorControl;
 void irr_ICursorControl_setVisible(irr_ICursorControl* cursor, bool value);

@@ -23,13 +23,13 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=98
+current_page=1
 FILE_NAME_0=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FCompileConfig.d;0;4
-FILE_NAME_1=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIEventReceiver.d;0;4
+FILE_NAME_1=9383;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIEventReceiver.d;0;4
 FILE_NAME_2=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FILogger.d;0;4
 FILE_NAME_3=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIOSOperator.d;0;4
 FILE_NAME_4=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIRandomizer.d;0;4
-FILE_NAME_5=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIrrlichtDevice.d;0;4
+FILE_NAME_5=13380;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FIrrlichtDevice.d;0;4
 FILE_NAME_6=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FITimer.d;0;4
 FILE_NAME_7=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FKeyCodes.d;0;4
 FILE_NAME_8=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2Fpackage.d;0;4
@@ -121,8 +121,7 @@ FILE_NAME_93=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlich
 FILE_NAME_94=9184;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2Fcore%2Fvector3d.d;0;4
 FILE_NAME_95=1042;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2FSIrrCreationParameters.d;0;4
 FILE_NAME_96=0;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2Fscene%2FSceneParameters.d;0;4
-FILE_NAME_97=1037;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2Fscene%2FSAnimatedMesh.d;0;4
-FILE_NAME_98=987;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fexamples%2F04.Movement%2Fmain.d;0;4
+FILE_NAME_97=976;D;0;EUTF-8;1;1;0;%2Fhome%2Fdanyalzia%2FDIrrlicht%2Fsrc%2Fdirrlicht%2Fscene%2FSAnimatedMesh.d;0;4
 
 [VTE]
 last_dir=/home/danyalzia

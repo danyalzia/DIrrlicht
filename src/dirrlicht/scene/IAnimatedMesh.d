@@ -143,7 +143,7 @@ unittest
 
 package extern (C):
 
-    struct irr_IAnimatedMesh;
+struct irr_IAnimatedMesh;
 
 uint irr_IAnimatedMesh_getFrameCount(irr_IAnimatedMesh* mesh);
 float irr_IAnimatedMesh_getAnimationSpeed(irr_IAnimatedMesh* mesh);
