@@ -155,7 +155,12 @@ class IVideoDriver
         device = dev;
         ptr = irr_IrrlichtDevice_getVideoDriver(device.ptr);
     }
-
+    
+    this(irr_IVideoDriver* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     bool beginScene(bool backBuffer, bool zBuffer, SColor col)
     {
         return irr_IVideoDriver_beginScene(ptr, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
@@ -246,8 +251,8 @@ unittest
     driver.beginScene(false, false, SColor(255, 0, 0, 0));
     driver.endScene();
     auto shader2 = driver.queryFeature(E_VIDEO_DRIVER_FEATURE.EVDF_PIXEL_SHADER_2_0);
-    /// Because the device is Null
-    assert(shader2 == false);
+    
+    assert(shader2 == true);
     driver.disableFeature(E_VIDEO_DRIVER_FEATURE.EVDF_PIXEL_SHADER_2_0, false);
 
     auto att = driver.getDriverAttributes();

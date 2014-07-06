@@ -26,6 +26,11 @@
 
 module dirrlicht.scene.ISkinnedMesh;
 
+class ISkinnedMesh
+{
+	irr_ISkinnedMesh* ptr;
+}
+
 extern (C):
 
 struct irr_ISkinnedMesh;

@@ -26,6 +26,15 @@
 
 module dirrlicht.scene.ILightManager;
 
+class ILightManager
+{
+	this(irr_ILightManager* ptr)
+	{
+		this.ptr = ptr;
+	}
+	irr_ILightManager* ptr;
+}
+
 extern (C):
 
 struct irr_ILightManager;

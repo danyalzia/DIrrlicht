@@ -71,7 +71,7 @@ public
     import dirrlicht.scene.ISceneNodeAnimatorFactory;
     import dirrlicht.scene.ISceneNodeFactory;
     import dirrlicht.scene.ISceneUserDataSerializer;
-    import dirrlicht.scene.IShader;
+    import dirrlicht.scene.IQ3Shader;
     import dirrlicht.scene.IShadowVolumeSceneNode;
     import dirrlicht.scene.ISkinnedMesh;
     import dirrlicht.scene.ITerrainSceneNode;

@@ -28,6 +28,7 @@ module dirrlicht.scene.ILightSceneNode;
 
 class ILightSceneNode
 {
+	irr_ILightSceneNode* ptr;
 }
 
 extern (C):

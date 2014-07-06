@@ -57,18 +57,19 @@ enum E_JOINT_UPDATE_ON_RENDER
 class IAnimatedMeshSceneNode : ISceneNode
 {
     this(ISceneManager _smgr, IAnimatedMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+    in
+    {
+    	assert(_smgr.ptr != null);
+    }
+    body
     {
         smgr = _smgr;
-        auto temppos = irr_vector3df(position.x, position.y, position.z);
-        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
-        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
-
         if (parent is null)
-            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, null, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
         else
-            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addAnimatedMeshSceneNode(smgr.ptr, mesh.ptr, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
 
-        super.ptr = cast(irr_ISceneNode*)ptr;
+        ptr = cast(irr_IAnimatedMeshSceneNode*)super.ptr;
     }
 
     void setMD2Animation(EMD2_ANIMATION_TYPE value)
@@ -105,6 +106,7 @@ unittest
     assert(node.ptr != null);
 
     node.setMD2Animation(EMD2_ANIMATION_TYPE.EMAT_STAND);
+    node.setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
 }
 
 package extern (C):

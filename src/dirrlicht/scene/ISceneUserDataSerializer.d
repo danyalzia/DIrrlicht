@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.ISceneUserDataSerializer;
 
+class ISceneUserDataSerializer
+{
+	irr_ISceneUserDataSerializer* ptr;
+}
 extern (C):
 
 struct irr_ISceneUserDataSerializer;

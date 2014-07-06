@@ -49,7 +49,24 @@ static if(__traits(isArithmetic, T))
     {
         vec = [n, n, n, n];
     }
-
+    
+    /// internal use only
+    static if (is (T == float))
+    {
+    	this(irr_vector3df v)
+    	{
+    		vec = [v.x, v.y, v.z, 0];
+    	}
+    }
+    	
+    else
+    {
+    	this(irr_vector3di v)
+    	{
+    		vec = [v.x, v.y, v.z, 0];
+    	}
+    }
+    
     static if (DigitalMars || GDC)
     {
         this(float4 vec)
@@ -197,7 +214,7 @@ static if(__traits(isArithmetic, T))
         static if (DigitalMars || GDC)
         {
             float4 arr;
-            for (int i = 0; i < 4; i++)
+            foreach(i; 0..4)
             {
                 arr = vec[i] - other.vec[i];
             }
@@ -349,7 +366,22 @@ static if(__traits(isArithmetic, T))
         }
     }
 
-
+    /// internal use only
+    static if (is (T == float))
+    {
+    	@property irr_vector3df ptr()
+    	{
+    		return irr_vector3df(x,y,z);
+    	}
+    }
+    	
+    else
+    {
+    	@property irr_vector3di ptr()
+    	{
+    		return irr_vector3di(x,y,z);
+    	}
+    }
 private:
     static if (is (T == float))
         float4 vec;

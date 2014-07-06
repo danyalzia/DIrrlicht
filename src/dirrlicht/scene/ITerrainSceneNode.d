@@ -26,6 +26,15 @@
 
 module dirrlicht.scene.ITerrainSceneNode;
 
+class ITerrainSceneNode
+{
+	this(irr_ITerrainSceneNode* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	irr_ITerrainSceneNode* ptr;
+}
 extern (C):
 
 struct irr_ITerrainSceneNode;

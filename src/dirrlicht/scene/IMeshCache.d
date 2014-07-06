@@ -28,6 +28,12 @@ module dirrlicht.scene.IMeshCache;
 
 class IMeshCache
 {
+	this(irr_IMeshCache* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	irr_IMeshCache* ptr;
 }
 extern (C):
 

@@ -24,8 +24,4 @@
        source distribution.
 */
 
-module dirrlicht.scene.IShader;
-
-extern (C):
-
-struct irr_IShader;
+module dirrlicht.scene.IShaderConstantSetCallBack;

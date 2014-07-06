@@ -27,6 +27,10 @@
 
 module dirrlicht.scene.ISceneCollisionManager;
 
+class ISceneCollisionManager
+{
+	irr_ISceneCollisionManager* ptr;
+}
 extern (C):
 
 struct irr_ISceneCollisionManager;

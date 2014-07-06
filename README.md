@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/danyalzia/DIrrlicht.png?branch=master)](https://travis-ci.org/danyalzia/DIrrlicht)
 
-DIrrlicht - D Bindings for Irrlicht Engine
-==========================================
+DxIrrlicht - D Bindings for Irrlicht Engine
+=========================================================
 
 Details
 -------
@@ -29,7 +29,7 @@ $ cd DIrrlicht
 $ git submodule update --init
 ```
 
-On Linux, currently the Code::Blocks is supported. It assumes that Irrlicht is installed in "$HOME" directory, so you have to place them in that directory and then open the Code::Blocks project and compile. At later time, building with dub and Visual D will also be supported.
+On Linux, it assumes that Irrlicht is installed in "$HOME" directory, so you have to place them in that directory and then use ```dub test``` to run unit-tests.
 
 License
 -------

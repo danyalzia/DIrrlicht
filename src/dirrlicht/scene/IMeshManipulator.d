@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.IMeshManipulator;
 
+class IMeshManipulator
+{
+	irr_IMeshManipulator* ptr;
+}
 extern (C):
 
-    struct irr_IMeshManipulator;
+struct irr_IMeshManipulator;

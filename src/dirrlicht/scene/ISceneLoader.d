@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.ISceneLoader;
 
+class ISceneLoader
+{
+	irr_ISceneLoader* ptr;
+}
 extern (C):
 
 struct irr_ISceneLoader;

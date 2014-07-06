@@ -28,6 +28,32 @@ module dirrlicht.core.vector2d;
 
 struct vector2d(T)
 {
+	@disable this();
+	
+	this(T x, T y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	
+	/// internal use only
+    static if (is (T == float))
+    {
+    	this(irr_vector2df v)
+    	{
+    		x = v.x;
+    		y = v.y;
+    	}
+    }
+    	
+    else
+    {
+    	this(irr_vector2di v)
+    	{
+    		x = v.x;
+    		y = v.y;
+    	}
+    }
     void opOpAssign(string op)(vector2d rhs)
     {
         mixin("x" ~ op ~ "=rhs.x;");
@@ -56,7 +82,7 @@ struct vector2d(T)
             return new vector2d(x / rhs.x, y / rhs.y);
         }
     }
-
+    
     T x, y;
 }
 
@@ -85,7 +111,7 @@ unittest
 
 package extern (C):
 
-    struct irr_vector2di
+struct irr_vector2di
 {
     int x;
     int y;

@@ -28,6 +28,12 @@ module dirrlicht.scene.IVolumeLightSceneNode;
 
 class IVolumeLightSceneNode
 {
+	this(irr_IVolumeLightSceneNode* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	irr_IVolumeLightSceneNode* ptr;
 }
 
 extern (C):

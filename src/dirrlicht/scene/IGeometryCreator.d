@@ -26,6 +26,11 @@
 
 module dirrlicht.scene.IGeometryCreator;
 
+class IGeometryCreator
+{
+	irr_IGeometryCreator* ptr;
+}
+
 extern (C):
 
 struct irr_IGeometryCreator;

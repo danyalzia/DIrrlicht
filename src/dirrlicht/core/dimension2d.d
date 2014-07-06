@@ -29,6 +29,23 @@ module dirrlicht.core.dimension2d;
 struct dimension2d(T)
 {
     T Width, Height;
+    
+    /// internal use only
+    static if (is (T == float))
+    {
+    	@property irr_dimension2df ptr()
+    	{
+    		return irr_dimension2df(Width, Height);
+    	}
+    }
+    	
+    else
+    {
+    	@property irr_dimension2du ptr()
+    	{
+    		return irr_dimension2du(Width, Height);
+    	}
+    }
 }
 
 alias dimension2du = dimension2d!(uint);

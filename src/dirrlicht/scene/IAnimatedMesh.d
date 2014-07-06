@@ -84,6 +84,11 @@ enum E_ANIMATED_MESH_TYPE
 class IAnimatedMesh : IMesh
 {
     this(ISceneManager _smgr, string file)
+    in
+    {
+    	assert(_smgr.ptr != null);
+    }
+    body
     {
         smgr = _smgr;
         super(smgr, file);
@@ -116,8 +121,9 @@ class IAnimatedMesh : IMesh
         return E_ANIMATED_MESH_TYPE.EAMT_UNKNOWN;
     }
 
-    ISceneManager smgr;
     irr_IAnimatedMesh* ptr;
+private:
+    ISceneManager smgr;
 }
 
 unittest

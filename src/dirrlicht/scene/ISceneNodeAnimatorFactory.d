@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.ISceneNodeAnimatorFactory;
 
+class ISceneNodeAnimatorFactory
+{
+    irr_ISceneNodeAnimatorFactory* ptr;
+}
 extern (C):
 
 struct irr_ISceneNodeAnimatorFactory;

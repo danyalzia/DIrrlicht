@@ -26,6 +26,11 @@
 
 module dirrlicht.scene.IMeshWriter;
 
+class IMeshWriter
+{
+	irr_IMeshWriter* ptr;
+}
+
 extern (C):
 
 struct irr_IMeshWriter;

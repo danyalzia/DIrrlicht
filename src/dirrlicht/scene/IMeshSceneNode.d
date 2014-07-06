@@ -38,7 +38,12 @@ class IMeshSceneNode : ISceneNode
     {
         smgr = _smgr;
     }
-
+    
+    this(irr_IMeshSceneNode* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     void setMesh(IMesh mesh)
     {
         irr_IMeshSceneNode_setMesh(ptr, mesh.ptr);

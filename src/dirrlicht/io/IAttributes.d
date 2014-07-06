@@ -32,8 +32,10 @@ class IAttributes
     {
         return 0;
     }
+    
+    irr_IAttributes* ptr;
 }
 
 package extern(C):
 
-    struct irr_IAttributes;
+struct irr_IAttributes;

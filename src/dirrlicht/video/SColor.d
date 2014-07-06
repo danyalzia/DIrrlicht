@@ -90,6 +90,11 @@ struct SColor
     uint b;
     uint g;
     uint r;
+    
+	@property irr_SColor ptr()
+	{
+		return irr_SColor(a,b,g,r);
+	}
 }
 
 struct SColorf
@@ -98,6 +103,11 @@ struct SColorf
     float b;
     float g;
     float r;
+    
+    @property irr_SColorf ptr()
+	{
+		return irr_SColorf(a,b,g,r);
+	}
 }
 
 package extern (C):

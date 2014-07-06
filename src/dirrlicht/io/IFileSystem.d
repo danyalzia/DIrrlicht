@@ -37,7 +37,12 @@ class IFileSystem
         device = dev;
         ptr = irr_IrrlichtDevice_getFileSystem(device.ptr);
     }
-
+    
+    this(irr_IFileSystem* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     void addFileArchive(string file)
     {
         irr_IFileSystem_addFileArchive(ptr, toStringz(file));
@@ -50,5 +55,5 @@ private:
 
 package extern (C):
 
-    struct irr_IFileSystem;
+struct irr_IFileSystem;
 void irr_IFileSystem_addFileArchive(irr_IFileSystem* filesystem, const char* text);

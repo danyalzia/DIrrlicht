@@ -44,7 +44,13 @@ import dirrlicht.io.IAttributeExchangingObject;
 class ISceneNode
 {
     this() {}
-
+    
+    /// Internal use only
+    this(irr_ISceneNode* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     void addAnimator(ISceneNodeAnimator animator)
     {
         auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
@@ -196,7 +202,7 @@ class ISceneNode
         return cast(ISceneManager)irr_ISceneNode_getSceneManager(ptr);
     }
 
-    irr_ISceneNode* ptr = null;
+    irr_ISceneNode* ptr;
 private:
     ISceneManager smgr;
 }

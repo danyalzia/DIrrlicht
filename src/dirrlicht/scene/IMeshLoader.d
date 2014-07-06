@@ -26,6 +26,10 @@
 
 module dirrlicht.scene.IMeshLoader;
 
+class IMeshLoader
+{
+	irr_IMeshLoader* ptr;
+}
 extern (C):
 
 struct irr_IMeshLoader;

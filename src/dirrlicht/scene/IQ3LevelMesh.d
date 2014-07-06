@@ -24,17 +24,4 @@
        source distribution.
 */
 
-module dirrlicht.scene.IBillboardSceneNode;
-
-class IBillboardSceneNode
-{
-	this(irr_IBillboardSceneNode* ptr)
-	{
-		this.ptr = ptr;
-	}
-	
-	irr_IBillboardSceneNode* ptr;
-}
-extern (C):
-
-struct irr_IBillboardSceneNode;
+module dirrlicht.scene.IQ3LevelMesh;

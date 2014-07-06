@@ -46,7 +46,12 @@ class IGUIEnvironment
         device = dev;
         ptr = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
     }
-
+    
+    this(irr_IGUIEnvironment* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     IGUIStaticText addStaticText(dstring text, recti rec, bool border=false)
     {
         auto statictext = new IGUIStaticText(this, text, rec, border);

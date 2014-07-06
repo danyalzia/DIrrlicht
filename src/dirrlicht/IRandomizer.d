@@ -35,7 +35,12 @@ class IRandomizer
         device = dev;
         ptr = irr_IrrlichtDevice_getRandomizer(device.ptr);
     }
-
+    
+    this(irr_IRandomizer* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     irr_IRandomizer* ptr;
 private:
     IrrlichtDevice device;

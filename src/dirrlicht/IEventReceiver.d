@@ -272,6 +272,7 @@ enum EGUI_EVENT_TYPE
 /// SEvents hold information about an event. See irr::IEventReceiver for details on event handling.
 class SEvent
 {
+	irr_SEvent* ptr;
 private:
 	IrrlichtDevice device;
 }
@@ -281,9 +282,13 @@ class IEventReceiver
 	this(IrrlichtDevice dev)
 	{
 		device = dev;
-		ptr = irr_IrrlichtDevice_getEventReceiver(dev.ptr);
+		ptr = irr_IrrlichtDevice_getEventReceiver(device.ptr);
 	}
 	
+	this(irr_IEventReceiver* ptr)
+	{
+		this.ptr = ptr;
+	}
 	irr_IEventReceiver* ptr;
 private:
 	IrrlichtDevice device;

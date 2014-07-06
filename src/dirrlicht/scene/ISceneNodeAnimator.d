@@ -31,7 +31,7 @@ class ISceneNodeAnimator
     this()
     {
     }
-private:
+
     irr_ISceneNodeAnimator* ptr;
 }
 

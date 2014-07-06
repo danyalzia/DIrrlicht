@@ -74,7 +74,24 @@ struct aabbox3d(T)
             return new aabbox3d(MinEdge / rhs.MinEdge, MaxEdge / rhs.MaxEdge);
         }
     }
-
+    
+    /// internal use only
+    static if (is (T == float))
+    {
+    	@property irr_aabbox3df ptr()
+    	{
+    		return irr_aabbox3df(MinEdge.ptr, MaxEdge.ptr);
+    	}
+    }
+    
+    else
+    {
+    	@property irr_aabbox3di ptr()
+    	{
+    		return irr_aabbox3di(MinEdge.ptr, MaxEdge.ptr);
+    	}
+    }	
+    
     vector3d!(T) MinEdge;
     vector3d!(T) MaxEdge;
 }
@@ -82,7 +99,7 @@ struct aabbox3d(T)
 alias aabbox3df = aabbox3d!(float);
 alias aabbox3di = aabbox3d!(int);
 
-///
+/// example
 unittest
 {
     auto box = aabbox3di(vector3di(2,2,2), vector3di(4,4,4));

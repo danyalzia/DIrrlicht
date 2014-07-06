@@ -26,6 +26,16 @@
 
 module dirrlicht.scene.IParticleSystemSceneNode;
 
+class IParticleSystemSceneNode
+{
+	this(irr_IParticleSystemSceneNode* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	irr_IParticleSystemSceneNode* ptr;
+}
+
 extern (C):
 
 struct irr_IParticleSystemSceneNode;

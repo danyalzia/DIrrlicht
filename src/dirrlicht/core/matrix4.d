@@ -33,11 +33,11 @@ struct matrix4
         return M[i];
     }
 
-    float opIndexAssign(uint i, float n)
+    void opIndexAssign(float n, uint index)
     {
-        return M[i] = n;
+    	M[index] = n;
     }
-
+    
     float[16] M;
 }
 

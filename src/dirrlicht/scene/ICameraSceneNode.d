@@ -46,7 +46,12 @@ class ICameraSceneNode : ISceneNode
         else
             super.ptr = cast(irr_ISceneNode*)irr_ISceneManager_addCameraSceneNode(smgr.ptr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z), id, makeActive);
     }
-
+    
+    this()
+    {
+    	
+    }
+    
     /// CameraNodeFPS
     this(ISceneManager _smgr)
     {
