@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/danyalzia/DIrrlicht.png?branch=master)](https://travis-ci.org/danyalzia/DIrrlicht)
 
-DxIrrlicht - D Bindings for Irrlicht Engine
+DIrrlicht - D Bindings for Irrlicht Engine
 =========================================================
 
 Details
