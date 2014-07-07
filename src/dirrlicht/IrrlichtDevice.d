@@ -29,6 +29,7 @@ module dirrlicht.IrrlichtDevice;
 import dirrlicht.CompileConfig;
 import dirrlicht.core.dimension2d;
 import dirrlicht.core.vector2d;
+import dirrlicht.core.array;
 import dirrlicht.video.EDeviceTypes;
 import dirrlicht.video.SColor;
 import dirrlicht.video.IVideoDriver;
@@ -235,7 +236,14 @@ class IrrlichtDevice
         auto pos = vector2di(temp.x, temp.y);
         return pos;
     }
-
+    
+    bool activateJoysticks(irr_IrrlichtDevice* device, SJoystickInfo[] joystickInfo)
+    {
+    	irr_array temp;
+    	temp.data = joystickInfo.ptr;
+    	return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
+    }
+    
     bool setGammaRamp(float red, float green, float blue, float relativebrightness, float relativecontrast)
     {
         return irr_IrrlichtDevice_setGammaRamp(ptr, red, green, blue, relativebrightness, relativecontrast);
@@ -283,7 +291,6 @@ IrrlichtDevice createDevice(E_DRIVER_TYPE type, dimension2du dim, uint bits = 16
 {
 	auto device = new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
 	return device;
-    
 }
 
 /// IrrlichtDevice example
@@ -291,67 +298,67 @@ unittest
 {
     mixin(TestPrerequisite);
 
-//    try
-//    {
-//        with (device)
-//        {
-//            run();
-//            yield();
-//            sleep(1);
-//            auto videodriver = getVideoDriver();
-//            assert(videodriver !is null);
-//            assert(videodriver.ptr != null);
-//
-//            auto filesystem = getFileSystem();
-//            assert(filesystem !is null);
-//            assert(filesystem.ptr != null);
-//
-//            auto guienv = getGUIEnvironment();
-//            assert(guienv !is null);
-//            assert(guienv.ptr != null);
-//
-//            auto scenemgr = getSceneManager();
-//            assert(scenemgr !is null);
-//            assert(scenemgr.ptr != null);
-//
-//            auto cursorcontrol = getCursorControl();
-//            assert(cursorcontrol !is null);
-//            assert(cursorcontrol.ptr != null);
-//
-//            auto logger = getLogger();
-//            assert(logger !is null);
-//            assert(logger.ptr != null);
-//
-//            auto videolist = getVideoModeList();
-//            assert(videolist !is null);
-//            assert(videolist.ptr != null);
-//
-//            auto osoperator = getOSOperator();
-//            assert(osoperator !is null);
-//            assert(osoperator.ptr != null);
-//
-//            auto timer = getTimer();
-//            assert(timer !is null);
-//            assert(timer.ptr != null);
-//
-//            auto randomizer = getRandomizer();
-//            assert(randomizer !is null);
-//            assert(randomizer.ptr != null);
-//
-//            setRandomizer(randomizer);
-//            createDefaultRandomizer();
-//            setWindowCaption("Hello");
-//            isWindowActive();
-//            isWindowFocused();
-//            isWindowMinimized();
-//            isFullscreen();
-//            getColorFormat();
-//            closeDevice();
-//            getVersion();
-//            auto reventreceiver = getEventReceiver();
-//            assert(reventreceiver !is null);
-//            assert(reventreceiver.ptr != null);
-//
+    try
+    {
+        with (device)
+        {
+            run();
+            yield();
+            sleep(1);
+            auto videodriver = getVideoDriver();
+            assert(videodriver !is null);
+            assert(videodriver.ptr != null);
+
+            auto filesystem = getFileSystem();
+            assert(filesystem !is null);
+            assert(filesystem.ptr != null);
+
+            auto guienv = getGUIEnvironment();
+            assert(guienv !is null);
+            assert(guienv.ptr != null);
+
+            auto scenemgr = getSceneManager();
+            assert(scenemgr !is null);
+            assert(scenemgr.ptr != null);
+
+            auto cursorcontrol = getCursorControl();
+            assert(cursorcontrol !is null);
+            assert(cursorcontrol.ptr != null);
+
+            auto logger = getLogger();
+            assert(logger !is null);
+            assert(logger.ptr != null);
+
+            auto videolist = getVideoModeList();
+            assert(videolist !is null);
+            assert(videolist.ptr != null);
+
+            auto osoperator = getOSOperator();
+            assert(osoperator !is null);
+            assert(osoperator.ptr != null);
+
+            auto timer = getTimer();
+            assert(timer !is null);
+            assert(timer.ptr != null);
+
+            auto randomizer = getRandomizer();
+            assert(randomizer !is null);
+            assert(randomizer.ptr != null);
+
+            setRandomizer(randomizer);
+            createDefaultRandomizer();
+            setWindowCaption("Hello");
+            isWindowActive();
+            isWindowFocused();
+            isWindowMinimized();
+            isFullscreen();
+            //getColorFormat();
+            closeDevice();
+            getVersion();
+            auto reventreceiver = getEventReceiver();
+            assert(reventreceiver !is null);
+            //assert(reventreceiver.ptr != null);
+
 //            setEventReceiver(reventreceiver);
 //            setInputReceivingSceneManager(smgr);
 //            setResizable(true);
@@ -373,13 +380,13 @@ unittest
 //            getType();
 //            isDriverSupported(E_DRIVER_TYPE.EDT_OPENGL);
 //            drop();
-//        }
-//    }
-//
-//    catch (std.exception.ErrnoException exc)
-//    {
-//        writeln("(Could not read from file; assuming 1)");
-//    }
+        }
+    }
+
+    catch (std.exception.ErrnoException exc)
+    {
+        writeln("(Could not read from file; assuming 1)");
+    }
 }
 
 package extern (C):
@@ -420,7 +427,7 @@ void irr_IrrlichtDevice_minimizeWindow(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_maximizeWindow(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_restoreWindow(irr_IrrlichtDevice* device);
 irr_vector2di irr_IrrlichtDevice_getWindowPosition(irr_IrrlichtDevice* device);
-//bool activateJoysticks
+bool irr_IrrlichtDevice_activateJoysticks(irr_IrrlichtDevice* device, irr_array* joystickInfo);
 bool irr_IrrlichtDevice_setGammaRamp(irr_IrrlichtDevice* device, float red, float green, float blue, float relativebrightness, float relativecontrast);
 bool irr_IrrlichtDevice_getGammaRamp(irr_IrrlichtDevice* device, ref float red, ref float green, ref float blue, ref float relativebrightness, ref float relativecontrast);
 void irr_IrrlichtDevice_setDoubleClickTime(irr_IrrlichtDevice* device, uint timeMs);

@@ -31,10 +31,14 @@ class ISceneNodeAnimator
     this()
     {
     }
-
+    
+    this(irr_ISceneNodeAnimator* ptr)
+    {
+    	this.ptr = ptr;
+    }
     irr_ISceneNodeAnimator* ptr;
 }
 
 package extern (C):
 
-    struct irr_ISceneNodeAnimator;
+struct irr_ISceneNodeAnimator;

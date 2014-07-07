@@ -35,6 +35,7 @@ class IBillboardSceneNode
 	
 	irr_IBillboardSceneNode* ptr;
 }
+
 extern (C):
 
 struct irr_IBillboardSceneNode;

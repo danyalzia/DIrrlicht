@@ -11,6 +11,7 @@
 
 	"sourcePaths": ["src"],
 	"importPaths": ["src"],
-	"lflags": ["-LCIrrlicht/lib/Linux", "-L../irrlicht/lib/Linux"],
-	"libs": [ "CIrrlicht" , "Irrlicht" ,  "stdc++", "GL", "Xxf86vm", "X11"],
+	"dflags" : ["-Dddoc/Ddoc/"],
+	"lflags": ["-LCIrrlicht/lib/"],
+	"libs": [ "CIrrlicht" , "GL", "X11"],
 }

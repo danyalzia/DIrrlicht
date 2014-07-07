@@ -294,6 +294,44 @@ private:
 	IrrlichtDevice device;
 }
 
+//! Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
+struct SJoystickInfo
+{
+	/***
+	 * The ID of the joystick
+	 * This is an internal Irrlicht index; it does not map directly
+	 * to any particular hardware joystick. It corresponds to the
+	 * SJoystickEvent Joystick ID.
+	 */
+	ubyte Joystick;
+
+	/// The name that the joystick uses to identify itself.
+	string Name;
+
+	/// The number of buttons that the joystick has.
+	uint Buttons;
+
+	/// The number of axes that the joystick has, i.e. X, Y, Z, R, U, V.
+	/// Note: with a Linux device, the POV hat (if any) will use two axes. These
+	/// will be included in this count.
+	uint Axes;
+
+	/// An indication of whether the joystick has a POV hat.
+	/// A Windows device will identify the presence or absence or the POV hat.  A
+	/// Linux device cannot, and will always return POV_HAT_UNKNOWN.
+	enum PovHat
+	{
+		/// A hat is definitely present.
+		POV_HAT_PRESENT,
+
+		/// A hat is definitely not present.
+		POV_HAT_ABSENT,
+
+		/// The presence or absence of a hat cannot be determined.
+		POV_HAT_UNKNOWN
+	}
+}
+
 unittest
 {
 	mixin(TestPrerequisite);

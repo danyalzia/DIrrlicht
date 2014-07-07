@@ -70,8 +70,8 @@ enum E_ANIMATED_MESH_TYPE
     EAMT_CSM,
 
     /// .oct file for Paul Nette's FSRad or from Murphy McCauley's Blender .oct exporter.
-    /** The oct file format contains 3D geometry and lightmaps and
-    can be loaded directly by Irrlicht */
+    /// The oct file format contains 3D geometry and lightmaps and
+    /// can be loaded directly by Irrlicht
     EAMT_OCT,
 
     /// Halflife MDL model file
@@ -81,6 +81,9 @@ enum E_ANIMATED_MESH_TYPE
     EAMT_SKINNED
 }
 
+/+++ 
+ + Class for an animated mesh.
+ +/
 class IAnimatedMesh : IMesh
 {
     this(ISceneManager _smgr, string file)
@@ -94,22 +97,68 @@ class IAnimatedMesh : IMesh
         super(smgr, file);
         ptr = cast(irr_IAnimatedMesh*)super.ptr;
     }
-
+    
+    this(irr_IAnimatedMesh* ptr)
+    {
+    	this.ptr = ptr;
+    	super(cast(irr_IMesh*)this.ptr);
+    }
+    
+    /***
+     * Gets the frame count of the animated mesh.
+	 * Returns: The amount of frames. If the amount is 1,
+	 * 			it is a static, non animated mesh.
+     */
     uint getFrameCount()
     {
         return irr_IAnimatedMesh_getFrameCount(ptr);
     }
-
+    
+    /***
+     * Gets the animation speed of the animated mesh.
+	 * Returns: The number of frames per second to play the
+	 *			animation with by default. If the amount is 0,
+	 * 			it is a static, non animated mesh.
+     */
     float getAnimationSpeed()
     {
         return irr_IAnimatedMesh_getAnimationSpeed(ptr);
     }
-
+    
+    /**
+     * Sets the animation speed of the animated mesh.
+	 * Params:
+	 *			fps =  Number of frames per second to play the
+	 *			animation with by default. If the amount is 0,
+	 *			it is not animated. The actual speed is set in the
+	 *			scene node the mesh is instantiated in.
+     */
     void setAnimationSpeed(float fps)
     {
         irr_IAnimatedMesh_setAnimationSpeed(ptr, fps);
     }
-
+    
+    /***
+     *	Returns the IMesh interface for a frame.
+	 *
+     *	Params:
+     * 			frame = Frame number as zero based index. The maximum
+     * 			frame number is getFrameCount() - 1;
+	 * 			
+     *			detailLevel = Level of detail. 0 is the lowest, 255 the
+	 * 			highest level of detail. Most meshes will ignore the detail level.
+	 *
+	 * 			startFrameLoop = Because some animated meshes (.MD2) are
+	 * 			blended between 2 static frames, and maybe animated in a loop,
+	 * 			the startFrameLoop and the endFrameLoop have to be defined, to
+	 * 			prevent the animation to be blended between frames which are
+	 * 			outside of this loop.
+	 * 			If startFrameLoop and endFrameLoop are both -1, they are ignored.
+	 *
+	 * 			endFrameLoop = see startFrameLoop.
+	 *
+	 * Returns: the animated mesh based on a detail level.
+     */
     IMesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1)
     {
         auto temp = irr_IAnimatedMesh_getMesh(ptr, detailLevel, startFrameLoop, endFrameLoop);

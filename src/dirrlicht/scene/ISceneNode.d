@@ -43,8 +43,6 @@ import dirrlicht.io.IAttributeExchangingObject;
 
 class ISceneNode
 {
-    this() {}
-    
     /// Internal use only
     this(irr_ISceneNode* ptr)
     {
@@ -53,14 +51,12 @@ class ISceneNode
     
     void addAnimator(ISceneNodeAnimator animator)
     {
-        auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
-        irr_ISceneNode_addAnimator(ptr, animptr);
+        irr_ISceneNode_addAnimator(ptr, animator.ptr);
     }
 
     void removeAnimator(ISceneNodeAnimator animator)
     {
-        auto animptr = cast(irr_ISceneNodeAnimator*)(animator);
-        irr_ISceneNode_removeAnimator(ptr, animptr);
+        irr_ISceneNode_removeAnimator(ptr, animator.ptr);
     }
 
     void removeAnimators()
@@ -71,7 +67,7 @@ class ISceneNode
     SMaterial getMaterial(uint num)
     {
         SMaterial mat = new SMaterial(this, num);
-        return cast(SMaterial)(mat);
+        return mat;
     }
 
     void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)
@@ -92,8 +88,7 @@ class ISceneNode
     vector3df getScale()
     {
         auto temp = irr_ISceneNode_getScale(ptr);
-        auto scale = vector3df(temp.x, temp.y, temp.z);
-        return scale;
+        return vector3df(temp.x, temp.y, temp.z);
     }
 
     void setScale(vector3df scale)
@@ -124,8 +119,7 @@ class ISceneNode
 
     void setPosition(vector3df pos)
     {
-        irr_vector3df temp = {pos.x, pos.y, pos.z};
-        irr_ISceneNode_setPosition(ptr, temp);
+        irr_ISceneNode_setPosition(ptr, pos.ptr);
     }
 
     vector3df getAbsolutePosition()

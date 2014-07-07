@@ -17,6 +17,6 @@ install:
   - sudo dpkg -i ${DMD}
   - wget http://code.dlang.org/files/${DUB}.tar.gz
   - sudo tar -C /usr/local/bin -zxf ${DUB}.tar.gz
-
+ 
 script:
   - dub test

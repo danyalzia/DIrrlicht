@@ -30,8 +30,15 @@ import dirrlicht.scene.ISceneNode;
 
 class IShadowVolumeSceneNode : ISceneNode
 {
+	this(irr_IShadowVolumeSceneNode* ptr)
+	{
+		this.ptr = ptr;
+		super(cast(irr_ISceneNode*)this.ptr);
+	}
+	
+	irr_IShadowVolumeSceneNode* ptr;
 }
 
 extern (C):
 
-    struct irr_IShadowVolumeSceneNode;
+struct irr_IShadowVolumeSceneNode;

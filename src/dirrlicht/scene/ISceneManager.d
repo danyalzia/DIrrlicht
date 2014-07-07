@@ -194,15 +194,11 @@ class ISceneManager
 
     IMeshSceneNode addSphereSceneNode(float radius=5.0, int polycount=16, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
     {
-        auto temppos = irr_vector3df(position.x, position.y, position.z);
-        auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
-        auto tempscale = irr_vector3df(scale.x, scale.y, scale.z);
-
         irr_IMeshSceneNode* node = null;
         if (parent is null)
-            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, null, id, temppos, temprot, tempscale);
+            node = irr_ISceneManager_addSphereSceneNode(ptr);
         else
-            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.ptr, id, temppos, temprot, tempscale);
+            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr);
 
         return new IMeshSceneNode(node);
     }
@@ -224,9 +220,7 @@ class ISceneManager
         else
             temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
 
-        auto node = new IMeshSceneNode(this);
-        node.ptr = temp;
-        return node;
+        return new IMeshSceneNode(temp);
     }
 
     ISceneNode addWaterSurfaceSceneNode(IMesh mesh,
@@ -246,9 +240,7 @@ class ISceneManager
         else
             temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, parent.ptr, id, temppos, temprot, tempscale);
 
-        auto node = new ISceneNode;
-        node.ptr = temp;
-        return node;
+        return new ISceneNode(temp);
     }
 
     IMeshSceneNode addOctreeSceneNode(IAnimatedMesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
@@ -259,9 +251,7 @@ class ISceneManager
         else
             temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
-        auto node = new IMeshSceneNode(this);
-        node.ptr = temp;
-        return node;
+        return new IMeshSceneNode(temp);
     }
 
     IMeshSceneNode addOctreeSceneNode(IMesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
@@ -272,26 +262,20 @@ class ISceneManager
         else
             temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
-        auto node = new IMeshSceneNode(this);
-        node.ptr = temp;
-        return node;
+        return new IMeshSceneNode(temp);
     }
 
     ICameraSceneNode addCameraSceneNode(ISceneNode parent, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
     {
         auto temp = irr_ISceneManager_addCameraSceneNode(ptr, null, pos.ptr, lookAt.ptr, id, makeActive);
-        auto node = new ICameraSceneNode;
-        node.ptr = temp;
-        return node;
+        return new ICameraSceneNode(temp);
     }
 
     ICameraSceneNode addCameraSceneNodeFPS()
     {
         auto temp = irr_ISceneManager_addCameraSceneNodeFPS(ptr);
         
-        auto node = new ICameraSceneNode;
-        node.ptr = temp;
-        return node;
+        return new ICameraSceneNode(temp);
     }
 
     ILightSceneNode addLightSceneNode(ISceneNode parent = null,
@@ -371,12 +355,8 @@ class ISceneManager
 
     ISceneNodeAnimator createFlyStraightAnimator(vector3df startPoint, vector3df endPoint, uint timeForWay, bool loop=false, bool pingpong = false)
     {
-        auto tempstart = irr_vector3df(startPoint.x, startPoint.y, startPoint.z);
-        auto tempend = irr_vector3df(endPoint.x, endPoint.y, endPoint.z);
-        auto temp = irr_ISceneManager_createFlyStraightAnimator(ptr, tempstart, tempend, timeForWay, loop, pingpong);
-        auto anim = new ISceneNodeAnimator;
-        anim.ptr = temp;
-        return anim;
+        auto temp = irr_ISceneManager_createFlyStraightAnimator(ptr, startPoint.ptr, endPoint.ptr, timeForWay, loop, pingpong);
+        return new ISceneNodeAnimator(temp);
     }
 
     void drawAll()
@@ -531,9 +511,7 @@ class ISceneManager
     ISceneNode addSceneNode(string sceneNodeTypeName, ISceneNode parent=null)
     {
         auto temp  = irr_ISceneManager_addSceneNode(ptr, toStringz(sceneNodeTypeName), parent.ptr);
-        auto node = new ISceneNode();
-        node.ptr = temp;
-        return node;
+        return new ISceneNode(temp);
     }
 
     ISceneNodeAnimator createSceneNodeAnimator(string typeName, ISceneNode target=null)

@@ -33,15 +33,11 @@ import dirrlicht.scene.IMesh;
 import dirrlicht.scene.IShadowVolumeSceneNode;
 
 class IMeshSceneNode : ISceneNode
-{
-    this(ISceneManager _smgr)
-    {
-        smgr = _smgr;
-    }
-    
+{ 
     this(irr_IMeshSceneNode* ptr)
     {
     	this.ptr = ptr;
+    	super(cast(irr_ISceneNode*)ptr);
     }
     
     void setMesh(IMesh mesh)

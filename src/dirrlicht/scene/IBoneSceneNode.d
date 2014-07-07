@@ -67,6 +67,12 @@ import dirrlicht.scene.ISceneNode;
 
 class IBoneSceneNode : ISceneNode
 {
+	this(irr_IBoneSceneNode* ptr)
+	{
+		this.ptr = ptr;
+		super(cast(irr_ISceneNode*)this.ptr);
+	}
+	irr_IBoneSceneNode* ptr;
 }
 
 extern (C):

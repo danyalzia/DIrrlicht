@@ -30,8 +30,8 @@ import dirrlicht.scene.ISceneManager;
 import dirrlicht.scene.IMesh;
 import dirrlicht.scene.IAnimatedMesh;
 
-import std.string;
 import std.conv;
+import std.string;
 
 /// Types of standard md2 animations
 enum EMD2_ANIMATION_TYPE
@@ -64,32 +64,70 @@ enum EMD2_ANIMATION_TYPE
 
 class IAnimatedMeshMD2 : IAnimatedMesh
 {
+	/***
+     * class for using some special functions of MD2 meshes
+     */
     this(ISceneManager _smgr, string file)
     {
         smgr = _smgr;
         super(smgr, file);
     }
-
+    
+    /***
+     * Internal use only!
+     */
+    package this(irr_IAnimatedMeshMD2* ptr)
+    {
+    	this.ptr = ptr;
+    	super(cast(irr_IAnimatedMesh*)this.ptr);
+    }
+    
+    /***
+     * Get frame loop data for a default MD2 animation type.
+     *
+     * Params:
+     *			l = The EMD2_ANIMATION_TYPE to get the frames for.
+     *			outBegin = The returned beginning frame for animation type specified.
+     *			outEnd = The returned ending frame for the animation type specified.
+     *			outFPS = The number of frames per second, this animation should be played at.
+     */
     void getFrameLoop(EMD2_ANIMATION_TYPE l, ref int outBegin, ref int outEnd, ref int outFPS)
     {
         irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
     }
-
+    
+    /***
+     * Get frame loop data for a special MD2 animation type, identified by name.
+     *
+     * Params:
+     *			name = Name of the animation.
+     *			outBegin = The returned beginning frame for animation type specified.
+     *			outEnd = The returned ending frame for the animation type specified.
+     *			outFPS = The number of frames per second, this animation should be played at.
+     */
     bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS)
     {
         return irr_IAnimatedMeshMD2_getFrameLoopByName(ptr, toStringz(name), outBegin, outEnd, outFPS);
     }
-
+    
+    /***
+     * Get amount of md2 animations in this file.
+     */
     int getAnimationCount()
     {
         return irr_IAnimatedMeshMD2_getAnimationCount(ptr);
     }
-
+    
+    /***
+     * Get name of md2 animation.
+	 *
+     * Params:
+     *			nr: Zero based index of animation.
+     */
     string getAnimationName(int nr)
     {
         auto str = irr_IAnimatedMeshMD2_getAnimationName(ptr, nr);
-        string name = to!string(str);
-        return name;
+        return to!string(str);
     }
 
     irr_IAnimatedMeshMD2* ptr;

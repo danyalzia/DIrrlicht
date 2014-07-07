@@ -52,7 +52,12 @@ class IMesh
         smgr = _smgr;
         ptr = cast(irr_IMesh*)irr_ISceneManager_getMesh(smgr.ptr, file.toStringz);
     }
-
+    
+    this(irr_IMesh* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     uint getMeshBufferCount()
     {
         return irr_IMesh_getMeshBufferCount(ptr);
