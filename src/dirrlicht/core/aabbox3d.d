@@ -28,7 +28,7 @@
 */
 module dirrlicht.core.aabbox3d;
 
-import dirrlicht.core.SIMDMath;
+import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 
 struct aabbox3d(T)

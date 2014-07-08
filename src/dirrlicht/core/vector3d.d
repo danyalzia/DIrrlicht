@@ -32,7 +32,7 @@ Danyal Zia
 
 module dirrlicht.core.vector3d;
 
-import dirrlicht.core.SIMDMath;
+import dirrlicht.core.simdmath;
 import std.traits;
 
 struct vector3d(T)

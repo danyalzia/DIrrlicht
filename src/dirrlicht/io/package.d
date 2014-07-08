@@ -28,8 +28,8 @@ module dirrlicht.io;
 
 public
 {
-    import dirrlicht.io.EAttributes;
-    import dirrlicht.io.IAttributes;
-    import dirrlicht.io.IAttributeExchangingObject;
-    import dirrlicht.io.IFileSystem;
+    import dirrlicht.io.attributestypes;
+    import dirrlicht.io.attributes;
+    import dirrlicht.io.attributeexchangingobject;
+    import dirrlicht.io.filesystem;
 }

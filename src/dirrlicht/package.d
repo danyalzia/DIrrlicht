@@ -28,13 +28,13 @@ module dirrlicht;
 
 public
 {
-    import dirrlicht.IEventReceiver;
-    import dirrlicht.ILogger;
-    import dirrlicht.IOSOperator;
-    import dirrlicht.IRandomizer;
-    import dirrlicht.IrrlichtDevice;
-    import dirrlicht.ITimer;
-    import dirrlicht.KeyCodes;
-    import dirrlicht.SIrrCreationParameters;
-    import dirrlicht.SKeyMap;
+    import dirrlicht.eventreceiver;
+    import dirrlicht.logger;
+    import dirrlicht.osoperator;
+    import dirrlicht.randomizer;
+    import dirrlicht.irrlichtdevice;
+    import dirrlicht.timer;
+    import dirrlicht.keycodes;
+    import dirrlicht.irrcreationparameters;
+    import dirrlicht.keymap;
 }

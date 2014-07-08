@@ -9,7 +9,7 @@ import std.conv;
 
 void main()
 {
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(640, 480), 16, false, false, false);
+    auto device = createDevice(DriverType.openGL, dimension2du(640, 480), 16, false, false, false);
 
     device.setResizable(true);
 

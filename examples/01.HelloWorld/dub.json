@@ -7,7 +7,6 @@
 	
 	"targetName": "HelloWorld",
 	"targetType": "executable",
-	"targetPath": "../../bin/Linux",
 
 	"sourcePaths": ["../../src", "."],
 	"importPaths": ["../../src", "."],

@@ -26,7 +26,7 @@
 
 module dirrlicht.core.triangle3d;
 
-import dirrlicht.core.SIMDMath;
+import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 
 struct triangle3d(T)

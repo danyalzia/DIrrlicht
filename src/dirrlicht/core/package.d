@@ -28,7 +28,7 @@ module dirrlicht.core;
 
 public
 {
-    import dirrlicht.core.SIMDMath;
+    import dirrlicht.core.simdmath;
     import dirrlicht.core.aabbox3d;
     import dirrlicht.core.dimension2d;
     import dirrlicht.core.line2d;

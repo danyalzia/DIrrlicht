@@ -26,7 +26,7 @@
 
 module dirrlicht.core.quaternion;
 
-import dirrlicht.core.SIMDMath;
+import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 
 struct quaternion

@@ -28,25 +28,25 @@ module dirrlicht.video;
 
 public
 {
-    import dirrlicht.video.EDeviceTypes;
-    import dirrlicht.video.EDriverFeatures;
-    import dirrlicht.video.EDriverTypes;
-    import dirrlicht.video.EMaterialFlags;
-    import dirrlicht.video.EMaterialTypes;
-    import dirrlicht.video.EShaderTypes;
-    import dirrlicht.video.IGPUProgrammingServices;
-    import dirrlicht.video.IImage;
-    import dirrlicht.video.IImageLoader;
-    import dirrlicht.video.IImageWriter;
-    import dirrlicht.video.IMaterialRenderer;
-    import dirrlicht.video.ITexture;
-    import dirrlicht.video.IVideoDriver;
-    import dirrlicht.video.IVideoModeList;
-    import dirrlicht.video.S3DVertex;
-    import dirrlicht.video.SColor;
-    import dirrlicht.video.SExposedVideoData;
-    import dirrlicht.video.SLight;
-    import dirrlicht.video.SMaterial;
-    import dirrlicht.video.SMaterialLayer;
-    import dirrlicht.video.SVertexIndex;
+    import dirrlicht.video.devicetypes;
+    import dirrlicht.video.driverfeatures;
+    import dirrlicht.video.drivertypes;
+    import dirrlicht.video.materialflags;
+    import dirrlicht.video.materialtypes;
+    import dirrlicht.video.shadertypes;
+    import dirrlicht.video.gpuprogrammingservices;
+    import dirrlicht.video.image;
+    import dirrlicht.video.imageloader;
+    import dirrlicht.video.imagewriter;
+    import dirrlicht.video.materialrenderer;
+    import dirrlicht.video.texture;
+    import dirrlicht.video.videodriver;
+    import dirrlicht.video.videomodelist;
+    import dirrlicht.video.vertex;
+    import dirrlicht.video.color;
+    import dirrlicht.video.exposedvideodata;
+    import dirrlicht.video.light;
+    import dirrlicht.video.material;
+    import dirrlicht.video.materiallayer;
+    import dirrlicht.video.vertexindex;
 }

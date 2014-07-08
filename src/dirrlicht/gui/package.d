@@ -28,13 +28,13 @@ module dirrlicht.gui;
 
 public
 {
-    import dirrlicht.gui.EFocusFlags;
-    import dirrlicht.gui.EGUIAlignment;
-    import dirrlicht.gui.EGUIElementTypes;
-    import dirrlicht.gui.EMessageBoxFlags;
-    import dirrlicht.gui.ICursorControl;
-    import dirrlicht.gui.IGUIEnvironment;
-    import dirrlicht.gui.IGUIFont;
-    import dirrlicht.gui.IGUIImage;
-    import dirrlicht.gui.IGUIStaticText;
+    import dirrlicht.gui.focusflags;
+    import dirrlicht.gui.guialignment;
+    import dirrlicht.gui.guielementtypes;
+    import dirrlicht.gui.messageboxflags;
+    import dirrlicht.gui.cursorcontrol;
+    import dirrlicht.gui.guienvironment;
+    import dirrlicht.gui.guifont;
+    import dirrlicht.gui.guiimage;
+    import dirrlicht.gui.guistatictext;
 }

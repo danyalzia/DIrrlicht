@@ -1,13 +1,8 @@
-
-import dirrlicht;
-import dirrlicht.core;
-import dirrlicht.video;
-import dirrlicht.scene;
-import dirrlicht.gui;
+import dirrlicht.all;
 
 void main()
 {
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800, 600), 16, false, false, false);
+    auto device = createDevice(DriverType.openGL, dimension2du(800, 600), 16, false, false, false);
 
     device.setWindowCaption("Hello World!");
     device.setResizable(true);
