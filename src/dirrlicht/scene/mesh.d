@@ -92,7 +92,7 @@ class Mesh
         irr_IMesh_setBoundingBox(ptr, temp);
     }
 
-    void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)
+    void setMaterialFlag(MaterialFlag flag, bool newvalue)
     {
         irr_IMesh_setMaterialFlag(ptr, flag, newvalue);
     }
@@ -139,6 +139,6 @@ irr_IMeshBuffer* irr_IMesh_getMeshBuffer(irr_IMesh* mesh, uint nr);
 irr_IMeshBuffer* irr_IMesh_getMeshBufferByMaterial(irr_IMesh* mesh, const irr_SMaterial* material);
 irr_aabbox3df irr_IMesh_getBoundingBox(irr_IMesh* mesh);
 void irr_IMesh_setBoundingBox(irr_IMesh* mesh, const ref irr_aabbox3df box);
-void irr_IMesh_setMaterialFlag(irr_IMesh* mesh, E_MATERIAL_FLAG flag, bool newvalue);
+void irr_IMesh_setMaterialFlag(irr_IMesh* mesh, MaterialFlag flag, bool newvalue);
 void irr_IMesh_setHardwareMappingHint(irr_IMesh* mesh, E_HARDWARE_MAPPING newMappingHint, E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX);
 void irr_IMesh_setDirty(irr_IMesh* mesh, E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX);

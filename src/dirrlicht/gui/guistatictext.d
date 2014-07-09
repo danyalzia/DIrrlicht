@@ -61,16 +61,15 @@ class GUIStaticText
         return new GUIFont(temp);
     }
 
-    void setOverrideColor(SColor col)
+    void setOverrideColor(Color col)
     {
-        auto temp = irr_SColor(col.a, col.b, col.g, col.r);
-        irr_IGUIStaticText_setOverrideColor(ptr, temp);
+        irr_IGUIStaticText_setOverrideColor(ptr, col.ptr);
     }
 
-    SColor getOverrideColor()
+    Color getOverrideColor()
     {
         auto temp = irr_IGUIStaticText_getOverrideColor(ptr);
-        return SColor(temp.a, temp.b, temp.g, temp.r);
+        return Color(temp.r, temp.g, temp.b, temp.a);
     }
 
     void enableOverrideColor(bool enable)
@@ -83,9 +82,9 @@ class GUIStaticText
         return irr_IGUIStaticText_isOverrideColorEnabled(ptr);
     }
 
-    void setBackgroundColor(SColor color)
+    void setBackgroundColor(Color color)
     {
-        irr_IGUIStaticText_setBackgroundColor(ptr, irr_SColor(color.a, color.b, color.g, color.r));
+        irr_IGUIStaticText_setBackgroundColor(ptr, color.ptr);
     }
 
     bool isDrawBackgroundEnabled()
@@ -93,10 +92,10 @@ class GUIStaticText
         return irr_IGUIStaticText_isDrawBackgroundEnabled(ptr);
     }
 
-    SColor getBackgroundColor()
+    Color getBackgroundColor()
     {
         auto temp = irr_IGUIStaticText_getBackgroundColor(ptr);
-        return SColor(temp.a, temp.b, temp.g, temp.r);
+        return Color(temp.r, temp.g, temp.b, temp.a);
     }
 
     void setDrawBorder(bool draw)

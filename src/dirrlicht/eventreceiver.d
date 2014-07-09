@@ -29,15 +29,19 @@ module dirrlicht.eventreceiver;
 import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 import dirrlicht.keycodes;
+import dirrlicht.gui.guielement;
+import dirrlicht.logger;
 
-enum EEVENT_TYPE
+enum EventType
 {
-    /// An event of the graphical user interface.
-    /** GUI events are created by the GUI environment or the GUI elements in response
-    to mouse or keyboard events. When a GUI element receives an event it will either
-    process it and return true, or pass the event to its parent. If an event is not absorbed
-    before it reaches the root element then it will then be passed to the user receiver. */
-    EET_GUI_EVENT = 0,
+    /***
+     * An event of the graphical user interface.
+     * GUI events are created by the GUI environment or the GUI elements in response
+     * mouse or keyboard events. When a GUI element receives an event it will either
+     * process it and return true, or pass the event to its parent. If an event is not absorbed
+     * before it reaches the root element then it will then be passed to the user receiver.
+     */
+    GUI = 0,
 
     /// A mouse input event.
     /** Mouse events are created by the device and passed to IrrlichtDevice::postEventFromUser
@@ -45,12 +49,12 @@ enum EEVENT_TYPE
     Mouse events are first passed to the user receiver, then to the GUI environment and its elements,
     then finally the input receiving scene manager where it is passed to the active camera.
     */
-    EET_MOUSE_INPUT_EVENT,
+    mouse,
 
     /// A key input event.
     /** Like mouse events, keyboard events are created by the device and passed to
     IrrlichtDevice::postEventFromUser. They take the same path as mouse events. */
-    EET_KEY_INPUT_EVENT,
+    key,
 
     /// A joystick (joypad, gamepad) input event.
     /** Joystick events are created by polling all connected joysticks once per
@@ -60,12 +64,12 @@ enum EEVENT_TYPE
     Linux: Implemented, with POV hat issues.
     MacOS / Other: Not yet implemented.
     */
-    EET_JOYSTICK_INPUT_EVENT,
+    joystick,
 
     /// A log event
     /** Log events are only passed to the user receiver if there is one. If they are absorbed by the
     user receiver then no text will be sent to the console. */
-    EET_LOG_TEXT_EVENT,
+    log,
 
     /// A user event with user data.
     /** This is not used by Irrlicht and can be used to send user
@@ -80,68 +84,60 @@ enum EEVENT_TYPE
     	casted to s32 and used as UserData1 and UserData2.
     MacOS: Not yet implemented
     */
-    EET_USER_EVENT,
-
-    /// This enum is never used, it only forces the compiler to
-    /// compile these enumeration values to 32 bit.
-    EGUIET_FORCE_32_BIT = 0x7fffffff
-
+    user
 }
 
 /// Enumeration for all mouse input events
-enum EMOUSE_INPUT_EVENT
+enum MouseEventType
 {
     /// Left mouse button was pressed down.
-    EMIE_LMOUSE_PRESSED_DOWN = 0,
+    leftDown = 0,
 
     /// Right mouse button was pressed down.
-    EMIE_RMOUSE_PRESSED_DOWN,
+    rightDown,
 
     /// Middle mouse button was pressed down.
-    EMIE_MMOUSE_PRESSED_DOWN,
+    middleDown,
 
     /// Left mouse button was left up.
-    EMIE_LMOUSE_LEFT_UP,
+    leftUp,
 
     /// Right mouse button was left up.
-    EMIE_RMOUSE_LEFT_UP,
+    rightUp,
 
     /// Middle mouse button was left up.
-    EMIE_MMOUSE_LEFT_UP,
+    middleUp,
 
     /// The mouse cursor changed its position.
-    EMIE_MOUSE_MOVED,
+    move,
 
     /// The mouse wheel was moved. Use Wheel value in event data to find out
     /// in what direction and how fast.
-    EMIE_MOUSE_WHEEL,
+    wheel,
 
     /// Left mouse button double click.
     /// This event is generated after the second EMIE_LMOUSE_PRESSED_DOWN event.
-    EMIE_LMOUSE_DOUBLE_CLICK,
+    leftDoubleClick,
 
     /// Right mouse button double click.
     /// This event is generated after the second EMIE_RMOUSE_PRESSED_DOWN event.
-    EMIE_RMOUSE_DOUBLE_CLICK,
+    rightDoubleClick,
 
     /// Middle mouse button double click.
     /// This event is generated after the second EMIE_MMOUSE_PRESSED_DOWN event.
-    EMIE_MMOUSE_DOUBLE_CLICK,
+    middleDoubleClick,
 
     /// Left mouse button triple click.
     /// This event is generated after the third EMIE_LMOUSE_PRESSED_DOWN event.
-    EMIE_LMOUSE_TRIPLE_CLICK,
+    leftTripleClick,
 
     /// Right mouse button triple click.
     /// This event is generated after the third EMIE_RMOUSE_PRESSED_DOWN event.
-    EMIE_RMOUSE_TRIPLE_CLICK,
+    rightTripleClick,
 
     /// Middle mouse button triple click.
     /// This event is generated after the third EMIE_MMOUSE_PRESSED_DOWN event.
-    EMIE_MMOUSE_TRIPLE_CLICK,
-
-    /// No real event. Just for convenience to get number of events
-    EMIE_COUNT
+    middleTripleClick
 }
 
 /// Masks for mouse button states
@@ -161,117 +157,275 @@ enum E_MOUSE_BUTTON_STATE_MASK
 }
 
 /// Enumeration for all events which are sendable by the gui system
-enum EGUI_EVENT_TYPE
+enum GUIEventType
 {
     /// A gui element has lost its focus.
     /** GUIEvent.Caller is losing the focus to GUIEvent.Element.
     If the event is absorbed then the focus will not be changed. */
-    EGET_ELEMENT_FOCUS_LOST = 0,
+    elementFocusLost = 0,
 
     /// A gui element has got the focus.
     /** If the event is absorbed then the focus will not be changed. */
-    EGET_ELEMENT_FOCUSED,
+    elementFocused,
 
     /// The mouse cursor hovered over a gui element.
     /** If an element has sub-elements you also get this message for the subelements */
-    EGET_ELEMENT_HOVERED,
+    elementMouseHovered,
 
     /// The mouse cursor left the hovered element.
     /** If an element has sub-elements you also get this message for the subelements */
-    EGET_ELEMENT_LEFT,
+    elementMouseLeft,
 
     /// An element would like to close.
     /** Windows and context menus use this event when they would like to close,
     this can be cancelled by absorbing the event. */
-    EGET_ELEMENT_CLOSED,
+    elementClosed,
 
     /// A button was clicked.
-    EGET_BUTTON_CLICKED,
+    buttonClicked,
 
     /// A scrollbar has changed its position.
-    EGET_SCROLL_BAR_CHANGED,
+    scrollBarChanged,
 
     /// A checkbox has changed its check state.
-    EGET_CHECKBOX_CHANGED,
+    checkBoxChanged,
 
     /// A new item in a listbox was selected.
     /** NOTE: You also get this event currently when the same item was clicked again after more than 500 ms. */
-    EGET_LISTBOX_CHANGED,
+    listBoxChanged,
 
     /// An item in the listbox was selected, which was already selected.
     /** NOTE: You get the event currently only if the item was clicked again within 500 ms or selected by "enter" or "space". */
-    EGET_LISTBOX_SELECTED_AGAIN,
+    listBoxSelectedAgain,
 
     /// A file has been selected in the file dialog
-    EGET_FILE_SELECTED,
+    fileDialogFileSelected,
 
     /// A directory has been selected in the file dialog
-    EGET_DIRECTORY_SELECTED,
+    fileDialogDirectorySelected,
 
     /// A file open dialog has been closed without choosing a file
-    EGET_FILE_CHOOSE_DIALOG_CANCELLED,
+    fileDialogCancelled,
 
     /// 'Yes' was clicked on a messagebox
-    EGET_MESSAGEBOX_YES,
+    messageBoxYes,
 
     /// 'No' was clicked on a messagebox
-    EGET_MESSAGEBOX_NO,
+    messageBoxNo,
 
     /// 'OK' was clicked on a messagebox
-    EGET_MESSAGEBOX_OK,
+    messageBoxOK,
 
     /// 'Cancel' was clicked on a messagebox
-    EGET_MESSAGEBOX_CANCEL,
+    messageBoxCancel,
 
     /// In an editbox 'ENTER' was pressed
-    EGET_EDITBOX_ENTER,
+    editBoxEnter,
 
     /// The text in an editbox was changed. This does not include automatic changes in text-breaking.
-    EGET_EDITBOX_CHANGED,
+    editBoxChanged,
 
     /// The marked area in an editbox was changed.
-    EGET_EDITBOX_MARKING_CHANGED,
+    editBoxMarkingChanged,
 
     /// The tab was changed in an tab control
-    EGET_TAB_CHANGED,
+    tabChanged,
 
     /// A menu item was selected in a (context) menu
-    EGET_MENU_ITEM_SELECTED,
+    menuItemSelected,
 
     /// The selection in a combo box has been changed
-    EGET_COMBO_BOX_CHANGED,
+    comboBoxChanged,
 
     /// The value of a spin box has changed
-    EGET_SPINBOX_CHANGED,
+    spinBoxChanged,
 
     /// A table has changed
-    EGET_TABLE_CHANGED,
-    EGET_TABLE_HEADER_CHANGED,
-    EGET_TABLE_SELECTED_AGAIN,
+    tableChanged,
+    tableHeaderChanged,
+    tableSelectedAgain,
 
     /// A tree view node lost selection. See IGUITreeView::getLastEventNode().
-    EGET_TREEVIEW_NODE_DESELECT,
+    treeViewNodeDeselect,
 
     /// A tree view node was selected. See IGUITreeView::getLastEventNode().
-    EGET_TREEVIEW_NODE_SELECT,
+    treeViewNodeSelect,
 
     /// A tree view node was expanded. See IGUITreeView::getLastEventNode().
-    EGET_TREEVIEW_NODE_EXPAND,
+    treeViewNodeExpand,
 
     /// A tree view node was collapsed. See IGUITreeView::getLastEventNode().
-    EGET_TREEVIEW_NODE_COLLAPSE,
-
-    /// deprecated - use EGET_TREEVIEW_NODE_COLLAPSE instead. This
-    /// may be removed by Irrlicht 1.9
-    EGET_TREEVIEW_NODE_COLLAPS = EGET_TREEVIEW_NODE_COLLAPSE,
-
-    /// No real event. Just for convenience to get number of events
-    EGET_COUNT
+    treeViewNodeCollapse,
 }
 
-/// SEvents hold information about an event. See irr::IEventReceiver for details on event handling.
-class SEvent
+/// Events hold information about an event. See irr::IEventReceiver for details on event handling.
+class Event
 {
+	this(irr_SEvent* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	/// Any kind of GUI event.
+	struct GUIEvent
+	{
+		/// IGUIElement who called the event
+		GUIElement Caller;
+
+		/// If the event has something to do with another element, it will be held here.
+		GUIElement Element;
+
+		/// Type of GUI Event
+		EventType eventType;
+	}
+
+	/// Any kind of mouse event.
+	struct MouseInput
+	{
+		/// X position of mouse cursor
+		int X;
+
+		/// Y position of mouse cursor
+		int Y;
+
+		/// mouse wheel delta, often 1.0 or -1.0, but can have other values < 0.f or > 0.f;
+		/// Only valid if event was EMIE_MOUSE_WHEEL
+		float Wheel;
+
+		/// True if shift was also pressed
+		bool Shift;
+
+		/// True if ctrl was also pressed
+		bool Control;
+		
+		//! A bitmap of button states. You can use isButtonPressed() to determine
+		//! if a button is pressed or not.
+		//! Currently only valid if the event was EMIE_MOUSE_MOVED
+		uint ButtonStates;
+
+		//! Is the left button pressed down?
+		bool isLeftPressed() const { return 0 != ( ButtonStates & MouseEventType.leftDown ); }
+
+		//! Is the right button pressed down?
+		bool isRightPressed() const { return 0 != ( ButtonStates & MouseEventType.rightDown ); }
+
+		//! Is the middle button pressed down?
+		bool isMiddlePressed() const { return 0 != ( ButtonStates & MouseEventType.middleDown ); }
+
+		//! Type of mouse event
+		MouseEventType Event;
+	}
+
+	//! Any kind of keyboard event.
+	struct KeyInput
+	{
+		//! Character corresponding to the key (0, if not a character, value undefined in key releases)
+		wchar Char;
+
+		//! Key which has been pressed or released
+		KeyCode Key;
+
+		//! If not true, then the key was left up
+		bool PressedDown;
+
+		//! True if shift was also pressed
+		bool Shift;
+
+		//! True if ctrl was also pressed
+		bool Control;
+	}
+
+	//! A joystick event.
+	/** Unlike other events, joystick events represent the result of polling
+	 * each connected joystick once per run() of the device. Joystick events will
+	 * not be generated by default.  If joystick support is available for the
+	 * active device, _IRR_COMPILE_WITH_JOYSTICK_EVENTS_ is defined, and
+	 * @ref irr::IrrlichtDevice::activateJoysticks() has been called, an event of
+	 * this type will be generated once per joystick per @ref IrrlichtDevice::run()
+	 * regardless of whether the state of the joystick has actually changed. */
+	struct JoystickEvent
+	{
+		enum
+		{
+			NUMBER_OF_BUTTONS = 32,
+
+			AXIS_X = 0,	// e.g. analog stick 1 left to right
+			AXIS_Y,		// e.g. analog stick 1 top to bottom
+			AXIS_Z,		// e.g. throttle, or analog 2 stick 2 left to right
+			AXIS_R,		// e.g. rudder, or analog 2 stick 2 top to bottom
+			AXIS_U,
+			AXIS_V,
+			NUMBER_OF_AXES
+		};
+
+		/** A bitmap of button states.  You can use IsButtonPressed() to
+		 ( check the state of each button from 0 to (NUMBER_OF_BUTTONS - 1) */
+		uint ButtonStates;
+
+		/** For AXIS_X, AXIS_Y, AXIS_Z, AXIS_R, AXIS_U and AXIS_V
+		 * Values are in the range -32768 to 32767, with 0 representing
+		 * the center position.  You will receive the raw value from the
+		 * joystick, and so will usually want to implement a dead zone around
+		 * the center of the range. Axes not supported by this joystick will
+		 * always have a value of 0. On Linux, POV hats are represented as axes,
+		 * usually the last two active axis.
+		 */
+		int Axis[NUMBER_OF_AXES];
+
+		/** The POV represents the angle of the POV hat in degrees * 100,
+		 * from 0 to 35,900.  A value of 65535 indicates that the POV hat
+		 * is centered (or not present).
+		 * This value is only supported on Windows.  On Linux, the POV hat
+		 * will be sent as 2 axes instead. */
+		int POV;
+
+		//! The ID of the joystick which generated this event.
+		/** This is an internal Irrlicht index; it does not map directly
+		 * to any particular hardware joystick. */
+		ubyte Joystick;
+
+		//! A helper function to check if a button is pressed.
+		bool IsButtonPressed(uint button) const
+		{
+			if(button >= cast(uint)NUMBER_OF_BUTTONS)
+				return false;
+
+			return (ButtonStates & (1 << button)) ? true : false;
+		}
+	};
+
+
+	/// Any kind of log event.
+	struct LogEvent
+	{
+		/// Pointer to text which has been logged
+		const char* text;
+
+		/// Log level in which the text has been logged
+		LogLevel Level;
+	}
+
+	/// Any kind of user event.
+	struct UserEvent
+	{
+		/// Some user specified data as int
+		int UserData1;
+
+		/// Another user specified data as int
+		int UserData2;
+	}
+	
+	EventType eventType;
+	union
+	{
+		GUIEvent guiEvent;
+		MouseInput mouseInput;
+		KeyInput keyInput;
+		JoystickEvent joystickEvent;
+		LogEvent logEvent;
+		UserEvent userEvent;
+	};
+	
 	irr_SEvent* ptr;
 private:
 	IrrlichtDevice device;
@@ -279,23 +433,34 @@ private:
 
 class IEventReceiver
 {
-	this(IrrlichtDevice dev)
-	{
-		device = dev;
-		ptr = irr_IrrlichtDevice_getEventReceiver(device.ptr);
-	}
-	
 	this(irr_IEventReceiver* ptr)
 	{
 		this.ptr = ptr;
 	}
+	
+	abstract bool OnEvent(Event event);
 	irr_IEventReceiver* ptr;
-private:
-	IrrlichtDevice device;
 }
 
-//! Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
-struct SJoystickInfo
+class EventReceiver : IEventReceiver
+{
+	this() { super(ptr); }
+	this(irr_IEventReceiver* ptr)
+	{
+		super(ptr);
+	}
+	
+	override bool OnEvent(Event event)
+	{
+		return irr_IEventReceiver_OnEvent(super.ptr, event.ptr);
+	}
+	
+	IEventReceiver* base;
+	alias base this;
+}
+
+/// Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
+struct JoystickInfo
 {
 	/***
 	 * The ID of the joystick
@@ -303,18 +468,18 @@ struct SJoystickInfo
 	 * to any particular hardware joystick. It corresponds to the
 	 * SJoystickEvent Joystick ID.
 	 */
-	ubyte Joystick;
+	ubyte joystick;
 
 	/// The name that the joystick uses to identify itself.
-	string Name;
+	string name;
 
 	/// The number of buttons that the joystick has.
-	uint Buttons;
+	uint buttons;
 
 	/// The number of axes that the joystick has, i.e. X, Y, Z, R, U, V.
 	/// Note: with a Linux device, the POV hat (if any) will use two axes. These
 	/// will be included in this count.
-	uint Axes;
+	uint axes;
 
 	/// An indication of whether the joystick has a POV hat.
 	/// A Windows device will identify the presence or absence or the POV hat.  A
@@ -322,13 +487,13 @@ struct SJoystickInfo
 	enum PovHat
 	{
 		/// A hat is definitely present.
-		POV_HAT_PRESENT,
+		present,
 
 		/// A hat is definitely not present.
-		POV_HAT_ABSENT,
+		absent,
 
 		/// The presence or absence of a hat cannot be determined.
-		POV_HAT_UNKNOWN
+		unknown
 	}
 }
 

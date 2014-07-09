@@ -45,17 +45,24 @@ import dirrlicht.timer;
 import dirrlicht.randomizer;
 import dirrlicht.eventreceiver;
 
-import std.string;
-import std.conv;
-import std.utf;
+import std.string : toStringz;
+import std.conv : to;
+import std.utf : toUTFz;
 
+/+++
+ + The Irrlicht device. You can create it with createDevice() or createDeviceEx().
+ + This is the most important class of the Irrlicht Engine. You can
+ + access everything in the engine if you have a pointer to an instance of
+ + this class.  There should be only one instance of this class at any
+ + time.
+ +/
 class IrrlichtDevice
 {
     this(DriverType type, dimension2du dim, uint bits, bool fullscreen, bool stencilbuffer, bool vsync)
     {
         ptr = irr_createDevice(type, irr_dimension2du(dim.Width, dim.Height), bits, fullscreen, stencilbuffer, vsync);
     }
-
+    
     bool run()
     {
         return irr_IrrlichtDevice_run(ptr);
@@ -71,73 +78,26 @@ class IrrlichtDevice
         irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
     }
 
-    VideoDriver getVideoDriver()
-    {
-        return new VideoDriver(this);
-    }
-
-    FileSystem getFileSystem()
-    {
-    	return new FileSystem(this);
-    }
-
-    GUIEnvironment getGUIEnvironment()
-    {
-        return new GUIEnvironment(this);
-    }
-
-    SceneManager getSceneManager()
-    {
-        return new SceneManager(this);
-    }
-    
-    CursorControl getCursorControl()
-    {
-        return new CursorControl(this);
-    }
-
-    Logger getLogger()
-    {
-        return new Logger(this);
-    }
-
-    VideoModeList getVideoModeList()
-    {
-        return new VideoModeList(this);
-    }
-
-    OSOperator getOSOperator()
-    {
-        return new OSOperator(this);
-    }
-
-    Timer getTimer()
-    {
-        auto operator = new Timer(this);
-        return operator;
-    }
-
-    Randomizer getRandomizer()
-    {
-        return new Randomizer(this);
-    }
-
-    void setRandomizer(Randomizer randomizer)
-    {
-        irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr);
-    }
+    @property VideoDriver videoDriver() { return new VideoDriver(this); }
+    @property FileSystem fileSystem() { return new FileSystem(this); }
+    @property GUIEnvironment guiEnvironment() { return new GUIEnvironment(this); }
+    @property SceneManager sceneManager() { return new SceneManager(this); }
+    @property CursorControl cursorControl() { return new CursorControl(this); }
+    @property Logger logger() { return new Logger(this); }
+    @property VideoModeList videoModeList() { return new VideoModeList(this); }
+    @property OSOperator osOperator() { return new OSOperator(this); }
+    @property Timer timer() { return new Timer(this); }
+    @property Randomizer randomizer() { return new Randomizer(this); }
+    @property void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
 
     Randomizer createDefaultRandomizer()
     {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
         return new Randomizer(randomizer);
     }
-
-    void setWindowCaption(dstring text)
-    {
-        irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text));
-    }
-
+    
+    @property void windowCaption(dstring text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
+    
     bool isWindowActive()
     {
         return irr_IrrlichtDevice_isWindowActive(ptr);
@@ -158,7 +118,7 @@ class IrrlichtDevice
         return irr_IrrlichtDevice_isFullscreen(ptr);
     }
 
-    ECOLOR_FORMAT getColorFormat()
+    ColorFormat getColorFormat()
     {
         return irr_IrrlichtDevice_getColorFormat(ptr);
     }
@@ -173,19 +133,11 @@ class IrrlichtDevice
         const char* str = irr_IrrlichtDevice_getVersion(ptr);
         return to!string(str);
     }
+    
+    @property void eventReceiver(EventReceiver receiver) { eventPtr = new EventReceiver(receiver.ptr); irr_IrrlichtDevice_setEventReceiver(ptr, eventPtr.ptr);   }
+    @property EventReceiver eventReceiver() { return eventPtr; }
 
-    void setEventReceiver(IEventReceiver receiver)
-    {
-        irr_IrrlichtDevice_setEventReceiver(ptr, receiver.ptr);
-    }
-
-    IEventReceiver getEventReceiver()
-    {
-        auto receiver = new IEventReceiver(this);
-        return receiver;
-    }
-
-    bool postEventFromUser(SEvent event)
+    bool postEventFromUser(Event event)
     {
         return irr_IrrlichtDevice_postEventFromUser(ptr, event.ptr);
     }
@@ -194,17 +146,10 @@ class IrrlichtDevice
     {
         irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr.ptr);
     }
-
-    void setResizable(bool value=false)
-    {
-        irr_IrrlichtDevice_setResizable(ptr, value);
-    }
-
-    void setWindowSize(dimension2du dim)
-    {
-        irr_dimension2du temp = {dim.Width, dim.Height};
-        irr_IrrlichtDevice_setWindowSize(ptr, &temp);
-    }
+    
+    @property void resizable(bool value) { irr_IrrlichtDevice_setResizable(ptr, value); }
+    
+    @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim.ptr); }
 
     void minimizeWindow()
     {
@@ -228,60 +173,84 @@ class IrrlichtDevice
         return pos;
     }
     
-    bool activateJoysticks(irr_IrrlichtDevice* device, SJoystickInfo[] joystickInfo)
+    bool activateJoysticks(irr_IrrlichtDevice* device, JoystickInfo[] joystickInfo)
     {
     	irr_array temp;
     	temp.data = joystickInfo.ptr;
     	return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
     }
     
+    /// Set the current Gamma Value for the Display
     bool setGammaRamp(float red, float green, float blue, float relativebrightness, float relativecontrast)
     {
         return irr_IrrlichtDevice_setGammaRamp(ptr, red, green, blue, relativebrightness, relativecontrast);
     }
-
+    
+    /// Get the current Gamma Value for the Display
     bool getGammaRamp(out float red, out float green, out float blue, out float relativebrightness, out float relativecontrast)
     {
         return irr_IrrlichtDevice_getGammaRamp(ptr, red, green, blue, relativebrightness, relativecontrast);
     }
-
-    void setDoubleClickTime(uint timeMs)
-    {
-        irr_IrrlichtDevice_setDoubleClickTime(ptr, timeMs);
-    }
-
-    uint getDoubleClickTime()
-    {
-        return irr_IrrlichtDevice_getDoubleClickTime(ptr);
-    }
-
+    
+    /***
+     * Set the maximal elapsed time between 2 clicks to generate doubleclicks for the mouse. It also affects tripleclick behavior.
+	 *  When set to 0 no double- and tripleclicks will be generated.
+	 *	Params: timeMs = maximal time in milliseconds for two consecutive clicks to be recognized as double click
+	 */
+    @property void doubleClickTime(uint timeMs) { irr_IrrlichtDevice_setDoubleClickTime(ptr, timeMs); }
+    
+    /***
+     * Get the maximal elapsed time between 2 clicks to generate double- and tripleclicks for the mouse.
+	 * When return value is 0 no double- and tripleclicks will be generated.
+	 */
+    @property uint doubleClickTime() { return irr_IrrlichtDevice_getDoubleClickTime(ptr); }
+    
+    /***
+     * Remove messages pending in the system message loop
+	 * This function is usually used after messages have been buffered for a longer time, for example
+	 * when loading a large scene. Clearing the message loop prevents that mouse- or buttonclicks which users
+	 * have pressed in the meantime will now trigger unexpected actions in the gui. <br>
+	 * So far the following messages are cleared:<br>
+	 * Win32: All keyboard and mouse messages<br>
+	 * Linux: All keyboard and mouse messages<br>
+	 * All other devices are not yet supported here.<br>
+	 * The function is still somewhat experimental, as the kind of messages we clear is based on just a few use-cases.
+	 * If you think further messages should be cleared, or some messages should not be cleared here, then please tell us.
+	 */
     void clearSystemMessages()
     {
         irr_IrrlichtDevice_clearSystemMessages(ptr);
     }
-
-    E_DEVICE_TYPE getType()
-    {
-        return irr_IrrlichtDevice_getType(ptr);
-    }
-
+    
+    /***
+     * Get the type of the device.
+	 * This allows the user to check which windowing system is currently being
+	 * used.
+     */
+    @property DeviceType type() { return irr_IrrlichtDevice_getType(ptr); }
+    
+    /***
+     * Check if a driver type is supported by the engine.
+	 * Even if true is returned the driver may not be available
+	 * for a configuration requested when creating the device.
+     */
     bool isDriverSupported(DriverType type)
     {
         return irr_IrrlichtDevice_isDriverSupported(ptr, type);
     }
-
+    
     void drop()
     {
         irr_IrrlichtDevice_drop(ptr);
     }
-
-    irr_IrrlichtDevice* ptr;
+    
+    EventReceiver eventPtr;
+	irr_IrrlichtDevice* ptr;
 }
 
-IrrlichtDevice createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false)
+auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false)
 {
-	auto device = new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
-	return device;
+	return new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
 }
 
 /// IrrlichtDevice example
@@ -296,45 +265,45 @@ unittest
             run();
             yield();
             sleep(1);
-            auto videodriver = getVideoDriver();
+            auto videodriver = videoDriver;
             assert(videodriver !is null);
             assert(videodriver.ptr != null);
 
-            auto filesystem = getFileSystem();
+            auto filesystem = fileSystem;
             assert(filesystem !is null);
             assert(filesystem.ptr != null);
 
-            auto guienv = getGUIEnvironment();
+            auto guienv = guiEnvironment;
             assert(guienv !is null);
             assert(guienv.ptr != null);
 
-            auto scenemgr = getSceneManager();
+            auto scenemgr = scenemanager;
             assert(scenemgr !is null);
             assert(scenemgr.ptr != null);
 
-            auto cursorcontrol = getCursorControl();
+            auto cursorcontrol = cursorControl;
             assert(cursorcontrol !is null);
             assert(cursorcontrol.ptr != null);
 
-            auto logger = getLogger();
-            assert(logger !is null);
-            assert(logger.ptr != null);
+            auto Logger = logger;
+            assert(Logger !is null);
+            assert(Logger.ptr != null);
 
-            auto videolist = getVideoModeList();
+            auto videolist = videoModeList;
             assert(videolist !is null);
             assert(videolist.ptr != null);
 
-            auto osoperator = getOSOperator();
-            assert(osoperator !is null);
-            assert(osoperator.ptr != null);
+            auto OSoperator = osoperator;
+            assert(OSoperator !is null);
+            assert(OSoperator.ptr != null);
 
-            auto timer = getTimer();
-            assert(timer !is null);
-            assert(timer.ptr != null);
+            auto Timer = timer;
+            assert(Timer !is null);
+            assert(Timer.ptr != null);
 
-            auto randomizer = getRandomizer();
-            assert(randomizer !is null);
-            assert(randomizer.ptr != null);
+            auto randomizer1 = randomizer;
+            assert(randomizer1 !is null);
+            assert(randomizer1.ptr != null);
 
             setRandomizer(randomizer);
             createDefaultRandomizer();
@@ -405,7 +374,7 @@ bool irr_IrrlichtDevice_isWindowActive(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_isWindowFocused(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_isWindowMinimized(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_isFullscreen(irr_IrrlichtDevice* device);
-ECOLOR_FORMAT irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
+ColorFormat irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
 const char* irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
@@ -413,7 +382,7 @@ irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* devi
 bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, irr_SEvent* event);
 void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
 void irr_IrrlichtDevice_setResizable(irr_IrrlichtDevice* device, bool value = false);
-void irr_IrrlichtDevice_setWindowSize(irr_IrrlichtDevice* device, irr_dimension2du* size);
+void irr_IrrlichtDevice_setWindowSize(irr_IrrlichtDevice* device, irr_dimension2du size);
 void irr_IrrlichtDevice_minimizeWindow(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_maximizeWindow(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_restoreWindow(irr_IrrlichtDevice* device);

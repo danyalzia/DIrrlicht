@@ -55,37 +55,35 @@ import dirrlicht.video.drivertypes;
 import dirrlicht.video.gpuprogrammingservices;
 import dirrlicht.scene.meshmanipulator;
 
-import std.conv;
-import std.utf;
-import std.string;
+import std.conv : to;
+import std.utf : toUTFz;
+import std.string : toStringz;
 
 /// enumeration for geometry transformation states
-enum E_TRANSFORMATION_STATE
+enum TransformationState
 {
     /// View transformation
-    ETS_VIEW = 0,
+    view = 0,
     /// World transformation
-    ETS_WORLD,
+    world,
     /// Projection transformation
-    ETS_PROJECTION,
+    projection,
     /// Texture transformation
-    ETS_TEXTURE_0,
+    texture0,
     /// Texture transformation
-    ETS_TEXTURE_1,
+    texture1,
     /// Texture transformation
-    ETS_TEXTURE_2,
+    texture2,
     /// Texture transformation
-    ETS_TEXTURE_3,
+    texture3,
     /// Texture transformation
-    ETS_TEXTURE_4,
+    texture4,
     /// Texture transformation
-    ETS_TEXTURE_5,
+    texture5,
     /// Texture transformation
-    ETS_TEXTURE_6,
+    texture6,
     /// Texture transformation
-    ETS_TEXTURE_7,
-    /// Not used
-    ETS_COUNT
+    texture7
 }
 
 /// enumeration for signaling resources which were lost after the last render cycle
@@ -106,47 +104,39 @@ enum E_LOST_RESOURCE
 
 /// Special render targets, which usually map to dedicated hardware
 /// These render targets (besides 0 and 1) need not be supported by gfx cards
-enum E_RENDER_TARGET
+enum RenderTarget
 {
     /// Render target is the main color frame buffer
-    ERT_FRAME_BUFFER=0,
+    frameBuffer=0,
     /// Render target is a render texture
-    ERT_RENDER_TEXTURE,
+    renderTexture,
     /// Multi-Render target textures
-    ERT_MULTI_RENDER_TEXTURES,
+    multiRenderTexture,
     /// Render target is the main color frame buffer
-    ERT_STEREO_LEFT_BUFFER,
+    stereoLeftBuffer,
     /// Render target is the right color buffer (left is the main buffer)
-    ERT_STEREO_RIGHT_BUFFER,
+    stereoRightBuffer,
     /// Render to both stereo buffers at once
-    ERT_STEREO_BOTH_BUFFERS,
+    stereoBothBuffers,
     /// Auxiliary buffer 0
-    ERT_AUX_BUFFER0,
+    auxBuffer0,
     /// Auxiliary buffer 1
-    ERT_AUX_BUFFER1,
+    auxBuffer1,
     /// Auxiliary buffer 2
-    ERT_AUX_BUFFER2,
+    auxBuffer2,
     /// Auxiliary buffer 3
-    ERT_AUX_BUFFER3,
+    auxBuffer3,
     /// Auxiliary buffer 4
-    ERT_AUX_BUFFER4
+    auxBuffer4
 }
 
 /// Enum for the types of fog distributions to choose from
-enum E_FOG_TYPE
+enum FogType
 {
-    EFT_FOG_EXP=0,
-    EFT_FOG_LINEAR,
-    EFT_FOG_EXP2
+    exp=0,
+    linear,
+    exp2
 }
-
-string FogTypeNames[] =
-    [
-        "FogExp",
-        "FogLinear",
-        "FogExp2",
-        "0"
-    ];
 
 class VideoDriver
 {
@@ -161,7 +151,7 @@ class VideoDriver
     	this.ptr = ptr;
     }
     
-    bool beginScene(bool backBuffer, bool zBuffer, SColor col)
+    bool beginScene(bool backBuffer, bool zBuffer, Color col)
     {
         return irr_IVideoDriver_beginScene(ptr, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
     }
@@ -171,12 +161,12 @@ class VideoDriver
         return irr_IVideoDriver_endScene(ptr);
     }
 
-    bool queryFeature(E_VIDEO_DRIVER_FEATURE feature)
+    bool queryFeature(DriverFeature feature)
     {
         return irr_IVideoDriver_queryFeature(ptr, feature);
     }
 
-    void disableFeature(E_VIDEO_DRIVER_FEATURE feature, bool flag=true)
+    void disableFeature(DriverFeature feature, bool flag=true)
     {
         irr_IVideoDriver_disableFeature(ptr, feature, flag);
     }
@@ -184,7 +174,7 @@ class VideoDriver
     IAttributes getDriverAttributes()
     {
         auto att = irr_IVideoDriver_getDriverAttributes(ptr);
-        return cast(IAttributes)att;
+        return new IAttributes(att);
     }
 
     bool checkDriverReset()
@@ -192,7 +182,7 @@ class VideoDriver
         return irr_IVideoDriver_checkDriverReset(ptr);
     }
 
-    void setTransform(E_TRANSFORMATION_STATE state, matrix4 mat)
+    void setTransform(TransformationState state, matrix4 mat)
     {
         irr_matrix4 temp;
         foreach(i; 0..16)
@@ -207,26 +197,24 @@ class VideoDriver
     {
         return new Texture(this, file);
     }
-
-    int getFPS()
-    {
-        return irr_IVideoDriver_getFPS(ptr);
-    }
-
-    dstring getName()
+    
+    @property int fps() { return irr_IVideoDriver_getFPS(ptr); }
+    
+   
+    string name() @property
     {
         auto temp = irr_IVideoDriver_getName(ptr);
         dstring text = temp[0..strlen(temp)].idup;
-        return text;
+        return to!string(text);
     }
-
+    
     irr_IVideoDriver* ptr;
 private:
     IrrlichtDevice device;
 }
 
 /// strlen for dchar*
-private size_t strlen(const(dchar)* str)
+private pure nothrow @system size_t strlen(const(dchar)* str)
 {
     size_t n = 0;
     for (; str[n] != 0; ++n) {}
@@ -274,12 +262,12 @@ struct irr_SOverrideMaterial;
 
 bool irr_IVideoDriver_beginScene(irr_IVideoDriver* driver, bool backBuffer, bool zBuffer, irr_SColor color);
 bool irr_IVideoDriver_endScene(irr_IVideoDriver* driver);
-bool irr_IVideoDriver_queryFeature(irr_IVideoDriver* driver, E_VIDEO_DRIVER_FEATURE feature);
-void irr_IVideoDriver_disableFeature(irr_IVideoDriver* driver, E_VIDEO_DRIVER_FEATURE feature, bool flag=true);
+bool irr_IVideoDriver_queryFeature(irr_IVideoDriver* driver, DriverFeature feature);
+void irr_IVideoDriver_disableFeature(irr_IVideoDriver* driver, DriverFeature feature, bool flag=true);
 irr_IAttributes* irr_IVideoDriver_getDriverAttributes(irr_IVideoDriver* driver);
 bool irr_IVideoDriver_checkDriverReset(irr_IVideoDriver* driver);
-void irr_IVideoDriver_setTransform(irr_IVideoDriver* driver, E_TRANSFORMATION_STATE state, irr_matrix4 mat);
-irr_matrix4 irr_IVideoDriver_getTransform(irr_IVideoDriver* driver, E_TRANSFORMATION_STATE state);
+void irr_IVideoDriver_setTransform(irr_IVideoDriver* driver, TransformationState state, irr_matrix4 mat);
+irr_matrix4 irr_IVideoDriver_getTransform(irr_IVideoDriver* driver, TransformationState state);
 uint irr_IVideoDriver_getImageLoaderCount(irr_IVideoDriver* driver);
 irr_IImageLoader* irr_IVideoDriver_getImageLoader(irr_IVideoDriver* driver, uint n);
 uint irr_IVideoDriver_getImageWriterCount(irr_IVideoDriver* driver);
@@ -289,9 +277,9 @@ irr_ITexture* irr_IVideoDriver_getTexture(irr_IVideoDriver* driver, const char* 
 irr_ITexture* irr_IVideoDriver_getTextureByIndex(irr_IVideoDriver* driver, uint index);
 uint irr_IVideoDriver_getTextureCount(irr_IVideoDriver* driver);
 void irr_IVideoDriver_renameTexture(irr_IVideoDriver* driver, irr_ITexture* texture, const char* newName);
-irr_ITexture* irr_IVideoDriver_addTexture(irr_IVideoDriver* driver, irr_dimension2du size, const char* name, ECOLOR_FORMAT format);
+irr_ITexture* irr_IVideoDriver_addTexture(irr_IVideoDriver* driver, irr_dimension2du size, const char* name, ColorFormat format);
 //irr_ITexture* irr_IVideoDriver_addTexture(const char* name, irr_IImage* image, void* mipmapData);
-irr_ITexture* irr_IVideoDriver_addRenderTargetTexture(irr_IVideoDriver* driver, irr_dimension2du size, const char* name, const ECOLOR_FORMAT);
+irr_ITexture* irr_IVideoDriver_addRenderTargetTexture(irr_IVideoDriver* driver, irr_dimension2du size, const char* name, const ColorFormat);
 void irr_IVideoDriver_removeTexture(irr_IVideoDriver* driver, irr_ITexture* texture);
 void irr_IVideoDriver_removeAllTextures(irr_IVideoDriver* driver);
 void irr_IVideoDriver_removeHardwareBuffer(irr_IVideoDriver* driver, irr_IMeshBuffer* mb);
@@ -307,14 +295,14 @@ uint irr_IVideoDriver_getOcclusionQueryResult(irr_IVideoDriver* driver, irr_ISce
 void irr_IVideoDriver_makeColorKeyTexture(irr_IVideoDriver* driver, irr_ITexture* texture, irr_SColor color, bool zeroTexels);
 void irr_IVideoDriver_makeNormalMapTexture(irr_IVideoDriver* driver, irr_ITexture* texture, float amplitude=1.0f);
 bool irr_IVideoDriver_setRenderTarget(irr_IVideoDriver* driver, irr_ITexture* texture, bool clearBackBuffer, bool clearZBuffer, irr_SColor color);
-bool irr_IVideoDriver_setRenderTargetByEnum(irr_IVideoDriver* driver, E_RENDER_TARGET target, bool clearTarget, bool clearZBuffer, irr_SColor color);
+bool irr_IVideoDriver_setRenderTargetByEnum(irr_IVideoDriver* driver, RenderTarget target, bool clearTarget, bool clearZBuffer, irr_SColor color);
 
 void irr_IVideoDriver_setViewPort(irr_IVideoDriver* driver, irr_recti area);
 irr_recti irr_IVideoDriver_getViewPort(irr_IVideoDriver* driver);
 
-void irr_IVideoDriver_setFog(irr_IVideoDriver* driver, irr_SColor color, E_FOG_TYPE fogType, float start, float end, float density, bool pixelFog, bool rangeFog);
-void irr_IVideoDriver_getFog(irr_IVideoDriver* driver, irr_SColor* color, ref E_FOG_TYPE fogType, ref float start, ref float end, ref float density, ref bool pixelFog, ref bool rangeFog);
-ECOLOR_FORMAT irr_IVideoDriver_getColorFormat(irr_IVideoDriver* driver);
+void irr_IVideoDriver_setFog(irr_IVideoDriver* driver, irr_SColor color, FogType fogType, float start, float end, float density, bool pixelFog, bool rangeFog);
+void irr_IVideoDriver_getFog(irr_IVideoDriver* driver, irr_SColor* color, ref FogType fogType, ref float start, ref float end, ref float density, ref bool pixelFog, ref bool rangeFog);
+ColorFormat irr_IVideoDriver_getColorFormat(irr_IVideoDriver* driver);
 irr_dimension2du irr_IVideoDriver_getScreenSize(irr_IVideoDriver* driver);
 irr_dimension2du irr_IVideoDriver_getCurrentRenderTargetSize(irr_IVideoDriver* driver);
 int irr_IVideoDriver_getFPS(irr_IVideoDriver* driver);
@@ -334,8 +322,8 @@ bool irr_IVideoDriver_getTextureCreationFlag(irr_IVideoDriver* driver, E_TEXTURE
 irr_IImage* irr_IVideoDriver_createImageFromFile(irr_IVideoDriver* driver, const char* file);
 bool irr_IVideoDriver_writeImageToFile(irr_IVideoDriver* driver, irr_IImage* image, const char* filename, uint param = 0);
 //  bool irr_IVideoDriver_writeImageToFile(irr_IVideoDriver* driver, irr_IImage* image, irr_IWriteFile* file, uint param =0);
-irr_IImage* irr_IVideoDriver_createImageFromData(irr_IVideoDriver* driver, ECOLOR_FORMAT format, irr_dimension2du size, void *data, bool ownForeignMemory=false, bool deleteMemory = true);
-irr_IImage* irr_IVideoDriver_createEmptyImage(irr_IVideoDriver* driver, ECOLOR_FORMAT format, irr_dimension2du size);
+irr_IImage* irr_IVideoDriver_createImageFromData(irr_IVideoDriver* driver, ColorFormat format, irr_dimension2du size, void *data, bool ownForeignMemory=false, bool deleteMemory = true);
+irr_IImage* irr_IVideoDriver_createEmptyImage(irr_IVideoDriver* driver, ColorFormat format, irr_dimension2du size);
 irr_IImage* irr_IVideoDriver_createImage(irr_IVideoDriver* driver, irr_ITexture* texture, irr_vector2di pos, irr_dimension2du size);
 void irr_IVideoDriver_OnResize(irr_IVideoDriver* driver, irr_dimension2du size);
 int irr_IVideoDriver_addMaterialRenderer(irr_IVideoDriver* driver, irr_IMaterialRenderer* renderer, const char* name);
@@ -350,7 +338,7 @@ DriverType irr_IVideoDriver_getDriverType(irr_IVideoDriver* driver);
 irr_IGPUProgrammingServices* irr_IVideoDriver_getGPUProgrammingServices(irr_IVideoDriver* driver);
 irr_IMeshManipulator* irr_IVideoDriver_getMeshManipulator(irr_IVideoDriver* driver);
 void irr_IVideoDriver_clearZBuffer(irr_IVideoDriver* driver);
-irr_IImage* irr_IVideoDriver_createScreenShot(irr_IVideoDriver* driver, ECOLOR_FORMAT format, E_RENDER_TARGET target);
+irr_IImage* irr_IVideoDriver_createScreenShot(irr_IVideoDriver* driver, ColorFormat format, RenderTarget target);
 irr_ITexture* irr_IVideoDriver_findTexture(irr_IVideoDriver* driver, const char* filename);
 bool irr_IVideoDriver_setClipPlane(irr_IVideoDriver* driver, uint index, irr_plane3df* plane, bool enable=false);
 void irr_IVideoDriver_enableClipPlane(irr_IVideoDriver* driver, uint index, bool enable);
@@ -362,4 +350,4 @@ const char* irr_IVideoDriver_getVendorInfo(irr_IVideoDriver* driver);
 void irr_IVideoDriver_setAmbientLight(irr_IVideoDriver* driver, irr_SColorf color);
 void irr_IVideoDriver_setAllowZWriteOnTransparent(irr_IVideoDriver* driver, bool flag);
 irr_dimension2du irr_IVideoDriver_getMaxTextureSize(irr_IVideoDriver* driver);
-void irr_IVideoDriver_convertColor(irr_IVideoDriver* driver, const void* sP, ECOLOR_FORMAT sF, int sN, void* dP, ECOLOR_FORMAT dF);
+void irr_IVideoDriver_convertColor(irr_IVideoDriver* driver, const void* sP, ColorFormat sF, int sN, void* dP, ColorFormat dF);

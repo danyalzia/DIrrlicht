@@ -26,70 +26,80 @@
 
 module dirrlicht.video.color;
 
-enum ECOLOR_FORMAT
+enum ColorFormat
 {
     /// 16 bit color format used by the software driver.
     /** It is thus preferred by all other irrlicht engine video drivers.
     There are 5 bits for every color component, and a single bit is left
     for alpha information. */
-    ECF_A1R5G5B5 = 0,
+    A1R5G5B5 = 0,
 
     /// Standard 16 bit color format.
-    ECF_R5G6B5,
+    R5G6B5,
 
     /// 24 bit color, no alpha channel, but 8 bit for red, green and blue.
-    ECF_R8G8B8,
+    R8G8B8,
 
     /// Default 32 bit color format. 8 bits are used for every component: red, green, blue and alpha.
-    ECF_A8R8G8B8,
+    A8R8G8B8,
 
     /** Compressed image formats. **/
 
     /// DXT1 color format.
-    ECF_DXT1,
+    DXT1,
 
     /// DXT2 color format.
-    ECF_DXT2,
+    DXT2,
 
     /// DXT3 color format.
-    ECF_DXT3,
+    DXT3,
 
     /// DXT4 color format.
-    ECF_DXT4,
+    DXT4,
 
     /// DXT5 color format.
-    ECF_DXT5,
+    DXT5,
 
     /// Floating Point formats. The following formats may only be used for render target textures. */
 
     /// 16 bit floating point format using 16 bits for the red channel.
-    ECF_R16F,
+    R16F,
 
     /// 32 bit floating point format using 16 bits for the red channel and 16 bits for the green channel.
-    ECF_G16R16F,
+    G16R16F,
 
     /// 64 bit floating point format 16 bits are used for the red, green, blue and alpha channels.
-    ECF_A16B16G16R16F,
+    A16B16G16R16F,
 
     /// 32 bit floating point format using 32 bits for the red channel.
-    ECF_R32F,
+    R32F,
 
     /// 64 bit floating point format using 32 bits for the red channel and 32 bits for the green channel.
-    ECF_G32R32F,
+    G32R32F,
 
     /// 128 bit floating point format. 32 bits are used for the red, green, blue and alpha channels.
-    ECF_A32B32G32R32F,
-
-    /** Unknown color format */
-    ECF_UNKNOWN
+    A32B32G32R32F
 }
 
-struct SColor
+struct Color
 {
-    uint a;
-    uint b;
-    uint g;
+	@disable this();
+	this(uint r, uint g, uint b, uint a)
+	{
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+	}
+	
+	@property Color reverse()
+	{
+		return Color(a,b,g,a);
+	}
     uint r;
+    uint g;
+    uint b;
+    uint a;
     
 	@property irr_SColor ptr()
 	{
@@ -97,7 +107,7 @@ struct SColor
 	}
 }
 
-struct SColorf
+struct Colorf
 {
     float a;
     float b;

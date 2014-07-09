@@ -1,23 +1,18 @@
+import dirrlicht.all;
 
-import dirrlicht;
-import dirrlicht.core;
-import dirrlicht.video;
-import dirrlicht.scene;
-import dirrlicht.gui;
-
-import std.conv;
+import std.conv : to;
 
 void main()
 {
     auto device = createDevice(DriverType.openGL, dimension2du(640, 480), 16, false, false, false);
 
-    device.setResizable(true);
+    device.resizable = true;
 
-    auto driver = device.getVideoDriver();
-    auto smgr = device.getSceneManager();
-    auto gui = device.getGUIEnvironment();
+    auto driver = device.videoDriver;
+    auto smgr = device.sceneManager;
+    auto gui = device.guiEnvironment;
 
-    device.getFileSystem().addFileArchive("../../media/map-20kdm2.pk3");
+    device.fileSystem.addFileArchive("../../media/map-20kdm2.pk3");
 
     auto mesh = smgr.getMesh("20kdm2.bsp");
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
@@ -26,34 +21,33 @@ void main()
 
     smgr.addCameraSceneNodeFPS();
 
-    auto cursor = device.getCursorControl();
-    cursor.setVisible(false);
+	device.cursorControl.setVisible(false);
 
     auto col = SColor(255,200,200,200);
     int lastFPS = -1;
 
-    while (device.run())
+    while (device.run)
     {
-        if (device.isWindowActive())
+        if (device.isWindowActive)
         {
             driver.beginScene(true, true, col);
-            smgr.drawAll();
-            gui.drawAll();
-            driver.endScene();
+            smgr.drawAll;
+            gui.drawAll;
+            driver.endScene;
 
-            int fps = driver.getFPS();
+            int fps = driver.fps;
 
             if (lastFPS != fps)
             {
                 dstring str = "DIrrlicht - Quake 3 Map example [";
-                str ~= driver.getName();
-				str ~= "] FPS:";
-				str ~= to!dstring(fps);
-				device.setWindowCaption(str);
-                lastFPS = fps;
+                //str ~= driver.name;
+				//str ~= "] FPS:";
+				//str ~= to!dstring(fps);
+				//device.windowCaption = str;
+                //lastFPS = fps;
             }
         }
         else
-            device.yield();
+            device.yield;
     }
 }

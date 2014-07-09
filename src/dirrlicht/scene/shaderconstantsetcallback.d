@@ -24,4 +24,4 @@
        source distribution.
 */
 
-module dirrlicht.scene.IShaderConstantSetCallBack;
+module dirrlicht.scene.shaderconstantsetcallback;

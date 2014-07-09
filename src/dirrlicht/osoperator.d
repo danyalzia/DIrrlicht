@@ -38,7 +38,12 @@ class OSOperator
         device = dev;
         ptr = irr_IrrlichtDevice_getOSOperator(device.ptr);
     }
-
+    
+    this(irr_IOSOperator* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     irr_IOSOperator* ptr;
 private:
     IrrlichtDevice device;

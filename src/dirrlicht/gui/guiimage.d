@@ -52,9 +52,9 @@ class GUIImage
         return new Texture(tex);
     }
 
-    void setColor(SColor col)
+    void setColor(Color col)
     {
-        irr_IGUIImage_setColor(ptr, irr_SColor(col.a, col.b, col.g, col.a));
+        irr_IGUIImage_setColor(ptr, col.ptr);
     }
 
     void setScaleImage(bool scale)
@@ -67,10 +67,10 @@ class GUIImage
         irr_IGUIImage_setUseAlphaChannel(ptr, use);
     }
 
-    SColor getColor()
+    Color getColor()
     {
         auto col = irr_IGUIImage_getColor(ptr);
-        return SColor(col.a, col.b, col.g, col.r);
+        return Color(col.r, col.g, col.b, col.a);
     }
 
     bool isImageScaled()

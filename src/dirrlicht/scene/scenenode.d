@@ -70,7 +70,7 @@ class ISceneNode
         return mat;
     }
 
-    void setMaterialFlag(E_MATERIAL_FLAG flag, bool newvalue)
+    void setMaterialFlag(MaterialFlag flag, bool newvalue)
     {
         irr_ISceneNode_setMaterialFlag(ptr, flag, newvalue);
     }
@@ -228,7 +228,7 @@ void irr_ISceneNode_removeAnimator(irr_ISceneNode* node, irr_ISceneNodeAnimator*
 void irr_ISceneNode_removeAnimators(irr_ISceneNode* node);
 ref irr_SMaterial* irr_ISceneNode_getMaterial(irr_ISceneNode* node, uint num);
 uint irr_ISceneNode_getMaterialCount(irr_ISceneNode* node);
-void irr_ISceneNode_setMaterialFlag(irr_ISceneNode* node, E_MATERIAL_FLAG flag, bool newvalue);
+void irr_ISceneNode_setMaterialFlag(irr_ISceneNode* node, MaterialFlag flag, bool newvalue);
 void irr_ISceneNode_setMaterialTexture(irr_ISceneNode* node, int c, irr_ITexture* texture);
 void irr_ISceneNode_setMaterialType(irr_ISceneNode* node, E_MATERIAL_TYPE newType);
 irr_vector3df irr_ISceneNode_getScale(irr_ISceneNode* node);

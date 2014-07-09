@@ -30,6 +30,7 @@ public
 {
     import dirrlicht.gui.focusflags;
     import dirrlicht.gui.guialignment;
+    import dirrlicht.gui.guielement;
     import dirrlicht.gui.guielementtypes;
     import dirrlicht.gui.messageboxflags;
     import dirrlicht.gui.cursorcontrol;

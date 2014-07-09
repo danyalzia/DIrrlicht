@@ -27,7 +27,12 @@
 module dirrlicht.io.attributes;
 
 class IAttributes
-{
+{	
+	this(irr_IAttributes* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
     uint getAttributeCount()
     {
         return 0;

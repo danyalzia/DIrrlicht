@@ -24,7 +24,7 @@
        source distribution.
 */
 
-/+ A timer class useful for time independent tasks
+/+ A timer module useful for time dependent tasks
 +
 +/
 
@@ -51,23 +51,23 @@ class Timer
 	struct RealTimeDate
 	{
 		// Hour of the day, from 0 to 23
-		uint Hour;
+		uint hour;
 		// Minute of the hour, from 0 to 59
-		uint Minute;
+		uint minute;
 		// Second of the minute, due to extra seconds from 0 to 61
-		uint Second;
+		uint second;
 		// Year of the gregorian calender
-		int Year;
+		int year;
 		// Month of the year, from 1 to 12
-		uint Month;
+		uint month;
 		// Day of the month, from 1 to 31
-		uint Day;
+		uint day;
 		// Weekday for the current day
-		WeekDay Weekday;
+		WeekDay weekday;
 		// Day of the year, from 1 to 366
-		uint Yearday;
+		uint yearday;
 		// Whether daylight saving is on
-		bool IsDST;
+		bool isDST;
 	}
 	
 	this(IrrlichtDevice dev)
@@ -75,7 +75,12 @@ class Timer
         device = dev;
         ptr = irr_IrrlichtDevice_getTimer(device.ptr);
     }
-
+    
+    this(irr_ITimer* ptr)
+    {
+    	this.ptr = ptr;
+    }
+    
     irr_ITimer* ptr;
 private:
     IrrlichtDevice device;

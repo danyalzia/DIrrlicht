@@ -7,7 +7,7 @@
 	
 	"targetName": "Quake3Map",
 	"targetType": "executable",
-	"targetPath": "../../bin/Linux",
+	"targetPath": "../bin",
 
 	"sourcePaths": ["../../src", "."],
 	"importPaths": ["../../src", "."],

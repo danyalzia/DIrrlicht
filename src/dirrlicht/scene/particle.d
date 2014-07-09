@@ -46,11 +46,11 @@ struct SParticle
     uint endTime;
 
     /// Current color of the particle
-    SColor color;
+    Color color;
 
     /// Original color of the particle.
     /** That's the color of the particle it had when it was emitted. */
-    SColor startColor;
+    Color startColor;
 
     /// Original direction and speed of the particle.
     /** The direction and speed the particle had when it was emitted. */

@@ -66,5 +66,5 @@ enum DriverType
     /// OpenGL device, available on most platforms.
     /** Performs hardware accelerated rendering of 3D and 2D
     primitives. */
-    openGL
+    OpenGL
 }

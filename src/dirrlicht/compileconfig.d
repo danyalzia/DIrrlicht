@@ -23,12 +23,7 @@ template checkNull(string name)
 enum TestPrerequisite =
 `
     import std.stdio;
-    import dirrlicht;
-    import dirrlicht.scene;
-    import dirrlicht.video;
-    import dirrlicht.core;
-    import dirrlicht.gui;
-    import dirrlicht.io;
+    import dirrlicht.all;
     
     writeln();
     writeln("=====================");
@@ -37,15 +32,15 @@ enum TestPrerequisite =
     writeln("=====================");
     writeln();
 
-    auto device = createDevice(E_DRIVER_TYPE.EDT_OPENGL, dimension2du(800,600));
+    auto device = createDevice(DriverType.OpenGL, dimension2du(800,600));
     mixin(checkNull!("device"));
 
-    auto driver = device.getVideoDriver();
+    auto driver = device.videoDriver;
     mixin(checkNull!("driver"));
 
-    auto smgr = device.getSceneManager();
+    auto smgr = device.sceneManager;
     mixin(checkNull!("smgr"));
 
-    auto gui = device.getGUIEnvironment();
+    auto gui = device.guiEnvironment;
     mixin(checkNull!("gui"));
 `;

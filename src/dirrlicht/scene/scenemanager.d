@@ -171,7 +171,7 @@ class SceneManager
         return new FileSystem(file);
     }
 
-    VolumeLightSceneNode addVolumeLightSceneNode(ISceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, SColor foot = SColor(51, 0, 230, 180), SColor tail = SColor(0, 0, 0, 0), vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    VolumeLightSceneNode addVolumeLightSceneNode(ISceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, Color foot = Color(51, 0, 230, 180).reverse, Color tail = Color(0, 0, 0, 0).reverse, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
     {
         auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, parent.ptr, id, subdivU, subdivV, foot.ptr, tail.ptr, position.ptr, rotation.ptr, scale.ptr);
         return new VolumeLightSceneNode(node);
@@ -276,7 +276,7 @@ class SceneManager
 
     ILightSceneNode addLightSceneNode(ISceneNode parent = null,
             vector3df position = vector3df(0,0,0),
-            SColorf color = SColorf(1.0f, 1.0f, 1.0f),
+            Colorf color = Colorf(1.0f, 1.0f, 1.0f),
             float radius=100., int id=-1)
     {
         auto temppos = irr_vector3df(position.x, position.y, position.z);
@@ -295,7 +295,7 @@ class SceneManager
     
     IBillboardSceneNode addBillboardSceneNode(ISceneNode parent =null, dimension2df size = dimension2df(10.0, 10.0),
     		vector3df position = vector3df(0,0,0), int id=-1,
-    		SColor colorTop = SColor(0, 0, 0, 0), SColor colorBottom = SColor(0, 0, 0, 0))
+    		Color colorTop = Color(0, 0, 0, 0), Color colorBottom = Color(0, 0, 0, 0))
     {
     	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, parent.ptr, size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
     	return new IBillboardSceneNode(temp);
@@ -315,7 +315,7 @@ class SceneManager
     		vector3df position = vector3df(0.0f,0.0f,0.0f),
     		vector3df rotation = vector3df(0.0f,0.0f,0.0f),
     		vector3df scale = vector3df(1.0f,1.0f,1.0f),
-    		SColor vertexColor = SColor(255,255,255,255),
+    		Color vertexColor = Color(255,255,255,255),
     		int maxLOD=5, E_TERRAIN_PATCH_SIZE patchSize=E_TERRAIN_PATCH_SIZE.ETPS_17, int smoothFactor=0,
     		bool addAlsoIfHeightmapEmpty = false)
     {
@@ -417,7 +417,7 @@ class SceneManager
     	irr_ISceneManager_addToDeletionQueue(ptr, node.ptr);
     }
     
-    bool postEventFromUser(SEvent event)
+    bool postEventFromUser(Event event)
     {
     	return irr_ISceneManager_postEventFromUser(ptr, event.ptr);
     }
@@ -430,9 +430,7 @@ class SceneManager
     IAttributes getParameters()
     {
     	auto temp = irr_ISceneManager_getParameters(ptr);
-    	auto attr = new IAttributes;
-    	attr.ptr = temp;
-    	return attr;
+    	return new IAttributes(temp);
     }
     
     E_SCENE_NODE_RENDER_PASS getSceneNodeRenderPass()
@@ -546,15 +544,15 @@ class SceneManager
         return new SkinnedMesh(temp);
     }
 
-    void setAmbientLight(SColorf ambientColor)
+    void setAmbientLight(Colorf ambientColor)
     {
-        irr_ISceneManager_setAmbientLight(ptr, irr_SColorf(ambientColor.a, ambientColor.b, ambientColor.g, ambientColor.r));
+        irr_ISceneManager_setAmbientLight(ptr, ambientColor.ptr);
     }
 
-    SColorf getAmbientLight()
+    Colorf getAmbientLight()
     {
         auto temp = irr_ISceneManager_getAmbientLight(ptr);
-        return SColorf(temp.a, temp.b, temp.g, temp.r);
+        return Colorf(temp.r, temp.g, temp.b, temp.a);
     }
 
     void setLightManager(ILightManager lightManager)

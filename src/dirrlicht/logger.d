@@ -63,6 +63,7 @@ class Logger
     {
     	this.ptr = ptr;
     }
+    
     irr_ILogger* ptr;
 private:
     IrrlichtDevice device;

@@ -7,7 +7,7 @@
 	
 	"targetName": "HelloWorld",
 	"targetType": "executable",
-
+	"targetPath": "../bin",
 	"sourcePaths": ["../../src", "."],
 	"importPaths": ["../../src", "."],
 	

@@ -24,4 +24,4 @@
        source distribution.
 */
 
-module dirrlicht.scene.IQ3LevelMesh;
+module dirrlicht.scene.q3levelmesh;
