@@ -27,51 +27,51 @@
 module dirrlicht.video.materialtypes;
 
 /// Abstracted and easy to use fixed function/programmable pipeline material modes.
-enum E_MATERIAL_TYPE
+enum MaterialType
 {
     /// Standard solid material.
     /** Only first texture is used, which is supposed to be the
     diffuse material. */
-    EMT_SOLID = 0,
+    Solid = 0,
 
     /// Solid material with 2 texture layers.
     /** The second is blended onto the first using the alpha value
     of the vertex colors. This material is currently not implemented in OpenGL.
     */
-    EMT_SOLID_2_LAYER,
+    Solid2Layer,
 
     /// Material type with standard lightmap technique
     /** There should be 2 textures: The first texture layer is a
     diffuse map, the second is a light map. Dynamic light is
     ignored. */
-    EMT_LIGHTMAP,
+    LightMap,
 
     /// Material type with lightmap technique like EMT_LIGHTMAP.
     /** But lightmap and diffuse texture are added instead of modulated. */
-    EMT_LIGHTMAP_ADD,
+    LightMapAdd,
 
     /// Material type with standard lightmap technique
     /** There should be 2 textures: The first texture layer is a
     diffuse map, the second is a light map. Dynamic light is
     ignored. The texture colors are effectively multiplied by 2
     for brightening. Like known in DirectX as D3DTOP_MODULATE2X. */
-    EMT_LIGHTMAP_M2,
+    LightMapM2,
 
     /// Material type with standard lightmap technique
     /** There should be 2 textures: The first texture layer is a
     diffuse map, the second is a light map. Dynamic light is
     ignored. The texture colors are effectively multiplyied by 4
     for brightening. Like known in DirectX as D3DTOP_MODULATE4X. */
-    EMT_LIGHTMAP_M4,
+    LightMapM4,
 
     /// Like EMT_LIGHTMAP, but also supports dynamic lighting.
-    EMT_LIGHTMAP_LIGHTING,
+    LightMapLighting,
 
     /// Like EMT_LIGHTMAP_M2, but also supports dynamic lighting.
-    EMT_LIGHTMAP_LIGHTING_M2,
+    LightMapLightingM2,
 
     /// Like EMT_LIGHTMAP_4, but also supports dynamic lighting.
-    EMT_LIGHTMAP_LIGHTING_M4,
+    LightMapLightingM4,
 
     /// Detail mapped material.
     /** The first texture is diffuse color map, the second is added
@@ -81,16 +81,16 @@ enum E_MATERIAL_TYPE
     color from the diffuse map. For example a value of
     (127,127,127) will not change the appearance of the diffuse map
     at all. Often used for terrain rendering. */
-    EMT_DETAIL_MAP,
+    DetailMap,
 
     /// Look like a reflection of the environment around it.
     /** To make this possible, a texture called 'sphere map' is
     used, which must be set as the first texture. */
-    EMT_SPHERE_MAP,
+    SphereMap,
 
     /// A reflecting material with an optional non reflecting texture layer.
     /** The reflection map should be set as first texture. */
-    EMT_REFLECTION_2_LAYER,
+    Reflection2Layer,
 
     /// A transparent material.
     /** Only the first texture is used. The new color is calculated
@@ -101,7 +101,7 @@ enum E_MATERIAL_TYPE
     bit transparent, and everything which was black is 100%
     transparent and not visible. This material type is useful for
     particle effects. */
-    EMT_TRANSPARENT_ADD_COLOR,
+    TransparentAddColor,
 
     /// Makes the material transparent based on the texture alpha channel.
     /** The final color is blended together from the destination
@@ -114,7 +114,7 @@ enum E_MATERIAL_TYPE
     SMaterial::MaterialTypeParam. This value controls how sharp the
     edges become when going from a transparent to a solid spot on
     the texture. */
-    EMT_TRANSPARENT_ALPHA_CHANNEL,
+    TransparentAlphaChannel,
 
     /// Makes the material transparent based on the texture alpha channel.
     /** If the alpha channel value is greater than 127, a
@@ -126,10 +126,10 @@ enum E_MATERIAL_TYPE
     using this material with small textures and 3d object, it
     is a good idea to load the texture in 32 bit mode
     (video::IVideoDriver::setTextureCreationFlag()). */
-    EMT_TRANSPARENT_ALPHA_CHANNEL_REF,
+    TransparentAlphaChannelRef,
 
     /// Makes the material transparent based on the vertex alpha value.
-    EMT_TRANSPARENT_VERTEX_ALPHA,
+    TransparentVertexAlpha,
 
     /// A transparent reflecting material with an optional additional non reflecting texture layer.
     /** The reflection map should be set as first texture. The
@@ -137,7 +137,7 @@ enum E_MATERIAL_TYPE
     texture which will not reflect can be set as second texture.
     Please note that this material type is currently not 100%
     implemented in OpenGL. */
-    EMT_TRANSPARENT_REFLECTION_2_LAYER,
+    TransparentReflection2Layer,
 
     /// A solid normal map renderer.
     /** First texture is the color map, the second should be the
@@ -150,7 +150,7 @@ enum E_MATERIAL_TYPE
     fixed function lighted material if this hardware is not
     available. Only two lights are supported by this shader, if
     there are more, the nearest two are chosen. */
-    EMT_NORMAL_MAP_SOLID,
+    NormalMapSolid,
 
     /// A transparent normal map renderer.
     /** First texture is the color map, the second should be the
@@ -163,7 +163,7 @@ enum E_MATERIAL_TYPE
     fixed function lighted material if this hardware is not
     available. Only two lights are supported by this shader, if
     there are more, the nearest two are chosen. */
-    EMT_NORMAL_MAP_TRANSPARENT_ADD_COLOR,
+    NormalMapTransparentAddColor,
 
     /// A transparent (based on the vertex alpha value) normal map renderer.
     /** First texture is the color map, the second should be the
@@ -176,7 +176,7 @@ enum E_MATERIAL_TYPE
     fixed function lighted material if this hardware is not
     available.  Only two lights are supported by this shader, if
     there are more, the nearest two are chosen. */
-    EMT_NORMAL_MAP_TRANSPARENT_VERTEX_ALPHA,
+    NormalMapTransparentVertexAlpha,
 
     /// Just like EMT_NORMAL_MAP_SOLID, but uses parallax mapping.
     /** Looks a lot more realistic. This only works when the
@@ -194,50 +194,17 @@ enum E_MATERIAL_TYPE
     with which scale the texture is mapped on the material. Too
     high or low values of MaterialTypeParam can result in strange
     artifacts. */
-    EMT_PARALLAX_MAP_SOLID,
+    ParallaxMapSolid,
 
     /// A material like EMT_PARALLAX_MAP_SOLID, but transparent.
     /** Using EMT_TRANSPARENT_ADD_COLOR as base material. */
-    EMT_PARALLAX_MAP_TRANSPARENT_ADD_COLOR,
+    ParallaxMapTransparentAddColor,
 
     /// A material like EMT_PARALLAX_MAP_SOLID, but transparent.
     /** Using EMT_TRANSPARENT_VERTEX_ALPHA as base material. */
-    EMT_PARALLAX_MAP_TRANSPARENT_VERTEX_ALPHA,
+    ParallaxMapTransparentVertexAlpha,
 
     /// BlendFunc = source * sourceFactor + dest * destFactor ( E_BLEND_FUNC )
     /** Using only first texture. Generic blending method. */
-    EMT_ONETEXTURE_BLEND,
-
-    /// This value is not used. It only forces this enumeration to compile to 32 bit.
-    EMT_FORCE_32BIT = 0x7fffffff
+    OneTextureBlend
 }
-
-/// Array holding the built in material type names
-const char* sBuiltInMaterialTypeNames[] =
-    [
-        "solid",
-        "solid_2layer",
-        "lightmap",
-        "lightmap_add",
-        "lightmap_m2",
-        "lightmap_m4",
-        "lightmap_light",
-        "lightmap_light_m2",
-        "lightmap_light_m4",
-        "detail_map",
-        "sphere_map",
-        "reflection_2layer",
-        "trans_add",
-        "trans_alphach",
-        "trans_alphach_ref",
-        "trans_vertex_alpha",
-        "trans_reflection_2layer",
-        "normalmap_solid",
-        "normalmap_trans_add",
-        "normalmap_trans_vertexalpha",
-        "parallaxmap_solid",
-        "parallaxmap_trans_add",
-        "parallaxmap_trans_vertexalpha",
-        "onetexture_blend",
-        "0"
-    ];

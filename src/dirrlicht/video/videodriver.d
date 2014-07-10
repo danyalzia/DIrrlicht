@@ -208,6 +208,42 @@ class VideoDriver
         return to!string(text);
     }
     
+    Material getMaterial2D()
+    {
+    	auto temp = irr_IVideoDriver_getMaterial2D(ptr);
+    	return new Material(temp);
+    }
+    
+    void enableMaterial2D(bool enable=true)
+    {
+    	irr_IVideoDriver_enableMaterial2D(ptr, enable);
+    }
+    
+    string getVendorInfo()
+    {
+    	return irr_IVideoDriver_getVendorInfo(ptr).to!string;
+    }
+    
+    void setAmbientLight(Colorf color)
+    {
+    	irr_IVideoDriver_setAmbientLight(ptr, color.ptr);
+    }
+    
+    void setAllowZWriteOnTransparent(bool flag)
+    {
+    	irr_IVideoDriver_setAllowZWriteOnTransparent(ptr, flag);
+    }
+    
+    dimension2du getMaxTextureSize()
+    {
+    	auto size = irr_IVideoDriver_getMaxTextureSize(ptr);
+    	return dimension2du(size.Width, size.Height);
+    }
+    
+    void convertColor(const void* sP, ColorFormat sF, int sN, void* dP, ColorFormat dF)
+    {
+    	irr_IVideoDriver_convertColor(ptr, sP, sF, sN, dP, dF);
+    }
     irr_IVideoDriver* ptr;
 private:
     IrrlichtDevice device;
@@ -346,7 +382,7 @@ void irr_IVideoDriver_setMinHardwareBufferVertexCount(irr_IVideoDriver* driver, 
 irr_SOverrideMaterial* irr_IVideoDriver_getOverrideMaterial(irr_IVideoDriver* driver);
 irr_SMaterial* irr_IVideoDriver_getMaterial2D(irr_IVideoDriver* driver);
 void irr_IVideoDriver_enableMaterial2D(irr_IVideoDriver* driver, bool enable=true);
-const char* irr_IVideoDriver_getVendorInfo(irr_IVideoDriver* driver);
+const(char*) irr_IVideoDriver_getVendorInfo(irr_IVideoDriver* driver);
 void irr_IVideoDriver_setAmbientLight(irr_IVideoDriver* driver, irr_SColorf color);
 void irr_IVideoDriver_setAllowZWriteOnTransparent(irr_IVideoDriver* driver, bool flag);
 irr_dimension2du irr_IVideoDriver_getMaxTextureSize(irr_IVideoDriver* driver);

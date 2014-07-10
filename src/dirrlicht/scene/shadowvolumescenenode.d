@@ -28,12 +28,13 @@ module dirrlicht.scene.shadowvolumescenenode;
 
 import dirrlicht.scene.scenenode;
 
-class IShadowVolumeSceneNode : ISceneNode
+class ShadowVolumeSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
 	this(irr_IShadowVolumeSceneNode* ptr)
 	{
 		this.ptr = ptr;
-		super(cast(irr_ISceneNode*)this.ptr);
+		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
 	irr_IShadowVolumeSceneNode* ptr;

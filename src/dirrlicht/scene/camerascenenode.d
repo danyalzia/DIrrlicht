@@ -36,34 +36,16 @@ import dirrlicht.scene.scenenode;
 import dirrlicht.scene.animatedmeshscenenode;
 import dirrlicht.core.vector3d;
 
-class ICameraSceneNode : ISceneNode
+class CameraSceneNode : SceneNode
 {
-    this(SceneManager _smgr, AnimatedMeshSceneNode node, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
-    {
-        smgr = _smgr;
-        if (node !is null)
-            ptr = irr_ISceneManager_addCameraSceneNode(smgr.ptr, cast(irr_ISceneNode*)node.ptr, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z), id, makeActive);
-        else
-            ptr = irr_ISceneManager_addCameraSceneNode(smgr.ptr, null, irr_vector3df(pos.x, pos.y, pos.z), irr_vector3df(lookAt.x, lookAt.y, lookAt.z), id, makeActive);
-            
-        super(cast(irr_ISceneNode*)ptr);
-    }
-    
+	mixin DefaultSceneNode;
+	
     this(irr_ICameraSceneNode* ptr)
     {
     	this.ptr = ptr;
-    	super(cast(irr_ISceneNode*)this.ptr);
-    }
-    
-    /// CameraNodeFPS
-    this(SceneManager _smgr)
-    {
-        smgr = _smgr;
-        ptr = irr_ISceneManager_addCameraSceneNodeFPS(smgr.ptr);
-        super(cast(irr_ISceneNode*)ptr);
+    	irrPtr = cast(irr_ISceneNode*)ptr;
     }
 
-    SceneManager smgr;
     irr_ICameraSceneNode* ptr;
 }
 

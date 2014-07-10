@@ -17,7 +17,7 @@ void main()
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
 
     node.setMaterialFlag(MaterialFlag.lighting, false);
-    node.setMD2Animation(EMD2_ANIMATION_TYPE.EMAT_STAND);
+    node.setMD2Animation(AnimationTypeMD2.stand);
     node.setMaterialTexture(0, driver.getTexture("../../media/sydney.bmp"));
 
     smgr.addCameraSceneNode(null, vector3df(0,30,-40), vector3df(0,5,0));

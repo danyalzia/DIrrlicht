@@ -5,9 +5,9 @@
 	"homepage": "http://github.com/danyalzia/DIrrlicht",
 	"license": "zlib",
 	
-	"targetName": "DIrrlicht",
+	"targetName": "dirrlicht",
 	"targetType": "library",
-	"targetPath": "lib/Linux",
+	"targetPath": "lib",
 
 	"sourcePaths": ["src"],
 	"importPaths": ["src"],

@@ -77,8 +77,9 @@ class IAnimatedEndCallBack
  + The shadow is optional: If a shadow should be displayed too, just
  + call createShadowVolumeSceneNode().
  +/
-class AnimatedMeshSceneNode : ISceneNode
+class AnimatedMeshSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
 	/*
      * An optional way to use IAnimatedMeshSceneNode without getting the handle from ISceneManager
      * Params:
@@ -90,22 +91,22 @@ class AnimatedMeshSceneNode : ISceneNode
 	 *			scale = scale
 	 * 			alsoAddIfMeshPointerZero = flag
 	 */
-    this(SceneManager smgr, AnimatedMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
-    in
-    {
-    	assert(smgr !is null);
-    	assert(smgr.ptr != null);
-    }
-    body
-    {
-        this.smgr = smgr;
-        if (parent is null)
-            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr);
-        else
-            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
-
-        super(cast(irr_ISceneNode*)ptr);
-    }
+//    this(SceneManager smgr, AnimatedMesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+//    in
+//    {
+//    	assert(smgr !is null);
+//    	assert(smgr.ptr != null);
+//    }
+//    body
+//    {
+//        this.smgr = smgr;
+//        if (parent is null)
+//            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr);
+//        else
+//            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
+//
+//        //super(cast(irr_ISceneNode*)ptr);
+//    }
     
     /*
      * Internal use only!
@@ -113,7 +114,7 @@ class AnimatedMeshSceneNode : ISceneNode
     package this(irr_IAnimatedMeshSceneNode* ptr)
     {
     	this.ptr = ptr;
-    	super(cast(irr_ISceneNode*)this.ptr);
+    	irrPtr = cast(irr_ISceneNode*)this.ptr;
     }
     
     void setCurrentFrame(float frame)
@@ -177,7 +178,7 @@ class AnimatedMeshSceneNode : ISceneNode
 	 *			information.
      *		
      */
-    IShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null,
+    ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null,
 			int id=-1, bool zfailmethod=true, float infinity=1000.0f)
     {
     	irr_IShadowVolumeSceneNode* temp;
@@ -190,7 +191,7 @@ class AnimatedMeshSceneNode : ISceneNode
     		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
     	}
     	
-    	return new IShadowVolumeSceneNode(temp);
+    	return new ShadowVolumeSceneNode(temp);
     }
     
     IBoneSceneNode getJointNode(string jointName)
@@ -210,7 +211,7 @@ class AnimatedMeshSceneNode : ISceneNode
     	return irr_IAnimatedMeshSceneNode_getJointCount(ptr);
     }
     
-    void setMD2Animation(EMD2_ANIMATION_TYPE anim)
+    void setMD2Animation(AnimationTypeMD2 anim)
     {
     	irr_IAnimatedMeshSceneNode_setMD2Animation(ptr, anim);
     }
@@ -408,7 +409,7 @@ irr_IShadowVolumeSceneNode* irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(
 irr_IBoneSceneNode* irr_IAnimatedMeshSceneNode_getJointNode(irr_IAnimatedMeshSceneNode* node, const char* jointName);
 irr_IBoneSceneNode* irr_IAnimatedMeshSceneNode_getJointNodeByID(irr_IAnimatedMeshSceneNode* node, uint jointID);
 uint irr_IAnimatedMeshSceneNode_getJointCount(irr_IAnimatedMeshSceneNode* node);
-void irr_IAnimatedMeshSceneNode_setMD2Animation(irr_IAnimatedMeshSceneNode* node, EMD2_ANIMATION_TYPE value);
+void irr_IAnimatedMeshSceneNode_setMD2Animation(irr_IAnimatedMeshSceneNode* node, AnimationTypeMD2 value);
 bool irr_IAnimatedMeshSceneNode_setMD2AnimationByName(irr_IAnimatedMeshSceneNode* node, const char* animationName);
 float irr_IAnimatedMeshSceneNode_getFrameNr(irr_IAnimatedMeshSceneNode* node);
 int irr_IAnimatedMeshSceneNode_getStartFrame(irr_IAnimatedMeshSceneNode* node);

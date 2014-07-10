@@ -26,8 +26,6 @@
 
 /++++
 + SIMD recognized 3D vector class. The fourth component is unused and set to 0.
-+ Authors:
-Danyal Zia
 +/
 
 module dirrlicht.core.vector3d;
@@ -128,25 +126,7 @@ static if(__traits(isArithmetic, T))
 
     vector3d!(T) opBinary(string op)(vector3d!(T) rhs)
     {
-        static if (op == "+")
-        {
-            return new vector3d(vec + rhs.vec);
-        }
-
-        else static if (op == "-")
-        {
-            return new vector3d(vec - rhs.vec);
-        }
-
-        else static if (op == "*")
-        {
-            return new vector3d(vec * rhs.vec);
-        }
-
-        else static if (op == "/")
-        {
-            return new vector3d(vec / rhs.vec);
-        }
+    	mixin("return new vector3d(vec" ~ op ~ "rhs.vec);");
     }
 
     vector3d!(T) set(T nx, T ny, T nz)
@@ -156,13 +136,13 @@ static if(__traits(isArithmetic, T))
     }
 
     /** Very slow! */
-    T getLength()
+    @property T length()
     {
-        return cast(T)(SQRT(cast(float)getLengthSQ()));
+        return cast(T)(SQRT(cast(float)lengthSQ));
     }
 
     /** Very slow! */
-    T getLengthSQ()
+    @property T lengthSQ()
     {
         static if (DigitalMars || GDC)
         {
@@ -199,12 +179,12 @@ static if(__traits(isArithmetic, T))
                 arr = vec[i] - other.vec[i];
             }
 
-            return vector3d(arr).getLength();
+            return vector3d(arr).length;
         }
 
         else
         {
-            return vector3d(vec - other.vec).getLength();
+            return vector3d(vec - other.vec).length;
         }
 
     }
@@ -219,7 +199,7 @@ static if(__traits(isArithmetic, T))
                 arr = vec[i] - other.vec[i];
             }
 
-            return vector3d(arr).getLengthSQ();
+            return vector3d(arr).lengthSQ;
         }
 
         else
@@ -243,7 +223,7 @@ static if(__traits(isArithmetic, T))
 
     vector3d!(T) normalize()
     {
-        auto length = cast(T)(getLength());
+        auto length = cast(T)(length);
         static if (is (T == float))
             float4 mul = [length, length, length, 0];
         else

@@ -43,7 +43,7 @@ class CDynamicMeshBuffer
         VertexBuffer=new CVertexBuffer(vertexType);
         IndexBuffer=new CIndexBuffer(indexType);
 
-        BoundingBox = aabbox3df(vector3df(0,0,0), vector3df(0,0,0));
+        BoundingBox_ = aabbox3df(vector3df(0,0,0), vector3df(0,0,0));
     }
 
     IVertexBuffer getVertexBuffer()
@@ -66,23 +66,24 @@ class CDynamicMeshBuffer
         IndexBuffer=newIndexBuffer;
     }
 
-    SMaterial getMaterial()
+    Material getMaterial()
     {
-        return Material;
+        return Material_;
     }
 
     aabbox3df getBoundingBox()
     {
-        return BoundingBox;
+        return BoundingBox_;
     }
 
     void setBoundingBox(aabbox3df box)
     {
-        BoundingBox = box;
+        BoundingBox_ = box;
     }
 
-    SMaterial Material;
-    aabbox3df BoundingBox;
+private:
+    Material Material_;
+    aabbox3df BoundingBox_;
 private:
     IVertexBuffer VertexBuffer;
     IIndexBuffer IndexBuffer;

@@ -1,3 +1,6 @@
+/+++
+ + Compile-time functions/macros/mixins
+ +/
 module dirrlicht.compileconfig;
 
 version(DigitalMars)

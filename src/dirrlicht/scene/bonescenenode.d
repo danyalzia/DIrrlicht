@@ -65,12 +65,13 @@ const char* BoneAnimationModeNames[] =
 
 import dirrlicht.scene.scenenode;
 
-class IBoneSceneNode : ISceneNode
+class IBoneSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
 	this(irr_IBoneSceneNode* ptr)
 	{
 		this.ptr = ptr;
-		super(cast(irr_ISceneNode*)this.ptr);
+		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	irr_IBoneSceneNode* ptr;
 }

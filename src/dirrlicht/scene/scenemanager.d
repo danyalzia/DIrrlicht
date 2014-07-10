@@ -171,40 +171,41 @@ class SceneManager
         return new FileSystem(file);
     }
 
-    VolumeLightSceneNode addVolumeLightSceneNode(ISceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, Color foot = Color(51, 0, 230, 180).reverse, Color tail = Color(0, 0, 0, 0).reverse, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    VolumeLightSceneNode addVolumeLightSceneNode(SceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, Color foot = Color(51, 0, 230, 180).reverse, Color tail = Color(0, 0, 0, 0).reverse, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
     {
-        auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, parent.ptr, id, subdivU, subdivV, foot.ptr, tail.ptr, position.ptr, rotation.ptr, scale.ptr);
+        auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, parent.irrPtr, id, subdivU, subdivV, foot.ptr, tail.ptr, position.ptr, rotation.ptr, scale.ptr);
         return new VolumeLightSceneNode(node);
     }
 
-    IMeshSceneNode addCubeSceneNode(float size=10.0, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    MeshSceneNode addCubeSceneNode(float size=10.0, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
     {
         irr_IMeshSceneNode* node = null;
         if (parent is null)
             node = irr_ISceneManager_addCubeSceneNode(ptr, size);
         else
-            node = irr_ISceneManager_addCubeSceneNode(ptr, size, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr);
+            node = irr_ISceneManager_addCubeSceneNode(ptr, size, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
 
-        return new IMeshSceneNode(node);
+        return new MeshSceneNode(node);
     }
 
-    IMeshSceneNode addSphereSceneNode(float radius=5.0, int polycount=16, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
+    MeshSceneNode addSphereSceneNode(float radius=5.0, int polycount=16, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
     {
         irr_IMeshSceneNode* node = null;
         if (parent is null)
             node = irr_ISceneManager_addSphereSceneNode(ptr);
         else
-            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr);
+            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
 
-        return new IMeshSceneNode(node);
+        return new MeshSceneNode(node);
     }
 
-    AnimatedMeshSceneNode addAnimatedMeshSceneNode(AnimatedMesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+    AnimatedMeshSceneNode addAnimatedMeshSceneNode(AnimatedMesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
     {
-        return new AnimatedMeshSceneNode(this, mesh, null, id, position, rotation, scale, alsoAddIfMeshPointerZero);
+    	auto temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, mesh.ptr, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
+        return new AnimatedMeshSceneNode(temp);
     }
 
-    IMeshSceneNode addMeshSceneNode(Mesh mesh, ISceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
+    MeshSceneNode addMeshSceneNode(Mesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
     {
         auto temppos = irr_vector3df(position.x, position.y, position.z);
         auto temprot = irr_vector3df(rotation.x, rotation.y, rotation.z);
@@ -214,14 +215,14 @@ class SceneManager
         if (parent is null)
             temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, parent.ptr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, parent.irrPtr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
 
-        return new IMeshSceneNode(temp);
+        return new MeshSceneNode(temp);
     }
 
-    ISceneNode addWaterSurfaceSceneNode(Mesh mesh,
+    SceneNode* addWaterSurfaceSceneNode(Mesh mesh,
             float waveHeight=2.0f, float waveSpeed=300.0f, float waveLength=10.0f,
-            ISceneNode parent=null, int id=-1,
+            SceneNode parent=null, int id=-1,
             vector3df position = vector3df(0,0,0),
             vector3df rotation = vector3df(0,0,0),
             vector3df scale = vector3df(1.0f, 1.0f, 1.0f))
@@ -234,47 +235,49 @@ class SceneManager
         if (parent is null)
             temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, null, id, temppos, temprot, tempscale);
         else
-            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, parent.ptr, id, temppos, temprot, tempscale);
-
-        return new ISceneNode(temp);
+            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, parent.irrPtr, id, temppos, temprot, tempscale);
+            
+            
+        SceneNode* node; 
+        return node;
     }
 
-    IMeshSceneNode addOctreeSceneNode(AnimatedMesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
+    MeshSceneNode addOctreeSceneNode(AnimatedMesh mesh, SceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
     {
         irr_IMeshSceneNode* temp = null;
         if (parent is null)
             temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, parent.irrPtr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
-        return new IMeshSceneNode(temp);
+        return new MeshSceneNode(temp);
     }
 
-    IMeshSceneNode addOctreeSceneNode(Mesh mesh, ISceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
+    MeshSceneNode addOctreeSceneNode(Mesh mesh, SceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false)
     {
         irr_IMeshSceneNode* temp = null;
         if (parent is null)
             temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, parent.ptr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, parent.irrPtr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
-        return new IMeshSceneNode(temp);
+        return new MeshSceneNode(temp);
     }
 
-    ICameraSceneNode addCameraSceneNode(ISceneNode parent, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
+    CameraSceneNode addCameraSceneNode(SceneNode parent, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true)
     {
         auto temp = irr_ISceneManager_addCameraSceneNode(ptr, null, pos.ptr, lookAt.ptr, id, makeActive);
-        return new ICameraSceneNode(temp);
+        return new CameraSceneNode(temp);
     }
 
-    ICameraSceneNode addCameraSceneNodeFPS()
+    CameraSceneNode addCameraSceneNodeFPS()
     {
         auto temp = irr_ISceneManager_addCameraSceneNodeFPS(ptr);
         
-        return new ICameraSceneNode(temp);
+        return new CameraSceneNode(temp);
     }
 
-    ILightSceneNode addLightSceneNode(ISceneNode parent = null,
+    ILightSceneNode addLightSceneNode(SceneNode parent = null,
             vector3df position = vector3df(0,0,0),
             Colorf color = Colorf(1.0f, 1.0f, 1.0f),
             float radius=100., int id=-1)
@@ -286,32 +289,32 @@ class SceneManager
         if (parent is null)
             temp = irr_ISceneManager_addLightSceneNode(ptr, null, temppos, tempcolor, radius, id);
         else
-            temp = irr_ISceneManager_addLightSceneNode(ptr, parent.ptr, temppos, tempcolor, radius, id);
+            temp = irr_ISceneManager_addLightSceneNode(ptr, parent.irrPtr, temppos, tempcolor, radius, id);
 
         auto node = new ILightSceneNode();
         node.ptr = temp;
         return node;
     }
     
-    IBillboardSceneNode addBillboardSceneNode(ISceneNode parent =null, dimension2df size = dimension2df(10.0, 10.0),
+    IBillboardSceneNode addBillboardSceneNode(SceneNode parent =null, dimension2df size = dimension2df(10.0, 10.0),
     		vector3df position = vector3df(0,0,0), int id=-1,
     		Color colorTop = Color(0, 0, 0, 0), Color colorBottom = Color(0, 0, 0, 0))
     {
-    	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, parent.ptr, size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
+    	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, parent.irrPtr, size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
     	return new IBillboardSceneNode(temp);
     }
     
-    IParticleSystemSceneNode addParticleSystemSceneNode(bool withDefaultEmitter=true, ISceneNode parent=null, int id=-1,
+    IParticleSystemSceneNode addParticleSystemSceneNode(bool withDefaultEmitter=true, SceneNode parent=null, int id=-1,
     		vector3df position = vector3df(0, 0, 0),
     		vector3df rotation = vector3df(0, 0, 0),
     		vector3df scale = vector3df(1.0, 1.0, 1.0))
     {
-    	auto temp = irr_ISceneManager_addParticleSystemSceneNode(ptr, withDefaultEmitter, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr);
+    	auto temp = irr_ISceneManager_addParticleSystemSceneNode(ptr, withDefaultEmitter, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
     	return new IParticleSystemSceneNode(temp);
     }
     
     TerrainSceneNode addTerrainSceneNode(string heightMapFileName,
-    		ISceneNode parent=null, int id=-1,
+    		SceneNode parent=null, int id=-1,
     		vector3df position = vector3df(0.0f,0.0f,0.0f),
     		vector3df rotation = vector3df(0.0f,0.0f,0.0f),
     		vector3df scale = vector3df(1.0f,1.0f,1.0f),
@@ -319,25 +322,27 @@ class SceneManager
     		int maxLOD=5, E_TERRAIN_PATCH_SIZE patchSize=E_TERRAIN_PATCH_SIZE.ETPS_17, int smoothFactor=0,
     		bool addAlsoIfHeightmapEmpty = false)
     {
-    	auto temp = irr_ISceneManager_addTerrainSceneNode(ptr, heightMapFileName.toStringz, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr, vertexColor.ptr, maxLOD, patchSize, smoothFactor, addAlsoIfHeightmapEmpty);
+    	auto temp = irr_ISceneManager_addTerrainSceneNode(ptr, heightMapFileName.toStringz, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr, vertexColor.ptr, maxLOD, patchSize, smoothFactor, addAlsoIfHeightmapEmpty);
     	return new TerrainSceneNode(temp);
     }
     
-    ISceneNode addSkyBoxSceneNode(Texture top, Texture bottom,
+    SceneNode* addSkyBoxSceneNode(Texture top, Texture bottom,
     		Texture left, Texture right, Texture front,
-    		Texture back, ISceneNode parent = null, int id=-1)
+    		Texture back, SceneNode parent = null, int id=-1)
     {
-    	auto temp = irr_ISceneManager_addSkyBoxSceneNode(ptr, top.ptr, bottom.ptr, back.ptr, left.ptr, right.ptr, front.ptr, parent.ptr, id);
-    	return new ISceneNode(temp);
+    	auto temp = irr_ISceneManager_addSkyBoxSceneNode(ptr, top.ptr, bottom.ptr, back.ptr, left.ptr, right.ptr, front.ptr, parent.irrPtr, id);
+    	SceneNode* node;
+    	return node;
     }
     
-    ISceneNode addSkyDomeSceneNode(Texture texture,
+    SceneNode* addSkyDomeSceneNode(Texture texture,
     		uint horiRes=16, uint vertRes=8,
     		float texturePercentage=0.9, float spherePercentage=2.0,float radius = 1000,
-    		ISceneNode parent=null, int id=-1)
+    		SceneNode parent=null, int id=-1)
     {
-    	auto temp = irr_ISceneManager_addSkyDomeSceneNode(ptr, texture.ptr, horiRes, vertRes, texturePercentage, spherePercentage, radius, parent.ptr, id);
-    	return new ISceneNode(temp);
+    	auto temp = irr_ISceneManager_addSkyDomeSceneNode(ptr, texture.ptr, horiRes, vertRes, texturePercentage, spherePercentage, radius, parent.irrPtr, id);
+    	SceneNode* node;
+    	return node;
     }
     
     ISceneNodeAnimator createFlyCircleAnimator(vector3df center, float radius=100)
@@ -412,9 +417,9 @@ class SceneManager
     	return meshmanip;
     }
     
-    void addToDeletionQueue(ISceneNode node)
+    void addToDeletionQueue(SceneNode node)
     {
-    	irr_ISceneManager_addToDeletionQueue(ptr, node.ptr);
+    	irr_ISceneManager_addToDeletionQueue(ptr, node.irrPtr);
     }
     
     bool postEventFromUser(Event event)
@@ -502,15 +507,16 @@ class SceneManager
         return to!string(temp);
     }
 
-    ISceneNode addSceneNode(string sceneNodeTypeName, ISceneNode parent=null)
+    SceneNode* addSceneNode(string sceneNodeTypeName, SceneNode parent=null)
     {
-        auto temp  = irr_ISceneManager_addSceneNode(ptr, toStringz(sceneNodeTypeName), parent.ptr);
-        return new ISceneNode(temp);
+        auto temp  = irr_ISceneManager_addSceneNode(ptr, toStringz(sceneNodeTypeName), parent.irrPtr);
+        SceneNode* node;
+    	return node;
     }
 
-    ISceneNodeAnimator createSceneNodeAnimator(string typeName, ISceneNode target=null)
+    ISceneNodeAnimator createSceneNodeAnimator(string typeName, SceneNode target=null)
     {
-        auto temp  = irr_ISceneManager_createSceneNodeAnimator(ptr, toStringz(typeName), target.ptr);
+        auto temp  = irr_ISceneManager_createSceneNodeAnimator(ptr, toStringz(typeName), target.irrPtr);
         auto animator = new ISceneNodeAnimator();
         animator.ptr = temp;
         return animator;
@@ -522,14 +528,14 @@ class SceneManager
         return new SceneManager(temp);
     }
 
-    bool saveScene(string filename, ISceneUserDataSerializer userDataSerializer=null, ISceneNode node=null)
+    bool saveScene(string filename, ISceneUserDataSerializer userDataSerializer=null, SceneNode node=null)
     {
-        return irr_ISceneManager_saveScene(ptr, toStringz(filename), userDataSerializer.ptr, node.ptr);
+        return irr_ISceneManager_saveScene(ptr, toStringz(filename), userDataSerializer.ptr, node.irrPtr);
     }
 
-    bool loadScene(string filename, ISceneUserDataSerializer userDataSerializer=null, ISceneNode rootNode=null)
+    bool loadScene(string filename, ISceneUserDataSerializer userDataSerializer=null, SceneNode rootNode=null)
     {
-        return irr_ISceneManager_loadScene(ptr, toStringz(filename), userDataSerializer.ptr, rootNode.ptr);
+        return irr_ISceneManager_loadScene(ptr, toStringz(filename), userDataSerializer.ptr, rootNode.irrPtr);
     }
 
     MeshWriter createMeshWriter(EMESH_WRITER_TYPE type)
@@ -573,9 +579,9 @@ class SceneManager
         return geom;
     }
 
-    bool isCulled(ISceneNode node)
+    bool isCulled(SceneNode node)
     {
-        return irr_ISceneManager_isCulled(ptr, node.ptr);
+        return irr_ISceneManager_isCulled(ptr, node.irrPtr);
     }
 
     irr_ISceneManager* ptr;

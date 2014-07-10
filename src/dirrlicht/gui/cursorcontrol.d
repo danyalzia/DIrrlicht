@@ -41,7 +41,7 @@ class CursorControl
     	this.ptr = ptr;
     }
     
-    void setVisible(bool value)
+    @property void visible(bool value)
     {
         irr_ICursorControl_setVisible(ptr, value);
     }

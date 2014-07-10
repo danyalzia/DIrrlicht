@@ -32,12 +32,14 @@ import dirrlicht.scene.scenemanager;
 import dirrlicht.scene.mesh;
 import dirrlicht.scene.shadowvolumescenenode;
 
-class IMeshSceneNode : ISceneNode
+class MeshSceneNode : SceneNode
 { 
+	mixin DefaultSceneNode;
+	
     this(irr_IMeshSceneNode* ptr)
     {
     	this.ptr = ptr;
-    	super(cast(irr_ISceneNode*)ptr);
+    	irrPtr = cast(irr_ISceneNode*)ptr;
     }
     
     void setMesh(Mesh mesh)
@@ -51,10 +53,10 @@ class IMeshSceneNode : ISceneNode
         return new Mesh(mesh);
     }
 
-    IShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f)
+    ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f)
     {
         auto shadow = irr_IMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
-        return cast(IShadowVolumeSceneNode)shadow;
+        return new ShadowVolumeSceneNode(shadow);
     }
 
     void setReadOnlyMaterials(bool readonly)

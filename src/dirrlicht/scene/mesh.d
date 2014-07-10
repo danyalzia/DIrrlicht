@@ -69,10 +69,10 @@ class Mesh
         return cast(IMeshBuffer)meshbuffer;
     }
 
-    IMeshBuffer getMeshBuffer(const ref SMaterial material)
+    MeshBuffer getMeshBuffer(const ref Material material)
     {
-        auto meshbuffer = irr_IMesh_getMeshBufferByMaterial(ptr, cast(irr_SMaterial*)material);
-        return cast(IMeshBuffer)meshbuffer;
+        auto meshbuffer = irr_IMesh_getMeshBufferByMaterial(ptr, material.ptr);
+        return new MeshBuffer(meshbuffer);
     }
 
     aabbox3df getBoundingBox()

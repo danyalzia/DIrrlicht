@@ -84,7 +84,7 @@ class IrrlichtDevice
     @property SceneManager sceneManager() { return new SceneManager(this); }
     @property CursorControl cursorControl() { return new CursorControl(this); }
     @property Logger logger() { return new Logger(this); }
-    @property VideoModeList videoModeList() { return new VideoModeList(this); }
+    @property VideoModeList videoModeList() { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
     @property OSOperator osOperator() { return new OSOperator(this); }
     @property Timer timer() { return new Timer(this); }
     @property Randomizer randomizer() { return new Randomizer(this); }
@@ -134,8 +134,8 @@ class IrrlichtDevice
         return to!string(str);
     }
     
-    @property void eventReceiver(EventReceiver receiver) { eventPtr = new EventReceiver(receiver.ptr); irr_IrrlichtDevice_setEventReceiver(ptr, eventPtr.ptr);   }
-    @property EventReceiver eventReceiver() { return eventPtr; }
+    @property void eventReceiver(EventReceiver receiver) { irr_IrrlichtDevice_setEventReceiver(ptr, receiver.ptr); }
+    @property EventReceiver eventReceiver() { return new EventReceiver(irr_IrrlichtDevice_getEventReceiver(ptr)); }
 
     bool postEventFromUser(Event event)
     {
@@ -244,7 +244,8 @@ class IrrlichtDevice
         irr_IrrlichtDevice_drop(ptr);
     }
     
-    EventReceiver eventPtr;
+    
+    EventReceiver receiver;
 	irr_IrrlichtDevice* ptr;
 }
 

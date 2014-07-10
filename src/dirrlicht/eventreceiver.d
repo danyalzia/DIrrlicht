@@ -431,32 +431,32 @@ private:
 	IrrlichtDevice device;
 }
 
-class IEventReceiver
+interface IEventReceiver
 {
+	abstract bool OnEvent(Event event);
+}
+
+class EventReceiver : IEventReceiver
+{
+	this() { }
 	this(irr_IEventReceiver* ptr)
 	{
 		this.ptr = ptr;
 	}
 	
-	abstract bool OnEvent(Event event);
-	irr_IEventReceiver* ptr;
-}
-
-class EventReceiver : IEventReceiver
-{
-	this() { super(ptr); }
-	this(irr_IEventReceiver* ptr)
-	{
-		super(ptr);
-	}
-	
 	override bool OnEvent(Event event)
 	{
-		return irr_IEventReceiver_OnEvent(super.ptr, event.ptr);
+		return true;
 	}
 	
+	EventReceiver opBinary(string op)(EventReceiver rhs)
+    {
+    	mixin("return new EventReceiver(OnEvent" ~ op ~ "rhs.OnEvent");
+    }
 	IEventReceiver* base;
 	alias base this;
+	
+	irr_IEventReceiver* ptr;
 }
 
 /// Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()

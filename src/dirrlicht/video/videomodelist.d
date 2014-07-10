@@ -30,12 +30,6 @@ import dirrlicht.irrlichtdevice;
 
 class VideoModeList
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getVideoModeList(device.ptr);
-    }
-    
     this(irr_IVideoModeList* ptr)
     {
     	this.ptr = ptr;

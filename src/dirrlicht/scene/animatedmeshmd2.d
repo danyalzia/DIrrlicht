@@ -34,32 +34,32 @@ import std.conv;
 import std.string;
 
 /// Types of standard md2 animations
-enum EMD2_ANIMATION_TYPE
+enum AnimationTypeMD2
 {
-    EMAT_STAND = 0,
-    EMAT_RUN,
-    EMAT_ATTACK,
-    EMAT_PAIN_A,
-    EMAT_PAIN_B,
-    EMAT_PAIN_C,
-    EMAT_JUMP,
-    EMAT_FLIP,
-    EMAT_SALUTE,
-    EMAT_FALLBACK,
-    EMAT_WAVE,
-    EMAT_POINT,
-    EMAT_CROUCH_STAND,
-    EMAT_CROUCH_WALK,
-    EMAT_CROUCH_ATTACK,
-    EMAT_CROUCH_PAIN,
-    EMAT_CROUCH_DEATH,
-    EMAT_DEATH_FALLBACK,
-    EMAT_DEATH_FALLFORWARD,
-    EMAT_DEATH_FALLBACKSLOW,
-    EMAT_BOOM,
+    stand = 0,
+    run,
+    attack,
+    painA,
+    painB,
+    painC,
+    jump,
+    flip,
+    salute,
+    fallback,
+    wave,
+    point,
+    crouchStand,
+    crouchWalk,
+    crouchAttack,
+    crouchPain,
+    crouchDeath,
+    deathFallBack,
+    deathFallForward,
+    deathFallBackSlow,
+    boom,
 
     /// Not an animation, but amount of animation types.
-    EMAT_COUNT
+    count
 }
 
 class AnimatedMeshMD2 : AnimatedMesh
@@ -91,7 +91,7 @@ class AnimatedMeshMD2 : AnimatedMesh
      *			outEnd = The returned ending frame for the animation type specified.
      *			outFPS = The number of frames per second, this animation should be played at.
      */
-    void getFrameLoop(EMD2_ANIMATION_TYPE l, ref int outBegin, ref int outEnd, ref int outFPS)
+    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS)
     {
         irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
     }
@@ -139,7 +139,7 @@ extern (C):
 
 struct irr_IAnimatedMeshMD2;
 
-void irr_IAnimatedMeshMD2_getFrameLoop(irr_IAnimatedMeshMD2* mesh, EMD2_ANIMATION_TYPE l, ref int outBegin, ref int outEnd, ref int outFPS);
+void irr_IAnimatedMeshMD2_getFrameLoop(irr_IAnimatedMeshMD2* mesh, AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS);
 bool irr_IAnimatedMeshMD2_getFrameLoopByName(irr_IAnimatedMeshMD2* mesh, const char* name, ref int outBegin, ref int outEnd, ref int outFPS);
 int irr_IAnimatedMeshMD2_getAnimationCount(irr_IAnimatedMeshMD2* mesh);
 const char* irr_IAnimatedMeshMD2_getAnimationName(irr_IAnimatedMeshMD2* mesh, int nr);

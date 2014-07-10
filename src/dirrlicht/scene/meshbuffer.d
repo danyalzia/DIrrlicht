@@ -36,8 +36,8 @@ import dirrlicht.scene.hardwarebufferflags;
 
 interface IMeshBuffer
 {
-    ref SMaterial getMaterial();
-    const ref SMaterial getMaterial();
+    ref Material getMaterial();
+    const ref Material getMaterial();
     E_VERTEX_TYPE getVertexType();
     const void* getVertices();
     void* getVertices();
@@ -65,6 +65,16 @@ interface IMeshBuffer
     uint getChangedID_Index();
 }
 
+class MeshBuffer
+{
+	this(irr_IMeshBuffer* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	irr_IMeshBuffer* ptr;
+}
+
 extern (C):
 
-    struct irr_IMeshBuffer;
+struct irr_IMeshBuffer;

@@ -40,45 +40,45 @@ import dirrlicht.video.vertexindex;
 import std.conv;
 
 /// Possible types of (animated) meshes.
-enum E_ANIMATED_MESH_TYPE
+enum AnimatedMeshType
 {
     /// Unknown animated mesh type.
-    EAMT_UNKNOWN = 0,
+    unknown = 0,
 
     /// Quake 2 MD2 model file
-    EAMT_MD2,
+    MD2,
 
     /// Quake 3 MD3 model file
-    EAMT_MD3,
+    MD3,
 
     /// Maya .obj static model
-    EAMT_OBJ,
+    OBJ,
 
     /// Quake 3 .bsp static Map
-    EAMT_BSP,
+    BSP,
 
     /// 3D Studio .3ds file
-    EAMT_3DS,
+    _3DS,
 
     /// My3D Mesh, the file format by Zhuck Dimitry
-    EAMT_MY3D,
+    MY3D,
 
     /// Pulsar LMTools .lmts file. This Irrlicht loader was written by Jonas Petersen
-    EAMT_LMTS,
+    LMTS,
 
     /// Cartography Shop .csm file. This loader was created by Saurav Mohapatra.
-    EAMT_CSM,
+    CSM,
 
     /// .oct file for Paul Nette's FSRad or from Murphy McCauley's Blender .oct exporter.
     /// The oct file format contains 3D geometry and lightmaps and
     /// can be loaded directly by Irrlicht
-    EAMT_OCT,
+    OCT,
 
     /// Halflife MDL model file
-    EAMT_MDL_HALFLIFE,
+    MDL_HalfLife,
 
     /// generic skinned mesh
-    EAMT_SKINNED
+    Skinned
 }
 
 /+++ 
@@ -165,9 +165,9 @@ class AnimatedMesh : Mesh
         return new Mesh(temp);
     }
 
-    E_ANIMATED_MESH_TYPE getMeshType()
+    AnimatedMeshType getMeshType()
     {
-        return E_ANIMATED_MESH_TYPE.EAMT_UNKNOWN;
+        return AnimatedMeshType.unknown;
     }
 
     irr_IAnimatedMesh* ptr;

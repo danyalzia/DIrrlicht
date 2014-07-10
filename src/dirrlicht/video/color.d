@@ -28,10 +28,12 @@ module dirrlicht.video.color;
 
 enum ColorFormat
 {
-    /// 16 bit color format used by the software driver.
-    /** It is thus preferred by all other irrlicht engine video drivers.
-    There are 5 bits for every color component, and a single bit is left
-    for alpha information. */
+    /***
+     * 16 bit color format used by the software driver.
+     * It is thus preferred by all other irrlicht engine video drivers.
+     * There are 5 bits for every color component, and a single bit is left
+     * for alpha information.
+     */
     A1R5G5B5 = 0,
 
     /// Standard 16 bit color format.
@@ -43,7 +45,7 @@ enum ColorFormat
     /// Default 32 bit color format. 8 bits are used for every component: red, green, blue and alpha.
     A8R8G8B8,
 
-    /** Compressed image formats. **/
+    /// Compressed image formats.
 
     /// DXT1 color format.
     DXT1,
@@ -96,6 +98,7 @@ struct Color
 	{
 		return Color(a,b,g,a);
 	}
+	
     uint r;
     uint g;
     uint b;
