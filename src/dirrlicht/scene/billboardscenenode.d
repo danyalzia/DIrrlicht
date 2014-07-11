@@ -26,11 +26,16 @@
 
 module dirrlicht.scene.billboardscenenode;
 
-class IBillboardSceneNode
+import dirrlicht.scene.scenenode;
+
+class BillboardSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
+	
 	this(irr_IBillboardSceneNode* ptr)
 	{
 		this.ptr = ptr;
+		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
 	irr_IBillboardSceneNode* ptr;

@@ -35,30 +35,24 @@ import dirrlicht.irrlichtdevice;
 enum LogLevel
 {
 	/// Used for printing information helpful in debugging
-	debugging,
+	Debug,
 
 	/// Useful information to print. For example hardware infos or something started/stopped.
-	information,
+	Information,
 
 	/// Warnings that something isn't as expected and can cause oddities
-	warning,
+	Warning,
 
 	/// Something did go wrong.
-	error,
+	Error,
 
 	/// Logs with ELL_NONE will never be filtered.
 	/// And used as filter it will remove all logging except ELL_NONE messages.
-	none
+	None
 }
 
 class Logger
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getLogger(device.ptr);
-    }
-    
     this(irr_ILogger* ptr)
     {
     	this.ptr = ptr;

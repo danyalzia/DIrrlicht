@@ -185,5 +185,5 @@ enum KeyCode
     Zoom             = 0xFB,  /// Zoom key
     PA1              = 0xFD,  /// PA1 key
     OEM_Clear        = 0xFE,
-    count
+    Count
 }

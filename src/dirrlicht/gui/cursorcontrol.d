@@ -30,12 +30,6 @@ import dirrlicht.irrlichtdevice;
 
 class CursorControl
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getCursorControl(device.ptr);
-    }
-    
     this(irr_ICursorControl* ptr)
     {
     	this.ptr = ptr;

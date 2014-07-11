@@ -299,34 +299,30 @@ static if(__traits(isArithmetic, T))
 
     static if (DigitalMars || GDC)
     {
-        @property T x()
-        {
-            return cast(T)vec[0];
-        }
-        @property T y()
-        {
-            return cast(T)vec[1];
-        }
-        @property T z()
-        {
-            return cast(T)vec[2];
-        }
+		@property
+		{
+			T x() { return cast(T)vec[0]; }
+			T y() { return cast(T)vec[1]; }
+			T z() { return cast(T)vec[2]; }
+
+			void x(T n) { vec[0] = n; }
+			void y(T n) { vec[1] = n; }
+			void z(T n) { vec[2] = n; }
+		}
     }
 
     else
     {
-        @property T x()
-        {
-            return cast(T)vec.array[0];
-        }
-        @property T y()
-        {
-            return cast(T)vec.array[1];
-        }
-        @property T z()
-        {
-            return cast(T)vec.array[2];
-        }
+		@property
+		{
+			T x() { return cast(T)vec.array[0]; }
+			T y() { return cast(T)vec.array[1]; }
+			T z() { return cast(T)vec.array[2]; }
+
+			void x(T n) { vec.array[0] = n; }
+			void y(T n) { vec.array[1] = n; }
+			void z(T n) { vec.array[2] = n; }
+		}
     }
 
     /** get the SIMD float4 */

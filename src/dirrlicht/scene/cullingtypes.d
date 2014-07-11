@@ -27,22 +27,11 @@
 module dirrlicht.scene.cullingtypes;
 
 /// An enumeration for all types of automatic culling for built-in scene nodes
-enum E_CULLING_TYPE
+enum CullingType
 {
-    EAC_OFF = 0,
-    EAC_BOX = 1,
-    EAC_FRUSTUM_BOX = 2,
-    EAC_FRUSTUM_SPHERE = 4,
-    EAC_OCC_QUERY = 8
+    Off = 0,
+    Box = 1,
+    FrustumBox = 2,
+    FrustumSphere = 4,
+    OcclusionQuery = 8
 }
-
-/// Names for culling type
-const char* AutomaticCullingNames[] =
-    [
-        "false",
-        "box",			/// camera box against node box
-        "frustum_box",		///  camera frustum against node box
-        "frustum_sphere",	///  camera frustum against node sphere
-        "occ_query",		///  occlusion query
-        "0"
-    ];

@@ -26,7 +26,7 @@
 
 module dirrlicht.io.attributes;
 
-class IAttributes
+class Attributes
 {	
 	this(irr_IAttributes* ptr)
 	{

@@ -26,8 +26,12 @@
 
 module dirrlicht.scene.sceneloader;
 
-class ISceneLoader
+class SceneLoader
 {
+	this(irr_ISceneLoader* ptr)
+	{
+		this.ptr = ptr;
+	}
 	irr_ISceneLoader* ptr;
 }
 extern (C):

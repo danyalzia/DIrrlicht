@@ -39,43 +39,37 @@ class Timer
 {
 	enum WeekDay
 	{
-		sunday=0,
-		monday,
-		tuesday,
-		wednesday,
-		thursday,
-		friday,
-		saturday
+		Sunday=0,
+		Monday,
+		Tuesday,
+		Wednesday,
+		Thursday,
+		Friday,
+		Saturday
 	}
 
 	struct RealTimeDate
 	{
 		// Hour of the day, from 0 to 23
-		uint hour;
+		uint Hour;
 		// Minute of the hour, from 0 to 59
-		uint minute;
+		uint Minute;
 		// Second of the minute, due to extra seconds from 0 to 61
-		uint second;
+		uint Second;
 		// Year of the gregorian calender
-		int year;
+		int Year;
 		// Month of the year, from 1 to 12
-		uint month;
+		uint Month;
 		// Day of the month, from 1 to 31
-		uint day;
+		uint Day;
 		// Weekday for the current day
-		WeekDay weekday;
+		WeekDay Weekday;
 		// Day of the year, from 1 to 366
-		uint yearday;
+		uint Yearday;
 		// Whether daylight saving is on
-		bool isDST;
+		bool IsDST;
 	}
 	
-	this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getTimer(device.ptr);
-    }
-    
     this(irr_ITimer* ptr)
     {
     	this.ptr = ptr;

@@ -36,30 +36,30 @@ import std.string;
 /// Types of standard md2 animations
 enum AnimationTypeMD2
 {
-    stand = 0,
-    run,
-    attack,
-    painA,
-    painB,
-    painC,
-    jump,
-    flip,
-    salute,
-    fallback,
-    wave,
-    point,
-    crouchStand,
-    crouchWalk,
-    crouchAttack,
-    crouchPain,
-    crouchDeath,
-    deathFallBack,
-    deathFallForward,
-    deathFallBackSlow,
-    boom,
+    Stand = 0,
+    Run,
+    Attack,
+    PainA,
+    PainB,
+    PainC,
+    Jump,
+    Flip,
+    Salute,
+    Fallback,
+    Wave,
+    Point,
+    CrouchStand,
+    CrouchWalk,
+    CrouchAttack,
+    CrouchPain,
+    CrouchDeath,
+    DeathFallBack,
+    DeathFallForward,
+    DeathFallBackSlow,
+    Boom,
 
     /// Not an animation, but amount of animation types.
-    count
+    Count
 }
 
 class AnimatedMeshMD2 : AnimatedMesh

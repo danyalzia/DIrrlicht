@@ -77,19 +77,22 @@ class IrrlichtDevice
     {
         irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
     }
-
-    @property VideoDriver videoDriver() { return new VideoDriver(this); }
-    @property FileSystem fileSystem() { return new FileSystem(this); }
-    @property GUIEnvironment guiEnvironment() { return new GUIEnvironment(this); }
-    @property SceneManager sceneManager() { return new SceneManager(this); }
-    @property CursorControl cursorControl() { return new CursorControl(this); }
-    @property Logger logger() { return new Logger(this); }
-    @property VideoModeList videoModeList() { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
-    @property OSOperator osOperator() { return new OSOperator(this); }
-    @property Timer timer() { return new Timer(this); }
-    @property Randomizer randomizer() { return new Randomizer(this); }
-    @property void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
-
+    
+    @property
+    {
+	    VideoDriver videoDriver() { return new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr)); }
+	    FileSystem fileSystem() { return new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr)); }
+	    GUIEnvironment guiEnvironment() { return new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr)); }
+	    SceneManager sceneManager() { return new SceneManager(irr_IrrlichtDevice_getSceneManager(ptr)); }
+	    CursorControl cursorControl() { return new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr)); }
+	    Logger logger() { return new Logger(irr_IrrlichtDevice_getLogger(ptr)); }
+	    VideoModeList videoModeList() { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
+	    OSOperator osOperator() { return new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr)); }
+	    Timer timer() { return new Timer(irr_IrrlichtDevice_getTimer(ptr)); }
+	    Randomizer randomizer() { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
+    }
+    
     Randomizer createDefaultRandomizer()
     {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
@@ -133,13 +136,10 @@ class IrrlichtDevice
         const char* str = irr_IrrlichtDevice_getVersion(ptr);
         return to!string(str);
     }
-    
-    @property void eventReceiver(EventReceiver receiver) { irr_IrrlichtDevice_setEventReceiver(ptr, receiver.ptr); }
-    @property EventReceiver eventReceiver() { return new EventReceiver(irr_IrrlichtDevice_getEventReceiver(ptr)); }
 
     bool postEventFromUser(Event event)
     {
-        return irr_IrrlichtDevice_postEventFromUser(ptr, event.ptr);
+        return irr_IrrlichtDevice_postEventFromUser(ptr, event);
     }
 
     void setInputReceivingSceneManager(SceneManager smgr)
@@ -244,8 +244,7 @@ class IrrlichtDevice
         irr_IrrlichtDevice_drop(ptr);
     }
     
-    
-    EventReceiver receiver;
+    irr_IEventReceiver* eventreceiver;
 	irr_IrrlichtDevice* ptr;
 }
 
@@ -380,7 +379,7 @@ void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
 const char* irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
 irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
-bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, irr_SEvent* event);
+bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, Event event);
 void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
 void irr_IrrlichtDevice_setResizable(irr_IrrlichtDevice* device, bool value = false);
 void irr_IrrlichtDevice_setWindowSize(irr_IrrlichtDevice* device, irr_dimension2du size);

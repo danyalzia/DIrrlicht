@@ -41,12 +41,6 @@ import std.utf;
 
 class GUIEnvironment
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getGUIEnvironment(device.ptr);
-    }
-    
     this(irr_IGUIEnvironment* ptr)
     {
     	this.ptr = ptr;

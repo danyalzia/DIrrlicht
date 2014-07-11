@@ -26,8 +26,12 @@
 
 module dirrlicht.scene.scenenodeanimatorfactory;
 
-class ISceneNodeAnimatorFactory
+class SceneNodeAnimatorFactory
 {
+	this(irr_ISceneNodeAnimatorFactory* ptr)
+	{
+		this.ptr = ptr;
+	}
     irr_ISceneNodeAnimatorFactory* ptr;
 }
 

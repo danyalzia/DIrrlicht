@@ -30,12 +30,6 @@ import dirrlicht.irrlichtdevice;
 
 class Randomizer
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getRandomizer(device.ptr);
-    }
-    
     this(irr_IRandomizer* ptr)
     {
     	this.ptr = ptr;

@@ -43,8 +43,8 @@ import dirrlicht.io.attributeexchangingobject;
 
 interface SceneNode
 {
-	void addAnimator(ISceneNodeAnimator animator);
-    void removeAnimator(ISceneNodeAnimator animator);
+	void addAnimator(SceneNodeAnimator animator);
+    void removeAnimator(SceneNodeAnimator animator);
     void removeAnimators();
     Material getMaterial(uint num);
     void setMaterialFlag(MaterialFlag flag, bool newvalue);
@@ -80,11 +80,6 @@ interface SceneNode
 
 mixin template DefaultSceneNode()
 {
-    /// Internal use only
-//    this(irr_ISceneNode* ptr)
-//    {
-//    	this.ptr = ptr;
-//    }
     import dirrlicht.compileconfig;
 	import dirrlicht.scene.scenenodeanimator;
 	import dirrlicht.scene.scenemanager;
@@ -100,12 +95,12 @@ mixin template DefaultSceneNode()
 	import dirrlicht.io.attributes;
 	import dirrlicht.io.attributeexchangingobject;
 	
-    void addAnimator(ISceneNodeAnimator animator)
+    void addAnimator(SceneNodeAnimator animator)
     {
         irr_ISceneNode_addAnimator(irrPtr, animator.ptr);
     }
 
-    void removeAnimator(ISceneNodeAnimator animator)
+    void removeAnimator(SceneNodeAnimator animator)
     {
         irr_ISceneNode_removeAnimator(irrPtr, animator.ptr);
     }
@@ -166,8 +161,7 @@ mixin template DefaultSceneNode()
 	    vector3df position()
 	    {
 	        auto temp = irr_ISceneNode_getPosition(irrPtr);
-	        auto pos = vector3df(temp.x, temp.y, temp.z);
-	        return pos;
+	        return vector3df(temp.x, temp.y, temp.z);
 	    }
 	
 	    void position(vector3df pos)
@@ -261,6 +255,7 @@ mixin template DefaultSceneNode()
     {
     	irrPtr_ = ptr;
     }
+    
     irr_ISceneNode* irrPtr_;
 private:
     SceneManager smgr;

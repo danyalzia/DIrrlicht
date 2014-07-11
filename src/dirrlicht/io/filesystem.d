@@ -32,12 +32,6 @@ import std.string;
 
 class FileSystem
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getFileSystem(device.ptr);
-    }
-    
     this(irr_IFileSystem* ptr)
     {
     	this.ptr = ptr;

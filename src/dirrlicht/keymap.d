@@ -31,25 +31,18 @@ import dirrlicht.keycodes;
 /// enumeration for key actions. Used for example in the FPS Camera.
 enum KeyAction
 {
-    moveForward = 0,
-    moveBackward,
-    strafeLeft,
-    strafeRight,
-    jump,
-    crouch,
-    count,
+    MoveForward = 0,
+    MoveBackward,
+    StrafeLeft,
+    StrafeRight,
+    Jump,
+    Crouch,
+    Count,
 }
 
 /// Struct storing which key belongs to which action.
-class KeyMap
+struct KeyMap
 {
-    //@disable this();
-    this(KeyAction action, KeyCode keyCode)
-    {
-        this.action = action;
-        this.keyCode = keyCode;
-    }
-
     KeyAction action;
     KeyCode keyCode;
 }

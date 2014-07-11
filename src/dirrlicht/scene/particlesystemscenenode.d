@@ -26,11 +26,16 @@
 
 module dirrlicht.scene.particlesystemscenenode;
 
-class IParticleSystemSceneNode
+import dirrlicht.scene.scenenode;
+
+class ParticleSystemSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
+	
 	this(irr_IParticleSystemSceneNode* ptr)
 	{
 		this.ptr = ptr;
+		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
 	irr_IParticleSystemSceneNode* ptr;

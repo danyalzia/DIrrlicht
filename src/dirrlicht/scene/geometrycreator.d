@@ -26,8 +26,12 @@
 
 module dirrlicht.scene.geometrycreator;
 
-class IGeometryCreator
+class GeometryCreator
 {
+	this(irr_IGeometryCreator* ptr)
+	{
+		this.ptr = ptr;
+	}
 	irr_IGeometryCreator* ptr;
 }
 

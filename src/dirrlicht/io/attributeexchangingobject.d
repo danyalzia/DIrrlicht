@@ -42,7 +42,7 @@ enum AttributeReadWriteFlag
 }
 
 /// struct holding data describing options
-struct SAttributeReadWriteOptions
+struct AttributeReadWriteOptions
 {
     /// Combination of E_ATTRIBUTE_READ_WRITE_FLAGS or other, custom ones
     int Flags;
@@ -60,13 +60,13 @@ public:
     /** Implement this to expose the attributes of your scene node animator for
     scripting languages, editors, debuggers or xml serialization purposes.
     */
-    void serializeAttributes(out IAttributes att, SAttributeReadWriteOptions options=SAttributeReadWriteOptions(0, null)) {}
+    void serializeAttributes(out Attributes att, AttributeReadWriteOptions options=AttributeReadWriteOptions(0, null)) {}
 
     /// Reads attributes of the object.
     /** Implement this to set the attributes of your scene node animator for
     scripting languages, editors, debuggers or xml deserialization purposes.
     */
-    void deserializeAttributes(in IAttributes att, SAttributeReadWriteOptions options=SAttributeReadWriteOptions(0, null)) {}
+    void deserializeAttributes(in Attributes att, AttributeReadWriteOptions options=AttributeReadWriteOptions(0, null)) {}
 }
 
 package extern (C):

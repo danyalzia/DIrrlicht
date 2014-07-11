@@ -140,12 +140,6 @@ enum FogType
 
 class VideoDriver
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getVideoDriver(device.ptr);
-    }
-    
     this(irr_IVideoDriver* ptr)
     {
     	this.ptr = ptr;
@@ -171,10 +165,10 @@ class VideoDriver
         irr_IVideoDriver_disableFeature(ptr, feature, flag);
     }
 
-    IAttributes getDriverAttributes()
+    Attributes getDriverAttributes()
     {
         auto att = irr_IVideoDriver_getDriverAttributes(ptr);
-        return new IAttributes(att);
+        return new Attributes(att);
     }
 
     bool checkDriverReset()

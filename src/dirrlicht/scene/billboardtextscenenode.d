@@ -26,6 +26,18 @@
 
 module dirrlicht.scene.billboardtextscenenode;
 
+import dirrlicht.scene.scenenode;
+
+class BillboardTextSceneNode : SceneNode
+{
+	mixin DefaultSceneNode;
+	this(irr_IBillboardTextSceneNode* ptr)
+	{
+		this.ptr = ptr;
+		irrPtr = cast(irr_ISceneNode*)ptr;
+	}
+	irr_IBillboardTextSceneNode* ptr;
+}
 extern (C):
 
 struct irr_IBillboardTextSceneNode;

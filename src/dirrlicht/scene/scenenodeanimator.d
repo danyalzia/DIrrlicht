@@ -26,7 +26,7 @@
 
 module dirrlicht.scene.scenenodeanimator;
 
-class ISceneNodeAnimator
+class SceneNodeAnimator
 {
     this(irr_ISceneNodeAnimator* ptr)
     {

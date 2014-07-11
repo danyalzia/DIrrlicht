@@ -33,12 +33,6 @@ import dirrlicht.irrlichtdevice;
  +/
 class OSOperator
 {
-    this(IrrlichtDevice dev)
-    {
-        device = dev;
-        ptr = irr_IrrlichtDevice_getOSOperator(device.ptr);
-    }
-    
     this(irr_IOSOperator* ptr)
     {
     	this.ptr = ptr;

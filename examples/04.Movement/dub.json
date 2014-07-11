@@ -1,0 +1,23 @@
+{
+	"name": "dirrlicht",
+	"description": "D Bindings for Irrlicht Engine",
+	"authors": ["Danyal Zia"],
+	"homepage": "http://github.com/danyalzia/DIrrlicht",
+	"license": "zlib",
+	
+	"targetName": "Movement",
+	"targetType": "executable",
+	"targetPath": "../bin",
+
+	"sourcePaths": ["../../src", "."],
+	"importPaths": ["../../src", "."],
+	
+	"lflags":["-L../../CIrrlicht/lib/Linux", "-L/home/danyalzia/DSFML-C/build/lib",  "-L/home/danyalzia/irrlicht/lib/Linux"],
+	"libs": [ "CIrrlicht", "Irrlicht" ],
+	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"],
+
+	"dependencies": 
+    {
+        "dsfml:graphics": "~master",
+    }
+}

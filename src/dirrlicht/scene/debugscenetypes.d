@@ -27,32 +27,32 @@
 module dirrlicht.scene.debugscenetypes;
 
 /// An enumeration for all types of debug data for built-in scene nodes (flags)
-enum E_DEBUG_SCENE_TYPE
+enum DebugSceneType
 {
     /// No Debug Data ( Default )
-    EDS_OFF = 0,
+    Off = 0,
 
     /// Show Bounding Boxes of SceneNode
-    EDS_BBOX = 1,
+    BBox = 1,
 
     /// Show Vertex Normals
-    EDS_NORMALS = 2,
+    Normals = 2,
 
     /// Shows Skeleton/Tags
-    EDS_SKELETON = 4,
+    Skeleton = 4,
 
     /// Overlays Mesh Wireframe
-    EDS_MESH_WIRE_OVERLAY = 8,
+    MeshWireOverlay = 8,
 
     /// Temporary use transparency Material Type
-    EDS_HALF_TRANSPARENCY = 16,
+    HalfTransparency = 16,
 
     /// Show Bounding Boxes of all MeshBuffers
-    EDS_BBOX_BUFFERS = 32,
+    BBoxBuffers = 32,
 
     /// EDS_BBOX | EDS_BBOX_BUFFERS
-    EDS_BBOX_ALL = EDS_BBOX | EDS_BBOX_BUFFERS,
+    BBoxAll = BBox | BBoxBuffers,
 
     /// Show all debug infos
-    EDS_FULL = 0xffffffff
+    Full = 0xffffffff
 }

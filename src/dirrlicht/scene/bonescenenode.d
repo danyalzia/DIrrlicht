@@ -27,45 +27,36 @@
 module dirrlicht.scene.bonescenenode;
 
 /// Enumeration for different bone animation modes
-enum E_BONE_ANIMATION_MODE
+enum BoneAnimationMode
 {
     /// The bone is usually animated, unless it's parent is not animated
-    EBAM_AUTOMATIC=0,
+    Automatic=0,
 
     /// The bone is animated by the skin, if it's parent is not animated then animation will resume from this bone onward
-    EBAM_ANIMATED,
+    Animated,
 
     /// The bone is not animated by the skin
-    EBAM_UNANIMATED,
+    NotAnimated,
 
     /// Not an animation mode, just here to count the available modes
-    EBAM_COUNT
+    Count
 
 }
 
-enum E_BONE_SKINNING_SPACE
+enum BoneSkinningSpace
 {
     /// local skinning, standard
-    EBSS_LOCAL=0,
+    Local=0,
 
     /// global skinning
-    EBSS_GLOBAL,
+    Global,
 
-    EBSS_COUNT
+    Count
 }
-
-/// Names for bone animation modes
-const char* BoneAnimationModeNames[] =
-    [
-        "automatic",
-        "animated",
-        "unanimated",
-        "0",
-    ];
 
 import dirrlicht.scene.scenenode;
 
-class IBoneSceneNode : SceneNode
+class BoneSceneNode : SceneNode
 {
 	mixin DefaultSceneNode;
 	this(irr_IBoneSceneNode* ptr)

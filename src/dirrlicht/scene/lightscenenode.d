@@ -26,8 +26,15 @@
 
 module dirrlicht.scene.lightscenenode;
 
-class ILightSceneNode
+import dirrlicht.scene.scenenode;
+
+class LightSceneNode : SceneNode
 {
+	mixin DefaultSceneNode;
+	this(irr_ILightSceneNode* ptr)
+	{
+		this.ptr = ptr;
+	}
 	irr_ILightSceneNode* ptr;
 }
 

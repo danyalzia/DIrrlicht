@@ -45,16 +45,16 @@ import dirrlicht.video.materialflags;
 import std.conv;
 import std.string;
 
-enum E_JOINT_UPDATE_ON_RENDER
+enum JointUpdateOnRender
 {
     /// do nothing
-    EJUOR_NONE = 0,
+    None = 0,
 
     /// get joints positions from the mesh (for attached nodes, etc)
-    EJUOR_READ,
+    Read,
 
     /// control joint positions in the mesh (eg. ragdolls, or set the animation from animateJoints() )
-    EJUOR_CONTROL
+    Control
 }
 
 /+++
@@ -63,7 +63,7 @@ enum E_JOINT_UPDATE_ON_RENDER
  + setAnimationEndCallback() to be able to
  + be notified if an animation playback has ended.
  +/
-class IAnimatedEndCallBack
+class AnimatedEndCallBack
 {
 	this(irr_IAnimationEndCallBack* ptr)
 	{
@@ -194,16 +194,16 @@ class AnimatedMeshSceneNode : SceneNode
     	return new ShadowVolumeSceneNode(temp);
     }
     
-    IBoneSceneNode getJointNode(string jointName)
+    BoneSceneNode getJointNode(string jointName)
     {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNode(ptr, jointName.toStringz);
-    	return new  IBoneSceneNode(temp);
+    	return new  BoneSceneNode(temp);
     }
     
-    IBoneSceneNode getJointNode(uint jointID)
+    BoneSceneNode getJointNode(uint jointID)
     {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNodeByID(ptr, jointID);
-    	return new  IBoneSceneNode(temp);
+    	return new  BoneSceneNode(temp);
     }
     
     uint getJointCount()
@@ -269,7 +269,7 @@ class AnimatedMeshSceneNode : SceneNode
 	 * Please note that this will only be called when in non looped
 	 * mode, see setLoopMode().
      */
-    void setAnimationEndCallback(IAnimatedEndCallBack callback=null)
+    void setAnimationEndCallback(AnimatedEndCallBack callback=null)
     {
     	irr_IAnimatedMeshSceneNode_setAnimationEndCallback(ptr, callback.ptr);
     }
@@ -330,7 +330,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			mode = mode
      */
-    void setJointMode(E_JOINT_UPDATE_ON_RENDER mode)
+    void setJointMode(JointUpdateOnRender mode)
     {
     	irr_IAnimatedMeshSceneNode_setJointMode(ptr, mode);
     }
@@ -422,7 +422,7 @@ bool irr_IAnimatedMeshSceneNode_isReadOnlyMaterials(irr_IAnimatedMeshSceneNode* 
 void irr_IAnimatedMeshSceneNode_setMesh(irr_IAnimatedMeshSceneNode* node, irr_IAnimatedMesh* mesh);
 irr_IAnimatedMesh* irr_IAnimatedMeshSceneNode_getMesh(irr_IAnimatedMeshSceneNode* node);
 const irr_SMD3QuaternionTag* irr_IAnimatedMeshSceneNode_getMD3TagTransformation(irr_IAnimatedMeshSceneNode* node, const char* tagname);
-void irr_IAnimatedMeshSceneNode_setJointMode(irr_IAnimatedMeshSceneNode* node, E_JOINT_UPDATE_ON_RENDER mode);
+void irr_IAnimatedMeshSceneNode_setJointMode(irr_IAnimatedMeshSceneNode* node, JointUpdateOnRender mode);
 void irr_IAnimatedMeshSceneNode_setTransitionTime(irr_IAnimatedMeshSceneNode* node, float Time);
 void irr_IAnimatedMeshSceneNode_animateJoints(irr_IAnimatedMeshSceneNode* node, bool CalculateAbsolutePositions=true);
 void irr_IAnimatedMeshSceneNode_setRenderFromIdentity(irr_IAnimatedMeshSceneNode* node, bool On);

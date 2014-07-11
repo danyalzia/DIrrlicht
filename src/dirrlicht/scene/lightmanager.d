@@ -26,7 +26,7 @@
 
 module dirrlicht.scene.lightmanager;
 
-class ILightManager
+class LightManager
 {
 	this(irr_ILightManager* ptr)
 	{
