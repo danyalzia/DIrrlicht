@@ -38,11 +38,11 @@ interface IMeshBuffer
 {
     ref Material getMaterial();
     const ref Material getMaterial();
-    E_VERTEX_TYPE getVertexType();
+    VertexType getVertexType();
     const void* getVertices();
     void* getVertices();
     uint getVertexCount();
-    E_INDEX_TYPE getIndexType();
+    IndexType getIndexType();
     const ushort* getIndices();
     ushort* getIndices();
     uint getIndexCount();

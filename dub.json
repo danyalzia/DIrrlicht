@@ -2,16 +2,17 @@
 	"name": "dirrlicht",
 	"description": "D Bindings for Irrlicht Engine",
 	"authors": ["Danyal Zia"],
-	"homepage": "http://github.com/danyalzia/DIrrlicht",
+	"homepage": "https://github.com/Artistic-Games/DIrrlicht",
 	"license": "zlib",
 	
 	"targetName": "dirrlicht",
 	"targetType": "library",
 	"targetPath": "lib",
 
-	"sourcePaths": ["src"],
+	"sourcePaths": ["src/dirrlicht"],
 	"importPaths": ["src"],
 	"dflags" : ["-Dddoc/Ddoc/"],
 	"lflags": ["-LCIrrlicht/lib/"],
-	"libs": [ "CIrrlicht" , "GL", "X11"],
+	"libs": ["CIrrlicht"],
+	"libs-posix": ["GL", "X11"],
 }

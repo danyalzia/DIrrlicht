@@ -26,6 +26,15 @@
 
 module dirrlicht.video.materialrenderer;
 
-extern (C):
+class MaterialRenderer {
+	this(irr_IMaterialRenderer* ptr) {
+		this.ptr = ptr;
+	}
+	
+	alias ptr this;
+	irr_IMaterialRenderer* ptr;
+}
+
+package extern (C):
 
 struct irr_IMaterialRenderer;

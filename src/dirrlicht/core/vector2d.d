@@ -26,61 +26,50 @@
 
 module dirrlicht.core.vector2d;
 
-struct vector2d(T)
-{
+struct vector2d(T) {
 	@disable this();
 	
-	this(T x, T y)
-	{
+	this(T x, T y) {
 		this.x = x;
 		this.y = y;
 	}
 	
 	/// internal use only
-    static if (is (T == float))
-    {
-    	this(irr_vector2df v)
-    	{
+    static if (is (T == float)) {
+    	this(irr_vector2df v) {
     		x = v.x;
     		y = v.y;
     	}
     }
     	
-    else
-    {
-    	this(irr_vector2di v)
-    	{
+    else {
+    	this(irr_vector2di v) {
     		x = v.x;
     		y = v.y;
     	}
     }
-    void opOpAssign(string op)(vector2d rhs)
-    {
+    
+    void opOpAssign(string op)(vector2d rhs) {
         mixin("x" ~ op ~ "=rhs.x;");
         mixin("y" ~ op ~ "=rhs.y;");
     }
 
-    vector2d!(T) opBinary(string op)(vector2d!(T) rhs)
-    {
-        static if (op == "+")
-        {
-            return new vector2d(x + rhs.x, y + rhs.y);
-        }
-
-        else static if (op == "-")
-        {
-            return new vector2d(x - rhs.x, y - rhs.y);
-        }
-
-        else static if (op == "*")
-        {
-            return new vector2d(x * rhs.x, y * rhs.y);
-        }
-
-        else static if (op == "/")
-        {
-            return new vector2d(x / rhs.x, y / rhs.y);
-        }
+    vector2d!(T) opBinary(string op)(vector2d!(T) rhs) {
+    	return new vector2d(x ~op~ rhs.x, y ~op~ rhs.y);
+    }
+    
+    @property {
+    	static if (is(T == int)) {
+	    	irr_vector2di ptr() {
+	    		return irr_vector2di(x,y);
+	    	}
+    	}
+    	
+    	else {
+	    	irr_vector2df ptr() {
+	    		return irr_vector2df(x,y);
+	    	}
+    	}
     }
     
     T x, y;
@@ -111,14 +100,12 @@ unittest
 
 package extern (C):
 
-struct irr_vector2di
-{
+struct irr_vector2di {
     int x;
     int y;
 }
 
-struct irr_vector2df
-{
+struct irr_vector2df {
     float x;
     float y;
 }

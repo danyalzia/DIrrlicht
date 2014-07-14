@@ -30,78 +30,78 @@ module dirrlicht.video.materialflags;
 enum MaterialFlag
 {
     /// Draw as wireframe or filled triangles? Default: false
-    wireframe = 0x1,
+    Wireframe = 0x1,
 
     /// Draw as point cloud or filled triangles? Default: false
-    pointCloud = 0x2,
+    PointCloud = 0x2,
 
     /// Flat or Gouraud shading? Default: true
-    gouraudShading = 0x4,
+    GouraudShading = 0x4,
 
     /// Will this material be lighted? Default: true
-    lighting = 0x8,
+    Lighting = 0x8,
 
     /// Is the ZBuffer enabled? Default: true
-    zBuffer = 0x10,
+    ZBuffer = 0x10,
 
     /// May be written to the zbuffer or is it readonly. Default: true
-    /** This flag is ignored, if the material type is a transparent type. */
-    zWrite = 0x20,
+    /// This flag is ignored, if the material type is a transparent type.
+    ZWrite = 0x20,
 
     /// Is backface culling enabled? Default: true
-    backFaceCulling = 0x40,
+    BackFaceCulling = 0x40,
 
     /// Is frontface culling enabled? Default: false
-    /** Overrides EMF_BACK_FACE_CULLING if both are enabled. */
-    frontFaceCulling = 0x80,
+    /// Overrides EMF_BACK_FACE_CULLING if both are enabled. */
+    FrontFaceCulling = 0x80,
 
     /// Is bilinear filtering enabled? Default: true
-    bilinearFilter = 0x100,
+    BilinearFilter = 0x100,
 
     /// Is trilinear filtering enabled? Default: false
-    /** If the trilinear filter flag is enabled,
-    the bilinear filtering flag is ignored. */
-    trilinearFilter = 0x200,
+    /// If the trilinear filter flag is enabled,
+    /// the bilinear filtering flag is ignored.
+    TrilinearFilter = 0x200,
 
     /// Is anisotropic filtering? Default: false
-    /** In Irrlicht you can use anisotropic texture filtering in
-    conjunction with bilinear or trilinear texture filtering
-    to improve rendering results. Primitives will look less
-    blurry with this flag switched on. */
-    anisotropicFilter = 0x400,
+    /// In Irrlicht you can use anisotropic texture filtering in
+    /// conjunction with bilinear or trilinear texture filtering
+    /// to improve rendering results. Primitives will look less
+    /// blurry with this flag switched on.
+    AnisotropicFilter = 0x400,
 
     /// Is fog enabled? Default: false
-    fog = 0x800,
+    Fog = 0x800,
 
     /// Normalizes normals. Default: false
-    /** You can enable this if you need to scale a dynamic lighted
-    model. Usually, its normals will get scaled too then and it
-    will get darker. If you enable the EMF_NORMALIZE_NORMALS flag,
-    the normals will be normalized again, and the model will look
-    as bright as it should. */
-    normalizeNormals = 0x1000,
+    /// You can enable this if you need to scale a dynamic lighted
+    /// model. Usually, its normals will get scaled too then and it
+    /// will get darker. If you enable the EMF_NORMALIZE_NORMALS flag,
+    /// the normals will be normalized again, and the model will look
+    /// as bright as it should.
+    NormalizeNormals = 0x1000,
 
     /// Access to all layers texture wrap settings. Overwrites separate layer settings.
-    textureWrap = 0x2000,
+    TextureWrap = 0x2000,
 
     /// AntiAliasing mode
-    antiAliasing = 0x4000,
+    AntiAliasing = 0x4000,
 
     /// ColorMask bits, for enabling the color planes
-    colorMask = 0x8000,
+    ColorMask = 0x8000,
 
     /// ColorMaterial enum for vertex color interpretation
-    colorMaterial = 0x10000,
+    ColorMaterial = 0x10000,
 
     /// Flag for enabling/disabling mipmap usage
-    mipmaps = 0x20000,
+    Mipmaps = 0x20000,
 
     /// Flag for blend operation
-    blendOperation = 0x40000,
+    BlendOperation = 0x40000,
 
     /// Flag for polygon offset
-    polygonOffset = 0x80000,
+    PolygonOffset = 0x80000,
 
     /// Flag for blend factor
-    blendFactor = 0x160000
+    BlendFactor = 0x160000
 }

@@ -26,8 +26,8 @@
 
 module dirrlicht.video.vertexindex;
 
-enum E_INDEX_TYPE
+enum IndexType
 {
-    EIT_16BIT = 0,
-    EIT_32BIT
+    _16Bit = 0,
+    _32Bit
 }

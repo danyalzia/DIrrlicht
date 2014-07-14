@@ -26,15 +26,12 @@
 
 module dirrlicht.core.matrix4;
 
-struct matrix4
-{
-    float opIndex(uint i)
-    {
+struct matrix4 {
+    float opIndex(uint i) {
         return M[i];
     }
 
-    void opIndexAssign(float n, uint index)
-    {
+    void opIndexAssign(float n, uint index) {
     	M[index] = n;
     }
     
@@ -56,7 +53,6 @@ unittest
 
 extern (C):
 
-struct irr_matrix4
-{
+struct irr_matrix4 {
     float M[16];
 }

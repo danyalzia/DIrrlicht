@@ -33,8 +33,7 @@ import dirrlicht.core.vector2d;
 import dirrlicht.eventreceiver;
 import dirrlicht.logger;
 
-struct IrrlichtCreationParameters
-{
+struct IrrlichtCreationParameters {
 	//! Type of the device.
 	/** This setting decides the windowing system used by the device, most device types are native
 	to a specific operating system and so may not be available.

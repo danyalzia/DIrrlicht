@@ -39,38 +39,34 @@ import std.string;
 import std.conv;
 import std.utf;
 
-class GUIEnvironment
-{
-    this(irr_IGUIEnvironment* ptr)
-    {
+class GUIEnvironment {
+    this(irr_IGUIEnvironment* ptr) {
     	this.ptr = ptr;
     }
     
-    GUIStaticText addStaticText(dstring text, recti rec, bool border=false)
-    {
-        return new GUIStaticText(this, text, rec, border);
+    GUIStaticText addStaticText(dstring text, recti rec, bool border=false) {
+        auto temp = irr_IGUIEnvironment_addStaticText(ptr, toUTFz!(const(dchar)*)(text), rec.ptr, border);
+        return new GUIStaticText(temp);
     }
 
-    GUIImage addImage(Texture texture, vector2di pos)
-    {
-        return new GUIImage(this, texture, pos);
+    GUIImage addImage(Texture texture, vector2di pos) {
+        auto temp = irr_IGUIEnvironment_addImage(ptr, texture.ptr, pos.ptr);
+        return new GUIImage(temp);
     }
 
-    void drawAll()
-    {
+    void drawAll() {
         irr_IGUIEnvironment_drawAll(ptr);
     }
-
+    
+    alias ptr this;
     irr_IGUIEnvironment* ptr;
-private:
-    IrrlichtDevice device;
 }
 
 package extern (C):
 
 struct irr_IGUIEnvironment;
 
-irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const(dchar)* text, const ref irr_recti rectangle, bool border=false);
+irr_IGUIStaticText* irr_IGUIEnvironment_addStaticText(irr_IGUIEnvironment* env, const(dchar)* text, irr_recti rectangle, bool border=false);
 irr_IGUIImage* irr_IGUIEnvironment_addImage(irr_IGUIEnvironment* env, irr_ITexture* textures, irr_vector2di pos);
 
 void irr_IGUIEnvironment_drawAll(irr_IGUIEnvironment* env);

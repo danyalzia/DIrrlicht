@@ -18,8 +18,7 @@ version(LDC)
 else
     enum LDC = false;
 
-template checkNull(string name)
-{
+template checkNull(string name) {
 	const char[] checkNull = "assert(" ~ name ~ " !is null);" ~ "assert(" ~ name ~ ".ptr" ~ "!= null);";
 }
 

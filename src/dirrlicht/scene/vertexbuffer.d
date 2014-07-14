@@ -38,8 +38,8 @@ import dirrlicht.video.vertex;
 interface IVertexBuffer
 {
     void* getData();
-    E_VERTEX_TYPE getType();
-    void setType(E_VERTEX_TYPE vertexType);
+    VertexType getType();
+    void setType(VertexType vertexType);
     uint stride();
     uint size();
     void push_back(S3DVertex element);
@@ -73,12 +73,12 @@ class CVertexBuffer : IVertexBuffer
         return Vertices.pointer();
     }
 
-    E_VERTEX_TYPE getType()
+    VertexType getType()
     {
         return Vertices.getType();
     }
 
-    void setType(E_VERTEX_TYPE vertexType) { }
+    void setType(VertexType vertexType) { }
 
     uint stride()
     {
@@ -158,10 +158,10 @@ class CVertexBuffer : IVertexBuffer
         void reallocate(uint new_size);
         uint allocated_size();
         S3DVertex* pointer();
-        E_VERTEX_TYPE getType();
+        VertexType getType();
     };
 
-    this(E_VERTEX_TYPE vertexType)
+    this(VertexType vertexType)
     {
         Vertices = null;
         MappingHint = E_HARDWARE_MAPPING.EHM_NEVER;

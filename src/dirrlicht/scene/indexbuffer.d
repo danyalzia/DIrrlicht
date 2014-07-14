@@ -39,8 +39,8 @@ interface IIndexBuffer
 {
     void* getData();
 
-    E_INDEX_TYPE getType();
-    void setType(E_INDEX_TYPE IndexType);
+    IndexType getType();
+    void setType(IndexType IndexType);
 
     uint stride();
 
@@ -78,12 +78,12 @@ class CIndexBuffer : IIndexBuffer
         return Indices.pointer();
     }
 
-    E_INDEX_TYPE getType()
+    IndexType getType()
     {
         return Indices.getType();
     }
 
-    void setType(E_INDEX_TYPE IndexType) {}
+    void setType(IndexType IndexType) {}
 
     uint stride()
     {
@@ -169,10 +169,10 @@ class CIndexBuffer : IIndexBuffer
         void reallocate(uint new_size);
         uint allocated_size();
         void* pointer();
-        E_INDEX_TYPE getType();
+        IndexType getType();
     };
 
-    this(E_INDEX_TYPE IndexType)
+    this(IndexType IndexType)
     {
         Indices = null;
         MappingHint = E_HARDWARE_MAPPING.EHM_NEVER;

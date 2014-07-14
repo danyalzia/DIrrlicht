@@ -30,21 +30,17 @@ import dirrlicht.irrlichtdevice;
 
 import std.string;
 
-class FileSystem
-{
-    this(irr_IFileSystem* ptr)
-    {
+class FileSystem {
+    this(irr_IFileSystem* ptr) {
     	this.ptr = ptr;
     }
     
-    void addFileArchive(string file)
-    {
+    void addFileArchive(string file) {
         irr_IFileSystem_addFileArchive(ptr, toStringz(file));
     }
-
+    
+    alias ptr this;
     irr_IFileSystem* ptr;
-private:
-    IrrlichtDevice device;
 }
 
 package extern (C):

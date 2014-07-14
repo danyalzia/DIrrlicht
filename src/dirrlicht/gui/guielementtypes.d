@@ -30,83 +30,82 @@ module dirrlicht.gui.guielementtypes;
  + List of all basic Irrlicht GUI elements.
  + An GUIElement returns this when calling getType()
  +/
-enum GUIElementType
-{
+enum GUIElementType {
     /// A button (IGUIButton)
-    button = 0,
+    Button = 0,
 
     /// A check box (IGUICheckBox)
-    checkBox,
+    CheckBox,
 
     /// A combo box (IGUIComboBox)
-    comboBox,
+    ComboBox,
 
     /// A context menu (IGUIContextMenu)
-    contextMenu,
+    ContextMenu,
 
     /// A menu (IGUIMenu)
-    menu,
+    Menu,
 
     /// An edit box (IGUIEditBox)
-    editBox,
+    EditBox,
 
     /// A file open dialog (IGUIFileOpenDialog)
-    fileOpenDialog,
+    FileOpenDialog,
 
     /// A color select open dialog (IGUIColorSelectDialog)
-    colorSelectDialog,
+    ColorSelectDialog,
 
     /// A in/out fader (IGUIInOutFader)
-    inOutFader,
+    InOutFader,
 
     /// An image (IGUIImage)
-    image,
+    Image,
 
     /// A list box (IGUIListBox)
-    listBox,
+    ListBox,
 
     /// A mesh viewer (IGUIMeshViewer)
-    meshViewer,
+    MeshViewer,
 
     /// A message box (IGUIWindow)
-    messageBox,
+    MessageBox,
 
     /// A modal screen
-    modalScreen,
+    ModalScreen,
 
     /// A scroll bar (IGUIScrollBar)
-    scrollBar,
+    ScrollBar,
 
     /// A spin box (IGUISpinBox)
-    spinBox,
+    SpinBox,
 
     /// A static text (IGUIStaticText)
-    staticText,
+    StaticText,
 
     /// A tab (IGUITab)
-    tab,
+    Tab,
 
     /// A tab control
-    tabControl,
+    TabControl,
 
     /// A Table
-    table,
+    Table,
 
     /// A tool bar (IGUIToolBar)
-    toolBar,
+    ToolBar,
 
     /// A Tree View
-    treeView,
+    TreeView,
 
     /// A window
-    window,
+    Window,
 
     /// Unknown type.
-    unknown,
+    Unknown,
 
     /// The root of the GUI
-    root,
+    Root,
 
     /// IGUIProfiler
-    profiler
+    Profiler
 }

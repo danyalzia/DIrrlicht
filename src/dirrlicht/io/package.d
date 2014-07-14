@@ -26,8 +26,7 @@
 
 module dirrlicht.io;
 
-public
-{
+public {
     import dirrlicht.io.attributestypes;
     import dirrlicht.io.attributes;
     import dirrlicht.io.attributeexchangingobject;

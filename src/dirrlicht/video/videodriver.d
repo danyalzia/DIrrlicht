@@ -60,124 +60,111 @@ import std.utf : toUTFz;
 import std.string : toStringz;
 
 /// enumeration for geometry transformation states
-enum TransformationState
-{
+enum TransformationState {
     /// View transformation
-    view = 0,
+    View = 0,
     /// World transformation
-    world,
+    World,
     /// Projection transformation
-    projection,
+    Projection,
     /// Texture transformation
-    texture0,
+    Texture0,
     /// Texture transformation
-    texture1,
+    Texture1,
     /// Texture transformation
-    texture2,
+    Texture2,
     /// Texture transformation
-    texture3,
+    Texture3,
     /// Texture transformation
-    texture4,
+    Texture4,
     /// Texture transformation
-    texture5,
+    Texture5,
     /// Texture transformation
-    texture6,
+    Texture6,
     /// Texture transformation
-    texture7
+    Texture7
 }
 
 /// enumeration for signaling resources which were lost after the last render cycle
 /// These values can be signaled by the driver, telling the app that some resources
 /// were lost and need to be recreated. Irrlicht will sometimes recreate the actual objects,
 /// but the content needs to be recreated by the application.
-enum E_LOST_RESOURCE
-{
+enum LostResource {
     /// The whole device/driver is lost
-    ELR_DEVICE = 1,
+    Device = 1,
     //!/ All texture are lost, rare problem
-    ELR_TEXTURES = 2,
+    Textures = 2,
     /// The Render Target Textures are lost, typical problem for D3D
-    ELR_RTTS = 4,
+    RTTS = 4,
     /// The HW buffers are lost, will be recreated automatically, but might require some more time this frame
-    ELR_HW_BUFFERS = 8
+    HWBuffers = 8
 }
 
 /// Special render targets, which usually map to dedicated hardware
 /// These render targets (besides 0 and 1) need not be supported by gfx cards
-enum RenderTarget
-{
+enum RenderTarget {
     /// Render target is the main color frame buffer
-    frameBuffer=0,
+    FrameBuffer=0,
     /// Render target is a render texture
-    renderTexture,
+    RenderTexture,
     /// Multi-Render target textures
-    multiRenderTexture,
+    MultiRenderTexture,
     /// Render target is the main color frame buffer
-    stereoLeftBuffer,
+    StereoLeftBuffer,
     /// Render target is the right color buffer (left is the main buffer)
-    stereoRightBuffer,
+    StereoRightBuffer,
     /// Render to both stereo buffers at once
-    stereoBothBuffers,
+    StereoBothBuffers,
     /// Auxiliary buffer 0
-    auxBuffer0,
+    AuxBuffer0,
     /// Auxiliary buffer 1
-    auxBuffer1,
+    AuxBuffer1,
     /// Auxiliary buffer 2
-    auxBuffer2,
+    AuxBuffer2,
     /// Auxiliary buffer 3
-    auxBuffer3,
+    AuxBuffer3,
     /// Auxiliary buffer 4
-    auxBuffer4
+    AuxBuffer4
 }
 
 /// Enum for the types of fog distributions to choose from
-enum FogType
-{
-    exp=0,
-    linear,
-    exp2
+enum FogType {
+    Exp=0,
+    Linear,
+    Exp2
 }
 
-class VideoDriver
-{
-    this(irr_IVideoDriver* ptr)
-    {
+class VideoDriver {
+    this(irr_IVideoDriver* ptr) {
     	this.ptr = ptr;
     }
     
-    bool beginScene(bool backBuffer, bool zBuffer, Color col)
-    {
+    bool beginScene(bool backBuffer, bool zBuffer, Color col) {
         return irr_IVideoDriver_beginScene(ptr, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
     }
 
-    bool endScene()
-    {
+    bool endScene() {
         return irr_IVideoDriver_endScene(ptr);
     }
 
-    bool queryFeature(DriverFeature feature)
-    {
+    bool queryFeature(DriverFeature feature) {
         return irr_IVideoDriver_queryFeature(ptr, feature);
     }
 
-    void disableFeature(DriverFeature feature, bool flag=true)
-    {
+    void disableFeature(DriverFeature feature, bool flag=true) {
         irr_IVideoDriver_disableFeature(ptr, feature, flag);
     }
 
-    Attributes getDriverAttributes()
-    {
+    Attributes getDriverAttributes() {
         auto att = irr_IVideoDriver_getDriverAttributes(ptr);
         return new Attributes(att);
     }
 
-    bool checkDriverReset()
-    {
+    bool checkDriverReset() {
         return irr_IVideoDriver_checkDriverReset(ptr);
     }
 
-    void setTransform(TransformationState state, matrix4 mat)
-    {
+    void setTransform(TransformationState state, matrix4 mat) {
         irr_matrix4 temp;
         foreach(i; 0..16)
         {
@@ -186,66 +173,171 @@ class VideoDriver
 
         irr_IVideoDriver_setTransform(ptr, state, temp);
     }
-
-    Texture getTexture(string file)
-    {
-        return new Texture(this, file);
+    
+    matrix4 getTransform(TransformationState state) {
+    	auto temp = irr_IVideoDriver_getTransform(ptr, state);
+    	matrix4 trans;
+    	foreach(i; 0..16)
+        {
+            trans[i] = temp.M[i];
+        }
+        
+        return trans;
+    }
+    
+    uint getImageLoaderCount() {
+    	return irr_IVideoDriver_getImageLoaderCount(ptr);
+    }
+    
+    ImageLoader getImageLoader(uint n) {
+    	auto temp = irr_IVideoDriver_getImageLoader(ptr, n);
+    	return new ImageLoader(temp);
+    }
+    
+    uint getImageWriterCount() {
+    	return irr_IVideoDriver_getImageWriterCount(ptr);
+    }
+    
+    ImageWriter getImageWriter(uint n) {
+    	auto temp = irr_IVideoDriver_getImageWriter(ptr, n);
+    	return new ImageWriter(temp);
+    }
+    
+    void setMaterial(Material material) {
+    	irr_IVideoDriver_setMaterial(ptr, material.ptr);
+    }
+    
+    Texture getTexture(string file) {
+        auto temp = irr_IVideoDriver_getTexture(ptr, file.toStringz);
+        return new Texture(temp);
+    }
+    
+    Texture getTextureByIndex(uint index) {
+    	auto temp = irr_IVideoDriver_getTextureByIndex(ptr, index);
+    	return new Texture(temp);
+    }
+    
+    uint getTextureCount() {
+    	return irr_IVideoDriver_getTextureCount(ptr);
+    }
+    
+    void renameTexture(Texture texture, string newName) {
+    	irr_IVideoDriver_renameTexture(ptr, texture.ptr, newName.toStringz);
+    }
+    
+    Texture addTexture(dimension2du size, string name, ColorFormat format) {
+    	auto temp = irr_IVideoDriver_addTexture(ptr, size.ptr, name.toStringz, format);
+    	return new Texture(temp);
+    }
+    
+    void makeColorKeyTexture(Texture texture, Color color, bool zeroTexels) {
+    	irr_IVideoDriver_makeColorKeyTexture(ptr, texture.ptr, color.ptr, zeroTexels);
+    }
+    
+    void makeColorKeyTexture(Texture texture, vector2di colorKeyPixelPos, bool zeroTexels) {
+    	irr_IVideoDriver_makeColorKeyTexture2(ptr, texture.ptr, colorKeyPixelPos.ptr, zeroTexels);
+    }
+    
+    void makeNormalMapTexture(Texture texture, float amplitude=1.0f) {
+    	irr_IVideoDriver_makeNormalMapTexture(ptr, texture.ptr, amplitude);
+    }
+    
+    void setRenderTarget(Texture texture, bool clearBackBuffer, bool clearZBuffer, Color color) {
+    	irr_IVideoDriver_setRenderTarget(ptr, texture, clearBackBuffer, clearZBuffer, color.ptr);
     }
     
     @property int fps() { return irr_IVideoDriver_getFPS(ptr); }
-    
    
-    string name() @property
-    {
+    string name() @property {
         auto temp = irr_IVideoDriver_getName(ptr);
         dstring text = temp[0..strlen(temp)].idup;
         return to!string(text);
     }
     
-    Material getMaterial2D()
-    {
+    void fillMaterialStructureFromAttributes(out Material outMaterial, out Attributes attributes) {
+    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial.ptr, attributes.ptr);
+    }
+    
+    // irr_IVideoDriver_getExposedVideoData
+    
+    DriverType getDriverType() {
+    	return irr_IVideoDriver_getDriverType(ptr);
+    }
+    
+    GPUProgrammingServices getGPUProgrammingServices() {
+    	auto temp = irr_IVideoDriver_getGPUProgrammingServices(ptr);
+    	return new GPUProgrammingServices(temp);
+    }
+    
+    MeshManipulator getMeshManipulator() {
+    	auto temp = irr_IVideoDriver_getMeshManipulator(ptr);
+    	return new MeshManipulator(temp);
+    }
+    
+    void clearZBuffer() {
+    	irr_IVideoDriver_clearZBuffer(ptr);
+    }
+    
+    Image createScreenShot(ColorFormat format, RenderTarget target) {
+    	auto temp = irr_IVideoDriver_createScreenShot(ptr, format, target);
+    	return new Image(temp);
+    }
+    
+    Texture findTexture(string filename) {
+		auto temp = irr_IVideoDriver_findTexture(ptr, filename.toStringz);
+		return new Texture(temp);
+	}
+	
+    void setClipPlane(uint index, plane3df plane, bool enable=false) {
+		irr_IVideoDriver_setClipPlane(ptr, index, plane.ptr, enable);
+	}
+    
+    void enableClipPlane(uint index, bool enable) {
+		irr_IVideoDriver_enableClipPlane(ptr, index, enable);
+	}
+    
+	void setMinHardwareBufferVertexCount(uint count) {
+		irr_IVideoDriver_setMinHardwareBufferVertexCount(ptr, count);
+	}
+	
+	// irr_IVideoDriver_getOverrideMaterial
+	
+    Material getMaterial2D() {
     	auto temp = irr_IVideoDriver_getMaterial2D(ptr);
     	return new Material(temp);
     }
     
-    void enableMaterial2D(bool enable=true)
-    {
+    void enableMaterial2D(bool enable=true) {
     	irr_IVideoDriver_enableMaterial2D(ptr, enable);
     }
     
-    string getVendorInfo()
-    {
+    string getVendorInfo() {
     	return irr_IVideoDriver_getVendorInfo(ptr).to!string;
     }
     
-    void setAmbientLight(Colorf color)
-    {
+    void setAmbientLight(Colorf color) {
     	irr_IVideoDriver_setAmbientLight(ptr, color.ptr);
     }
     
-    void setAllowZWriteOnTransparent(bool flag)
-    {
+    void setAllowZWriteOnTransparent(bool flag) {
     	irr_IVideoDriver_setAllowZWriteOnTransparent(ptr, flag);
     }
     
-    dimension2du getMaxTextureSize()
-    {
+    dimension2du getMaxTextureSize() {
     	auto size = irr_IVideoDriver_getMaxTextureSize(ptr);
     	return dimension2du(size.Width, size.Height);
     }
     
-    void convertColor(const void* sP, ColorFormat sF, int sN, void* dP, ColorFormat dF)
-    {
+    void convertColor(const void* sP, ColorFormat sF, int sN, void* dP, ColorFormat dF) {
     	irr_IVideoDriver_convertColor(ptr, sP, sF, sN, dP, dF);
     }
+    
+    alias ptr this;
     irr_IVideoDriver* ptr;
-private:
-    IrrlichtDevice device;
 }
 
 /// strlen for dchar*
-private pure nothrow @system size_t strlen(const(dchar)* str)
-{
+private pure nothrow @system size_t strlen(const(dchar)* str) {
     size_t n = 0;
     for (; str[n] != 0; ++n) {}
     return n;
@@ -323,6 +415,7 @@ void irr_IVideoDriver_updateOcclusionQuery(irr_IVideoDriver* driver, irr_ISceneN
 void irr_IVideoDriver_updateAllOcclusionQueries(irr_IVideoDriver* driver, bool block);
 uint irr_IVideoDriver_getOcclusionQueryResult(irr_IVideoDriver* driver, irr_ISceneNode* node);
 void irr_IVideoDriver_makeColorKeyTexture(irr_IVideoDriver* driver, irr_ITexture* texture, irr_SColor color, bool zeroTexels);
+void irr_IVideoDriver_makeColorKeyTexture2(irr_IVideoDriver* driver, irr_ITexture* texture, irr_vector2di colorKeyPixelPos, bool zeroTexels = false);
 void irr_IVideoDriver_makeNormalMapTexture(irr_IVideoDriver* driver, irr_ITexture* texture, float amplitude=1.0f);
 bool irr_IVideoDriver_setRenderTarget(irr_IVideoDriver* driver, irr_ITexture* texture, bool clearBackBuffer, bool clearZBuffer, irr_SColor color);
 bool irr_IVideoDriver_setRenderTargetByEnum(irr_IVideoDriver* driver, RenderTarget target, bool clearTarget, bool clearZBuffer, irr_SColor color);
@@ -347,8 +440,8 @@ const(dchar)* irr_IVideoDriver_getName(irr_IVideoDriver* driver);
 void irr_IVideoDriver_addExternalImageLoader(irr_IVideoDriver* driver, irr_IImageLoader* loader);
 void irr_IVideoDriver_addExternalImageWriter(irr_IVideoDriver* driver, irr_IImageWriter* writer);
 uint irr_IVideoDriver_getMaximalPrimitiveCount(irr_IVideoDriver* driver);
-void irr_IVideoDriver_setTextureCreationFlag(irr_IVideoDriver* driver, E_TEXTURE_CREATION_FLAG flag, bool enabled=true);
-bool irr_IVideoDriver_getTextureCreationFlag(irr_IVideoDriver* driver, E_TEXTURE_CREATION_FLAG flag);
+void irr_IVideoDriver_setTextureCreationFlag(irr_IVideoDriver* driver, TextureCreationFlag flag, bool enabled=true);
+bool irr_IVideoDriver_getTextureCreationFlag(irr_IVideoDriver* driver, TextureCreationFlag flag);
 irr_IImage* irr_IVideoDriver_createImageFromFile(irr_IVideoDriver* driver, const char* file);
 bool irr_IVideoDriver_writeImageToFile(irr_IVideoDriver* driver, irr_IImage* image, const char* filename, uint param = 0);
 //  bool irr_IVideoDriver_writeImageToFile(irr_IVideoDriver* driver, irr_IImage* image, irr_IWriteFile* file, uint param =0);
@@ -370,7 +463,7 @@ irr_IMeshManipulator* irr_IVideoDriver_getMeshManipulator(irr_IVideoDriver* driv
 void irr_IVideoDriver_clearZBuffer(irr_IVideoDriver* driver);
 irr_IImage* irr_IVideoDriver_createScreenShot(irr_IVideoDriver* driver, ColorFormat format, RenderTarget target);
 irr_ITexture* irr_IVideoDriver_findTexture(irr_IVideoDriver* driver, const char* filename);
-bool irr_IVideoDriver_setClipPlane(irr_IVideoDriver* driver, uint index, irr_plane3df* plane, bool enable=false);
+bool irr_IVideoDriver_setClipPlane(irr_IVideoDriver* driver, uint index, irr_plane3df plane, bool enable=false);
 void irr_IVideoDriver_enableClipPlane(irr_IVideoDriver* driver, uint index, bool enable);
 void irr_IVideoDriver_setMinHardwareBufferVertexCount(irr_IVideoDriver* driver, uint count);
 irr_SOverrideMaterial* irr_IVideoDriver_getOverrideMaterial(irr_IVideoDriver* driver);

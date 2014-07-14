@@ -104,6 +104,8 @@ struct Color
     uint b;
     uint a;
     
+    alias ptr this;
+	
 	@property irr_SColor ptr()
 	{
 		return irr_SColor(a,b,g,r);

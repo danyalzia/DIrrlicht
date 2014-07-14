@@ -38,7 +38,7 @@ import dirrlicht.core.vector3d;
 
 class CDynamicMeshBuffer
 {
-    this(E_VERTEX_TYPE vertexType, E_INDEX_TYPE indexType)
+    this(VertexType vertexType, IndexType indexType)
     {
         VertexBuffer=new CVertexBuffer(vertexType);
         IndexBuffer=new CIndexBuffer(indexType);

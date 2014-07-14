@@ -27,80 +27,79 @@
 module dirrlicht.io.attributestypes;
 
 /// Types of attributes available for IAttributes
-enum AttributeType
-{
+enum AttributeType {
     /// integer attribute
-    int_ = 0,
+    Int = 0,
 
     /// float attribute
-    float_,
+    Float,
 
     /// string attribute
-    string_,
+    String,
 
     /// boolean attribute
-    bool_,
+    Bool,
 
     /// enumeration attribute
-    enum_,
+    Enum,
 
     /// color attribute
-    color_,
+    Color,
 
     /// floating point color attribute
-    colorf,
+    Colorf,
 
     /// 3d vector attribute
-    vector3d,
+    Vector3d,
 
     /// 2d position attribute
-    position2d,
+    Position2d,
 
     /// vector 2d attribute
-    vector2d,
+    Vector2d,
 
     /// rectangle attribute
-    rect,
+    Rect,
 
     /// matrix attribute
-    matrix,
+    Matrix,
 
     /// quaternion attribute
-    quaternion,
+    Quaternion,
 
     /// 3d bounding box
-    bbox,
+    BBox,
 
     /// plane
-    plane,
+    Plane,
 
     /// 3d triangle
     triangle3d,
 
     /// line 2d
-    line2d,
+    Line2d,
 
     /// line 3d
-    line3d,
+    Line3d,
 
     /// array of stringws attribute
-    stringArray,
+    StringArray,
 
     /// array of float
-    floatArray,
+    FloatArray,
 
     /// array of int
-    intArray,
+    IntArray,
 
     /// binary data attribute
-    binary,
+    Binary,
 
     /// texture reference attribute
-    texture,
+    Texture,
 
     /// user pointer void*
-    pointer,
+    Pointer,
 
     /// dimension attribute
-    dimension2d
+    Dimension2d
 }

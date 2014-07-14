@@ -32,16 +32,13 @@ import dirrlicht.scene.scenenode;
  * Struct for holding parameters for a material renderer
  */
 
-class Material
-{
-    this(irr_SMaterial* ptr)
-    {
+class Material {
+    this(irr_SMaterial* ptr) {
     	this.ptr = ptr;
     }
     
+    alias ptr this;
     irr_SMaterial* ptr;
-private:
-    SceneNode node;
 }
 
 package extern(C):

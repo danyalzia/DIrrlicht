@@ -31,18 +31,57 @@ import dirrlicht.irrlichtdevice;
 /+++
  + The Operating system operator provides operation system specific methods and informations.
  +/
-class OSOperator
-{
-    this(irr_IOSOperator* ptr)
-    {
+class OSOperator {
+    this(irr_IOSOperator* ptr) {
     	this.ptr = ptr;
     }
     
-    irr_IOSOperator* ptr;
-private:
-    IrrlichtDevice device;
+    /// Get the current operation system version as string.
+    string getOperatingSystemVersion() {
+    	return irr_IOSOperator_getOperatingSystemVersion(ptr).to!string;
+    }
+    
+    /// Copies text to the clipboard
+    void copyToClipboard(string text) {
+    	irr_IOSOperator_copyToClipboard(ptr, text.toStringz);
+    }
+    
+    /// Get text from the clipboard
+    string getTextFromClipboard() {
+    	return irr_IOSOperator_getTextFromClipboard(ptr).to!string;
+    }
+    
+    /***
+     * Get the processor speed in megahertz
+	 * Params:
+     *			 MHz = The integer variable to store the speed in.
+	 * Return: True if successful, false if not
+     */
+    bool getProcessorSpeedMHz(uint* MHz) {
+    	return irr_IOSOperator_getProcessorSpeedMHz(ptr, MHz);
+    }
+    
+    /***
+     * Get the total and available system RAM
+	 * Params:
+     *			 Total =  will contain the total system memory
+     *			 Avail = will contain the available memory
+	 * Return: 	 True if successful, false if not
+     */
+    bool getSystemMemory(uint* Total, uint* Avail) {
+    	return irr_IOSOperator_getSystemMemory(ptr, Total, Avail);
+    }
+    
+    alias ptr this;
+    package irr_IOSOperator* ptr;
 }
 
 package extern (C):
 
 struct irr_IOSOperator;
+
+const char* irr_IOSOperator_getOperatingSystemVersion(irr_IOSOperator* op);
+void irr_IOSOperator_copyToClipboard(irr_IOSOperator* op, const char* text);
+const char* irr_IOSOperator_getTextFromClipboard(irr_IOSOperator* op);
+bool irr_IOSOperator_getProcessorSpeedMHz(irr_IOSOperator* op, uint* MHz);
+bool irr_IOSOperator_getSystemMemory(irr_IOSOperator* op, uint* Total, uint* Avail);

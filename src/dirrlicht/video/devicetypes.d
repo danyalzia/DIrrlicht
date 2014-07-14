@@ -32,45 +32,43 @@ enum DeviceType
 {
 
     /// A device native to Microsoft Windows
-    /** This device uses the Win32 API and works in all versions of Windows. */
-    win32,
+    /// This device uses the Win32 API and works in all versions of Windows.
+    Win32,
 
     /// A device native to Windows CE devices
-    /** This device works on Windows Mobile, Pocket PC and Microsoft SmartPhone devices */
-	winCE,
+    /// This device works on Windows Mobile, Pocket PC and Microsoft SmartPhone devices
+	WinCE,
 
     /// A device native to Unix style operating systems.
-    /** This device uses the X11 windowing system and works in Linux, Solaris, FreeBSD, OSX and
-    other operating systems which support X11. */
-    x11,
+    /// This device uses the X11 windowing system and works in Linux, Solaris, FreeBSD, OSX and
+    ///other operating systems which support X11.
+    X11,
 
     /// A device native to Mac OSX
-    /** This device uses Apple's Cocoa API and works in Mac OSX 10.2 and above. */
-    osx,
+    /// This device uses Apple's Cocoa API and works in Mac OSX 10.2 and above.
+    OSX,
 
     /// A device which uses Simple DirectMedia Layer
-    /** The SDL device works under all platforms supported by SDL but first must be compiled
-    in by defining the IRR_USE_SDL_DEVICE macro in IrrCompileConfig.h */
-	sdl,
+    /// The SDL device works under all platforms supported by SDL but first must be compiled
+    /// in by defining the IRR_USE_SDL_DEVICE macro in IrrCompileConfig.h
+	SDL,
 
     /// A device for raw framebuffer access
-    /** Best used with embedded devices and mobile systems.
-    Does not need X11 or other graphical subsystems.
-    May support hw-acceleration via OpenGL-ES for FBDirect */
-    framebuffer,
+    /// Best used with embedded devices and mobile systems.
+    /// Does not need X11 or other graphical subsystems.
+    /// May support hw-acceleration via OpenGL-ES for FBDirect
+    Framebuffer,
 
     /// A simple text only device supported by all platforms.
-    /** This device allows applications to run from the command line without opening a window.
-    It can render the output of the software drivers to the console as ASCII. It only supports
-    mouse and keyboard in Windows operating systems. */
-	console,
+    /// This device allows applications to run from the command line without opening a window.
+    /// It can render the output of the software drivers to the console as ASCII. It only supports
+    /// mouse and keyboard in Windows operating systems.
+	Console,
 
     /// This selection allows Irrlicht to choose the best device from the ones available.
-    /** If this selection is chosen then Irrlicht will try to use the IrrlichtDevice native
-    to your operating system. If this is unavailable then the X11, SDL and then console device
-    will be tried. This ensures that Irrlicht will run even if your platform is unsupported,
-    although it may not be able to render anything. */
-    best
+    /// If this selection is chosen then Irrlicht will try to use the IrrlichtDevice native
+    /// to your operating system. If this is unavailable then the X11, SDL and then console device
+    /// will be tried. This ensures that Irrlicht will run even if your platform is unsupported,
+    /// although it may not be able to render anything.
+    Best
 }
-
-alias E_DEVICE_TYPE = DeviceType;

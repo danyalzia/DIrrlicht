@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/danyalzia/DIrrlicht.png?branch=master)](https://travis-ci.org/danyalzia/DIrrlicht)
+[![Build Status](https://travis-ci.org/Artistic-Games/DIrrlicht.png?branch=master)](https://travis-ci.org/Artistic-Games/DIrrlicht)
 
 DIrrlicht - D Bindings for Irrlicht Engine
 =========================================================
@@ -19,7 +19,7 @@ Installation
 Clone the repository:
 
 ```
-$ git clone git://github.com/danyalzia/DIrrlicht.git DIrrlicht
+$ git clone git://github.com/Artistic-Games/DIrrlicht.git DIrrlicht
 ```
 
 DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to not forget to update submodules:

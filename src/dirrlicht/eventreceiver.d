@@ -32,8 +32,7 @@ import dirrlicht.keycodes;
 import dirrlicht.gui.guielement;
 import dirrlicht.logger;
 
-enum EventType
-{
+enum EventType {
     /***
      * An event of the graphical user interface.
      * GUI events are created by the GUI environment or the GUI elements in response

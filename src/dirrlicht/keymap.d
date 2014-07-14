@@ -29,8 +29,7 @@ module dirrlicht.keymap;
 import dirrlicht.keycodes;
 
 /// enumeration for key actions. Used for example in the FPS Camera.
-enum KeyAction
-{
+enum KeyAction {
     MoveForward = 0,
     MoveBackward,
     StrafeLeft,
@@ -41,16 +40,14 @@ enum KeyAction
 }
 
 /// Struct storing which key belongs to which action.
-struct KeyMap
-{
+struct KeyMap {
     KeyAction action;
     KeyCode keyCode;
 }
 
 extern (C):
 
-struct irr_SKeyMap
-{
+struct irr_SKeyMap {
     KeyAction action;
     KeyCode keyCode;
 }

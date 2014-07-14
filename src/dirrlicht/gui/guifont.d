@@ -28,12 +28,12 @@ module dirrlicht.gui.guifont;
 
 import dirrlicht.gui.guistatictext;
 
-class GUIFont
-{
-    this(irr_IGUIFont* ptr)
-    {
+class GUIFont {
+    this(irr_IGUIFont* ptr) {
     	this.ptr = ptr;
     }
+    
+    alias ptr this;
     irr_IGUIFont* ptr;
 }
 

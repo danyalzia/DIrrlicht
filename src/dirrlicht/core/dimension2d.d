@@ -26,25 +26,30 @@
 
 module dirrlicht.core.dimension2d;
 
-struct dimension2d(T)
-{
+struct dimension2d(T) {
     T Width, Height;
     
-    /// internal use only
-    static if (is (T == float))
-    {
-    	@property irr_dimension2df ptr()
-    	{
-    		return irr_dimension2df(Width, Height);
-    	}
+    void opOpAssign(string op)(dimension2d rhs) {
+        mixin("Width" ~ op ~ "=rhs.Width;");
+        mixin("Height" ~ op ~ "=rhs.Height;");
     }
-    	
-    else
-    {
-    	@property irr_dimension2du ptr()
-    	{
-    		return irr_dimension2du(Width, Height);
-    	}
+
+    dimension2d!(T) opBinary(string op)(dimension2d!(T) rhs) {
+    	return new dimension2d(Width ~op~ rhs.Width, Height ~op~ rhs.Height); 
+    }
+    
+    /// internal use only
+    @property {
+	    static if (is (T == float)) {
+	    	irr_dimension2df ptr() {
+	    		return irr_dimension2df(Width, Height);
+	    	}
+	    }
+	    else {
+	    	irr_dimension2du ptr() {
+	    		return irr_dimension2du(Width, Height);
+	    	}
+	    }
     }
 }
 
@@ -53,14 +58,12 @@ alias dimension2df = dimension2d!(float);
 
 package extern(C):
 
-struct irr_dimension2du
-{
+struct irr_dimension2du {
     uint Width;
     uint Height;
 }
 
-struct irr_dimension2df
-{
+struct irr_dimension2df {
     float Width;
     float Height;
 }

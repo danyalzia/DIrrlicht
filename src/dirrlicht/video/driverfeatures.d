@@ -31,52 +31,52 @@ module dirrlicht.video.driverfeatures;
 enum DriverFeature
 {
     /// Is driver able to render to a surface?
-    renderToTarget = 0,
+    RenderToTarget = 0,
 
     /// Is hardeware transform and lighting supported?
-    hardwareTL,
+    HardwareTL,
 
     /// Are multiple textures per material possible?
-    multitexture,
+    Multitexture,
 
     /// Is driver able to render with a bilinear filter applied?
-    bilinearFilter,
+    BilinearFilter,
 
     /// Can the driver handle mip maps?
-    mipmap,
+    Mipmap,
 
     /// Can the driver update mip maps automatically?
-    mipmapAutoUpdate,
+    MipmapAutoUpdate,
 
     /// Are stencilbuffers switched on and does the device support stencil buffers?
-    stencilBuffer,
+    StencilBuffer,
 
     /// Is Vertex Shader 1.1 supported?
-    vertexShader_1_1,
+    VertexShader_1_1,
 
     /// Is Vertex Shader 2.0 supported?
-    vertexShader_2_0,
+    VertexShader_2_0,
 
     /// Is Vertex Shader 3.0 supported?
-    vertexShader_3_0,
+    VertexShader_3_0,
 
     /// Is Pixel Shader 1.1 supported?
-    pixelShader_1_1,
+    PixelShader_1_1,
 
     /// Is Pixel Shader 1.2 supported?
-    pixelShader_1_2,
+    PixelShader_1_2,
 
     /// Is Pixel Shader 1.3 supported?
-    pixelShader_1_3,
+    PixelShader_1_3,
 
     /// Is Pixel Shader 1.4 supported?
-    pixelShader_1_4,
+    PixelShader_1_4,
 
     /// Is Pixel Shader 2.0 supported?
-    pixelShader_2_0,
+    PixelShader_2_0,
 
     /// Is Pixel Shader 3.0 supported?
-    pixelShader_3_0,
+    PixelShader_3_0,
 
     /// Are ARB vertex programs v1.0 supported?
     ARB_VertexProgram_1,
@@ -91,25 +91,25 @@ enum DriverFeature
     HLSL,
 
     /// Are non-square textures supported?
-    textureNonSquare,
+    TextureNonSquare,
 
     /// Are non-power-of-two textures supported?
-    textureNonPOT,
+    TextureNonPOT,
 
     /// Are framebuffer objects supported?
-    frameBufferObject,
+    FrameBufferObject,
 
     /// Are vertex buffer objects supported?
-    vertexBufferObject,
+    VertexBufferObject,
 
     /// Supports Alpha To Coverage
-    alphaToCoverage,
+    AlphaToCoverage,
 
     /// Supports Color masks (disabling color planes in output)
-    colorMask,
+    ColorMask,
 
     /// Supports multiple render targets at once
-    multipleRenderTargets,
+    MultipleRenderTargets,
 
     /// Supports separate blend settings for multiple render targets
     MRT_Blend,
@@ -121,26 +121,26 @@ enum DriverFeature
     MRT_BlendFunc,
 
     /// Supports geometry shaders
-    geomertyShader,
+    GeomertyShader,
 
     /// Supports occlusion queries
-    occlusionQuery,
+    OcclusionQuery,
 
     /// Supports polygon offset/depth bias for avoiding z-fighting
-    polygonOffset,
+    PolygonOffset,
 
     /// Support for different blend functions. Without, only ADD is available
-    blendOperations,
+    BlendOperations,
 
     /// Support for separate blending for RGB and Alpha.
-    blendSeperate,
+    BlendSeperate,
 
     /// Support for texture coord transformation via texture matrix
-    textureMatrix,
+    TextureMatrix,
 
     /// Support for DXTn compressed textures.
-    textureCompressedDXT,
+    TextureCompressedDXT,
 
     /// Only used for counting the elements of this enum
-    count
+    Count
 }

@@ -40,10 +40,9 @@ import dirrlicht.video.vertexindex;
 import std.conv;
 
 /// Possible types of (animated) meshes.
-enum AnimatedMeshType
-{
+enum AnimatedMeshType {
     /// Unknown animated mesh type.
-    unknown = 0,
+    Unknown = 0,
 
     /// Quake 2 MD2 model file
     MD2,
@@ -84,22 +83,8 @@ enum AnimatedMeshType
 /+++ 
  + Class for an animated mesh.
  +/
-class AnimatedMesh : Mesh
-{
-    this(SceneManager _smgr, string file)
-    in
-    {
-    	assert(_smgr.ptr != null);
-    }
-    body
-    {
-        smgr = _smgr;
-        super(smgr, file);
-        ptr = cast(irr_IAnimatedMesh*)super.ptr;
-    }
-    
-    this(irr_IAnimatedMesh* ptr)
-    {
+class AnimatedMesh : Mesh {
+    this(irr_IAnimatedMesh* ptr) {
     	this.ptr = ptr;
     	super(cast(irr_IMesh*)this.ptr);
     }
@@ -109,8 +94,7 @@ class AnimatedMesh : Mesh
 	 * Returns: The amount of frames. If the amount is 1,
 	 * 			it is a static, non animated mesh.
      */
-    uint getFrameCount()
-    {
+    uint getFrameCount() {
         return irr_IAnimatedMesh_getFrameCount(ptr);
     }
     
@@ -120,8 +104,7 @@ class AnimatedMesh : Mesh
 	 *			animation with by default. If the amount is 0,
 	 * 			it is a static, non animated mesh.
      */
-    float getAnimationSpeed()
-    {
+    float getAnimationSpeed() {
         return irr_IAnimatedMesh_getAnimationSpeed(ptr);
     }
     
@@ -133,8 +116,7 @@ class AnimatedMesh : Mesh
 	 *			it is not animated. The actual speed is set in the
 	 *			scene node the mesh is instantiated in.
      */
-    void setAnimationSpeed(float fps)
-    {
+    void setAnimationSpeed(float fps) {
         irr_IAnimatedMesh_setAnimationSpeed(ptr, fps);
     }
     
@@ -159,20 +141,17 @@ class AnimatedMesh : Mesh
 	 *
 	 * Returns: the animated mesh based on a detail level.
      */
-    Mesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1)
-    {
+    Mesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1) {
         auto temp = irr_IAnimatedMesh_getMesh(ptr, detailLevel, startFrameLoop, endFrameLoop);
         return new Mesh(temp);
     }
 
-    AnimatedMeshType getMeshType()
-    {
-        return AnimatedMeshType.unknown;
+    AnimatedMeshType getMeshType() {
+        return AnimatedMeshType.Unknown;
     }
-
+    
+    alias ptr this;
     irr_IAnimatedMesh* ptr;
-private:
-    SceneManager smgr;
 }
 
 unittest

@@ -35,121 +35,97 @@ import dirrlicht.video.color;
 
 import std.utf;
 
-class GUIStaticText
-{
-    this(GUIEnvironment _env, dstring text, recti rec, bool border=false)
-    {
-        env = _env;
-        auto re = irr_recti(rec.x, rec.y, rec.x1, rec.y1);
-        ptr = irr_IGUIEnvironment_addStaticText(env.ptr, toUTFz!(const(dchar)*)(text), re, border);
+class GUIStaticText {
+    this(irr_IGUIStaticText* ptr) {
+    	this.ptr = ptr;
     }
-
-    void setOverrideFont(GUIFont font)
-    {
+    
+    void setOverrideFont(GUIFont font) {
         irr_IGUIStaticText_setOverrideFont(ptr, font.ptr);
     }
 
-    GUIFont getOverrideFont()
-    {
+    GUIFont getOverrideFont() {
         auto temp = irr_IGUIStaticText_getOverrideFont(ptr);
         return new GUIFont(temp);
     }
 
-    GUIFont getActiveFont()
-    {
+    GUIFont getActiveFont() {
         auto temp = irr_IGUIStaticText_getActiveFont(ptr);
         return new GUIFont(temp);
     }
 
-    void setOverrideColor(Color col)
-    {
+    void setOverrideColor(Color col) {
         irr_IGUIStaticText_setOverrideColor(ptr, col.ptr);
     }
 
-    Color getOverrideColor()
-    {
+    Color getOverrideColor() {
         auto temp = irr_IGUIStaticText_getOverrideColor(ptr);
         return Color(temp.r, temp.g, temp.b, temp.a);
     }
 
-    void enableOverrideColor(bool enable)
-    {
+    void enableOverrideColor(bool enable) {
         irr_IGUIStaticText_enableOverrideColor(ptr, enable);
     }
 
-    bool isOverrideColorEnabled()
-    {
+    bool isOverrideColorEnabled() {
         return irr_IGUIStaticText_isOverrideColorEnabled(ptr);
     }
 
-    void setBackgroundColor(Color color)
-    {
+    void setBackgroundColor(Color color) {
         irr_IGUIStaticText_setBackgroundColor(ptr, color.ptr);
     }
 
-    bool isDrawBackgroundEnabled()
-    {
+    bool isDrawBackgroundEnabled() {
         return irr_IGUIStaticText_isDrawBackgroundEnabled(ptr);
     }
 
-    Color getBackgroundColor()
-    {
+    Color getBackgroundColor() {
         auto temp = irr_IGUIStaticText_getBackgroundColor(ptr);
         return Color(temp.r, temp.g, temp.b, temp.a);
     }
 
-    void setDrawBorder(bool draw)
-    {
+    void setDrawBorder(bool draw) {
         irr_IGUIStaticText_setDrawBorder(ptr, draw);
     }
 
-    bool isDrawBorderEnabled()
-    {
+    bool isDrawBorderEnabled() {
         return irr_IGUIStaticText_isDrawBorderEnabled(ptr);
     }
 
-    void setTextAlignment(GUIAlignment horizontal, GUIAlignment vertical)
-    {
+    void setTextAlignment(GUIAlignment horizontal, GUIAlignment vertical) {
         irr_IGUIStaticText_setTextAlignment(ptr, horizontal, vertical);
     }
 
-    void setWordWrap(bool enable)
-    {
+    void setWordWrap(bool enable) {
         irr_IGUIStaticText_setWordWrap(ptr, enable);
     }
 
-    bool isWordWrapEnabled()
-    {
+    bool isWordWrapEnabled() {
         return irr_IGUIStaticText_isWordWrapEnabled(ptr);
     }
 
-    @property Height()
-    {
+    @property Height() {
         return irr_IGUIStaticText_getTextHeight(ptr);
     }
-    @property Width()
-    {
+    
+    @property Width() {
         return irr_IGUIStaticText_getTextWidth(ptr);
     }
 
-    bool isTextRestrainedInside()
-    {
+    bool isTextRestrainedInside() {
         return irr_IGUIStaticText_isTextRestrainedInside(ptr);
     }
 
-    void setRightToLeft(bool rtl)
-    {
+    void setRightToLeft(bool rtl) {
         irr_IGUIStaticText_setRightToLeft(ptr, rtl);
     }
 
-    bool isRightToLeft()
-    {
+    bool isRightToLeft() {
         return irr_IGUIStaticText_isRightToLeft(ptr);
     }
-
-    irr_IGUIStaticText* ptr;
-private:
-    GUIEnvironment env;
+    
+    alias ptr this;
+	irr_IGUIStaticText* ptr;
 }
 
 unittest

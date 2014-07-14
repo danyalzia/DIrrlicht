@@ -26,6 +26,15 @@
 
 module dirrlicht.video.imagewriter;
 
-extern (C):
+class ImageWriter {
+	this(irr_IImageWriter* ptr) {
+		this.ptr = ptr;
+	}
+	
+	alias ptr this;
+	irr_IImageWriter* ptr;
+}
+
+package extern (C):
 
 struct irr_IImageWriter;

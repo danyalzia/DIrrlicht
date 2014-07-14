@@ -26,13 +26,12 @@
 
 module dirrlicht.gui.guielement;
 
-class GUIElement
-{
-	this(irr_IGUIElement* ptr)
-	{
+class GUIElement {
+	this(irr_IGUIElement* ptr) {
 		this.ptr = ptr;
 	}
 	
+	alias ptr this;
 	irr_IGUIElement* ptr;
 }
 

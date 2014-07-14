@@ -26,6 +26,17 @@
 
 module dirrlicht.video.gpuprogrammingservices;
 
-extern (C):
+class GPUProgrammingServices
+{
+	this(irr_IGPUProgrammingServices* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	alias ptr this;
+	irr_IGPUProgrammingServices* ptr;
+}
+
+package extern (C):
 
 struct irr_IGPUProgrammingServices;

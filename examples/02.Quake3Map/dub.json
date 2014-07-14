@@ -2,14 +2,14 @@
 	"name": "dirrlicht",
 	"description": "D Bindings for Irrlicht Engine",
 	"authors": ["Danyal Zia"],
-	"homepage": "http://github.com/danyalzia/DIrrlicht",
+	"homepage": "http://github.com/Artisitc-Games/DIrrlicht",
 	"license": "zlib",
 	
 	"targetName": "Quake3Map",
 	"targetType": "executable",
 	"targetPath": "../bin",
 
-	"sourcePaths": ["../../src", "."],
+	"sourcePaths": ["../../src/dirrlicht", "."],
 	"importPaths": ["../../src", "."],
 	
 	"lflags":["-L../../CIrrlicht/lib/Linux",  "-L/home/danyalzia/irrlicht/lib/Linux"],

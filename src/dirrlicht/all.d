@@ -26,8 +26,7 @@
 
 module dirrlicht.all;
 
-public
-{
+public {
 	import dirrlicht;
 	import dirrlicht.core;
 	import dirrlicht.gui;

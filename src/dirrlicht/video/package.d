@@ -26,8 +26,7 @@
 
 module dirrlicht.video;
 
-public
-{
+public {
     import dirrlicht.video.devicetypes;
     import dirrlicht.video.driverfeatures;
     import dirrlicht.video.drivertypes;

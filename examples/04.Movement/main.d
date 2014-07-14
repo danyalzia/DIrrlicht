@@ -2,8 +2,7 @@ import dirrlicht.all;
 
 import std.conv : to;
 
-void main()
-{
+void main() {
     auto device = createDevice(DriverType.OpenGL, dimension2du(640, 480), 16, false, false, false);
 
     device.resizable = true;
@@ -16,12 +15,12 @@ void main()
     
     node.position = vector3df(0,0,30);
 	node.setMaterialTexture(0, driver.getTexture("../../media/wall.bmp"));
-    node.setMaterialFlag(MaterialFlag.lighting, false);
+    node.setMaterialFlag(MaterialFlag.Lighting, false);
 
     auto n = smgr.addCubeSceneNode();
     
     n.setMaterialTexture(0, driver.getTexture("../../media/t351sml.jpg"));
-    n.setMaterialFlag(MaterialFlag.lighting, false);
+    n.setMaterialFlag(MaterialFlag.Lighting, false);
 
     auto anim = smgr.createFlyCircleAnimator(vector3df(0,0,30), 20.0);
 
@@ -31,7 +30,7 @@ void main()
 
     anim = smgr.createFlyStraightAnimator(vector3df(100,0,60), vector3df(-100,0,60), 3500, true);
 	anms.addAnimator(anim);
-	anms.setMaterialFlag(MaterialFlag.lighting, false);
+	anms.setMaterialFlag(MaterialFlag.Lighting, false);
 	anms.setFrameLoop(0, 13);
 	anms.setAnimationSpeed(15);
 	anms.scale = vector3df(2, 2, 2);
@@ -41,17 +40,15 @@ void main()
     device.cursorControl.visible = true;
 
 	gui.addImage(driver.getTexture("../../media/irrlichtlogoalpha2.tga"), vector2di(10,20));
-	//auto diagnostics = gui.addStaticText("", recti(10, 10, 400, 20));
-	//diagnostics.setOverrideColor(Color(255, 255, 255, 0));
+	auto diagnostics = gui.addStaticText("", recti(10, 10, 400, 20));
+	diagnostics.setOverrideColor(Color(255, 255, 255, 0));
 	
     int lastFPS = -1;
-	
-    while (device.run)
-    {
-        if (device.isWindowActive)
-        {
-			
+
+    while (device.run) {
+        if (device.isWindowActive) {
 			auto nodepos = node.position;
+			
 			import dsfml.window;
 			if(Keyboard.isKeyPressed(Keyboard.Key.W)) {
 				nodepos.y = nodepos.y + 5;
@@ -75,17 +72,17 @@ void main()
 
             int fps = driver.fps;
 
-            if (lastFPS != fps)
-            {
-                dstring str = "DIrrlicht - Movement Example[";
-                //str ~= driver.name;
-				//str ~= "] FPS:";
-				//str ~= to!dstring(fps);
+            if (lastFPS != fps) {
+                string str = "DIrrlicht - Movement Example[";
+                str ~= driver.name;
+				str ~= "] FPS:";
+				str ~= to!string(fps);
 				device.windowCaption = str;
                 lastFPS = fps;
             }
         }
-        else
+        else {
             device.yield();
+		}
     }
 }

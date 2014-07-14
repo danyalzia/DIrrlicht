@@ -41,18 +41,6 @@ import std.string;
 
 class Mesh
 {
-    /// this constructor takes the ISceneManager object and file
-    this(SceneManager _smgr, string file)
-    in
-    {
-    	assert(_smgr.ptr != null);
-    }
-    body
-    {
-        smgr = _smgr;
-        ptr = cast(irr_IMesh*)irr_ISceneManager_getMesh(smgr.ptr, file.toStringz);
-    }
-    
     this(irr_IMesh* ptr)
     {
     	this.ptr = ptr;

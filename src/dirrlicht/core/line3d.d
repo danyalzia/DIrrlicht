@@ -31,18 +31,15 @@ module dirrlicht.core.line3d;
 
 import dirrlicht.core.vector3d;
 
-struct line3d(T)
-{
+struct line3d(T) {
     @disable this();
 
-    this(T xa, T ya, T za, T xb, T yb, T zb)
-    {
+    this(T xa, T ya, T za, T xb, T yb, T zb) {
         start = vector3d!(T)(xa, ya, za);
         end = vector3d!(T)(xb, yb, zb);
     }
 
-    this(vector3d!(T) start, vector3d!(T) end)
-    {
+    this(vector3d!(T) start, vector3d!(T) end) {
         this.start = start;
         this.end = end;
     }

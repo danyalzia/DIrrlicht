@@ -26,14 +26,13 @@
 
 module dirrlicht.gui.guialignment;
 
-enum GUIAlignment
-{
+enum GUIAlignment {
     /// Aligned to parent's top or left side (default)
-    upperLeft=0,
+    UpperLeft=0,
     /// Aligned to parent's bottom or right side
-    lowerRight,
+    LowerRight,
     /// Aligned to the center of parent
-    center,
+    Center,
     /// Stretched to fit parent
-    scale
+    Scale
 }

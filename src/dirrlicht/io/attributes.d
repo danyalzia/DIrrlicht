@@ -26,18 +26,16 @@
 
 module dirrlicht.io.attributes;
 
-class Attributes
-{	
-	this(irr_IAttributes* ptr)
-	{
+class Attributes {	
+	this(irr_IAttributes* ptr) {
 		this.ptr = ptr;
 	}
 	
-    uint getAttributeCount()
-    {
+    uint getAttributeCount() {
         return 0;
     }
     
+    alias ptr this;
     irr_IAttributes* ptr;
 }
 

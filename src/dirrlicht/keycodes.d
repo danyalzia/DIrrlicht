@@ -31,8 +31,7 @@ Irrlicht Developers
 
 module dirrlicht.keycodes;
 
-enum KeyCode
-{
+enum KeyCode {
     MouseLButton          = 0x01,  /// Left mouse button
     MouseRButton          = 0x02,  /// Right mouse button
     Cancel           = 0x03,  /// Control-break processing

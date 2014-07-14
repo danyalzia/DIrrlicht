@@ -4,7 +4,6 @@ module dirrlicht.core.array;
 
 extern (C):
 
-struct irr_array
-{
+struct irr_array {
     void* data;
 }

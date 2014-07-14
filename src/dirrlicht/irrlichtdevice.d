@@ -56,30 +56,24 @@ import std.utf : toUTFz;
  + this class.  There should be only one instance of this class at any
  + time.
  +/
-class IrrlichtDevice
-{
-    this(DriverType type, dimension2du dim, uint bits, bool fullscreen, bool stencilbuffer, bool vsync)
-    {
+class IrrlichtDevice {
+    this(DriverType type, dimension2du dim, uint bits, bool fullscreen, bool stencilbuffer, bool vsync) {
         ptr = irr_createDevice(type, irr_dimension2du(dim.Width, dim.Height), bits, fullscreen, stencilbuffer, vsync);
     }
     
-    bool run()
-    {
+    bool run() {
         return irr_IrrlichtDevice_run(ptr);
     }
 
-    void yield()
-    {
+    void yield() {
         irr_IrrlichtDevice_yield(ptr);
     }
 
-    void sleep(uint timeMs, bool pauseTimer=false)
-    {
+    void sleep(uint timeMs, bool pauseTimer=false) {
         irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
     }
     
-    @property
-    {
+    @property {
 	    VideoDriver videoDriver() { return new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr)); }
 	    FileSystem fileSystem() { return new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr)); }
 	    GUIEnvironment guiEnvironment() { return new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr)); }
@@ -90,60 +84,51 @@ class IrrlichtDevice
 	    OSOperator osOperator() { return new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr)); }
 	    Timer timer() { return new Timer(irr_IrrlichtDevice_getTimer(ptr)); }
 	    Randomizer randomizer() { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
-	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
+	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer); }
     }
     
-    Randomizer createDefaultRandomizer()
-    {
+    Randomizer createDefaultRandomizer() {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
         return new Randomizer(randomizer);
     }
     
     @property void windowCaption(dstring text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
+    @property void windowCaption(string text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
     
-    bool isWindowActive()
-    {
+    bool isWindowActive() {
         return irr_IrrlichtDevice_isWindowActive(ptr);
     }
 
-    bool isWindowFocused()
-    {
+    bool isWindowFocused() {
         return irr_IrrlichtDevice_isWindowFocused(ptr);
     }
 
-    bool isWindowMinimized()
-    {
+    bool isWindowMinimized() {
         return irr_IrrlichtDevice_isWindowMinimized(ptr);
     }
 
-    bool isFullscreen()
-    {
+    bool isFullscreen() {
         return irr_IrrlichtDevice_isFullscreen(ptr);
     }
 
-    ColorFormat getColorFormat()
-    {
+    ColorFormat getColorFormat() {
         return irr_IrrlichtDevice_getColorFormat(ptr);
     }
 
-    void closeDevice()
-    {
+    void closeDevice() {
         irr_IrrlichtDevice_closeDevice(ptr);
     }
 
-    string getVersion()
-    {
+    string getVersion() {
         const char* str = irr_IrrlichtDevice_getVersion(ptr);
         return to!string(str);
     }
 
-    bool postEventFromUser(Event event)
-    {
+    bool postEventFromUser(Event event) {
         return irr_IrrlichtDevice_postEventFromUser(ptr, event);
     }
 
-    void setInputReceivingSceneManager(SceneManager smgr)
-    {
+    void setInputReceivingSceneManager(SceneManager smgr) {
         irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr.ptr);
     }
     
@@ -151,44 +136,37 @@ class IrrlichtDevice
     
     @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim.ptr); }
 
-    void minimizeWindow()
-    {
+    void minimizeWindow() {
         irr_IrrlichtDevice_minimizeWindow(ptr);
     }
 
-    void maximizeWindow()
-    {
+    void maximizeWindow() {
         irr_IrrlichtDevice_maximizeWindow(ptr);
     }
 
-    void restoreWindow()
-    {
+    void restoreWindow() {
         irr_IrrlichtDevice_restoreWindow(ptr);
     }
 
-    vector2di getWindowPosition()
-    {
+    vector2di getWindowPosition() {
         irr_vector2di temp = irr_IrrlichtDevice_getWindowPosition(ptr);
         auto pos = vector2di(temp.x, temp.y);
         return pos;
     }
     
-    bool activateJoysticks(irr_IrrlichtDevice* device, JoystickInfo[] joystickInfo)
-    {
+    bool activateJoysticks(irr_IrrlichtDevice* device, JoystickInfo[] joystickInfo) {
     	irr_array temp;
     	temp.data = joystickInfo.ptr;
     	return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
     }
     
     /// Set the current Gamma Value for the Display
-    bool setGammaRamp(float red, float green, float blue, float relativebrightness, float relativecontrast)
-    {
+    bool setGammaRamp(float red, float green, float blue, float relativebrightness, float relativecontrast) {
         return irr_IrrlichtDevice_setGammaRamp(ptr, red, green, blue, relativebrightness, relativecontrast);
     }
     
     /// Get the current Gamma Value for the Display
-    bool getGammaRamp(out float red, out float green, out float blue, out float relativebrightness, out float relativecontrast)
-    {
+    bool getGammaRamp(out float red, out float green, out float blue, out float relativebrightness, out float relativecontrast) {
         return irr_IrrlichtDevice_getGammaRamp(ptr, red, green, blue, relativebrightness, relativecontrast);
     }
     
@@ -217,8 +195,7 @@ class IrrlichtDevice
 	 * The function is still somewhat experimental, as the kind of messages we clear is based on just a few use-cases.
 	 * If you think further messages should be cleared, or some messages should not be cleared here, then please tell us.
 	 */
-    void clearSystemMessages()
-    {
+    void clearSystemMessages() {
         irr_IrrlichtDevice_clearSystemMessages(ptr);
     }
     
@@ -234,22 +211,19 @@ class IrrlichtDevice
 	 * Even if true is returned the driver may not be available
 	 * for a configuration requested when creating the device.
      */
-    bool isDriverSupported(DriverType type)
-    {
+    bool isDriverSupported(DriverType type) {
         return irr_IrrlichtDevice_isDriverSupported(ptr, type);
     }
     
-    void drop()
-    {
+    void drop() {
         irr_IrrlichtDevice_drop(ptr);
     }
     
-    irr_IEventReceiver* eventreceiver;
-	irr_IrrlichtDevice* ptr;
+    alias ptr this;
+	package irr_IrrlichtDevice* ptr;
 }
 
-auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false)
-{
+auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
 	return new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
 }
 
@@ -393,6 +367,6 @@ bool irr_IrrlichtDevice_getGammaRamp(irr_IrrlichtDevice* device, ref float red, 
 void irr_IrrlichtDevice_setDoubleClickTime(irr_IrrlichtDevice* device, uint timeMs);
 uint irr_IrrlichtDevice_getDoubleClickTime(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_clearSystemMessages(irr_IrrlichtDevice* device);
-E_DEVICE_TYPE irr_IrrlichtDevice_getType(irr_IrrlichtDevice* device);
+DeviceType irr_IrrlichtDevice_getType(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_isDriverSupported(irr_IrrlichtDevice* device, DriverType type);
 void irr_IrrlichtDevice_drop(irr_IrrlichtDevice* device);

@@ -26,6 +26,16 @@
 
 module dirrlicht.video.image;
 
-extern (C):
+class Image
+{
+	this(irr_IImage* ptr)
+	{
+		this.ptr = ptr;
+	}
+	
+	alias ptr this;
+	irr_IImage* ptr;
+}
+package extern (C):
 
 struct irr_IImage;

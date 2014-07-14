@@ -135,15 +135,12 @@ unittest
     }
 }
 
-pure nothrow int FLOOR(float n)
-{
-    static if(DigitalMars || LDC)
-    {
+pure nothrow int FLOOR(float n) {
+    static if(DigitalMars || LDC) {
         const float h = 0.5f;
         int t;
 
-        asm
-        {
+        asm {
             fld n;
             fsub h;
             fistp t;

@@ -27,19 +27,19 @@
 module dirrlicht.video.vertex;
 
 /// Enumeration for all vertex types there are.
-enum E_VERTEX_TYPE
+enum VertexType
 {
     /// Standard vertex type used by the Irrlicht engine, video::S3DVertex.
-    EVT_STANDARD = 0,
+    Standard = 0,
 
     /// Vertex with two texture coordinates, video::S3DVertex2TCoords.
-    /** Usually used for geometry with lightmaps or other special materials. */
-    EVT_2TCOORDS,
+    /// Usually used for geometry with lightmaps or other special materials.
+    TTCoords,
 
     /// Vertex with a tangent and binormal vector, video::S3DVertexTangents.
-    /** Usually used for tangent space normal mapping. */
-    EVT_TANGENTS
-};
+    /// Usually used for tangent space normal mapping.
+    Tangents
+}
 
 class S3DVertex
 {

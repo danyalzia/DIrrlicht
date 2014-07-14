@@ -4,7 +4,6 @@ module dirrlicht.core.list;
 
 extern (C):
 
-struct irr_list
-{
+struct irr_list {
     void* data;
 }

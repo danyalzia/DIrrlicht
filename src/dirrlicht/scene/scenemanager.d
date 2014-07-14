@@ -138,7 +138,8 @@ class SceneManager
     
     AnimatedMesh getMesh(string filename)
     {
-        return new AnimatedMesh(this, filename);
+    	auto temp = irr_ISceneManager_getMesh(ptr, filename.toStringz);
+        return new AnimatedMesh(temp);
     }
 
     MeshCache getMeshCache()

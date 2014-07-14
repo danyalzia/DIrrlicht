@@ -27,17 +27,16 @@
 module dirrlicht.gui.messageboxflags;
 
 /// enumeration for message box layout flags
-enum GUIMessageBoxFlag
-{
+enum GUIMessageBoxFlag {
     /// Flag for the ok button
-    ok = 0x1,
+    Ok = 0x1,
 
     /// Flag for the cancel button
-    cancel = 0x2,
+    Cancel = 0x2,
 
     /// Flag for the yes button
-    yes = 0x4,
+    Yes = 0x4,
 
     /// Flag for the no button
-    no = 0x8
+    No = 0x8
 }

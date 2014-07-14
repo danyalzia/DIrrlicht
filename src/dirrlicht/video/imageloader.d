@@ -26,6 +26,15 @@
 
 module dirrlicht.video.imageloader;
 
-extern (C):
+class ImageLoader {
+	this(irr_IImageLoader* ptr) {
+		this.ptr = ptr;
+	}
+	
+	alias ptr this;
+	irr_IImageLoader* ptr;
+}
+
+package extern (C):
 
 struct irr_IImageLoader;

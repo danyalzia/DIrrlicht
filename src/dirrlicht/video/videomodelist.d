@@ -28,16 +28,13 @@ module dirrlicht.video.videomodelist;
 
 import dirrlicht.irrlichtdevice;
 
-class VideoModeList
-{
-    this(irr_IVideoModeList* ptr)
-    {
+class VideoModeList {
+    this(irr_IVideoModeList* ptr) {
     	this.ptr = ptr;
     }
     
+    alias ptr this;
     irr_IVideoModeList* ptr;
-private:
-    IrrlichtDevice device;
 }
 
 package extern (C):

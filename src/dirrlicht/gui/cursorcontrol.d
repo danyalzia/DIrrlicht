@@ -28,21 +28,17 @@ module dirrlicht.gui.cursorcontrol;
 
 import dirrlicht.irrlichtdevice;
 
-class CursorControl
-{
-    this(irr_ICursorControl* ptr)
-    {
+class CursorControl {
+    this(irr_ICursorControl* ptr) {
     	this.ptr = ptr;
     }
     
-    @property void visible(bool value)
-    {
+    @property void visible(bool value) {
         irr_ICursorControl_setVisible(ptr, value);
     }
-
+    
+    alias ptr this;
     irr_ICursorControl* ptr;
-private:
-    IrrlichtDevice device;
 }
 
 package extern (C):

@@ -31,66 +31,40 @@ module dirrlicht.core.aabbox3d;
 import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 
-struct aabbox3d(T)
-{
+struct aabbox3d(T) {
     @disable this();
-    this(vector3d!(T) min, vector3d!(T) max)
-    {
+    this(vector3d!(T) min, vector3d!(T) max) {
         MinEdge = min;
         MaxEdge = max;
     }
 
-    this(vector3d!(T) init)
-    {
+    this(vector3d!(T) init) {
         MinEdge = init;
         MaxEdge = init;
     }
 
-    void opOpAssign(string op)(aabbox3d rhs)
-    {
+    void opOpAssign(string op)(aabbox3d rhs) {
         mixin("MinEdge" ~ op ~ "=rhs.MinEdge;");
         mixin("MaxEdge" ~ op ~ "=rhs.MaxEdge;");
     }
 
-    aabbox3d!(T) opBinary(string op)(aabbox3d!(T) rhs)
-    {
-        static if (op == "+")
-        {
-            return new aabbox3d(MinEdge + rhs.MinEdge, MaxEdge + rhs.MaxEdge);
-        }
-
-        else static if (op == "-")
-        {
-            return new aabbox3d(MinEdge - rhs.MinEdge, MaxEdge - rhs.MaxEdge);
-        }
-
-        else static if (op == "*")
-        {
-            return new aabbox3d(MinEdge * rhs.MinEdge, MaxEdge * rhs.MaxEdge);
-        }
-
-        else static if (op == "/")
-        {
-            return new aabbox3d(MinEdge / rhs.MinEdge, MaxEdge / rhs.MaxEdge);
-        }
+    aabbox3d!(T) opBinary(string op)(aabbox3d!(T) rhs) {
+    	return new aabbox3d(MinEdge ~op~ rhs.MinEdge, MaxEdge ~op~ rhs.MaxEdge); 
     }
     
     /// internal use only
-    static if (is (T == float))
-    {
-    	@property irr_aabbox3df ptr()
-    	{
-    		return irr_aabbox3df(MinEdge.ptr, MaxEdge.ptr);
-    	}
+    @property {
+	    static if (is (T == float)) {
+	    	irr_aabbox3df ptr() {
+	    		return irr_aabbox3df(MinEdge.ptr, MaxEdge.ptr);
+	    	}
+	    }
+	    else {
+	    	irr_aabbox3di ptr() {
+	    		return irr_aabbox3di(MinEdge.ptr, MaxEdge.ptr);
+	    	}
+	    }	
     }
-    
-    else
-    {
-    	@property irr_aabbox3di ptr()
-    	{
-    		return irr_aabbox3di(MinEdge.ptr, MaxEdge.ptr);
-    	}
-    }	
     
     vector3d!(T) MinEdge;
     vector3d!(T) MaxEdge;
@@ -126,14 +100,12 @@ unittest
 
 package extern(C):
 
-struct irr_aabbox3di
-{
+struct irr_aabbox3di {
     irr_vector3di MinEdge;
     irr_vector3di MaxEdge;
 }
 
-struct irr_aabbox3df
-{
+struct irr_aabbox3df {
     irr_vector3df MinEdge;
     irr_vector3df MaxEdge;
 }

@@ -29,21 +29,19 @@ module dirrlicht.io.attributeexchangingobject;
 import dirrlicht.io.attributes;
 
 /// Enumeration flags passed through SAttributeReadWriteOptions to the IAttributeExchangingObject object
-enum AttributeReadWriteFlag
-{
+enum AttributeReadWriteFlag {
     /// Serialization/Deserializion is done for an xml file
-    forFile = 0x00000001,
+    ForFile = 0x00000001,
 
     /// Serialization/Deserializion is done for an editor property box
-    forEditor = 0x00000002,
+    ForEditor = 0x00000002,
 
     /// When writing filenames, relative paths should be used
-    useRelativePaths = 0x00000004
+    UseRelativePaths = 0x00000004
 }
 
 /// struct holding data describing options
-struct AttributeReadWriteOptions
-{
+struct AttributeReadWriteOptions {
     /// Combination of E_ATTRIBUTE_READ_WRITE_FLAGS or other, custom ones
     int Flags;
 
@@ -52,8 +50,7 @@ struct AttributeReadWriteOptions
 }
 
 /// An object which is able to serialize and deserialize its attributes into an attributes object
-class AttributeExchangingObject
-{
+class AttributeExchangingObject {
 public:
 
     /// Writes attributes of the object.

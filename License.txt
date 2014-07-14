@@ -26,5 +26,5 @@ it freely, subject to the following restrictions:
 
 External libraries, ideas, documentation used by DIrrlicht
 ------------------------------------
-* CIrrlicht - https://github.com/danyalzia/CIrrlicht
+* CIrrlicht - https://github.com/Artistic-Games/CIrrlicht
 * Irrlicht - http://www.irrlicht.sf.net

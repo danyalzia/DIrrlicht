@@ -34,8 +34,7 @@ import std.conv;
 import std.string;
 
 /// Types of standard md2 animations
-enum AnimationTypeMD2
-{
+enum AnimationTypeMD2 {
     Stand = 0,
     Run,
     Attack,
@@ -62,22 +61,8 @@ enum AnimationTypeMD2
     Count
 }
 
-class AnimatedMeshMD2 : AnimatedMesh
-{
-	/***
-     * class for using some special functions of MD2 meshes
-     */
-    this(SceneManager _smgr, string file)
-    {
-        smgr = _smgr;
-        super(smgr, file);
-    }
-    
-    /***
-     * Internal use only!
-     */
-    package this(irr_IAnimatedMeshMD2* ptr)
-    {
+class AnimatedMeshMD2 : AnimatedMesh {
+	this(irr_IAnimatedMeshMD2* ptr) {
     	this.ptr = ptr;
     	super(cast(irr_IAnimatedMesh*)this.ptr);
     }
@@ -91,8 +76,7 @@ class AnimatedMeshMD2 : AnimatedMesh
      *			outEnd = The returned ending frame for the animation type specified.
      *			outFPS = The number of frames per second, this animation should be played at.
      */
-    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS)
-    {
+    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS) {
         irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
     }
     
@@ -105,16 +89,14 @@ class AnimatedMeshMD2 : AnimatedMesh
      *			outEnd = The returned ending frame for the animation type specified.
      *			outFPS = The number of frames per second, this animation should be played at.
      */
-    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS)
-    {
+    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS) {
         return irr_IAnimatedMeshMD2_getFrameLoopByName(ptr, toStringz(name), outBegin, outEnd, outFPS);
     }
     
     /***
      * Get amount of md2 animations in this file.
      */
-    int getAnimationCount()
-    {
+    int getAnimationCount() {
         return irr_IAnimatedMeshMD2_getAnimationCount(ptr);
     }
     
@@ -124,15 +106,13 @@ class AnimatedMeshMD2 : AnimatedMesh
      * Params:
      *			nr: Zero based index of animation.
      */
-    string getAnimationName(int nr)
-    {
+    string getAnimationName(int nr) {
         auto str = irr_IAnimatedMeshMD2_getAnimationName(ptr, nr);
         return to!string(str);
     }
-
+    
+    alias ptr this;
     irr_IAnimatedMeshMD2* ptr;
-private:
-    SceneManager smgr;
 }
 
 extern (C):

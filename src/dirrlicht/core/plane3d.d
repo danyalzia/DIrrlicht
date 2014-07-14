@@ -28,9 +28,34 @@ module dirrlicht.core.plane3d;
 
 import dirrlicht.core.vector3d;
 
-struct plane3d(T)
-{
+struct plane3d(T) {
     @disable this();
+	this(vector3d!(T) Normal, T D) {
+		this.Normal = Normal;
+		this.D = D;
+	}
+	
+	void opOpAssign(string op)(plane3d rhs) {
+        mixin("Normal" ~ op ~ "=rhs.Normal;");
+        mixin("D" ~ op ~ "=rhs.D;");
+    }
+
+    plane3d!(T) opBinary(string op)(plane3d!(T) rhs) {
+    	return new plane3d(Normal ~op~ rhs.Normal, D ~op~ rhs.D); 
+    }
+    
+    @property {
+		static if (is(T == int)) {
+			irr_plane3di ptr() {
+				return irr_plane3di(irr_vector3di(Normal.x, Normal.y, Normal.z), D);
+			}
+		}
+		else {
+			irr_plane3df ptr() {
+				return irr_plane3df(irr_vector3df(Normal.x, Normal.y, Normal.z), D);
+			}
+		}
+	}
 private:
     vector3d!(T) Normal;
     T D;
@@ -41,5 +66,12 @@ alias plane3di = plane3d!(int);
 
 extern (C):
 
-    struct irr_plane3d;
-struct irr_plane3df;
+struct irr_plane3di {
+	irr_vector3di Normal;
+	int D;
+}
+
+struct irr_plane3df {
+	irr_vector3df Normal;
+	float D;
+}
