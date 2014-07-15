@@ -29,7 +29,25 @@ $ cd DIrrlicht
 $ git submodule update --init
 ```
 
-On Linux, it assumes that Irrlicht is installed in "$HOME" directory, so you have to place them in that directory and then use ```dub test``` to run unit-tests.
+On Linux, it assumes that Irrlicht is installed in "$HOME" directory, so you have to place the irrlicht's folder in that directory. To create dynamic libray, in `CIrrlicht` do:
+
+```
+$ sudo make sharedlib
+```
+
+It will create a library in `lib`.
+
+Contributing
+------------
+
+DIrrlicht aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.
+
+Before making a commit, please try to adhere to the coding [style](https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
+
+Unit Tests
+----------
+
+Unit Tests are being aggressively tested through Travis Cl on every push. It uses only those resources that are in repository. To run them offline, do `dub test`. You can pass an extra flag for other compilers (i.e. GDC and LDC) such as `--compiler gdc` and `--compiler ldc2`.
 
 License
 -------
