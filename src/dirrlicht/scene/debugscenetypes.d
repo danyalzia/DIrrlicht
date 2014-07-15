@@ -27,8 +27,7 @@
 module dirrlicht.scene.debugscenetypes;
 
 /// An enumeration for all types of debug data for built-in scene nodes (flags)
-enum DebugSceneType
-{
+enum DebugSceneType {
     /// No Debug Data ( Default )
     Off = 0,
 

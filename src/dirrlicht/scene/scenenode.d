@@ -41,8 +41,7 @@ import dirrlicht.scene.scenenodetypes;
 import dirrlicht.io.attributes;
 import dirrlicht.io.attributeexchangingobject;
 
-interface SceneNode
-{
+interface SceneNode {
 	void addAnimator(SceneNodeAnimator animator);
     void removeAnimator(SceneNodeAnimator animator);
     void removeAnimators();
@@ -50,8 +49,7 @@ interface SceneNode
     void setMaterialFlag(MaterialFlag flag, bool newvalue);
     void setMaterialTexture(int n, Texture texture);
     void setMaterialType(MaterialType newType);
-    @property
-    {
+    @property {
 	    vector3df scale();
 	    void scale(vector3df scale);
 	    vector3df rotation();
@@ -72,14 +70,13 @@ interface SceneNode
     void setTriangleSelector(TriangleSelector selector);
     void updateAbsolutePosition();
     SceneNode* getParent();
-    ESCENE_NODE_TYPE getType();
+    SceneNodeType getType();
     SceneManager getSceneManager();
     @property irr_ISceneNode* irrPtr();
     @property void irrPtr(irr_ISceneNode* ptr);
 }
 
-mixin template DefaultSceneNode()
-{
+mixin template DefaultSceneNode() {
     import dirrlicht.compileconfig;
 	import dirrlicht.scene.scenenodeanimator;
 	import dirrlicht.scene.scenemanager;
@@ -95,170 +92,138 @@ mixin template DefaultSceneNode()
 	import dirrlicht.io.attributes;
 	import dirrlicht.io.attributeexchangingobject;
 	
-    void addAnimator(SceneNodeAnimator animator)
-    {
+    void addAnimator(SceneNodeAnimator animator) {
         irr_ISceneNode_addAnimator(irrPtr, animator.ptr);
     }
 
-    void removeAnimator(SceneNodeAnimator animator)
-    {
+    void removeAnimator(SceneNodeAnimator animator) {
         irr_ISceneNode_removeAnimator(irrPtr, animator.ptr);
     }
 
-    void removeAnimators()
-    {
+    void removeAnimators() {
         irr_ISceneNode_removeAnimators(irrPtr);
     }
 
-    Material getMaterial(uint num)
-    {
+    Material getMaterial(uint num) {
         return new Material(irr_ISceneNode_getMaterial(irrPtr, num));
     }
 
-    void setMaterialFlag(MaterialFlag flag, bool newvalue)
-    {
+    void setMaterialFlag(MaterialFlag flag, bool newvalue) {
         irr_ISceneNode_setMaterialFlag(irrPtr, flag, newvalue);
     }
 
-    void setMaterialTexture(int n, Texture texture)
-    {
+    void setMaterialTexture(int n, Texture texture) {
         irr_ISceneNode_setMaterialTexture(irrPtr, n, texture.ptr);
     }
 
-    void setMaterialType(MaterialType newType)
-    {
+    void setMaterialType(MaterialType newType) {
         irr_ISceneNode_setMaterialType(irrPtr, newType);
     }
 
     
-    @property
-    {
-	    vector3df scale()
-	    {
+    @property {
+	    vector3df scale() {
 	        auto temp = irr_ISceneNode_getScale(irrPtr);
 	        return vector3df(temp.x, temp.y, temp.z);
 	    }
 	
-	    void scale(vector3df scale)
-	    {
+	    void scale(vector3df scale) {
 	        irr_vector3df temp = {scale.x, scale.y, scale.z};
 	        irr_ISceneNode_setScale(irrPtr, temp);
 	    }
 	
-	    vector3df rotation()
-	    {
+	    vector3df rotation() {
 	        auto temp = irr_ISceneNode_getRotation(irrPtr);
 	        auto rot = vector3df(temp.x, temp.y, temp.z);
 	        return rot;
 	    }
 	
-	    void rotation(vector3df rotation)
-	    {
+	    void rotation(vector3df rotation) {
 	        irr_vector3df temp = {rotation.x, rotation.y, rotation.z};
 	        irr_ISceneNode_setRotation(irrPtr, temp);
 	    }
 	
-	    vector3df position()
-	    {
+	    vector3df position() {
 	        auto temp = irr_ISceneNode_getPosition(irrPtr);
 	        return vector3df(temp.x, temp.y, temp.z);
 	    }
 	
-	    void position(vector3df pos)
-	    {
+	    void position(vector3df pos) {
 	        irr_ISceneNode_setPosition(irrPtr, pos.ptr);
 	    }
     }
     
-    vector3df getAbsolutePosition()
-    {
+    vector3df getAbsolutePosition() {
         auto temp = irr_ISceneNode_getAbsolutePosition(irrPtr);
         auto pos = vector3df(temp.x, temp.y, temp.z);
         return pos;
     }
 
-    void setAutomaticCulling(uint state)
-    {
+    void setAutomaticCulling(uint state) {
         irr_ISceneNode_setAutomaticCulling(irrPtr, state);
     }
 
-    uint getAutomaticCulling()
-    {
+    uint getAutomaticCulling() {
         return irr_ISceneNode_getAutomaticCulling(irrPtr);
     }
 
-    void setDebugDataVisible(uint state)
-    {
+    void setDebugDataVisible(uint state) {
         irr_ISceneNode_setDebugDataVisible(irrPtr, state);
     }
 
-    uint isDebugDataVisible()
-    {
+    uint isDebugDataVisible() {
         return irr_ISceneNode_isDebugDataVisible(irrPtr);
     }
 
-    void setIsDebugObject(bool debugObject)
-    {
+    void setIsDebugObject(bool debugObject) {
         irr_ISceneNode_setIsDebugObject(irrPtr, debugObject);
     }
 
-    bool isDebugObject()
-    {
+    bool isDebugObject() {
         return irr_ISceneNode_isDebugObject(irrPtr);
     }
 
-    void setParent(SceneNode newParent)
-    {
+    void setParent(SceneNode newParent) {
         irr_ISceneNode_setParent(irrPtr, newParent.irrPtr);
     }
 
-    TriangleSelector getTriangleSelector()
-    {
+    TriangleSelector getTriangleSelector() {
         auto temp = irr_ISceneNode_getTriangleSelector(irrPtr);
         return new TriangleSelector(temp);
     }
 
-    void setTriangleSelector(TriangleSelector selector)
-    {
+    void setTriangleSelector(TriangleSelector selector) {
         irr_ISceneNode_setTriangleSelector(irrPtr, selector.ptr);
     }
 
-    void updateAbsolutePosition()
-    {
+    void updateAbsolutePosition() {
         irr_ISceneNode_updateAbsolutePosition(irrPtr);
     }
 
-    SceneNode* getParent()
-    {
+    SceneNode* getParent() {
         auto temp = irr_ISceneNode_getParent(irrPtr);
         SceneNode* node;
         return node;
     }
 
-    ESCENE_NODE_TYPE getType()
-    {
+    SceneNodeType getType() {
         return irr_ISceneNode_getType(irrPtr);
     }
 
-    SceneManager getSceneManager()
-    {
+    SceneManager getSceneManager() {
         auto temp = irr_ISceneNode_getSceneManager(irrPtr);
         return new SceneManager(temp);
     }
     
-    @property irr_ISceneNode* irrPtr()
-    {
+    @property irr_ISceneNode* irrPtr() {
     	return irrPtr_;
     }
     
-    @property void irrPtr(irr_ISceneNode* ptr)
-    {
+    @property void irrPtr(irr_ISceneNode* ptr) {
     	irrPtr_ = ptr;
     }
     
     irr_ISceneNode* irrPtr_;
-private:
-    SceneManager smgr;
 }
 
 unittest
@@ -267,13 +232,13 @@ unittest
 
 
     auto mesh = smgr.getMesh("../../media/sydney.md2");
-    assert(mesh.ptr != null);
+    checkNull(mesh);
+    
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
-
+    checkNull(node);
     with(node)
     {
-        assert(ptr != null);
-        setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
+        setMaterialFlag(MaterialFlag.Lighting, false);
     }
 }
 
@@ -309,7 +274,7 @@ irr_ITriangleSelector* irr_ISceneNode_getTriangleSelector(irr_ISceneNode* node);
 void irr_ISceneNode_setTriangleSelector(irr_ISceneNode* node, irr_ITriangleSelector* selector);
 void irr_ISceneNode_updateAbsolutePosition(irr_ISceneNode* node);
 irr_ISceneNode* irr_ISceneNode_getParent(irr_ISceneNode* node);
-ESCENE_NODE_TYPE irr_ISceneNode_getType(irr_ISceneNode* node);
+SceneNodeType irr_ISceneNode_getType(irr_ISceneNode* node);
 void irr_ISceneNode_serializeAttributes(irr_ISceneNode* node, irr_IAttributes*, irr_SAttributeReadWriteOptions*);
 void irr_ISceneNode_deserializeAttributes(irr_ISceneNode* node, irr_IAttributes*, irr_SAttributeReadWriteOptions*);
 irr_ISceneNode* irr_ISceneNode_clone(irr_ISceneNode* node, irr_ISceneNode*, irr_ISceneManager*);

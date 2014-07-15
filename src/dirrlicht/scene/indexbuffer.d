@@ -35,8 +35,7 @@ import dirrlicht.video.materialflags;
 import dirrlicht.scene.hardwarebufferflags;
 import dirrlicht.video.vertexindex;
 
-interface IIndexBuffer
-{
+interface IIndexBuffer {
     void* getData();
 
     IndexType getType();
@@ -58,10 +57,10 @@ interface IIndexBuffer
     void* pointer();
 
     /// get the current hardware mapping hint
-    E_HARDWARE_MAPPING getHardwareMappingHint();
+    HardwareMappingHint getHardwareMappingHint();
 
     /// set the hardware mapping hint, for driver
-    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint );
+    void setHardwareMappingHint(HardwareMappingHint NewMappingHint );
 
     /// flags the meshbuffer as changed, reloads hardware buffers
     void setDirty();
@@ -71,94 +70,77 @@ interface IIndexBuffer
     uint getChangedID();
 }
 
-class CIndexBuffer : IIndexBuffer
-{
-    void* getData()
-    {
+class CIndexBuffer : IIndexBuffer {
+    void* getData() {
         return Indices.pointer();
     }
 
-    IndexType getType()
-    {
+    IndexType getType() {
         return Indices.getType();
     }
 
     void setType(IndexType IndexType) {}
 
-    uint stride()
-    {
+    uint stride() {
         return Indices.stride();
     }
 
-    uint size()
-    {
+    uint size() {
         return Indices.size();
     }
 
-    void push_back (uint element)
-    {
+    void push_back (uint element) {
         Indices.push_back(element);
     }
 
     //uint operator [](uint index);
 
-    uint getLast()
-    {
+    uint getLast() {
         return Indices.getLast();
     }
 
-    void setValue(uint index, uint value)
-    {
+    void setValue(uint index, uint value) {
         Indices.setValue(index, value);
     }
 
-    void set_used(uint usedNow)
-    {
+    void set_used(uint usedNow) {
         Indices.set_used(usedNow);
     }
 
-    void reallocate(uint new_size)
-    {
+    void reallocate(uint new_size) {
         Indices.reallocate(new_size);
     }
 
-    uint allocated_size()
-    {
+    uint allocated_size() {
         return Indices.allocated_size();
     }
 
-    void* pointer()
-    {
+    void* pointer() {
         return Indices.pointer();
     }
 
     /// get the current hardware mapping hint
-    E_HARDWARE_MAPPING getHardwareMappingHint()
-    {
+    HardwareMappingHint getHardwareMappingHint() {
         return MappingHint;
     }
 
     /// set the hardware mapping hint, for driver
-    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
-    {
+    void setHardwareMappingHint(HardwareMappingHint NewMappingHint) {
         MappingHint=NewMappingHint;
     }
 
     /// flags the meshbuffer as changed, reloads hardware buffers
-    void setDirty()
-    {
+    void setDirty() {
         ++ChangedID;
     }
 
     /// Get the currently used ID for identification of changes.
     /** This shouldn't be used for anything outside the VideoDriver. */
-    uint getChangedID()
-    {
+    uint getChangedID() {
         return ChangedID;
     }
 
-    interface IIndexList
-    {
+    interface IIndexList {
         uint stride();
         uint size();
         void push_back(uint element);
@@ -172,14 +154,13 @@ class CIndexBuffer : IIndexBuffer
         IndexType getType();
     };
 
-    this(IndexType IndexType)
-    {
+    this(IndexType IndexType) {
         Indices = null;
-        MappingHint = E_HARDWARE_MAPPING.EHM_NEVER;
+        MappingHint = HardwareMappingHint.Never;
         ChangedID = 1;
     }
 
     IIndexList *Indices;
-    E_HARDWARE_MAPPING MappingHint;
+    HardwareMappingHint MappingHint;
     uint ChangedID;
 }

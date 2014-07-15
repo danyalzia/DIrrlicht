@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.geometrycreator;
 
-class GeometryCreator
-{
-	this(irr_IGeometryCreator* ptr)
-	{
+class GeometryCreator {
+	this(irr_IGeometryCreator* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_IGeometryCreator* ptr;
 }
 

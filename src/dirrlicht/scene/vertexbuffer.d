@@ -35,8 +35,7 @@ import dirrlicht.scene.hardwarebufferflags;
 import dirrlicht.video.vertexindex;
 import dirrlicht.video.vertex;
 
-interface IVertexBuffer
-{
+interface IVertexBuffer {
     void* getData();
     VertexType getType();
     void setType(VertexType vertexType);
@@ -53,10 +52,10 @@ interface IVertexBuffer
     S3DVertex* pointer();
 
     /// get the current hardware mapping hint
-    E_HARDWARE_MAPPING getHardwareMappingHint();
+    HardwareMappingHint getHardwareMappingHint();
 
     /// set the hardware mapping hint, for driver
-    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint);
+    void setHardwareMappingHint(HardwareMappingHint NewMappingHint);
 
     /// flags the meshbuffer as changed, reloads hardware buffers
     void setDirty();
@@ -66,89 +65,73 @@ interface IVertexBuffer
     uint getChangedID();
 }
 
-class CVertexBuffer : IVertexBuffer
-{
-    void* getData()
-    {
+class CVertexBuffer : IVertexBuffer {
+    void* getData() {
         return Vertices.pointer();
     }
 
-    VertexType getType()
-    {
+    VertexType getType() {
         return Vertices.getType();
     }
 
     void setType(VertexType vertexType) { }
 
-    uint stride()
-    {
+    uint stride() {
         return Vertices.stride();
     }
 
-    uint size()
-    {
+    uint size() {
         return Vertices.size();
     }
 
-    void push_back(S3DVertex element)
-    {
+    void push_back(S3DVertex element) {
         Vertices.push_back(element);
     }
 
     //S3DVertex operator [](const uint index);
 
-    S3DVertex getLast()
-    {
+    S3DVertex getLast() {
         return Vertices.getLast();
     }
 
-    void set_used(uint usedNow)
-    {
+    void set_used(uint usedNow) {
         Vertices.set_used(usedNow);
     }
 
-    void reallocate(uint new_size)
-    {
+    void reallocate(uint new_size) {
         Vertices.reallocate(new_size);
     }
 
-    uint allocated_size()
-    {
+    uint allocated_size() {
         return Vertices.allocated_size();
     }
 
-    S3DVertex* pointer()
-    {
+    S3DVertex* pointer() {
         return Vertices.pointer();
     }
 
     /// get the current hardware mapping hint
-    E_HARDWARE_MAPPING getHardwareMappingHint()
-    {
+    HardwareMappingHint getHardwareMappingHint() {
         return MappingHint;
     }
 
     /// set the hardware mapping hint, for driver
-    void setHardwareMappingHint(E_HARDWARE_MAPPING NewMappingHint)
-    {
+    void setHardwareMappingHint(HardwareMappingHint NewMappingHint) {
         MappingHint=NewMappingHint;
     }
 
     /// flags the meshbuffer as changed, reloads hardware buffers
-    void setDirty()
-    {
+    void setDirty() {
         ++ChangedID;
     }
 
     /// Get the currently used ID for identification of changes.
     /** This shouldn't be used for anything outside the VideoDriver. */
-    uint getChangedID()
-    {
+    uint getChangedID() {
         return ChangedID;
     }
 
-    interface IVertexList
-    {
+    interface IVertexList {
         uint stride();
         uint size();
         void push_back(S3DVertex element);
@@ -161,14 +144,13 @@ class CVertexBuffer : IVertexBuffer
         VertexType getType();
     };
 
-    this(VertexType vertexType)
-    {
+    this(VertexType vertexType) {
         Vertices = null;
-        MappingHint = E_HARDWARE_MAPPING.EHM_NEVER;
+        MappingHint = HardwareMappingHint.Never;
         ChangedID = 1;
     }
 
     IVertexList *Vertices;
-    E_HARDWARE_MAPPING MappingHint;
+    HardwareMappingHint MappingHint;
     uint ChangedID;
 }

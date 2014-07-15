@@ -38,17 +38,20 @@ struct dimension2d(T) {
     	return new dimension2d(Width ~op~ rhs.Width, Height ~op~ rhs.Height); 
     }
     
+    
     /// internal use only
     @property {
 	    static if (is (T == float)) {
 	    	irr_dimension2df ptr() {
 	    		return irr_dimension2df(Width, Height);
 	    	}
+	    	alias ptr this;
 	    }
 	    else {
 	    	irr_dimension2du ptr() {
 	    		return irr_dimension2du(Width, Height);
 	    	}
+	    	alias ptr this;
 	    }
     }
 }

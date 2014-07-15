@@ -56,14 +56,14 @@ enum BoneSkinningSpace
 
 import dirrlicht.scene.scenenode;
 
-class BoneSceneNode : SceneNode
-{
+class BoneSceneNode : SceneNode {
 	mixin DefaultSceneNode;
-	this(irr_IBoneSceneNode* ptr)
-	{
+	this(irr_IBoneSceneNode* ptr) {
 		this.ptr = ptr;
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
+	
+	alias ptr this;
 	irr_IBoneSceneNode* ptr;
 }
 

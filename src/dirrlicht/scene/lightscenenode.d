@@ -28,13 +28,13 @@ module dirrlicht.scene.lightscenenode;
 
 import dirrlicht.scene.scenenode;
 
-class LightSceneNode : SceneNode
-{
+class LightSceneNode : SceneNode {
 	mixin DefaultSceneNode;
-	this(irr_ILightSceneNode* ptr)
-	{
+	this(irr_ILightSceneNode* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_ILightSceneNode* ptr;
 }
 

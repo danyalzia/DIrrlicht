@@ -27,12 +27,12 @@
 
 module dirrlicht.scene.scenecollisionmanager;
 
-class SceneCollisionManager
-{
-	this(irr_ISceneCollisionManager* ptr)
-	{
+class SceneCollisionManager {
+	this(irr_ISceneCollisionManager* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_ISceneCollisionManager* ptr;
 }
 extern (C):

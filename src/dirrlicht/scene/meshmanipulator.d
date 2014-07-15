@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.meshmanipulator;
 
-class MeshManipulator
-{
-	this(irr_IMeshManipulator* ptr)
-	{
+class MeshManipulator {
+	this(irr_IMeshManipulator* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_IMeshManipulator* ptr;
 }
 extern (C):

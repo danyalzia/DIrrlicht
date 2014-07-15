@@ -27,8 +27,7 @@
 module dirrlicht.scene.cullingtypes;
 
 /// An enumeration for all types of automatic culling for built-in scene nodes
-enum CullingType
-{
+enum CullingType {
     Off = 0,
     Box = 1,
     FrustumBox = 2,

@@ -32,82 +32,81 @@ module dirrlicht.scene.scenenodetypes;
  *name clashes with external scene nodes.
  */
 
-enum ESCENE_NODE_TYPE
-{
+enum SceneNodeType {
     /// of type CSceneManager (note that ISceneManager is not(!) an ISceneNode)
-    ESNT_SCENE_MANAGER,
+    SceneManager,
 
     /// simple cube scene node
-    ESNT_CUBE,
+    Cube,
 
     /// Sphere scene node
-    ESNT_SPHERE,
+    Sphere,
 
     /// Text Scene Node
-    ESNT_TEXT,
+    Text,
 
     /// Water Surface Scene Node
-    ESNT_WATER_SURFACE,
+    WaterSurface,
 
     /// Terrain Scene Node
-    ESNT_TERRAIN,
+    Terrain,
 
     /// Sky Box Scene Node
-    ESNT_SKY_BOX,
+    SkyBox,
 
     /// Sky Dome Scene Node
-    ESNT_SKY_DOME,
+    SkyDome,
 
     /// Shadow Volume Scene Node
-    ESNT_SHADOW_VOLUME,
+    ShadowVolume,
 
     /// Octree Scene Node
-    ESNT_OCTREE,
+    Octree,
 
     /// Mesh Scene Node
-    ESNT_MESH,
+    Mesh,
 
     /// Light Scene Node
-    ESNT_LIGHT,
+    Light,
 
     /// Empty Scene Node
-    ESNT_EMPTY,
+    Empty,
 
     /// Dummy Transformation Scene Node
-    ESNT_DUMMY_TRANSFORMATION,
+    DummyTransformation,
 
     /// Camera Scene Node
-    ESNT_CAMERA,
+    Camera,
 
     /// Billboard Scene Node
-    ESNT_BILLBOARD,
+    Billboard,
 
     /// Animated Mesh Scene Node
-    ESNT_ANIMATED_MESH,
+    AnimatedMesh,
 
     /// Particle System Scene Node
-    ESNT_PARTICLE_SYSTEM,
+    ParticleSystem,
 
     /// Quake3 Shader Scene Node
-    ESNT_Q3SHADER_SCENE_NODE,
+    Q3Shader,
 
     /// Quake3 Model Scene Node ( has tag to link to )
-    ESNT_MD3_SCENE_NODE,
+    Q3Node,
 
     /// Volume Light Scene Node
-    ESNT_VOLUME_LIGHT,
+    VolumeLight,
 
     /// Maya Camera Scene Node
-    /** Legacy, for loading version <= 1.4.x .irr files */
-    ESNT_CAMERA_MAYA,
+    /// Legacy, for loading version <= 1.4.x .irr files
+    CameraMaya,
 
     /// First Person Shooter Camera
-    /** Legacy, for loading version <= 1.4.x .irr files */
-    ESNT_CAMERA_FPS,
+    /// Legacy, for loading version <= 1.4.x .irr files
+    CameraFPS,
 
     /// Unknown scene node
-    ESNT_UNKNOWN,
+    Unknown,
 
     /// Will match with any scene node when checking types
-    ESNT_ANY
+    Any
 }

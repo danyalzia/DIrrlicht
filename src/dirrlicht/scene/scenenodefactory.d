@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.scenenodefactory;
 
-class SceneNodeFactory
-{
-	this(irr_ISceneNodeFactory* ptr)
-	{
+class SceneNodeFactory {
+	this(irr_ISceneNodeFactory* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_ISceneNodeFactory* ptr;
 }
 extern (C):

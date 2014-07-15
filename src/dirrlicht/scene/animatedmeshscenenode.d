@@ -45,8 +45,7 @@ import dirrlicht.video.materialflags;
 import std.conv;
 import std.string;
 
-enum JointUpdateOnRender
-{
+enum JointUpdateOnRender {
     /// do nothing
     None = 0,
 
@@ -63,12 +62,12 @@ enum JointUpdateOnRender
  + setAnimationEndCallback() to be able to
  + be notified if an animation playback has ended.
  +/
-class AnimatedEndCallBack
-{
-	this(irr_IAnimationEndCallBack* ptr)
-	{
+class AnimatedEndCallBack {
+	this(irr_IAnimationEndCallBack* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_IAnimationEndCallBack* ptr;
 }
 
@@ -77,48 +76,15 @@ class AnimatedEndCallBack
  + The shadow is optional: If a shadow should be displayed too, just
  + call createShadowVolumeSceneNode().
  +/
-class AnimatedMeshSceneNode : SceneNode
-{
+class AnimatedMeshSceneNode : SceneNode {
 	mixin DefaultSceneNode;
-	/*
-     * An optional way to use IAnimatedMeshSceneNode without getting the handle from ISceneManager
-     * Params:
-	 *			mesh = Mesh to load into node
-	 *			parent = optional parent
-	 *			id = the identity of this particular node
-	 *			position = position
-	 *			rotation = rotation
-	 *			scale = scale
-	 * 			alsoAddIfMeshPointerZero = flag
-	 */
-//    this(SceneManager smgr, AnimatedMesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false)
-//    in
-//    {
-//    	assert(smgr !is null);
-//    	assert(smgr.ptr != null);
-//    }
-//    body
-//    {
-//        this.smgr = smgr;
-//        if (parent is null)
-//            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr);
-//        else
-//            ptr = irr_ISceneManager_addAnimatedMeshSceneNode(this.smgr.ptr, mesh.ptr, parent.ptr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
-//
-//        //super(cast(irr_ISceneNode*)ptr);
-//    }
-    
-    /*
-     * Internal use only!
-     */
-    package this(irr_IAnimatedMeshSceneNode* ptr)
-    {
+
+	this(irr_IAnimatedMeshSceneNode* ptr) {
     	this.ptr = ptr;
     	irrPtr = cast(irr_ISceneNode*)this.ptr;
     }
     
-    void setCurrentFrame(float frame)
-    {
+    void setCurrentFrame(float frame) {
     	irr_IAnimatedMeshSceneNode_setCurrentFrame(ptr, frame);
     }
 		
@@ -130,8 +96,7 @@ class AnimatedMeshSceneNode : SceneNode
 	 *
 	 * Returns: True if successful, false if not.		
      */
-    bool setFrameLoop(int begin, int end)
-    {
+    bool setFrameLoop(int begin, int end) {
     	return irr_IAnimatedMeshSceneNode_setFrameLoop(ptr, begin, end);
     }
     
@@ -140,16 +105,14 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			framesPerSecond = Frames per second played.
      */
-    void setAnimationSpeed(float framesPerSecond)
-    {
+    void setAnimationSpeed(float framesPerSecond) {
     	irr_IAnimatedMeshSceneNode_setAnimationSpeed(ptr, framesPerSecond);
     }
     
     /***
      * Gets the speed with which the animation is played.
      */
-    float getAnimationSpeed()
-    {
+    float getAnimationSpeed() {
     	return irr_IAnimatedMeshSceneNode_getAnimationSpeed(ptr);
     }
     
@@ -179,69 +142,58 @@ class AnimatedMeshSceneNode : SceneNode
      *		
      */
     ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null,
-			int id=-1, bool zfailmethod=true, float infinity=1000.0f)
-    {
+			int id=-1, bool zfailmethod=true, float infinity=1000.0f) {
     	irr_IShadowVolumeSceneNode* temp;
-    	if (shadowMesh is null)
-    	{
+    	if (shadowMesh is null) {
     		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr);
     	}
-    	else
-    	{
+    	else {
     		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
     	}
     	
     	return new ShadowVolumeSceneNode(temp);
     }
     
-    BoneSceneNode getJointNode(string jointName)
-    {
+    BoneSceneNode getJointNode(string jointName) {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNode(ptr, jointName.toStringz);
     	return new  BoneSceneNode(temp);
     }
     
-    BoneSceneNode getJointNode(uint jointID)
-    {
+    BoneSceneNode getJointNode(uint jointID) {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNodeByID(ptr, jointID);
     	return new  BoneSceneNode(temp);
     }
     
-    uint getJointCount()
-    {
+    uint getJointCount() {
     	return irr_IAnimatedMeshSceneNode_getJointCount(ptr);
     }
     
-    void setMD2Animation(AnimationTypeMD2 anim)
-    {
+    void setMD2Animation(AnimationTypeMD2 anim) {
     	irr_IAnimatedMeshSceneNode_setMD2Animation(ptr, anim);
     }
     
-    bool setMD2Animation(string animationName)
-    {
+    bool setMD2Animation(string animationName) {
     	return irr_IAnimatedMeshSceneNode_setMD2AnimationByName(ptr, animationName.toStringz);
     }
     
     /***
      * Returns the currently displayed frame number.
      */
-    float getFrameNr()
-    {
+    float getFrameNr() {
     	return irr_IAnimatedMeshSceneNode_getFrameNr(ptr);
     }
     
     /***
      * Returns the current start frame number.
      */
-    int getStartFrame()
-    {
+    int getStartFrame() {
     	return irr_IAnimatedMeshSceneNode_getStartFrame(ptr);
     }
     
     /***
      * Returns the current end frame number.
      */
-    int getEndFrame()
-    {
+    int getEndFrame() {
     	return irr_IAnimatedMeshSceneNode_getEndFrame(ptr);
     }
     
@@ -249,8 +201,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Sets looping mode which is on by default.
 	 * If set to false, animations will not be played looped.
      */
-    void setLoopMode(bool playAnimationLooped)
-    {
+    void setLoopMode(bool playAnimationLooped) {
     	irr_IAnimatedMeshSceneNode_setLoopMode(ptr, playAnimationLooped);
     }
     
@@ -258,8 +209,7 @@ class AnimatedMeshSceneNode : SceneNode
      * returns the current loop mode
 	 * When true the animations are played looped
 	 */
-    bool getLoopMode()
-    {
+    bool getLoopMode() {
     	return irr_IAnimatedMeshSceneNode_getLoopMode(ptr);
     }
     
@@ -269,8 +219,7 @@ class AnimatedMeshSceneNode : SceneNode
 	 * Please note that this will only be called when in non looped
 	 * mode, see setLoopMode().
      */
-    void setAnimationEndCallback(AnimatedEndCallBack callback=null)
-    {
+    void setAnimationEndCallback(AnimatedEndCallBack callback=null) {
     	irr_IAnimatedMeshSceneNode_setAnimationEndCallback(ptr, callback.ptr);
     }
     
@@ -280,24 +229,21 @@ class AnimatedMeshSceneNode : SceneNode
 	 * causing all mesh scene nodes referencing this mesh to change
 	 * too.
      */
-    void setReadOnlyMaterials(bool readonly)
-    {
+    void setReadOnlyMaterials(bool readonly) {
     	irr_IAnimatedMeshSceneNode_setReadOnlyMaterials(ptr, readonly);
     }
     
     /***
      * Returns if the scene node should not copy the materials of the mesh but use them in a read only style
      */
-    bool isReadOnlyMaterials()
-    {
+    bool isReadOnlyMaterials() {
     	return irr_IAnimatedMeshSceneNode_isReadOnlyMaterials(ptr);
     }
     
     /***
      * Sets a new mesh
      */
-    void setMesh(AnimatedMesh mesh)
-    {
+    void setMesh(AnimatedMesh mesh) {
     	irr_IAnimatedMeshSceneNode_setMesh(ptr, mesh.ptr);
     }
     
@@ -306,8 +252,7 @@ class AnimatedMeshSceneNode : SceneNode
      *
      * Returns: Mesh		
      */
-    AnimatedMesh getMesh()
-    {
+    AnimatedMesh getMesh() {
     	auto temp = irr_IAnimatedMeshSceneNode_getMesh(ptr);
     	return new AnimatedMesh(temp);
     }
@@ -318,8 +263,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			tagname = name
      */
-	MD3QuaternionTag getMD3TagTransformation(string tagname)
-    {
+	MD3QuaternionTag getMD3TagTransformation(string tagname) {
     	auto temp = irr_IAnimatedMeshSceneNode_getMD3TagTransformation(ptr, tagname.toStringz);
     	return new MD3QuaternionTag(temp);
     }
@@ -330,8 +274,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			mode = mode
      */
-    void setJointMode(JointUpdateOnRender mode)
-    {
+    void setJointMode(JointUpdateOnRender mode) {
     	irr_IAnimatedMeshSceneNode_setJointMode(ptr, mode);
     }
     
@@ -345,8 +288,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			time = transition time
      */
-    void setTransitionTime(float time)
-    {
+    void setTransitionTime(float time) {
     	irr_IAnimatedMeshSceneNode_setTransitionTime(ptr, time);
     }
     
@@ -358,8 +300,7 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			CalculateAbsolutePositions = set flag
      */
-    void animateJoints(bool CalculateAbsolutePositions=true)
-    {
+    void animateJoints(bool CalculateAbsolutePositions=true) {
     	irr_IAnimatedMeshSceneNode_animateJoints(ptr, CalculateAbsolutePositions);
     }
     
@@ -368,14 +309,12 @@ class AnimatedMeshSceneNode : SceneNode
      * Params:
      *			On = set flag
      */
-    void setRenderFromIdentity(bool On)
-    {
+    void setRenderFromIdentity(bool On) {
     	irr_IAnimatedMeshSceneNode_setRenderFromIdentity(ptr, On);
     }
     
+    alias ptr this;
     irr_IAnimatedMeshSceneNode* ptr;
-private:
-    SceneManager smgr;
 }
 
 /// example IAnimatedMeshSceneNode
@@ -392,8 +331,8 @@ unittest
     assert(node !is null);
     assert(node.ptr != null);
 
-    node.setMD2Animation(EMD2_ANIMATION_TYPE.EMAT_STAND);
-    node.setMaterialFlag(E_MATERIAL_FLAG.EMF_LIGHTING, false);
+    node.setMD2Animation(AnimationTypeMD2.Stand);
+    node.setMaterialFlag(MaterialFlag.Lighting, false);
 }
 
 package extern (C):

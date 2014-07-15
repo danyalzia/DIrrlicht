@@ -32,46 +32,38 @@ import dirrlicht.scene.scenemanager;
 import dirrlicht.scene.mesh;
 import dirrlicht.scene.shadowvolumescenenode;
 
-class MeshSceneNode : SceneNode
-{ 
+class MeshSceneNode : SceneNode { 
 	mixin DefaultSceneNode;
 	
-    this(irr_IMeshSceneNode* ptr)
-    {
+    this(irr_IMeshSceneNode* ptr) {
     	this.ptr = ptr;
     	irrPtr = cast(irr_ISceneNode*)ptr;
     }
     
-    void setMesh(Mesh mesh)
-    {
+    void setMesh(Mesh mesh) {
         irr_IMeshSceneNode_setMesh(ptr, mesh.ptr);
     }
 
-    Mesh getMesh()
-    {
+    Mesh getMesh() {
         auto mesh = irr_IMeshSceneNode_getMesh(ptr);
         return new Mesh(mesh);
     }
 
-    ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f)
-    {
+    ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f){
         auto shadow = irr_IMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
         return new ShadowVolumeSceneNode(shadow);
     }
 
-    void setReadOnlyMaterials(bool readonly)
-    {
+    void setReadOnlyMaterials(bool readonly) {
         irr_IMeshSceneNode_setReadOnlyMaterials(ptr, readonly);
     }
 
-    bool isReadOnlyMaterials()
-    {
+    bool isReadOnlyMaterials() {
         return irr_IMeshSceneNode_isReadOnlyMaterials(ptr);
     }
-
+    
+    alias ptr this;
     irr_IMeshSceneNode* ptr;
-private:
-    SceneManager smgr;
 }
 
 unittest

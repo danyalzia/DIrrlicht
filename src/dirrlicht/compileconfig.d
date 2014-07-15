@@ -18,8 +18,9 @@ version(LDC)
 else
     enum LDC = false;
 
-template checkNull(string name) {
-	const char[] checkNull = "assert(" ~ name ~ " !is null);" ~ "assert(" ~ name ~ ".ptr" ~ "!= null);";
+void checkNull(T)(T name, int line = __LINE__) {
+	assert(name !is null);
+	assert(name.ptr != null);
 }
 
 enum TestPrerequisite =
@@ -35,14 +36,14 @@ enum TestPrerequisite =
     writeln();
 
     auto device = createDevice(DriverType.OpenGL, dimension2du(800,600));
-    mixin(checkNull!("device"));
+	checkNull(device);
 
     auto driver = device.videoDriver;
-    mixin(checkNull!("driver"));
+    checkNull(driver);
 
     auto smgr = device.sceneManager;
-    mixin(checkNull!("smgr"));
+    checkNull(smgr);
 
     auto gui = device.guiEnvironment;
-    mixin(checkNull!("gui"));
+    checkNull(gui);
 `;

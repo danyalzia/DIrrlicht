@@ -63,12 +63,14 @@ struct vector2d(T) {
 	    	irr_vector2di ptr() {
 	    		return irr_vector2di(x,y);
 	    	}
+	    	alias ptr this;
     	}
     	
     	else {
 	    	irr_vector2df ptr() {
 	    		return irr_vector2df(x,y);
 	    	}
+	    	alias ptr this;
     	}
     }
     

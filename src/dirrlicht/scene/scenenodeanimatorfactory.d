@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.scenenodeanimatorfactory;
 
-class SceneNodeAnimatorFactory
-{
-	this(irr_ISceneNodeAnimatorFactory* ptr)
-	{
+class SceneNodeAnimatorFactory {
+	this(irr_ISceneNodeAnimatorFactory* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
     irr_ISceneNodeAnimatorFactory* ptr;
 }
 

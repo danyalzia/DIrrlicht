@@ -31,11 +31,12 @@ import dirrlicht.scene.scenenode;
 class BillboardTextSceneNode : SceneNode
 {
 	mixin DefaultSceneNode;
-	this(irr_IBillboardTextSceneNode* ptr)
-	{
+	this(irr_IBillboardTextSceneNode* ptr) {
 		this.ptr = ptr;
 		irrPtr = cast(irr_ISceneNode*)ptr;
 	}
+	
+	alias ptr this;
 	irr_IBillboardTextSceneNode* ptr;
 }
 extern (C):

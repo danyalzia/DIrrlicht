@@ -26,29 +26,27 @@
 
 module dirrlicht.scene.hardwarebufferflags;
 
-enum E_HARDWARE_MAPPING
-{
+enum HardwareMappingHint {
     /// Don't store on the hardware
-    EHM_NEVER=0,
+    Never=0,
 
     /// Rarely changed, usually stored completely on the hardware
-    EHM_STATIC,
+    Static,
 
     /// Sometimes changed, driver optimized placement
-    EHM_DYNAMIC,
+    Dynamic,
 
     /// Always changed, cache optimizing on the GPU
-    EHM_STREAM
-};
+    Stream
+}
 
-enum E_BUFFER_TYPE
-{
+enum HardwareBufferType {
     /// Does not change anything
-    EBT_NONE=0,
+    None=0,
     /// Change the vertex mapping
-    EBT_VERTEX,
+    Vertex,
     /// Change the index mapping
-    EBT_INDEX,
+    Index,
     /// Change both vertex and index mapping to the same value
-    EBT_VERTEX_AND_INDEX
-};
+    VertexAndIndex
+}

@@ -45,6 +45,7 @@ void main() {
 	
     int lastFPS = -1;
 
+	//uint then = device.timer.getTime;
     while (device.run) {
         if (device.isWindowActive) {
 			auto nodepos = node.position;

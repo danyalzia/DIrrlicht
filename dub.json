@@ -12,7 +12,7 @@
 	"sourcePaths": ["src/dirrlicht"],
 	"importPaths": ["src"],
 	"dflags" : ["-Dddoc/Ddoc/"],
-	"lflags": ["-LCIrrlicht/lib/"],
-	"libs": ["CIrrlicht"],
-	"libs-posix": ["GL", "X11"],
+	"lflags": ["-LCIrrlicht/lib/", "-L../irrlicht/lib/Linux"],
+	"libs": ["CIrrlicht", "Irrlicht"],
+	"libs-posix": ["stdc++", "GL", "X11", "Xxf86vm"],
 }

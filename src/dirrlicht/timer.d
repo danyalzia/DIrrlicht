@@ -30,6 +30,7 @@
 
 module dirrlicht.timer;
 
+import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
 /+++
@@ -122,8 +123,9 @@ class Timer {
 }
 
 unittest {
-	mixin(TestPrequisitie);
-	auto timer = device.getTimer();
+	mixin(TestPrerequisite);
+	auto timer = device.timer;
+	checkNull(timer);
 }
 package extern(C):
 

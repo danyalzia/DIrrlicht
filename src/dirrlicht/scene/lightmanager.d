@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.lightmanager;
 
-class LightManager
-{
-	this(irr_ILightManager* ptr)
-	{
+class LightManager {
+	this(irr_ILightManager* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_ILightManager* ptr;
 }
 

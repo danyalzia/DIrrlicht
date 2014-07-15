@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.skinnedmesh;
 
-class SkinnedMesh
-{
-	this(irr_ISkinnedMesh* ptr)
-	{
+class SkinnedMesh {
+	this(irr_ISkinnedMesh* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_ISkinnedMesh* ptr;
 }
 

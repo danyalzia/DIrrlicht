@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.meshloader;
 
-class MeshLoader
-{
-	this(irr_IMeshLoader* ptr)
-	{
+class MeshLoader {
+	this(irr_IMeshLoader* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_IMeshLoader* ptr;
 }
 extern (C):

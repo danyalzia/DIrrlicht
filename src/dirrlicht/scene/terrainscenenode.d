@@ -26,13 +26,12 @@
 
 module dirrlicht.scene.terrainscenenode;
 
-class TerrainSceneNode
-{
-	this(irr_ITerrainSceneNode* ptr)
-	{
+class TerrainSceneNode {
+	this(irr_ITerrainSceneNode* ptr) {
 		this.ptr = ptr;
 	}
 	
+	alias ptr this;
 	irr_ITerrainSceneNode* ptr;
 }
 extern (C):

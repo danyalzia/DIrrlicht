@@ -288,7 +288,16 @@ struct JoystickInfo
 
 unittest
 {
-	mixin(TestPrerequisite);
+	import std.stdio;
+	try {
+		mixin(TestPrerequisite);
+	}
+	catch (std.exception.ErrnoException exc) {
+		
+		writeln("Line: ", __LINE__);
+	}
+	
+	scope(failure) "Failed".writeln;
 }
 
 alias Event = irr_SEvent;

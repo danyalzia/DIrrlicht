@@ -98,7 +98,7 @@ class GUIImage {
 unittest {
     mixin(TestPrerequisite);
 
-    env.addImage(driver.getTexture("../../media/wall.bmp"), vector2di(20,20));
+    gui.addImage(driver.getTexture("../../media/wall.bmp"), vector2di(20,20));
 }
 
 extern (C):

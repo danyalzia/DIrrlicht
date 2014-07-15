@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.scenenodeanimator;
 
-class SceneNodeAnimator
-{
-    this(irr_ISceneNodeAnimator* ptr)
-    {
+class SceneNodeAnimator {
+    this(irr_ISceneNodeAnimator* ptr) {
     	this.ptr = ptr;
     }
+    
+    alias ptr this;
     irr_ISceneNodeAnimator* ptr;
 }
 

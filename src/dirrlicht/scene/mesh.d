@@ -39,32 +39,26 @@ import dirrlicht.video.vertexindex;
 import std.conv;
 import std.string;
 
-class Mesh
-{
-    this(irr_IMesh* ptr)
-    {
+class Mesh {
+    this(irr_IMesh* ptr) {
     	this.ptr = ptr;
     }
     
-    uint getMeshBufferCount()
-    {
+    uint getMeshBufferCount() {
         return irr_IMesh_getMeshBufferCount(ptr);
     }
 
-    IMeshBuffer getMeshBuffer(uint nr)
-    {
+    IMeshBuffer getMeshBuffer(uint nr) {
         auto meshbuffer = irr_IMesh_getMeshBuffer(ptr, nr);
         return cast(IMeshBuffer)meshbuffer;
     }
 
-    MeshBuffer getMeshBuffer(const ref Material material)
-    {
+    MeshBuffer getMeshBuffer(const ref Material material) {
         auto meshbuffer = irr_IMesh_getMeshBufferByMaterial(ptr, material.ptr);
         return new MeshBuffer(meshbuffer);
     }
 
-    aabbox3df getBoundingBox()
-    {
+    aabbox3df getBoundingBox() {
         auto box = irr_IMesh_getBoundingBox(ptr);
         auto min = vector3df(box.MinEdge.x, box.MinEdge.y, box.MinEdge.z);
         auto max = vector3df(box.MaxEdge.x, box.MaxEdge.y, box.MaxEdge.z);
@@ -72,32 +66,27 @@ class Mesh
         return temp;
     }
 
-    void setBoundingBox(aabbox3df box)
-    {
+    void setBoundingBox(aabbox3df box) {
         irr_vector3df min = {box.MinEdge.x, box.MinEdge.y, box.MinEdge.z};
         irr_vector3df max = {box.MaxEdge.x, box.MaxEdge.y, box.MaxEdge.z};
         irr_aabbox3df temp = {min, max};
         irr_IMesh_setBoundingBox(ptr, temp);
     }
 
-    void setMaterialFlag(MaterialFlag flag, bool newvalue)
-    {
+    void setMaterialFlag(MaterialFlag flag, bool newvalue) {
         irr_IMesh_setMaterialFlag(ptr, flag, newvalue);
     }
 
-    void setHardwareMappingHint(E_HARDWARE_MAPPING newMappingHint, E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX)
-    {
+    void setHardwareMappingHint(HardwareMappingHint newMappingHint, HardwareBufferType buffer=HardwareBufferType.VertexAndIndex) {
         irr_IMesh_setHardwareMappingHint(ptr, newMappingHint, buffer);
     }
 
-    void setDirty(E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX)
-    {
+    void setDirty(HardwareBufferType buffer=HardwareBufferType.VertexAndIndex) {
         irr_IMesh_setDirty(ptr, buffer);
     }
-
+    
+    alias ptr this;
     irr_IMesh* ptr;
-private:
-    SceneManager smgr;
 }
 
 /// IMesh example
@@ -105,16 +94,12 @@ unittest
 {
     mixin(TestPrerequisite);
 
-
     /// smgr.getMesh() gives IAnimatedMesh instead so will test IMesh only
-    auto mesh = new IMesh(smgr, "../../media/sydney.md2");
-    assert(mesh !is null);
+    auto mesh = smgr.getMesh("../../media/sydney.md2");
+    checkNull(mesh);
 
     auto count = mesh.getMeshBufferCount();
     debug writeln("BufferCount: ", count);
-
-//    auto meshbuffer = mesh.getMeshBuffer(5);
-//    assert(meshbuffer !is null);
 }
 
 package extern(C):
@@ -128,5 +113,5 @@ irr_IMeshBuffer* irr_IMesh_getMeshBufferByMaterial(irr_IMesh* mesh, const irr_SM
 irr_aabbox3df irr_IMesh_getBoundingBox(irr_IMesh* mesh);
 void irr_IMesh_setBoundingBox(irr_IMesh* mesh, const ref irr_aabbox3df box);
 void irr_IMesh_setMaterialFlag(irr_IMesh* mesh, MaterialFlag flag, bool newvalue);
-void irr_IMesh_setHardwareMappingHint(irr_IMesh* mesh, E_HARDWARE_MAPPING newMappingHint, E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX);
-void irr_IMesh_setDirty(irr_IMesh* mesh, E_BUFFER_TYPE buffer=E_BUFFER_TYPE.EBT_VERTEX_AND_INDEX);
+void irr_IMesh_setHardwareMappingHint(irr_IMesh* mesh, HardwareMappingHint newMappingHint, HardwareBufferType buffer=HardwareBufferType.VertexAndIndex);
+void irr_IMesh_setDirty(irr_IMesh* mesh, HardwareBufferType buffer=HardwareBufferType.VertexAndIndex);

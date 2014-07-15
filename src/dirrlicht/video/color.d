@@ -26,8 +26,7 @@
 
 module dirrlicht.video.color;
 
-enum ColorFormat
-{
+enum ColorFormat {
     /***
      * 16 bit color format used by the software driver.
      * It is thus preferred by all other irrlicht engine video drivers.
@@ -83,19 +82,16 @@ enum ColorFormat
     A32B32G32R32F
 }
 
-struct Color
-{
+struct Color {
 	@disable this();
-	this(uint r, uint g, uint b, uint a)
-	{
+	this(uint r, uint g, uint b, uint a) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
 		this.a = a;
 	}
 	
-	@property Color reverse()
-	{
+	@property Color reverse() {
 		return Color(a,b,g,a);
 	}
 	
@@ -106,37 +102,33 @@ struct Color
     
     alias ptr this;
 	
-	@property irr_SColor ptr()
-	{
+	@property irr_SColor ptr() {
 		return irr_SColor(a,b,g,r);
 	}
 }
 
-struct Colorf
-{
+struct Colorf {
     float a;
     float b;
     float g;
     float r;
     
-    @property irr_SColorf ptr()
-	{
+    alias ptr this;
+    @property irr_SColorf ptr() {
 		return irr_SColorf(a,b,g,r);
 	}
 }
 
 package extern (C):
 
-struct irr_SColor
-{
+struct irr_SColor {
     uint a;
     uint b;
     uint g;
     uint r;
 }
 
-struct irr_SColorf
-{
+struct irr_SColorf {
     float a;
     float b;
     float g;

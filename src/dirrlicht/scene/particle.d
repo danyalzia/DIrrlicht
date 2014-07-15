@@ -31,7 +31,7 @@ import dirrlicht.video.color;
 import dirrlicht.core.dimension2d;
 
 /// Struct for holding particle data
-struct SParticle
+struct Particle
 {
     /// Position of the particle
     vector3df pos;

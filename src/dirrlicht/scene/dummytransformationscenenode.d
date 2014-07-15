@@ -28,15 +28,15 @@ module dirrlicht.scene.dummytransformationscenenode;
 
 import dirrlicht.scene.scenenode;
 
-class DummyTranformationSceneNode : SceneNode
-{
+class DummyTranformationSceneNode : SceneNode {
 	mixin DefaultSceneNode;
 	
-	this(irr_IDummyTransformationSceneNode* ptr)
-	{
+	this(irr_IDummyTransformationSceneNode* ptr) {
 		this.ptr = ptr;
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
+	
+	alias ptr this;
 	irr_IDummyTransformationSceneNode* ptr;
 }
 extern (C):

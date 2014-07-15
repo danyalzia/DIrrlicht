@@ -26,8 +26,12 @@
 
 module dirrlicht.scene.sceneuserdataserializer;
 
-class ISceneUserDataSerializer
-{
+class ISceneUserDataSerializer {
+	
+	this(irr_ISceneUserDataSerializer* ptr) {
+		this.ptr = ptr;
+	}
+	alias ptr this;
 	irr_ISceneUserDataSerializer* ptr;
 }
 extern (C):

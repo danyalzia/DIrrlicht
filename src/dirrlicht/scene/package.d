@@ -26,8 +26,7 @@
 
 module dirrlicht.scene;
 
-public
-{
+public {
     import dirrlicht.scene.dynamicmeshbuffer;
     import dirrlicht.scene.indexbuffer;
     import dirrlicht.scene.vertexbuffer;

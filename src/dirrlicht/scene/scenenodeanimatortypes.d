@@ -27,41 +27,37 @@
 module dirrlicht.scene.scenenodeanimatortypes;
 
 /// An enumeration for all types of built-in scene node animators
-enum ESCENE_NODE_ANIMATOR_TYPE
-{
+enum SceneNodeAnimatorType {
     /// Fly circle scene node animator
-    ESNAT_FLY_CIRCLE = 0,
+    FlyCircle = 0,
 
     /// Fly straight scene node animator
-    ESNAT_FLY_STRAIGHT,
+    FlyStraight,
 
     /// Follow spline scene node animator
-    ESNAT_FOLLOW_SPLINE,
+    FollowSpline,
 
     /// Rotation scene node animator
-    ESNAT_ROTATION,
+    Rotation,
 
     /// Texture scene node animator
-    ESNAT_TEXTURE,
+    Texture,
 
     /// Deletion scene node animator
-    ESNAT_DELETION,
+    Deletion,
 
     /// Collision respose scene node animator
-    ESNAT_COLLISION_RESPONSE,
+    CollisionResponse,
 
     /// FPS camera animator
-    ESNAT_CAMERA_FPS,
+    CameraFPS,
 
     /// Maya camera animator
-    ESNAT_CAMERA_MAYA,
+    CameraMaya,
 
     /// Amount of built-in scene node animators
-    ESNAT_COUNT,
+    Count,
 
     /// Unknown scene node animator
-    ESNAT_UNKNOWN,
-
-    /// This enum is never used, it only forces the compiler to compile this enumeration to 32 bit.
-    ESNAT_FORCE_32_BIT = 0x7fffffff
+    Unknown
 }

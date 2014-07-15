@@ -49,11 +49,13 @@ struct plane3d(T) {
 			irr_plane3di ptr() {
 				return irr_plane3di(irr_vector3di(Normal.x, Normal.y, Normal.z), D);
 			}
+			alias ptr this;
 		}
 		else {
 			irr_plane3df ptr() {
 				return irr_plane3df(irr_vector3df(Normal.x, Normal.y, Normal.z), D);
 			}
+			alias ptr this;
 		}
 	}
 private:

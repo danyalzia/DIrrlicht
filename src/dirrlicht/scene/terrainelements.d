@@ -27,20 +27,20 @@
 module dirrlicht.scene.terrainelements;
 
 /// enumeration for patch sizes specifying the size of patches in the TerrainSceneNode
-enum E_TERRAIN_PATCH_SIZE
+enum TerrainPatchSize
 {
     /// patch size of 9, at most, use 4 levels of detail with this patch size.
-    ETPS_9 = 9,
+    _9 = 9,
 
     /// patch size of 17, at most, use 5 levels of detail with this patch size.
-    ETPS_17 = 17,
+    _17 = 17,
 
     /// patch size of 33, at most, use 6 levels of detail with this patch size.
-    ETPS_33 = 33,
+    _33 = 33,
 
     /// patch size of 65, at most, use 7 levels of detail with this patch size.
-    ETPS_65 = 65,
+    _65 = 65,
 
     /// patch size of 129, at most, use 8 levels of detail with this patch size.
-    ETPS_129 = 129
+    _129 = 129
 }

@@ -26,12 +26,12 @@
 
 module dirrlicht.scene.meshwriter;
 
-class MeshWriter
-{
-	this(irr_IMeshWriter* ptr)
-	{
+class MeshWriter {
+	this(irr_IMeshWriter* ptr) {
 		this.ptr = ptr;
 	}
+	
+	alias ptr this;
 	irr_IMeshWriter* ptr;
 }
 

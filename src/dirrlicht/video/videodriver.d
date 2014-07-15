@@ -204,7 +204,7 @@ class VideoDriver {
     }
     
     void setMaterial(Material material) {
-    	irr_IVideoDriver_setMaterial(ptr, material.ptr);
+    	irr_IVideoDriver_setMaterial(ptr, material);
     }
     
     Texture getTexture(string file) {
@@ -222,28 +222,28 @@ class VideoDriver {
     }
     
     void renameTexture(Texture texture, string newName) {
-    	irr_IVideoDriver_renameTexture(ptr, texture.ptr, newName.toStringz);
+    	irr_IVideoDriver_renameTexture(ptr, texture, newName.toStringz);
     }
     
     Texture addTexture(dimension2du size, string name, ColorFormat format) {
-    	auto temp = irr_IVideoDriver_addTexture(ptr, size.ptr, name.toStringz, format);
+    	auto temp = irr_IVideoDriver_addTexture(ptr, size, name.toStringz, format);
     	return new Texture(temp);
     }
     
     void makeColorKeyTexture(Texture texture, Color color, bool zeroTexels) {
-    	irr_IVideoDriver_makeColorKeyTexture(ptr, texture.ptr, color.ptr, zeroTexels);
+    	irr_IVideoDriver_makeColorKeyTexture(ptr, texture, color, zeroTexels);
     }
     
     void makeColorKeyTexture(Texture texture, vector2di colorKeyPixelPos, bool zeroTexels) {
-    	irr_IVideoDriver_makeColorKeyTexture2(ptr, texture.ptr, colorKeyPixelPos.ptr, zeroTexels);
+    	irr_IVideoDriver_makeColorKeyTexture2(ptr, texture, colorKeyPixelPos, zeroTexels);
     }
     
     void makeNormalMapTexture(Texture texture, float amplitude=1.0f) {
-    	irr_IVideoDriver_makeNormalMapTexture(ptr, texture.ptr, amplitude);
+    	irr_IVideoDriver_makeNormalMapTexture(ptr, texture, amplitude);
     }
     
     void setRenderTarget(Texture texture, bool clearBackBuffer, bool clearZBuffer, Color color) {
-    	irr_IVideoDriver_setRenderTarget(ptr, texture, clearBackBuffer, clearZBuffer, color.ptr);
+    	irr_IVideoDriver_setRenderTarget(ptr, texture, clearBackBuffer, clearZBuffer, color);
     }
     
     @property int fps() { return irr_IVideoDriver_getFPS(ptr); }
@@ -255,7 +255,7 @@ class VideoDriver {
     }
     
     void fillMaterialStructureFromAttributes(out Material outMaterial, out Attributes attributes) {
-    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial.ptr, attributes.ptr);
+    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial, attributes);
     }
     
     // irr_IVideoDriver_getExposedVideoData
@@ -289,7 +289,7 @@ class VideoDriver {
 	}
 	
     void setClipPlane(uint index, plane3df plane, bool enable=false) {
-		irr_IVideoDriver_setClipPlane(ptr, index, plane.ptr, enable);
+		irr_IVideoDriver_setClipPlane(ptr, index, plane, enable);
 	}
     
     void enableClipPlane(uint index, bool enable) {
@@ -316,7 +316,7 @@ class VideoDriver {
     }
     
     void setAmbientLight(Colorf color) {
-    	irr_IVideoDriver_setAmbientLight(ptr, color.ptr);
+    	irr_IVideoDriver_setAmbientLight(ptr, color);
     }
     
     void setAllowZWriteOnTransparent(bool flag) {
@@ -332,7 +332,7 @@ class VideoDriver {
     	irr_IVideoDriver_convertColor(ptr, sP, sF, sN, dP, dF);
     }
     
-    alias ptr this;
+	alias ptr this;
     irr_IVideoDriver* ptr;
 }
 
@@ -357,23 +357,23 @@ unittest
 {
     mixin(TestPrerequisite);
 
-    driver.beginScene(false, false, SColor(255, 0, 0, 0));
+    driver.beginScene(false, false, Color(0, 0, 0, 255));
     driver.endScene();
-    auto shader2 = driver.queryFeature(E_VIDEO_DRIVER_FEATURE.EVDF_PIXEL_SHADER_2_0);
+    auto shader2 = driver.queryFeature(DriverFeature.PixelShader_2_0);
     
     assert(shader2 == true);
-    driver.disableFeature(E_VIDEO_DRIVER_FEATURE.EVDF_PIXEL_SHADER_2_0, false);
+    driver.disableFeature(DriverFeature.PixelShader_2_0, false);
 
     auto att = driver.getDriverAttributes();
-    assert(att !is null);
+    checkNull(att);
 
     driver.checkDriverReset();
-    driver.setTransform(E_TRANSFORMATION_STATE.ETS_WORLD, matrix4());
+    driver.setTransform(TransformationState.World, matrix4());
 
     auto texture = driver.getTexture("../../media/wall.bmp");
     auto texture2 = driver.getTexture("../../media/t351sml.jpg");
-    driver.getFPS();
-    auto driverName = driver.getName();
+    driver.fps;
+    auto driverName = driver.name;
     debug writeln("Driver Name: ", driverName);
 }
 

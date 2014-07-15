@@ -168,7 +168,7 @@ static if(__traits(isArithmetic, T)) {
         }
 
         else {
-            return vector3d(vec - other.vec).getLengthSQ();
+            return vector3d(vec - other.vec).lengthSQ;
         }
 
     }

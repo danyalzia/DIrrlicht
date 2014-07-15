@@ -30,37 +30,37 @@ module dirrlicht.scene.meshwriterenums;
 /** A scene mesh writers is represented by a four character code
 such as 'irrm' or 'coll' instead of simple numbers, to avoid
 name clashes with external mesh writers.*/
-enum EMESH_WRITER_TYPE
+enum WriterType
 {
     /// Irrlicht native mesh writer, for static .irrmesh files.
-    EMWT_IRR_MESH,
+    IrrMesh,
 
     /// COLLADA mesh writer for .dae and .xml files
-    EMWT_COLLADA,
+    COLLADA,
 
     /// STL mesh writer for .stl files
-    EMWT_STL,
+    STL,
 
     /// OBJ mesh writer for .obj files
-    EMWT_OBJ,
+    OBJ,
 
     /// PLY mesh writer for .ply files
-    EMWT_PLY,
+    PLY,
 }
 
 
 /// flags configuring mesh writing
-enum E_MESH_WRITER_FLAGS
+enum MeshWriterFlags
 {
     /// no writer flags
-    EMWF_NONE = 0,
+    None = 0,
 
     /// write lightmap textures out if possible
-    EMWF_WRITE_LIGHTMAPS = 0x1,
+    WriteLightMaps = 0x1,
 
     /// write in a way that consumes less disk space
-    EMWF_WRITE_COMPRESSED = 0x2,
+    WriteCompressed = 0x2,
 
     /// write in binary format rather than text
-    EMWF_WRITE_BINARY = 0x4
+    WriteBinary = 0x4
 }

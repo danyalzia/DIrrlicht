@@ -26,13 +26,12 @@
 
 module dirrlicht.scene.meshcache;
 
-class MeshCache
-{
-	this(irr_IMeshCache* ptr)
-	{
+class MeshCache {
+	this(irr_IMeshCache* ptr) {
 		this.ptr = ptr;
 	}
 	
+	alias ptr this;
 	irr_IMeshCache* ptr;
 }
 extern (C):

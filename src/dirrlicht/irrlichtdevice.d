@@ -58,7 +58,11 @@ import std.utf : toUTFz;
  +/
 class IrrlichtDevice {
     this(DriverType type, dimension2du dim, uint bits, bool fullscreen, bool stencilbuffer, bool vsync) {
-        ptr = irr_createDevice(type, irr_dimension2du(dim.Width, dim.Height), bits, fullscreen, stencilbuffer, vsync);
+        ptr = irr_createDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
+    }
+    
+    ~this() {
+    	drop();
     }
     
     bool run() {
@@ -74,17 +78,17 @@ class IrrlichtDevice {
     }
     
     @property {
-	    VideoDriver videoDriver() { return new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr)); }
-	    FileSystem fileSystem() { return new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr)); }
-	    GUIEnvironment guiEnvironment() { return new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr)); }
-	    SceneManager sceneManager() { return new SceneManager(irr_IrrlichtDevice_getSceneManager(ptr)); }
-	    CursorControl cursorControl() { return new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr)); }
-	    Logger logger() { return new Logger(irr_IrrlichtDevice_getLogger(ptr)); }
-	    VideoModeList videoModeList() { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
-	    OSOperator osOperator() { return new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr)); }
-	    Timer timer() { return new Timer(irr_IrrlichtDevice_getTimer(ptr)); }
-	    Randomizer randomizer() { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
-	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, randomizer); }
+	    VideoDriver videoDriver() out(result) { assert(result.ptr != null); } body { return new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr)); }
+	    FileSystem fileSystem() out(result) { assert(result.ptr != null); } body { return new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr)); }
+	    GUIEnvironment guiEnvironment() out(result) { assert(result.ptr != null); } body { return new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr)); }
+	    SceneManager sceneManager() out(result) { assert(result.ptr != null); } body { return new SceneManager(irr_IrrlichtDevice_getSceneManager(ptr)); }
+	    CursorControl cursorControl() out(result) { assert(result.ptr != null); } body { return new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr)); }
+	    Logger logger() out(result) { assert(result.ptr != null); } body { return new Logger(irr_IrrlichtDevice_getLogger(ptr)); }
+	    VideoModeList videoModeList() out(result) { assert(result.ptr != null); } body { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
+	    OSOperator osOperator() out(result) { assert(result.ptr != null); } body { return new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr)); }
+	    Timer timer() out(result) { assert(result.ptr != null); } body { return new Timer(irr_IrrlichtDevice_getTimer(ptr)); }
+	    Randomizer randomizer() out(result) { assert(result.ptr != null); } body { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+	    void randomizer(Randomizer randomizer) in { assert(randomizer.ptr != null); } body { irr_IrrlichtDevice_setRandomizer(ptr, randomizer); }
     }
     
     Randomizer createDefaultRandomizer() {
@@ -129,12 +133,12 @@ class IrrlichtDevice {
     }
 
     void setInputReceivingSceneManager(SceneManager smgr) {
-        irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr.ptr);
+        irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr);
     }
     
     @property void resizable(bool value) { irr_IrrlichtDevice_setResizable(ptr, value); }
     
-    @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim.ptr); }
+    @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim); }
 
     void minimizeWindow() {
         irr_IrrlichtDevice_minimizeWindow(ptr);
@@ -220,7 +224,7 @@ class IrrlichtDevice {
     }
     
     alias ptr this;
-	package irr_IrrlichtDevice* ptr;
+	irr_IrrlichtDevice* ptr;
 }
 
 auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
@@ -240,48 +244,38 @@ unittest
             yield();
             sleep(1);
             auto videodriver = videoDriver;
-            assert(videodriver !is null);
-            assert(videodriver.ptr != null);
+            checkNull(videodriver);
 
             auto filesystem = fileSystem;
-            assert(filesystem !is null);
-            assert(filesystem.ptr != null);
+            checkNull(filesystem);
 
             auto guienv = guiEnvironment;
-            assert(guienv !is null);
-            assert(guienv.ptr != null);
+            checkNull(guienv);
 
-            auto scenemgr = scenemanager;
-            assert(scenemgr !is null);
-            assert(scenemgr.ptr != null);
+            auto scenemgr = sceneManager;
+            checkNull(scenemgr);
 
             auto cursorcontrol = cursorControl;
-            assert(cursorcontrol !is null);
-            assert(cursorcontrol.ptr != null);
+            checkNull(cursorcontrol);
 
             auto Logger = logger;
-            assert(Logger !is null);
-            assert(Logger.ptr != null);
+            checkNull(Logger);
 
             auto videolist = videoModeList;
-            assert(videolist !is null);
-            assert(videolist.ptr != null);
+            checkNull(videolist);
 
-            auto OSoperator = osoperator;
-            assert(OSoperator !is null);
-            assert(OSoperator.ptr != null);
+            auto OSoperator = osOperator;
+            checkNull(OSoperator);
 
             auto Timer = timer;
-            assert(Timer !is null);
-            assert(Timer.ptr != null);
+            checkNull(Timer);
 
             auto randomizer1 = randomizer;
-            assert(randomizer1 !is null);
-            assert(randomizer1.ptr != null);
+            checkNull(randomizer1);
 
-            setRandomizer(randomizer);
+            randomizer = randomizer;
             createDefaultRandomizer();
-            setWindowCaption("Hello");
+            windowCaption = "Hello";
             isWindowActive();
             isWindowFocused();
             isWindowMinimized();
@@ -289,9 +283,6 @@ unittest
             //getColorFormat();
             closeDevice();
             getVersion();
-            auto reventreceiver = getEventReceiver();
-            assert(reventreceiver !is null);
-            //assert(reventreceiver.ptr != null);
 
 //            setEventReceiver(reventreceiver);
 //            setInputReceivingSceneManager(smgr);

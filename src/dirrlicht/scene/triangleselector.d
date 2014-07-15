@@ -28,18 +28,15 @@ module dirrlicht.scene.triangleselector;
 
 import dirrlicht.scene.scenemanager;
 
-class TriangleSelector
-{
-    this(irr_ITriangleSelector* ptr)
-    {
+class TriangleSelector {
+    this(irr_ITriangleSelector* ptr) {
     	this.ptr = ptr;
     }
-
+    
+    alias ptr this;
     irr_ITriangleSelector* ptr;
-private:
-    SceneManager smgr;
 }
 
 extern (C):
 
-    struct irr_ITriangleSelector;
+struct irr_ITriangleSelector;

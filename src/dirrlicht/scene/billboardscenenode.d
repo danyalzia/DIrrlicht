@@ -32,12 +32,12 @@ class BillboardSceneNode : SceneNode
 {
 	mixin DefaultSceneNode;
 	
-	this(irr_IBillboardSceneNode* ptr)
-	{
+	this(irr_IBillboardSceneNode* ptr) {
 		this.ptr = ptr;
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
+	alias ptr this;
 	irr_IBillboardSceneNode* ptr;
 }
 

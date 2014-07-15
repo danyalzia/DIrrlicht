@@ -26,13 +26,12 @@
 
 module dirrlicht.scene.volumelightscenenode;
 
-class VolumeLightSceneNode
-{
-	this(irr_IVolumeLightSceneNode* ptr)
-	{
+class VolumeLightSceneNode {
+	this(irr_IVolumeLightSceneNode* ptr) {
 		this.ptr = ptr;
 	}
 	
+	alias ptr this;
 	irr_IVolumeLightSceneNode* ptr;
 }
 
