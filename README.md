@@ -1,5 +1,6 @@
-[![Stories in Ready](https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/artistic-games/dirrlicht)
 [![Build Status](https://travis-ci.org/Artistic-Games/DIrrlicht.png?branch=master)](https://travis-ci.org/Artistic-Games/DIrrlicht)
+[![Stories in Ready](https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/artistic-games/dirrlicht)
+[![Gitter chat](https://badges.gitter.im/Artistic-Games/DIrrlicht.png)](https://gitter.im/Artistic-Games/DIrrlicht)
 
 DIrrlicht - D Bindings for Irrlicht Engine
 =========================================================
