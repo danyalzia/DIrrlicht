@@ -44,7 +44,7 @@ static if (DigitalMars || GDC)
     alias int4 = int[4];
 }
 
-pure nothrow float SQRT(float n)
+pure nothrow @trusted float SQRT(float n)
 {
     static if(DigitalMars || LDC)
     {

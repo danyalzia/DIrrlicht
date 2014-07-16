@@ -33,8 +33,7 @@ module dirrlicht.core.vector3d;
 import dirrlicht.core.simdmath;
 import std.traits;
 
-struct vector3d(T) {
-static if(__traits(isArithmetic, T)) {
+pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     @disable this();
     this(T x, T y, T z) {
         vec = [x, y, z, 0];
@@ -43,16 +42,27 @@ static if(__traits(isArithmetic, T)) {
     this(T n) {
         vec = [n, n, n, n];
     }
-    
+
+    this(vector3d!(T) rhs) {
+		static if (DigitalMars || GDC) {
+			vec = cast(T[4])rhs.vec;
+		}
+		else {
+			static if (is(T == float))
+				vec = cast(float4)rhs.vec;
+			else
+				vec = cast(int4)rhs.vec;
+		}
+	}
+	
     /// internal use only
     static if (is (T == float)) {
     	this(irr_vector3df v) {
     		vec = [v.x, v.y, v.z, 0];
     	}
     }
-    	
-    else
-    {
+    
+    else {
     	this(irr_vector3di v)
     	{
     		vec = [v.x, v.y, v.z, 0];
@@ -61,11 +71,12 @@ static if(__traits(isArithmetic, T)) {
     
     static if (DigitalMars || GDC) {
         this(float4 vec) {
-            this.vec = cast(T[])vec;
+			import std.conv;
+            this.vec = cast(T[4])vec;
         }
 
         this(int4 vec) {
-            this.vec = cast(T[])vec;
+            this.vec = cast(T[4])vec;
         }
     }
 
@@ -79,6 +90,23 @@ static if(__traits(isArithmetic, T)) {
         }
     }
 
+	vector2d!(T) opUnary(string op)() const
+	if (op == "-") {
+		return vector3d!(T)(-x, -y, -z);
+	}
+
+	vector3d!(T) opBinary(string op)(vector3d!(T) rhs) {
+    	mixin("return new vector3d(vec" ~ op ~ "rhs.vec);");
+    }
+
+    vector2d!(T) opBinary(string op)(T scalar) const {
+		mixin("return vector3d!(T)(vec" ~op~ "cast(T)scalar);");
+    }
+
+    void opOpAssign(string op)(T scalar) {
+        mixin("vec" ~ op ~ "=[scalar,scalar,scalar,0];");
+    }
+    
     void opOpAssign(string op)(vector3d vector) {
         static if (is (T == int)) {
             static if (LDC) {
@@ -105,43 +133,117 @@ static if(__traits(isArithmetic, T)) {
         }
     }
 
-    vector3d!(T) opBinary(string op)(vector3d!(T) rhs) {
-    	mixin("return new vector3d(vec" ~ op ~ "rhs.vec);");
+    bool opEquals(vector3d!(T) rhs) {
+		static if (DigitalMars || GDC) {
+			return (vec == rhs.vec);
+		}
+		else {
+			return (vec.array == rhs.vec.array);
+		}
     }
 
     vector3d!(T) set(T nx, T ny, T nz) {
-        vec = [nx, ny, nz, 0];
-        return vector3d(vec);
-    }
+		vec = [nx, ny, nz, 0];
+		return this;
+	}
 
-    /** Very slow! */
-    @property T length() {
-        return cast(T)(SQRT(cast(float)lengthSQ));
-    }
+	vector3d!(T) set(vector3d!(T) other) {
+		vec = other.vec;
+		return this;
+	}
 
-    /** Very slow! */
-    @property T lengthSQ() {
-        static if (DigitalMars || GDC) {
-            return cast(T)(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
-        }
+   
+    @property {
+		 /** Very slow! */
+		T length() {
+			return cast(T)(SQRT(cast(float)lengthSQ));
+		}
+		
+		/** Very slow! */
+		T lengthSQ() {
+			static if (DigitalMars || GDC) {
+				return cast(T)(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+			}
 
-        else {
-            return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
-        }
-    }
+			else {
+				return cast(T)(vec.array[0]*vec.array[0] + vec.array[1]*vec.array[1] + vec.array[2]*vec.array[2]);
+			}
+		}
 
-    /** Extremely slow! */
-    T dotProduct(vector3d!(T) other) {
-        static if (DigitalMars || GDC) {
-            return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
-        }
+		vector3d!(T) normalize() {
+	        auto length = cast(T)(length);
+	        static if (is (T == float))
+	            float4 mul = [length, length, length, 0];
+	        else
+	            int4 mul = [length, length, length, 0];
+	
+	        static if (is (T == float)) {
+	            static if(DigitalMars || GDC) {
+	                float4 arr;
+	                for (int i = 0; i < 4; i++) {
+	                    vec[i] *= mul[i];
+	                }
+	            }
+	
+	            else {
+	                vec *= mul;
+	            }
+	        }
+	
+	        else static if (is (T == int)) {
+	            static if(DigitalMars || GDC) {
+	                int4 arr;
+	                for (int i = 0; i < 4; i++) {
+	                    vec[i] *= mul[i];
+	                }
+	            }
+	
+	            /// No multiply implemented yet for int4
+	            else {
+	                int4 arr;
+	                for (int i = 0; i < 4; i++) {
+	                    vec.array[i] *= mul.array[i];
+	                }
+	            }
+	        }
+	
+	        return vector3d(vec);
+	    }
+	
+	    vector3d!(T) length(T newlength) {
+	        normalize();
+	        static if (is (T == float)) {
+	            float4 vec2 = [newlength, newlength, newlength, 0];
+	            static if (DigitalMars || GDC) {
+	                foreach(i; 0..4)
+	                vec[i] *= vec2[i];
+	            }
+	
+	            else {
+	                vec *= vec2;
+	            }
+	
+	        }
+	        else {
+	            int4 vec2 = [newlength, newlength, newlength, 0];
+	        }
+	
+	        return vector3d(vec);
+	    }
+	}
+	
+	/** Extremely slow! */
+	T dot(vector3d!(T) other) {
+		static if (DigitalMars || GDC) {
+			return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
+		}
 
-        else {
-            return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
-        }
-    }
+		else {
+			return cast(T)(vec.array[0]*other.vec.array[0] + vec.array[1]*other.vec.array[1] + vec.array[2]*other.vec.array[2]);
+		}
+	}
 
-    T getDistanceFrom(vector3d!(T) other) {
+    T distanceFrom(vector3d!(T) other) {
         static if (DigitalMars || GDC) {
             float4 arr;
             for (int i = 0; i < 4; i++) {
@@ -157,7 +259,7 @@ static if(__traits(isArithmetic, T)) {
 
     }
 
-    T getDistanceFromSQ(vector3d!(T) other) {
+    T distanceFromSQ(vector3d!(T) other) {
         static if (DigitalMars || GDC) {
             float4 arr;
             foreach(i; 0..4) {
@@ -173,7 +275,7 @@ static if(__traits(isArithmetic, T)) {
 
     }
 
-    vector3d!(T) crossProduct(vector3d!(T) p) {
+    vector3d!(T) cross(vector3d!(T) p) {
         return vector3d(vec);
     }
 
@@ -181,67 +283,6 @@ static if(__traits(isArithmetic, T)) {
         return true;
         //const T f = (end - begin).getLengthSQ();
         //return getDistanceFromSQ(begin) <= f && getDistanceFromSQ(end) <= f;
-    }
-
-    vector3d!(T) normalize() {
-        auto length = cast(T)(length);
-        static if (is (T == float))
-            float4 mul = [length, length, length, 0];
-        else
-            int4 mul = [length, length, length, 0];
-
-        static if (is (T == float)) {
-            static if(DigitalMars || GDC) {
-                float4 arr;
-                for (int i = 0; i < 4; i++) {
-                    vec[i] *= mul[i];
-                }
-            }
-
-            else {
-                vec *= mul;
-            }
-        }
-
-        else static if (is (T == int)) {
-            static if(DigitalMars || GDC) {
-                int4 arr;
-                for (int i = 0; i < 4; i++) {
-                    vec[i] *= mul[i];
-                }
-            }
-
-            /// No multiply implemented yet for int4
-            else {
-                int4 arr;
-                for (int i = 0; i < 4; i++) {
-                    vec.array[i] *= mul.array[i];
-                }
-            }
-        }
-
-        return vector3d(vec);
-    }
-
-    vector3d!(T) setLength(T newlength) {
-        normalize();
-        static if (is (T == float)) {
-            float4 vec2 = [newlength, newlength, newlength, 0];
-            static if (DigitalMars || GDC) {
-                foreach(i; 0..4)
-                vec[i] *= vec2[i];
-            }
-
-            else {
-                vec *= vec2;
-            }
-
-        }
-        else {
-            int4 vec2 = [newlength, newlength, newlength, 0];
-        }
-
-        return vector3d(vec);
     }
 
     static if (DigitalMars || GDC) {
@@ -302,7 +343,6 @@ private:
     /** Padding for correctly passing vectors into function on x86*/
     static if (LDC)
         void* padding[12];
-}
 }
 
 alias vector3df = vector3d!(float);
