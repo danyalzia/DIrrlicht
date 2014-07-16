@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/artistic-games/dirrlicht)
 [![Build Status](https://travis-ci.org/Artistic-Games/DIrrlicht.png?branch=master)](https://travis-ci.org/Artistic-Games/DIrrlicht)
 
 DIrrlicht - D Bindings for Irrlicht Engine
