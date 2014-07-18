@@ -33,8 +33,8 @@ module dirrlicht.core.vector3d;
 import dirrlicht.core.simdmath;
 import std.traits;
 
-pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
-    @disable this();
+pure nothrow @safe struct Vector3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float) || is (T == double))) {
+    
     this(T x, T y, T z) {
         vec = [x, y, z, 0];
     }
@@ -43,13 +43,15 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
         vec = [n, n, n, n];
     }
 
-    this(vector3d!(T) rhs) {
+    this(Vector3D!(T) rhs) {
 		static if (DigitalMars || GDC) {
 			vec = cast(T[4])rhs.vec;
 		}
 		else {
 			static if (is(T == float))
 				vec = cast(float4)rhs.vec;
+			else static if (is(T == double))
+				vec = cast(double4)rhs.vec;
 			else
 				vec = cast(int4)rhs.vec;
 		}
@@ -63,8 +65,7 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
     }
     
     else {
-    	this(irr_vector3di v)
-    	{
+    	this(irr_vector3di v) {
     		vec = [v.x, v.y, v.z, 0];
     	}
     }
@@ -72,11 +73,15 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
     static if (DigitalMars || GDC) {
         this(float4 vec) {
 			import std.conv;
-            this.vec = cast(T[4])vec;
+            this.vec = cast(typeof(this.vec))vec[0..$];
         }
 
+		this(double4 vec) {
+			this.vec = cast(typeof(this.vec))vec[0..$];
+        }
+        
         this(int4 vec) {
-            this.vec = cast(T[4])vec;
+            this.vec = cast(typeof(this.vec))vec[0..$];
         }
     }
 
@@ -85,29 +90,35 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
             this.vec = vec;
         }
 
+		this(double4 vec) {
+            this.vec = vec;
+        }
+        
         this(int4 vec) {
             this.vec = vec;
         }
     }
 
-	vector2d!(T) opUnary(string op)() const
+	Vector3D!(T) opUnary(string op)() const
 	if (op == "-") {
-		return vector3d!(T)(-x, -y, -z);
+		return Vector3D!(T)(-x, -y, -z);
 	}
 
-	vector3d!(T) opBinary(string op)(vector3d!(T) rhs) {
-    	mixin("return new vector3d(vec" ~ op ~ "rhs.vec);");
+	Vector3D!(T) opBinary(string op)(Vector3D!(T) rhs)
+	if(op == "+" || op == "-" || op == "*" || op == "/") {
+		return Vector3D!T(mixin("x "~op~" rhs.x"), mixin("y "~op~" rhs.y"), mixin("z "~op~" rhs.z"));
     }
 
-    vector2d!(T) opBinary(string op)(T scalar) const {
-		mixin("return vector3d!(T)(vec" ~op~ "cast(T)scalar);");
+    Vector3D!(T) opBinary(string op)(T scalar)
+    if(op == "+" || op == "-" || op == "*" || op == "/") {
+		return Vector3D!T(mixin("x "~op~" scalar"), mixin("y "~op~" scalar"), mixin("z "~op~" scalar"));
     }
 
     void opOpAssign(string op)(T scalar) {
         mixin("vec" ~ op ~ "=[scalar,scalar,scalar,0];");
     }
     
-    void opOpAssign(string op)(vector3d vector) {
+    void opOpAssign(string op)(Vector3D!(T) vector) {
         static if (is (T == int)) {
             static if (LDC) {
                 mixin("vec.array[0]" ~ op ~ "=vector.vec.array[0];");
@@ -133,7 +144,7 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
         }
     }
 
-    bool opEquals(vector3d!(T) rhs) {
+    bool opEquals(Vector3D!(T) rhs) {
 		static if (DigitalMars || GDC) {
 			return (vec == rhs.vec);
 		}
@@ -142,12 +153,20 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 		}
     }
 
-    vector3d!(T) set(T nx, T ny, T nz) {
+	bool equals(Vector3D!(T) other, double tolerance = 1e-05)
+	{
+		import std.math : approxEqual;
+		return approxEqual(x, other.x, tolerance) &&
+		approxEqual(y, other.y, tolerance) &&
+		approxEqual(z, other.z, tolerance);
+	}
+	
+    Vector3D!(T) set(T nx, T ny, T nz) {
 		vec = [nx, ny, nz, 0];
 		return this;
 	}
 
-	vector3d!(T) set(vector3d!(T) other) {
+	Vector3D!(T) set(Vector3D!(T) other) {
 		vec = other.vec;
 		return this;
 	}
@@ -170,10 +189,12 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 			}
 		}
 
-		vector3d!(T) normalize() {
+		Vector3D!(T) normalize() {
 	        auto length = cast(T)(length);
 	        static if (is (T == float))
 	            float4 mul = [length, length, length, 0];
+			else static if (is (T == double))
+	            double4 mul = [length, length, length, 0];
 	        else
 	            int4 mul = [length, length, length, 0];
 	
@@ -207,10 +228,10 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 	            }
 	        }
 	
-	        return vector3d(vec);
+	        return Vector3D!(T)(vec);
 	    }
 	
-	    vector3d!(T) length(T newlength) {
+	    Vector3D!(T) length(T newlength) {
 	        normalize();
 	        static if (is (T == float)) {
 	            float4 vec2 = [newlength, newlength, newlength, 0];
@@ -224,16 +245,20 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 	            }
 	
 	        }
+	        else static if (is (T == double)) {
+				double4 vec2 = [newlength, newlength, newlength, 0];
+			}
+			
 	        else {
 	            int4 vec2 = [newlength, newlength, newlength, 0];
 	        }
 	
-	        return vector3d(vec);
+	        return Vector3D!(T)(vec);
 	    }
 	}
 	
 	/** Extremely slow! */
-	T dot(vector3d!(T) other) {
+	T dot(Vector3D!(T) other) {
 		static if (DigitalMars || GDC) {
 			return cast(T)(vec[0]*other.vec[0] + vec[1]*other.vec[1] + vec[2]*other.vec[2]);
 		}
@@ -243,43 +268,43 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 		}
 	}
 
-    T distanceFrom(vector3d!(T) other) {
+    T distanceFrom(Vector3D!(T) other) {
         static if (DigitalMars || GDC) {
             float4 arr;
             for (int i = 0; i < 4; i++) {
                 arr = vec[i] - other.vec[i];
             }
 
-            return vector3d(arr).length;
+            return Vector3D!(T)(arr).length;
         }
 
         else {
-            return vector3d(vec - other.vec).length;
+            return Vector3D!(T)(vec - other.vec).length;
         }
 
     }
 
-    T distanceFromSQ(vector3d!(T) other) {
+    T distanceFromSQ(Vector3D!(T) other) {
         static if (DigitalMars || GDC) {
             float4 arr;
             foreach(i; 0..4) {
                 arr = vec[i] - other.vec[i];
             }
 
-            return vector3d(arr).lengthSQ;
+            return Vector3D!(T)(arr).lengthSQ;
         }
 
         else {
-            return vector3d(vec - other.vec).lengthSQ;
+            return Vector3D!(T)(vec - other.vec).lengthSQ;
         }
 
     }
 
-    vector3d!(T) cross(vector3d!(T) p) {
-        return vector3d(vec);
+    Vector3D!(T) cross(Vector3D!(T) p) {
+        return Vector3D!(T)(vec);
     }
 
-    bool isBetweenPoints(vector3d!(T) begin, vector3d!(T) end) {
+    bool isBetweenPoints(Vector3D!(T) begin, Vector3D!(T) end) {
         return true;
         //const T f = (end - begin).getLengthSQ();
         //return getDistanceFromSQ(begin) <= f && getDistanceFromSQ(end) <= f;
@@ -309,26 +334,62 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 		}
     }
 
-    /** get the SIMD float4 */
-    static if (DigitalMars || GDC) {
-        @property float4 vecSIMD() {
-            return cast(float[4])vec;
-        }
-    }
+	/** get the SIMD vector */
+	static if (is (T == float)) {
+		static if (DigitalMars || GDC) {
+			@property float4 vecSIMD() {
+				return cast(float[4])vec;
+			}
+		}
 
-    else {
-        @property float4 vecSIMD() {
-            return vec;
-        }
-    }
+		else {
+			@property float4 vecSIMD() {
+				return vec;
+			}
+		}
+	}
 
+	static if (is (T == double)) {
+		static if (DigitalMars || GDC) {
+			@property double4 vecSIMD() {
+				return cast(double[4])vec;
+			}
+		}
+
+		else {
+			@property double4 vecSIMD() {
+				return vec;
+			}
+		}
+	}
+	
+	else {
+		static if (DigitalMars || GDC) {
+			@property int4 vecSIMD() {
+				return cast(int[4])vec;
+			}
+		}
+
+		else {
+			@property int4 vecSIMD() {
+				return vec;
+			}
+		}
+	}
+	
     /// internal use only
     static if (is (T == float)) {
     	@property irr_vector3df ptr() {
     		return irr_vector3df(x,y,z);
     	}
     }
-    	
+
+    else static if (is (T == double)) {
+    	@property irr_vector3df ptr() {
+    		return irr_vector3df(x,y,z);
+    	}
+    }
+    
     else {
     	@property irr_vector3di ptr() {
     		return irr_vector3di(x,y,z);
@@ -337,7 +398,9 @@ pure nothrow @safe struct vector3d(T) if(isNumeric!(T) && (is (T == int) || is (
 private:
     static if (is (T == float))
         float4 vec;
-    else
+    else static if (is (T == double))
+		double4 vec;
+	else
         int4 vec;
 
     /** Padding for correctly passing vectors into function on x86*/
@@ -345,8 +408,8 @@ private:
         void* padding[12];
 }
 
-alias vector3df = vector3d!(float);
-alias vector3di = vector3d!(int);
+alias vector3df = Vector3D!(float);
+alias vector3di = Vector3D!(int);
 
 ///
 unittest

@@ -28,7 +28,7 @@ module dirrlicht.core.vector2d;
 
 import std.traits;
 
-pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float))) {
 	@disable this();
 	
 	this(T x, T y) {
@@ -41,7 +41,7 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
 		this.y = n;
 	}
 
-	this(vector2d!(T) rhs) {
+	this(Vector2D!(T) rhs) {
 		x = cast(T)rhs.x;
 		y = cast(T)rhs.y;
 	}
@@ -61,17 +61,17 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
     	}
     }
 
-	vector2d!(T) opUnary(string op)() const
+	Vector2D!(T) opUnary(string op)() const
 	if (op == "-") {
-		return vector2d!(T)(-x, -y);
+		return Vector2D!(T)(-x, -y);
 	}
 
-	vector2d!(T) opBinary(string op)(vector2d!(T) rhs) const {
-    	mixin("return vector2d!(T)(x" ~op~ "cast(T)rhs.x, y" ~op~ "cast(T)rhs.y);");
+	Vector2D!(T) opBinary(string op)(Vector2D!(T) rhs) const {
+    	mixin("return Vector2D!(T)(x" ~op~ "cast(T)rhs.x, y" ~op~ "cast(T)rhs.y);");
     }
 
-    vector2d!(T) opBinary(string op)(T scalar) const {
-		mixin("return vector2d!(T)(x" ~op~ "cast(T)scalar, y" ~op~ "cast(T)scalar);");
+    Vector2D!(T) opBinary(string op)(T scalar) const {
+		mixin("return Vector2D!(T)(x" ~op~ "cast(T)scalar, y" ~op~ "cast(T)scalar);");
     }
 
     void opOpAssign(string op)(T scalar) {
@@ -79,22 +79,22 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
         mixin("y" ~ op ~ "=scalar;");
     }
     
-    void opOpAssign(string op)(vector2d rhs) {
+    void opOpAssign(string op)(Vector2D!(T) rhs) {
         mixin("x" ~ op ~ "=rhs.x;");
         mixin("y" ~ op ~ "=rhs.y;");
     }
 
-    bool opEquals(vector2d rhs) const {
+    bool opEquals(Vector2D!(T) rhs) const {
     	return (x == cast(T)rhs.x, y == cast(T)rhs.y);
     }
 
-    vector2d!(T) set(T nx, T ny) {
+    Vector2D!(T) set(T nx, T ny) {
 		x = nx;
 		y = ny;
 		return this;
 	}
 
-	vector2d!(T) set(vector2d!(T) other) {
+	Vector2D!(T) set(Vector2D!(T) other) {
 		x = cast(T)other.x;
 		y = cast(T)other.y;
 		return this;
@@ -158,7 +158,7 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
 			return angle;
 		}
 	
-		vector2d!(T) normalize() {
+		Vector2D!(T) normalize() {
 			import std.math : sqrt;
 			if (length == 0 )
 				return this;
@@ -183,19 +183,19 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
     	}
     }
 
-	T dot(vector2d!(T) other) {
+	T dot(Vector2D!(T) other) {
 		return x*other.x + y*other.y;
 	}
 
-	T distanceFrom(vector2d!(T) other) {
-		return vector2d!(T)(x - other.x, y - other.y).length;
+	T distanceFrom(Vector2D!(T) other) {
+		return Vector2D!(T)(x - other.x, y - other.y).length;
 	}
 
-	T distanceFromSQ(vector2d!(T) other) {
-		return vector2d!(T)(x - other.x, y - other.y).lengthSQ;
+	T distanceFromSQ(Vector2D!(T) other) {
+		return Vector2D!(T)(x - other.x, y - other.y).lengthSQ;
 	}
 
-	vector2d!(T) rotateBy(double degrees, vector2d!(T) center) {
+	Vector2D!(T) rotateBy(double degrees, Vector2D!(T) center) {
 		import std.math : cos, sin, PI;
 		degrees *= PI/180;
 		const double cs = cos(degrees);
@@ -211,7 +211,7 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
 		return this;
 	}
 
-	double getAngleWith(vector2d!(T) b) const {
+	double getAngleWith(Vector2D!(T) b) const {
 		import std.math : sqrt, atan, PI;
 		double tmp = cast(double)(x*b.x + y*b.y);
 
@@ -227,7 +227,7 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
 		return atan(sqrt(1 - tmp*tmp) / tmp) * 180.0/PI;
 	}
 	
-	bool isBetweenPoints(vector2d!(T) begin, vector2d!(T) end) const {
+	bool isBetweenPoints(Vector2D!(T) begin, Vector2D!(T) end) const {
 		if (begin.x != end.y)	{
 			return ((begin.x <= x && x <= end.x) ||
 				(begin.x >= x && x >= end.x));
@@ -238,22 +238,22 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
 		}
 	}
 	
-	vector2d!(T) getInterpolated(vector2d!(T) other, double d) const {
+	Vector2D!(T) getInterpolated(Vector2D!(T) other, double d) const {
 		double inv = 1.0f - d;
-		return vector2d!(T)(cast(T)(other.x*inv + x*d), cast(T)(other.y*inv + x*d));
+		return Vector2D!(T)(cast(T)(other.x*inv + x*d), cast(T)(other.y*inv + x*d));
 	}
 	
-	vector2d!(T) getInterpolated_quadratic(vector2d!(T) v2, vector2d!(T) v3, double d) const {
+	Vector2D!(T) getInterpolated_quadratic(Vector2D!(T) v2, Vector2D!(T) v3, double d) const {
 			const double inv = 1.0f - d;
 			const double mul0 = inv * inv;
 			const double mul1 = 2.0f * d * inv;
 			const double mul2 = d * d;
 	
-			return vector2d!(T)(cast(T)(x * mul0 + v2.x * mul1 + v3.x * mul2),
+			return Vector2D!(T)(cast(T)(x * mul0 + v2.x * mul1 + v3.x * mul2),
 						cast(T)(y * mul0 + v2.y * mul1 + v3.y * mul2));
 	}
 	
-    vector2d!(T) interpolate(vector2d!(T) a, vector2d!(T) b, double d) {
+    Vector2D!(T) interpolate(Vector2D!(T) a, Vector2D!(T) b, double d) {
 		x = cast(T)(cast(double)b.x + ( ( a.x - b.x ) * d ));
 		y = cast(T)(cast(double)b.y + ( ( a.y - b.y ) * d ));
 		return this;
@@ -262,8 +262,8 @@ pure nothrow @safe struct vector2d(T) if(isNumeric!(T) && (is (T == int) || is (
     T x, y;
 }
 
-alias vector2df = vector2d!(float);
-alias vector2di = vector2d!(int);
+alias vector2df = Vector2D!(float);
+alias vector2di = Vector2D!(int);
 
 /// vector2d example
 unittest {
@@ -286,9 +286,9 @@ unittest {
     assert(vecf == vector2df(2.0, 4.0));
 
 	// Testing pure function calling pure struct
-    pure nothrow squareVec(T)(immutable vector2d!(T) a, immutable vector2d!(T) b) {
+    pure nothrow squareVec(T)(immutable Vector2D!(T) a, immutable Vector2D!(T) b) {
 		import std.algorithm;
-		return vector2d!(T)(a + b);
+		return Vector2D!(T)(a + b);
 	}
 
 	import std.stdio;

@@ -26,19 +26,202 @@
 
 module dirrlicht.core.dimension2d;
 
-struct dimension2d(T) {
-    T Width, Height;
-    
-    void opOpAssign(string op)(dimension2d rhs) {
-        mixin("Width" ~ op ~ "=rhs.Width;");
-        mixin("Height" ~ op ~ "=rhs.Height;");
-    }
+import dirrlicht.core.vector2d;
+import std.traits;
 
-    dimension2d!(T) opBinary(string op)(dimension2d!(T) rhs) {
-    	return new dimension2d(Width ~op~ rhs.Width, Height ~op~ rhs.Height); 
-    }
-    
-    
+pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float))) {
+    /// Constructor with width and height
+	this(const T width, const T height) {
+		Width = width;
+		Height = height;
+	}
+
+	this(Vector2D!(T) other) {	
+		Width = other.x;
+		Height = other.y;
+	}
+
+	/// Use this constructor only where you are sure that 
+	/// conversion is valid.
+	this(U)(auto ref const Dimension2D!(U) other) {
+		Width = cast(T)other.Width;
+		Height = cast(T)other.Height;
+	}
+
+	auto ref Dimension2D!(T) opAssign(U)(Dimension2D!(U) other) {
+		Width = cast(T)other.Width;
+		Height = cast(T)other.Height;
+		return this;
+	}
+
+	/// Equality operator
+	bool opEqual(Dimension2D!(T) other) {
+		return Width == other.Width &&
+			Height == other.Height;
+	}
+
+	bool opEqual(Vector2D!(T) other) {
+		return other.x == Width && other.y == Height;
+	}
+
+	/// Set to new values
+	Dimension2D!(T) set(const T width, const T height) {
+		Width = width;
+		Height = height;
+		return this;
+	}
+
+	/// Divide width and height by scalar
+	auto ref Dimension2D!(T) opOpAssign(string op)(T scale)
+		if(op == "/") {
+		Width /= scale;
+		Height /= scale;
+		return this;
+	}
+
+	/// Divide width and height by scalar
+	Dimension2D!(T) opBinary(string op)(const T scale)
+		if(op == "/") {
+		return Dimension2D!(T)(Width/scale, Height/scale);
+	}
+
+	/// Multiply width and height by scalar
+	auto ref Dimension2D!(T) opOpAssign(string op)(T scale)
+		if(op == "*") {
+		Width *= scale;
+		Height *= scale;
+		return this;
+	}
+
+	/// Multiply width and height by scalar
+	Dimension2D!(T) opBinary(string op)(const T scale)
+		if(op == "*") {
+		return Dimension2D!(T)(Width*sacle, Height*scale);
+	}
+
+	/// Add another dimension to this one
+	auto ref Dimension2D!(T) opOpAssign(string op)(auto ref const Dimension2D other)
+		if(op == "+") {
+		Width += other.Width;
+		Height += other.Height;
+		return this;
+	}
+
+	/// Add two dimensions
+	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other)
+		if(op == "+")
+	{
+		return Dimension2D!(T)(Width+other.Width, Height+other.Height);
+	}
+
+	/// Subtract a dimension from this one
+	auto ref Dimension2D!(T) opOpAssign(string op)(auto ref const Dimension2D!(T) other)
+		if(op == "-")
+	{
+		Width -=  other.Width;
+		Height -= other.Height;
+		return this;
+	}
+
+	/// Subtract a dimension from another
+	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other)
+	{
+		return Dimension2D!(T)(Width-other.Width, Height-other.Height);
+	}
+
+	/// Get area
+	T getArea()
+	{
+		return Width*Height;
+	}
+
+	/// Get the optimal size according to some properties
+	/** 
+	* This is a function often used for texture dimension
+	* calculations. The function returns the next larger or
+	* smaller dimension which is a power-of-two dimension
+	* (2^n,2^m) and/or square (Width=Height).
+	* Params:
+	* requirePowerOfTwo 	Forces the result to use only
+	* powers of two as values.
+	* requireSquare 		Makes width==height in the result
+	* larger 				Choose whether the result is larger or
+	* smaller than the current dimension. If one dimension
+	* need not be changed it is kept with any value of larger.
+	* maxValue 				Maximum texturesize. if value > 0 size is
+	* clamped to maxValue
+	* 
+	* Returns: The optimal dimension under the given
+	* constraints. 
+	*/
+	Dimension2D!(T) getOptimalSize(
+		bool requirePowerOfTwo = true,
+		bool requireSquare = false,
+		bool larger = true,
+		uint maxValue = 0)
+	{
+		uint i = 1;
+		uint j = 1;
+
+		if(requirePowerOfTwo)
+		{
+			while(i < cast(uint)Width)
+			{
+				i <<= 1;
+			}
+			if(!larger && i!=1 && i!=cast(uint)Width)
+			{
+				i >>= 1;
+			}
+
+			while(j < cast(uint)Height)
+			{
+				j <<= 1;
+			}
+			if(!larger && j!=1 && j!=cast(uint)Height)
+			{
+				j >>= 1;
+			}
+		} else
+		{
+			i = cast(uint)Width;
+			j = cast(uint)Height;
+		}
+
+		if(requireSquare)
+		{
+			if((larger && (i>j)) || (!larger && (i<j)))
+			{
+				j = i;
+			}
+			else
+			{
+				i = j;
+			}
+		}
+
+		if(maxValue > 0 && i > maxValue)
+			i = maxValue;
+
+		if(maxValue > 0 && j > maxValue)
+			j = maxValue;
+
+		return Dimension2D!(T)(cast(T)i, cast(T)j);
+	}
+
+	/// Get the interpolated dimension
+	/** 
+	* Params:
+	* other 	Other dimension to interpolate with.
+	* d 		Value between 0.0f and 1.0f.
+	*
+	* Returns: Interpolated dimension. 
+	*/
+	Dimension2D!(T) getInterpolated(const Dimension2D!(T) other, float d) {
+		float inv = (1.0f - d);
+		return Dimension2D!(T)( cast(T)(other.Width*inv + Width*d), cast(T)(other.Height*inv + Height*d));
+	}
+		
     /// internal use only
     @property {
 	    static if (is (T == float)) {
@@ -54,10 +237,16 @@ struct dimension2d(T) {
 	    	alias ptr this;
 	    }
     }
+
+    /// Width of the dimension
+	T Width;
+
+	/// Height of the dimension
+	T Height;
 }
 
-alias dimension2du = dimension2d!(uint);
-alias dimension2df = dimension2d!(float);
+alias dimension2du = Dimension2D!(uint);
+alias dimension2df = Dimension2D!(float);
 
 package extern(C):
 

@@ -24,28 +24,167 @@
        source distribution.
 */
 
-/******line between two points with intersection methods.
- */
-
 module dirrlicht.core.line3d;
 
 import dirrlicht.core.vector3d;
 
-struct line3d(T) {
-    @disable this();
+import std.traits;
 
+/+++
+ + 3D line between two points with intersection methods.
+ +/
+pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     this(T xa, T ya, T za, T xb, T yb, T zb) {
-        start = vector3d!(T)(xa, ya, za);
-        end = vector3d!(T)(xb, yb, zb);
+        start = Vector3D!(T)(xa, ya, za);
+        end = Vector3D!(T)(xb, yb, zb);
     }
 
-    this(vector3d!(T) start, vector3d!(T) end) {
+    this(Vector3D!(T) start, Vector3D!(T) end) {
         this.start = start;
         this.end = end;
     }
 
-    vector3d!(T) start;
-    vector3d!(T) end;
+	Line3D!(T) opBinary(string op)(Vector3D!(T) point)
+	if(op == "+" || op == "-") {
+		return line3d!T(mixin("start "~op~" point"), mixin("end "~op~" point"));
+	}
+
+	Line3D!(T) opOpAssign(string op)(Vector3D!(T) point)
+	if(op == "+" || op == "-") {
+		mixin("start "~op~"= point;");
+		mixin("end "~op~"= point;");
+		return this;
+	}
+
+	bool opEqual()(Line3D!(T) other){
+		return (start == other.start && end == other.end) || (end == other.start && start == other.end);
+	}
+
+	/// Set this line to a new line going through the two points.
+	void setLine()(T xa, T ya, T za, T xb, T yb, T zb) {
+		start.set(xa, ya, za);
+		end.set(xb, yb, zb);
+	}
+
+	/// Set this line to a new line going through the two points.
+	void setLine()(Vector3D!(T) nstart, Vector3D!(T) nend)
+	{
+		start.set(nstart);
+		end.set(nend);
+	}
+
+	/// Set this line to new line given as parameter.
+	void setLine()(Line3D!(T) line) {
+		start.set(line.start);
+		end.set(line.end);
+	}
+
+	@property {
+		/***
+		 * Get length of line
+		 *
+		 * Returns: Length of line.
+		 */
+		T length() {
+			return start.distanceFrom(end);
+		}
+
+		/***
+		 * Get squared length of line
+		 *
+		 * Returns: Squared length of line.
+		 */
+		T lengthSQ() {
+			return start.distanceFromSQ(end);
+		}
+	}
+	
+	/***
+	 * Get middle of line
+	 *
+	 * Returns: Center of line.
+	 */
+	Vector3D!(T) getMiddle() {
+		return (start + end)/cast(T)2;
+	}
+
+	/***
+	 * Get vector of line
+	 *
+	 * Returns: vector of line.
+	 */
+	Vector3D!(T) getVector() {
+		return end - start;
+	}
+
+	/***
+	 * Check if the give point is between start and end of the line
+	 *
+	 * Assumes that the point is already somewhere on the line.
+	 * Params:
+	 * point = Th point to test.
+	 *
+	 * Returns: True if point is on the line between start and end, else false.
+	 */
+	bool isPointBetweenStartAndEnd()(Vector3D!(T) point) {
+		return point.isBetweenPoints(start, end);
+	}
+
+	/***
+	 *  Get the closest point on this line to a point
+	 *
+	 * Params:
+	 * point = Th point to compare to
+	 * Returns: The nearest point which is part of the line.
+	 */
+	Vector3D!(T) getClosestPoint()(Vector3D!(T) point) {
+		Vector3D!(T) c = point - start;
+		Vector3D!(T) v = end - start;
+		T d = cast(T)v.length;
+		v /= d;
+		T t = v.dot(c);
+
+		if (t < cast(T)0.0)
+		return start;
+		if (t > d)
+		return end;
+
+		v *= t;
+		return start + v;
+	}
+
+	/***
+	 * Check if the line intersects with a sphere
+	 *
+	 * Params:
+	 * sorigin = Origin of the shpere.
+	 * sradius = Readius of the sphere.
+	 * outdistance = The distance to the first inersection point
+	 *
+	 * Returns: True if there is an intersection.
+	 * If there is one, the distance to the first intersection point
+	 * is stored in outdistance.
+	 */
+	bool getIntersectionWithSphere()(Vector3D!(T) sorigin, T sradius, out double outdistance) {
+		immutable Vector3D!(T) q = sorigin - start;
+		T c = q.length;
+		T v = q.dot(getVector().normalize);
+		T d = sradius * sradius - (c*c - v*v);
+
+		if (d < 0.0)
+		{
+			outdistance = 0.0;
+			return false;
+		}
+
+		outdistance = v - cast(double)sqrt(d);
+		return true;
+	}
+
+	/// Start point of line
+    Vector3D!(T) start;
+    /// End point of line
+    Vector3D!(T) end;
 }
 
 extern (C):
