@@ -139,7 +139,7 @@ class VideoDriver {
     	this.ptr = ptr;
     }
     
-    bool beginScene(bool backBuffer, bool zBuffer, Color col) {
+    bool beginScene(bool backBuffer=true, bool zBuffer=true, Color col=Color(0,0,0,255)) {
         return irr_IVideoDriver_beginScene(ptr, backBuffer, zBuffer, irr_SColor(col.a, col.b, col.g, col.r));
     }
 
