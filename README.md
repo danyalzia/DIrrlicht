@@ -2,18 +2,20 @@
 [![Stories in Ready](https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/artistic-games/dirrlicht)
 [![Gitter chat](https://badges.gitter.im/Artistic-Games/DIrrlicht.png)](https://gitter.im/Artistic-Games/DIrrlicht)
 
-DIrrlicht - D Bindings for Irrlicht Engine
+DIrrlicht - D Bindings of Irrlicht Engine
 =========================================================
 
 Details
 -------
 
-DIrrlicht is the D Bindings for Irrlicht Engine which makes it possible to use Irrlicht Engine from D. It copies the API of Irrlicht Engine, but in a way that makes sense in D.
+DIrrlicht is the D Bindings and semi-port of Irrlicht 3D Graphics Engine which makes it possible to use Irrlicht Engine from D programming language. It copies the API of Irrlicht Engine, but in a way that makes sense in D.
 
 Status
 ------
 
 It's in very early beta stage. Several functions still aren't wrapped. It is subject to API changes.
+
+Checkout the [Road Map](https://github.com/Artistic-Games/DIrrlicht/wiki/Roadmap) for the list of things that still needs to be done.
 
 Installation
 ------------
@@ -39,12 +41,36 @@ $ sudo make sharedlib
 
 It will create a library in `lib`.
 
+Usage
+-----
+
+As DIrrlicht is based on Irrlicht, it tries to separate the implementation from user. You aren't supposed to directly instantiate several classes, but you access them through different managers. Following is the short example that can be used to test DIrrlicht, it shows the simple window with a black background that can be minimized, resized and closed:
+
+--------------------------------------------
+```D
+import dirrlicht.all;
+
+void main() {
+    auto device = createDevice(DriverType.OpenGL, dimension2du(800,600));
+    device.windowCaption = "DIrrlicht Test!";
+    device.resizable = true;
+    
+    auto driver = device.videoDriver;
+    while(device.run()) {
+        driver.beginScene();
+        driver.endScene();
+    }
+}
+```
+
+See [wiki](https://github.com/Artistic-Games/DIrrlicht/wiki/) for more usage and tutorials.
+
 Contributing
 ------------
 
 DIrrlicht aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.
 
-Before making a commit, please try to adhere to the coding [style](https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
+Before making a commit, please try to adhere to the [coding style](https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
 
 Unit Tests
 ----------
