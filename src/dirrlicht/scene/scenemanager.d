@@ -129,10 +129,14 @@ enum SceneNodeRenderPass {
 }
 
 class SceneManager {
-    this(irr_ISceneManager* ptr) {
+    this(irr_ISceneManager* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
-    
+	
     AnimatedMesh getMesh(string filename) {
     	auto temp = irr_ISceneManager_getMesh(ptr, filename.toStringz);
         return new AnimatedMesh(temp);

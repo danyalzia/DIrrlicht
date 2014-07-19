@@ -12,7 +12,7 @@
 	"sourcePaths": ["../../src/dirrlicht", "."],
 	"importPaths": ["../../src", "."],
 	
-	"lflags":["-L../../CIrrlicht/lib/Linux", "-L/home/danyalzia/DSFML-C/build/lib",  "-L/home/danyalzia/irrlicht/lib/Linux"],
+	"lflags":["-L../../CIrrlicht/lib/",  "-L/home/danyalzia/irrlicht/lib/Linux"],
 	"libs": [ "CIrrlicht", "Irrlicht" ],
 	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"],
 

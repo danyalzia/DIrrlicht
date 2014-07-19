@@ -54,7 +54,11 @@ enum LogLevel {
 
 /// Class for logging messages, warnings and errors
 class Logger {
-    this(irr_ILogger* ptr) {
+    this(irr_ILogger* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

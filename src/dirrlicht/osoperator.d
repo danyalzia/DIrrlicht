@@ -32,7 +32,11 @@ import dirrlicht.irrlichtdevice;
  + The Operating system operator provides operation system specific methods and informations.
  +/
 class OSOperator {
-    this(irr_IOSOperator* ptr) {
+    this(irr_IOSOperator* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

@@ -30,7 +30,11 @@ import dirrlicht.irrlichtdevice;
 
 /// Class for generating random numbers
 class Randomizer {
-	this(irr_IRandomizer* ptr) {
+	this(irr_IRandomizer* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

@@ -40,7 +40,11 @@ import std.conv;
 import std.utf;
 
 class GUIEnvironment {
-    this(irr_IGUIEnvironment* ptr) {
+    this(irr_IGUIEnvironment* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

@@ -29,7 +29,11 @@ module dirrlicht.gui.cursorcontrol;
 import dirrlicht.irrlichtdevice;
 
 class CursorControl {
-    this(irr_ICursorControl* ptr) {
+    this(irr_ICursorControl* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

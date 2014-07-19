@@ -21,7 +21,7 @@ void main() {
 
     smgr.addCameraSceneNode(null, vector3df(0,30,-40), vector3df(0,5,0));
 
-    while (device.run) {
+    while (device.run()) {
         driver.beginScene(true, true, Color(140,101,100,255));
         smgr.drawAll();
         gui.drawAll();

@@ -37,7 +37,11 @@ import dirrlicht.irrlichtdevice;
  + Class for getting and manipulating the virtual time
  +/ 
 class Timer {
-    this(irr_ITimer* ptr) {
+    this(irr_ITimer* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

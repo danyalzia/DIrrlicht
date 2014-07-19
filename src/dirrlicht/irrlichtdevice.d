@@ -64,101 +64,334 @@ class IrrlichtDevice {
     ~this() {
     	drop();
     }
-    
+	
+	/***
+	 * Runs the device.
+	 * Also increments the virtual timer by calling
+	 * Timer.tick();. You can prevent this
+	 * by calling Timer.stop(); before and Timer.start() after
+	 * calling IrrlichtDevice.run(). Returns false if device wants
+	 * to be deleted. Use it in this way:
+	 * while(device.run())
+	 * {
+		// draw everything here
+	 * }
+	 * If you want the device to do nothing if the window is inactive
+	 * (recommended), use the slightly enhanced code shown at isWindowActive().
+
+	 * Note if you are running Irrlicht inside an external, custom
+	 * created window: Calling Device->run() will cause Irrlicht to
+	 * dispatch windows messages internally.
+	 * If you are running Irrlicht in your own custom window, you can
+	 * also simply use your own message loop using GetMessage,
+	 * DispatchMessage and whatever and simply don't use this method.
+	 * But note that Irrlicht will not be able to fetch user input
+	 * then. See irr::SIrrlichtCreationParameters::WindowId for more
+	 * informations and example code.
+	 */
     bool run() {
         return irr_IrrlichtDevice_run(ptr);
     }
 
+	/***
+	 * Cause the device to temporarily pause execution and let other processes run.
+	 * This should bring down processor usage without major
+	 * performance loss for Irrlicht
+	 */
     void yield() {
         irr_IrrlichtDevice_yield(ptr);
     }
 
+	/***
+	 * Pause execution and let other processes to run for a specified amount of time.
+	 * It may not wait the full given time, as sleep may be interrupted
+	 * Paarams:
+	 *  timeMs = Time to sleep for in milisecs.
+	 *  pauseTimer = If true, pauses the device timer while sleeping
+	 */
     void sleep(uint timeMs, bool pauseTimer=false) {
         irr_IrrlichtDevice_sleep(ptr, timeMs, pauseTimer);
     }
     
     @property {
-	    VideoDriver videoDriver() out(result) { assert(result.ptr != null); } body { return new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr)); }
-	    FileSystem fileSystem() out(result) { assert(result.ptr != null); } body { return new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr)); }
-	    GUIEnvironment guiEnvironment() out(result) { assert(result.ptr != null); } body { return new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr)); }
-	    SceneManager sceneManager() out(result) { assert(result.ptr != null); } body { return new SceneManager(irr_IrrlichtDevice_getSceneManager(ptr)); }
-	    CursorControl cursorControl() out(result) { assert(result.ptr != null); } body { return new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr)); }
-	    Logger logger() out(result) { assert(result.ptr != null); } body { return new Logger(irr_IrrlichtDevice_getLogger(ptr)); }
-	    VideoModeList videoModeList() out(result) { assert(result.ptr != null); } body { return new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr)); }
-	    OSOperator osOperator() out(result) { assert(result.ptr != null); } body { return new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr)); }
-	    Timer timer() out(result) { assert(result.ptr != null); } body { return new Timer(irr_IrrlichtDevice_getTimer(ptr)); }
-	    Randomizer randomizer() out(result) { assert(result.ptr != null); } body { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+		/***
+		 * Provides access to the video driver for drawing 3d and 2d geometry.
+		 * Return: Pointer the video driver.
+		 */
+	    VideoDriver videoDriver() {
+			driver_ = new VideoDriver(irr_IrrlichtDevice_getVideoDriver(ptr));
+			return driver_;
+		}
+
+		/***
+		 * Provides access to the virtual file system.
+		 * Return: Pointer to the file system.
+		 */
+	    FileSystem fileSystem() {
+			filesystem_ = new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr));
+			return filesystem_;
+		}
+
+		/***
+		 * Provides access to the 2d user interface environment.
+		 * Return: Pointer to the gui environment.
+		 */
+	    GUIEnvironment guiEnvironment() {
+			gui_ = new GUIEnvironment(irr_IrrlichtDevice_getGUIEnvironment(ptr));
+			return gui_;
+		}
+
+		/***
+		 * Provides access to the scene manager.
+		 * Return: Pointer to the scene manager.
+		 */
+	    SceneManager sceneManager() {
+			smgr_ = new SceneManager(irr_IrrlichtDevice_getSceneManager(ptr));
+			return smgr_;
+		}
+
+		/***
+		 * Provides access to the cursor control.
+		 * Return: Pointer to the mouse cursor control interface.
+		 */
+	    CursorControl cursorControl() {
+			cursorctl_ = new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr));
+			return cursorctl_;
+		}
+
+		/***
+		 * Provides access to the message logger.
+		 * Return: Pointer to the logger.
+		 */
+	    Logger logger() {
+			logger_ = new Logger(irr_IrrlichtDevice_getLogger(ptr));
+			return logger_;
+		}
+		
+		/***
+		 * Gets a list with all video modes available.
+		 * If you are confused now, because you think you have to
+		 * create an Irrlicht Device with a video mode before being able
+		 * to get the video mode list, let me tell you that there is no
+		 * need to start up an Irrlicht Device with Direct3D9,
+		 * OpenGL or Software: For this (and for lots of other
+		 * reasons) the null driver, Null exists.
+		 * Return: Pointer to a list with all video modes supported
+		 * by the gfx adapter.
+		 */
+	    VideoModeList videoModeList() {
+			videoModeList_ = new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr));
+			return videoModeList_;
+		}
+
+		/***
+		 * Provides access to the operation system operator object.
+		 * The OS operator provides methods for
+		 * getting system specific informations and doing system
+		 * specific operations, such as exchanging data with the clipboard
+		 * or reading the operation system version.
+		 * Return: Pointer to the OS operator.
+		 */
+	    OSOperator osOperator() {
+			osOperator_ = new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr));
+			return osOperator_;
+		}
+
+		/***
+		 * Provides access to the engine's timer.
+		 * The system time can be retrieved by it as
+		 * well as the virtual time, which also can be manipulated.
+		 * Return: Pointer to the ITimer object.
+		 */
+	    Timer timer() {
+			timer_ = new Timer(irr_IrrlichtDevice_getTimer(ptr));
+			return timer_;
+		}
+
+		/***
+		 * Provides access to the engine's currently set randomizer.
+		 * Return: Pointer to the IRandomizer object.
+		 */
+	    Randomizer randomizer() { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+
+		/***
+		 * Sets a new randomizer.
+		 * Params:
+		 *  randomizer = Pointer to the new IRandomizer object. This object is
+		 * grab()'ed by the engine and will be released upon the next randomizer
+		 * call or upon device destruction. */
 	    void randomizer(Randomizer randomizer) in { assert(randomizer.ptr != null); } body { irr_IrrlichtDevice_setRandomizer(ptr, randomizer); }
     }
-    
+
+
+    /***
+     * Creates a new default randomizer.
+	 * The default randomizer provides the random sequence known from previous
+	 * Irrlicht versions and is the initial randomizer set on device creation.
+	 * Return: Pointer to the default Randomizer object.
+	 */
     Randomizer createDefaultRandomizer() {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
         return new Randomizer(randomizer);
     }
-    
-    @property void windowCaption(dstring text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
+
+	/***
+     * Sets the caption of the window.
+     * Params:
+     *  text =  New text of the window caption.
+     */
     @property void windowCaption(string text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
     
+    /***
+     * Sets the caption of the window through unicode dstring.
+     * Params:
+     *  text =  New text of the window caption.
+     */
+    @property void windowCaption(dstring text) { irr_IrrlichtDevice_setWindowCaption(ptr, toUTFz!(const(dchar)*)(text)); }
+
+    /***
+     * Returns if the window is active.
+	 * If the window is inactive,
+	 * nothing needs to be drawn. So if you don't want to draw anything
+	 * when the window is inactive, create your drawing loop this way:
+	 * while(device.run())
+	 * {
+	 * if (device.isWindowActive())
+	 * {
+	 * // draw everything here
+	 * }
+	 * else
+	 * device->yield();
+	 * }
+	 * return True if window is active.
+	 */
     bool isWindowActive() {
         return irr_IrrlichtDevice_isWindowActive(ptr);
     }
 
+	/***
+	 * Checks if the Irrlicht window has focus
+	 * Return: True if window has focus.
+	 */
     bool isWindowFocused() {
         return irr_IrrlichtDevice_isWindowFocused(ptr);
     }
 
+	/***
+	 * Checks if the Irrlicht window is minimized
+	 * Return: True if window is minimized.
+	 */
     bool isWindowMinimized() {
         return irr_IrrlichtDevice_isWindowMinimized(ptr);
     }
 
+	/***
+	 * Checks if the Irrlicht window is running in fullscreen mode
+	 * Return: True if window is fullscreen.
+	 */
     bool isFullscreen() {
         return irr_IrrlichtDevice_isFullscreen(ptr);
     }
 
+	/***
+	 * Get the current color format of the window
+	 * Return: Color format of the window.
+	 */
     ColorFormat getColorFormat() {
         return irr_IrrlichtDevice_getColorFormat(ptr);
     }
 
+	/***
+	 * Notifies the device that it should close itself.
+	 * IrrlichtDevice.run() will always return false after closeDevice() was called.
+	 */
     void closeDevice() {
         irr_IrrlichtDevice_closeDevice(ptr);
     }
 
+	/***
+	 * Get the version of the engine.
+	 * The returned string
+	 * will look like this: "1.2.3" or this: "1.2".
+	 * Return: String which contains the version.
+	 */
     string getVersion() {
         const char* str = irr_IrrlichtDevice_getVersion(ptr);
         return to!string(str);
     }
 
+	/***
+	 * Sends a user created event to the engine.
+	 * Is is usually not necessary to use this. However, if you
+	 * are using an own input library for example for doing joystick
+	 * input, you can use this to post key or mouse input events to
+	 * the engine. Internally, this method only delegates the events
+	 * further to the scene manager and the GUI environment.
+	 */
     bool postEventFromUser(Event event) {
         return irr_IrrlichtDevice_postEventFromUser(ptr, event);
     }
 
+	/***
+	 * Sets the input receiving scene manager.
+	 * If set to null, the main scene manager (returned by
+	 * GetSceneManager()) will receive the input
+	 * Params:
+	 *  smgr =  New scene manager to be used.
+	 */
     void setInputReceivingSceneManager(SceneManager smgr) {
         irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr);
     }
-    
+
+    /***
+     * Sets if the window should be resizable in windowed mode.
+     * The default is false. This method only works in windowed
+     * mode.
+     * Params:
+     *  value = Flag whether the window should be resizable.
+     */
     @property void resizable(bool value) { irr_IrrlichtDevice_setResizable(ptr, value); }
-    
+
+    /***
+     * Resize the render window.
+     * This will only work in windowed mode and is not yet supported on all systems.
+     * It does set the drawing/clientDC size of the window, the window decorations are added to that.
+     * You get the current window size with getScreenSize() (might be unified in future)
+	 */
     @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim); }
 
+	/// Minimizes the window if possible
     void minimizeWindow() {
         irr_IrrlichtDevice_minimizeWindow(ptr);
     }
 
+	/// Maximizes the window if possible.
     void maximizeWindow() {
         irr_IrrlichtDevice_maximizeWindow(ptr);
     }
 
+	/// Restore the window to normal size if possible.
     void restoreWindow() {
         irr_IrrlichtDevice_restoreWindow(ptr);
     }
 
+	/// Get the position of the frame on-screen
     vector2di getWindowPosition() {
         irr_vector2di temp = irr_IrrlichtDevice_getWindowPosition(ptr);
         auto pos = vector2di(temp.x, temp.y);
         return pos;
     }
-    
-    bool activateJoysticks(irr_IrrlichtDevice* device, JoystickInfo[] joystickInfo) {
+
+    /***
+     * Activate any joysticks, and generate events for them.
+     * Irrlicht contains support for joysticks, but does not generate joystick events by default,
+     * as this would consume joystick info that 3rd party libraries might rely on. Call this method to
+     * activate joystick support in Irrlicht and to receive JoystickEvent events.
+     * Params:
+     *  joystickInfo =  On return, this will contain an array of each joystick that was found and activated.
+     * return true if joysticks are supported on this device and false if joysticks are not supported or support is compiled out.
+	 */
+    bool activateJoysticks(JoystickInfo[] joystickInfo) {
     	irr_array temp;
     	temp.data = joystickInfo.ptr;
     	return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
@@ -225,6 +458,18 @@ class IrrlichtDevice {
     
     alias ptr this;
 	irr_IrrlichtDevice* ptr;
+
+private:
+	VideoDriver driver_;
+	FileSystem filesystem_;
+	GUIEnvironment gui_;
+	SceneManager smgr_;
+	CursorControl cursorctl_;
+	Logger logger_;
+	VideoModeList videoModeList_;
+	OSOperator osOperator_;
+	Timer timer_;
+	Randomizer randomizer_;
 }
 
 auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
@@ -232,14 +477,11 @@ auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullsc
 }
 
 /// IrrlichtDevice example
-unittest
-{
+unittest {
     mixin(TestPrerequisite);
 
-    try
-    {
-        with (device)
-        {
+    try {
+        with (device) {
             run();
             yield();
             sleep(1);
@@ -283,34 +525,11 @@ unittest
             //getColorFormat();
             closeDevice();
             getVersion();
-
-//            setEventReceiver(reventreceiver);
-//            setInputReceivingSceneManager(smgr);
-//            setResizable(true);
-//            setWindowSize(dimension2du(800,600));
-//            minimizeWindow();
-//            maximizeWindow();
-//            restoreWindow();
-//            getWindowPosition();
-//            float red;
-//            float green;
-//            float blue;
-//            float bright;
-//            float contrast;
-//            setGammaRamp(red, green, blue, bright, contrast);
-//            getGammaRamp(red, green, blue, bright, contrast);
-//            setDoubleClickTime(1);
-//            getDoubleClickTime();
-//            clearSystemMessages();
-//            getType();
-//            isDriverSupported(E_DRIVER_TYPE.EDT_OPENGL);
-//            drop();
         }
     }
 
-    catch (std.exception.ErrnoException exc)
-    {
-        writeln("(Could not read from file; assuming 1)");
+    catch (std.exception.ErrnoException exc) {
+        writeln("Error: IrrlichtDevice");
     }
 }
 

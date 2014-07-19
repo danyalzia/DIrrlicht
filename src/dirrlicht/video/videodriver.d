@@ -135,7 +135,11 @@ enum FogType {
 }
 
 class VideoDriver {
-    this(irr_IVideoDriver* ptr) {
+    this(irr_IVideoDriver* ptr)
+	out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

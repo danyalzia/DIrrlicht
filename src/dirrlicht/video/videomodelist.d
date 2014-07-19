@@ -29,7 +29,11 @@ module dirrlicht.video.videomodelist;
 import dirrlicht.irrlichtdevice;
 
 class VideoModeList {
-    this(irr_IVideoModeList* ptr) {
+    this(irr_IVideoModeList* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     

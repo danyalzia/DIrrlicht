@@ -31,7 +31,11 @@ import dirrlicht.irrlichtdevice;
 import std.string;
 
 class FileSystem {
-    this(irr_IFileSystem* ptr) {
+    this(irr_IFileSystem* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
     	this.ptr = ptr;
     }
     
