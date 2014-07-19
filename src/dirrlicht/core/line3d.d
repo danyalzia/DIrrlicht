@@ -28,6 +28,7 @@ module dirrlicht.core.line3d;
 
 import dirrlicht.core.vector3d;
 
+import std.math;
 import std.traits;
 
 /+++
@@ -39,42 +40,42 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
         end = Vector3D!(T)(xb, yb, zb);
     }
 
-    this(Vector3D!(T) start, Vector3D!(T) end) {
+    this(ref const Vector3D!(T) start, ref const Vector3D!(T) end) {
         this.start = start;
         this.end = end;
     }
 
-	Line3D!(T) opBinary(string op)(Vector3D!(T) point)
+	Line3D!(T) opBinary(string op)(ref const Vector3D!(T) point)
 	if(op == "+" || op == "-") {
 		return line3d!T(mixin("start "~op~" point"), mixin("end "~op~" point"));
 	}
 
-	Line3D!(T) opOpAssign(string op)(Vector3D!(T) point)
+	ref Line3D!(T) opOpAssign(string op)(ref const Vector3D!(T) point)
 	if(op == "+" || op == "-") {
 		mixin("start "~op~"= point;");
 		mixin("end "~op~"= point;");
 		return this;
 	}
 
-	bool opEqual()(Line3D!(T) other){
+	bool opEqual(ref const Line3D!(T) other){
 		return (start == other.start && end == other.end) || (end == other.start && start == other.end);
 	}
 
 	/// Set this line to a new line going through the two points.
-	void setLine()(T xa, T ya, T za, T xb, T yb, T zb) {
+	void setLine(ref const T xa, ref const T ya, ref const T za, ref const T xb, ref const T yb, ref const T zb) {
 		start.set(xa, ya, za);
 		end.set(xb, yb, zb);
 	}
 
 	/// Set this line to a new line going through the two points.
-	void setLine()(Vector3D!(T) nstart, Vector3D!(T) nend)
+	void setLine(ref const Vector3D!(T) nstart, ref const Vector3D!(T) nend)
 	{
 		start.set(nstart);
 		end.set(nend);
 	}
 
 	/// Set this line to new line given as parameter.
-	void setLine()(Line3D!(T) line) {
+	void setLine(ref const Line3D!(T) line) {
 		start.set(line.start);
 		end.set(line.end);
 	}
@@ -85,7 +86,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 		 *
 		 * Returns: Length of line.
 		 */
-		T length() {
+		T length() const {
 			return start.distanceFrom(end);
 		}
 
@@ -94,7 +95,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 		 *
 		 * Returns: Squared length of line.
 		 */
-		T lengthSQ() {
+		T lengthSQ() const {
 			return start.distanceFromSQ(end);
 		}
 	}
@@ -104,7 +105,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 *
 	 * Returns: Center of line.
 	 */
-	Vector3D!(T) getMiddle() {
+	Vector3D!(T) getMiddle() const {
 		return (start + end)/cast(T)2;
 	}
 
@@ -113,7 +114,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 *
 	 * Returns: vector of line.
 	 */
-	Vector3D!(T) getVector() {
+	Vector3D!(T) getVector() const {
 		return end - start;
 	}
 
@@ -126,7 +127,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 *
 	 * Returns: True if point is on the line between start and end, else false.
 	 */
-	bool isPointBetweenStartAndEnd()(Vector3D!(T) point) {
+	bool isPointBetweenStartAndEnd(ref const Vector3D!(T) point) const {
 		return point.isBetweenPoints(start, end);
 	}
 
@@ -137,7 +138,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * point = Th point to compare to
 	 * Returns: The nearest point which is part of the line.
 	 */
-	Vector3D!(T) getClosestPoint()(Vector3D!(T) point) {
+	Vector3D!(T) getClosestPoint(ref const Vector3D!(T) point) const {
 		Vector3D!(T) c = point - start;
 		Vector3D!(T) v = end - start;
 		T d = cast(T)v.length;
@@ -165,7 +166,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * If there is one, the distance to the first intersection point
 	 * is stored in outdistance.
 	 */
-	bool getIntersectionWithSphere()(Vector3D!(T) sorigin, T sradius, out double outdistance) {
+	bool getIntersectionWithSphere(ref const Vector3D!(T) sorigin, T sradius, ref double outdistance) const {
 		immutable Vector3D!(T) q = sorigin - start;
 		T c = q.length;
 		T v = q.dot(getVector().normalize);
@@ -177,7 +178,7 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 			return false;
 		}
 
-		outdistance = v - cast(double)sqrt(d);
+		outdistance = v - cast(double)sqrt(cast(double)d);
 		return true;
 	}
 

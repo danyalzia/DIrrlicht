@@ -37,7 +37,7 @@ private enum USE_MATRIX_TEST = true;
 
 import std.math;
 
-pure nothrow @safe struct CMatrix4(T) {
+pure nothrow @safe struct Matrix4(T) {
     /// Constructor flags
 	enum eConstructor
 	{
@@ -76,7 +76,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * other = Other matrix to copy from
 	 * constructor = Choose the initialization style 
 	 */
-	this(ref const CMatrix4!(T) other, eConstructor constructor = eConstructor.EM4CONST_COPY) {
+	this(ref const Matrix4!(T) other, eConstructor constructor = eConstructor.EM4CONST_COPY) {
 		static if(USE_MATRIX_TEST) {
 			definitelyIdentityMatrix = false;
 		}
@@ -135,7 +135,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Sets this matrix equal to the other matrix.
-	ref CMatrix4!(T) opAssign(CMatrix4!(T) other) {
+	ref Matrix4!(T) opAssign(Matrix4!(T) other) {
 		if (this == other)
 			return this;
 
@@ -148,7 +148,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Sets all elements of this matrix to the value.
-	//ref CMatrix4!(T) opAssign(ref const T scalar) {
+	//ref Matrix4!(T) opAssign(ref const T scalar) {
 		//for (uint i = 0; i < 16; ++i)
 			//M[i]=scalar;
 
@@ -173,7 +173,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Returns true if other matrix is equal to this matrix.
-	bool opEqual(ref const CMatrix4!(T) other) {
+	bool opEqual(ref const Matrix4!(T) other) {
 		static if (USE_MATRIX_TEST) {
 			if (definitelyIdentityMatrix && other.definitelyIdentityMatrix)
 				return true;
@@ -186,9 +186,9 @@ pure nothrow @safe struct CMatrix4(T) {
 		return true;
 	}
 
-	CMatrix4!(T) opBinary(string op)(ref const CMatrix4!(T) other)
+	Matrix4!(T) opBinary(string op)(ref const Matrix4!(T) other)
 	if(op == "+" || op == "-"){
-		CMatrix4!(T) temp = CMatrix4!(T)(eConstructor.EM4CONST_NOTHING);
+		Matrix4!(T) temp = Matrix4!(T)(eConstructor.EM4CONST_NOTHING);
 
 		enum com = regex("?", "g");
 
@@ -212,7 +212,7 @@ pure nothrow @safe struct CMatrix4(T) {
 		return temp;
 	}
 
-	auto ref CMatrix4!(T) opOpAssign(string op)(ref const CMatrix4!(T) other)
+	auto ref Matrix4!(T) opOpAssign(string op)(ref const Matrix4!(T) other)
 	if(op == "+" || op == "-") {
 		enum com = regex("?", "g");
 
@@ -240,7 +240,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Set this matrix to the product of two matrices
 	 * Calculate b*a 
 	 */
-	auto ref CMatrix4!(T) setbyproduct()(ref const CMatrix4!(T) other_a, ref const CMatrix4!(T) other_b) {
+	auto ref Matrix4!(T) setbyproduct()(ref const Matrix4!(T) other_a, ref const Matrix4!(T) other_b) {
 		static if(USE_MATRIX_TEST) {
 			if ( other_a.isIdentity () )
 				return (this = other_b);
@@ -261,7 +261,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * use it if you know you never have a identity matrix 
 	 * goal is to reduce stack use and copy
 	 */
-	auto ref CMatrix4!(T) setbyproduct_nocheck(ref const CMatrix4!(T) other_a, ref const CMatrix4!(T) other_b) {
+	auto ref Matrix4!(T) setbyproduct_nocheck(ref const Matrix4!(T) other_a, ref const Matrix4!(T) other_b) {
 		immutable T[16] m1 = other_a.M;
 		immutable T[16] m2 = other_b.M;
 
@@ -295,7 +295,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Multiply by another matrix.
 	 * Calculate other*this 
 	 */
-	CMatrix4!(T) opBinary(string op)(ref const CMatrix4!(T) m2)
+	Matrix4!(T) opBinary(string op)(ref const Matrix4!(T) m2)
 	if(op == "*") {
 		static if(USE_MATRIX_TEST) {
 			// Testing purpose..
@@ -305,7 +305,7 @@ pure nothrow @safe struct CMatrix4(T) {
 				return this;
 		}
 
-		CMatrix4!(T) m3 = CMatrix4!(T)( eConstructor.EM4CONST_NOTHING );
+		Matrix4!(T) m3 = Matrix4!(T)( eConstructor.EM4CONST_NOTHING );
 
 		immutable T[16] m1 = M;
 
@@ -336,7 +336,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Multiply by another matrix.
 	 * Calculate and return other*this 
 	 */
-	auto ref CMatrix4!(T) opOpAssign(string op)(ref const CMatrix4!(T) other)
+	auto ref Matrix4!(T) opOpAssign(string op)(ref const Matrix4!(T) other)
 	if(op == "*") {
 		static if (USE_MATRIX_TEST) {
 			// do checks on your own in order to avoid copy creation
@@ -345,22 +345,22 @@ pure nothrow @safe struct CMatrix4(T) {
 					return (this = other);
 				}
 				else {
-					CMatrix4!(T) temp = CMatrix4!(T)(this);
+					Matrix4!(T) temp = Matrix4!(T)(this);
 					return setbyproduct_nocheck( temp, other );
 				}
 			}
 			return this;
 		} 
 		else {
-			CMatrix4!(T) temp = CMatrix4!(T)(this);
+			Matrix4!(T) temp = Matrix4!(T)(this);
 			return setbyproduct_nocheck( temp, other );
 		}
 	}
 
 	/// Multiply by scalar.
-	CMatrix4!(T) opBinary(string op)(ref const T scalar)
+	Matrix4!(T) opBinary(string op)(ref const T scalar)
 	if(op == "*") {
-		CMatrix4!(T) temp = CMatrix4!(T)( eConstructor.EM4CONST_NOTHING );
+		Matrix4!(T) temp = Matrix4!(T)( eConstructor.EM4CONST_NOTHING );
 
 		temp[0] = M[0]*scalar;
 		temp[1] = M[1]*scalar;
@@ -382,13 +382,13 @@ pure nothrow @safe struct CMatrix4(T) {
 		return temp;
 	}
 
-	CMatrix4!(T) opBinaryRight(string op)(ref const T scalar)
+	Matrix4!(T) opBinaryRight(string op)(ref const T scalar)
 	if(op == "+" || op == "-") {
 		return this*scalar;
 	}
 	
 	/// Multiply by scalar.
-	auto ref CMatrix4!(T) opOpAssign(string op)(ref const T scalar)
+	auto ref Matrix4!(T) opOpAssign(string op)(ref const T scalar)
 	if(op == "*") {
 		M[0]*=scalar;
 		M[1]*=scalar;
@@ -411,7 +411,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Set matrix to identity
-	auto ref CMatrix4!(T) makeIdentity() {
+	auto ref Matrix4!(T) makeIdentity() {
 		M[] = 0;
 		M[0] = M[5] = M[10] = M[15] = cast(T)1;
 		
@@ -501,7 +501,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Set the translation of current matrix. Will erase any previous values.
-	ref CMatrix4!(T) setTranslation(Vector3D!(T) translation) {
+	ref Matrix4!(T) setTranslation(Vector3D!(T) translation) {
 		M[12] = translation.x;
 		M[13] = translation.y;
 		M[14] = translation.z;
@@ -518,7 +518,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Set the inverse translation of the current matrix. Will erase any previous values.
-	auto ref CMatrix4!(T) setInverseTranslation(Vector3D!(T) translation )
+	auto ref Matrix4!(T) setInverseTranslation(Vector3D!(T) translation )
 	{
 		M[12] = -translation.x;
 		M[13] = -translation.y;
@@ -531,7 +531,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Make a rotation matrix from Euler angles. The 4th row and column are unmodified.
-	auto ref CMatrix4!(T) setRotationRadians(Vector3D!(T) rotation ) {
+	auto ref Matrix4!(T) setRotationRadians(Vector3D!(T) rotation ) {
 		immutable cr = cos( rotation.x );
 		immutable sr = sin( rotation.x );
 		immutable cp = cos( rotation.y );
@@ -561,7 +561,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Make a rotation matrix from Euler angles. The 4th row and column are unmodified.
-	auto ref CMatrix4!(T) setRotationDegrees(Vector3D!(T) rotation ) {
+	auto ref Matrix4!(T) setRotationDegrees(Vector3D!(T) rotation ) {
 		return setRotationRadians(rotation * DEGTORAD);
 	}
 	
@@ -623,7 +623,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Make an inverted rotation matrix from Euler angles.
 	 * The 4th row and column are unmodified. 
 	 */
-	auto ref CMatrix4!(T) setInverseRotationRadians(Vector3D!(T) rotation ) {
+	auto ref Matrix4!(T) setInverseRotationRadians(Vector3D!(T) rotation ) {
 		immutable cr = cos( rotation.x );
 		immutable sr = sin( rotation.x );
 		immutable cp = cos( rotation.y );
@@ -655,7 +655,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Make an inverted rotation matrix from Euler angles.
 	 * The 4th row and column are unmodified. 
 	 */
-	auto ref CMatrix4!(T) setInverseRotationDegrees(Vector3D!(T) rotation ) {
+	auto ref Matrix4!(T) setInverseRotationDegrees(Vector3D!(T) rotation ) {
 		return setInverseRotationRadians( rotation * DEGTORAD );
 	}
 	
@@ -663,7 +663,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	 * Make a rotation matrix from angle and axis, assuming left handed rotation.
 	 * The 4th row and column are unmodified. 
 	 */
-	auto ref CMatrix4!(T) setRotationAxisRadians(T angle, Vector3D!(T) axis) {
+	auto ref Matrix4!(T) setRotationAxisRadians(T angle, Vector3D!(T) axis) {
  		immutable c = cos(angle);
 		immutable s = sin(angle);
 		immutable t = 1.0 - c;
@@ -695,7 +695,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Set Scale
-	auto ref CMatrix4!(T) setScale()(ref const Vector3D!(T) scale ) {
+	auto ref Matrix4!(T) setScale()(ref const Vector3D!(T) scale ) {
 		M[0] = scale.x;
 		M[5] = scale.y;
 		M[10] = scale.z;
@@ -706,7 +706,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Set Scale
-	auto ref CMatrix4!(T) setScale()( const T scale )  { 
+	auto ref Matrix4!(T) setScale()( const T scale )  { 
 		return setScale(Vector3D!(T)(scale,scale,scale)); 
 	}
 	
@@ -823,7 +823,7 @@ pure nothrow @safe struct CMatrix4(T) {
 		transformVect(member, plane.getMemberPoint());
 
 		// Transform the normal by the transposed inverse of the matrix
-		CMatrix4!(T) transposedInverse = CMatrix4!(T)(this, eConstructor.EM4CONST_INVERSE_TRANSPOSED);
+		Matrix4!(T) transposedInverse = Matrix4!(T)(this, eConstructor.EM4CONST_INVERSE_TRANSPOSED);
 		vector3df normal = plane.Normal;
 		transposedInverse.transformVect(normal);
 
@@ -937,7 +937,7 @@ pure nothrow @safe struct CMatrix4(T) {
 				return true;
 		}
 
-		CMatrix4!(T) temp = CMatrix4!(T)( eConstructor.EM4CONST_NOTHING );
+		Matrix4!(T) temp = Matrix4!(T)( eConstructor.EM4CONST_NOTHING );
 
 		if (getInverse(temp))
 		{
@@ -953,7 +953,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* Params:
 	* outMatrix = where result matrix is written to. 
 	*/
-	bool getInversePrimitive(out CMatrix4!(T) outMatrix)
+	bool getInversePrimitive(out Matrix4!(T) outMatrix)
 	{
 		outMatrix.M[0 ] = M[0];
 		outMatrix.M[1 ] = M[4];
@@ -988,7 +988,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* 
 	* Returns: false if there is no inverse matrix. 
 	*/
-	bool getInverse(out CMatrix4!(T) outMatrix) const
+	bool getInverse(out Matrix4!(T) outMatrix) const
 	{
 		/// Calculates the inverse of this Matrix
 		/// The inverse is calculated using Cramers rule.
@@ -1071,7 +1071,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a right-handed perspective projection matrix based on a field of view
-	auto ref CMatrix4!(T) buildProjectionMatrixPerspectiveFovRH()(float fieldOfViewRadians, float aspectRatio, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixPerspectiveFovRH()(float fieldOfViewRadians, float aspectRatio, float zNear, float zFar)
 	{
 		immutable double h = 1.0 / (cast(double)tan(fieldOfViewRadians*0.5));
 		assert(aspectRatio!=0.f); //divide by zero
@@ -1107,7 +1107,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed perspective projection matrix based on a field of view
-	auto ref CMatrix4!(T) buildProjectionMatrixPerspectiveFovLH()(float fieldOfViewRadians, float aspectRatio, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixPerspectiveFovLH()(float fieldOfViewRadians, float aspectRatio, float zNear, float zFar)
 	{
 		immutable double h = 1.0 / (cast(double)tan(fieldOfViewRadians*0.5));
 		assert(aspectRatio!=0.f); //divide by zero
@@ -1141,7 +1141,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed perspective projection matrix based on a field of view, with far plane at infinity
-	auto ref CMatrix4!(T) buildProjectionMatrixPerspectiveFovInfinityLH()(float fieldOfViewRadians, float aspectRatio, float zNear, float epsilon = 0.0f)
+	auto ref Matrix4!(T) buildProjectionMatrixPerspectiveFovInfinityLH()(float fieldOfViewRadians, float aspectRatio, float zNear, float epsilon = 0.0f)
 	{
 		immutable double h = 1.0 / (cast(double)tan(fieldOfViewRadians*0.5));
 		assert(aspectRatio!=0.f); //divide by zero
@@ -1174,7 +1174,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a right-handed perspective projection matrix.
-	auto ref CMatrix4!(T) buildProjectionMatrixPerspectiveRH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixPerspectiveRH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
 	{
 		assert(widthOfViewVolume!=0.f); //divide by zero
 		assert(heightOfViewVolume!=0.f); //divide by zero
@@ -1207,7 +1207,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed perspective projection matrix.
-	auto ref CMatrix4!(T) buildProjectionMatrixPerspectiveLH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixPerspectiveLH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
 	{
 		assert(widthOfViewVolume!=0.f); //divide by zero
 		assert(heightOfViewVolume!=0.f); //divide by zero
@@ -1239,7 +1239,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed orthogonal projection matrix.
-	auto ref CMatrix4!(T) buildProjectionMatrixOrthoLH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixOrthoLH()(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
 	{
 		assert(widthOfViewVolume!=0.f); //divide by zero
 		assert(heightOfViewVolume!=0.f); //divide by zero
@@ -1272,7 +1272,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a right-handed orthogonal projection matrix.
-	auto ref CMatrix4!(T) buildProjectionMatrixOrthoRH(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
+	auto ref Matrix4!(T) buildProjectionMatrixOrthoRH(float widthOfViewVolume, float heightOfViewVolume, float zNear, float zFar)
 	{
 		assert(widthOfViewVolume!=0.0f); //divide by zero
 		assert(heightOfViewVolume!=0.0f); //divide by zero
@@ -1305,7 +1305,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed look-at matrix.
-	auto ref CMatrix4!(T) buildCameraLookAtMatrixLH()(
+	auto ref Matrix4!(T) buildCameraLookAtMatrixLH()(
 			ref const vector3df position,
 			const vector3df target,
 			const vector3df upVector)
@@ -1345,7 +1345,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a right-handed look-at matrix.
-	auto ref CMatrix4!(T) buildCameraLookAtMatrixRH()(
+	auto ref Matrix4!(T) buildCameraLookAtMatrixRH()(
 			ref const vector3df position,
 			ref const vector3df target,
 			ref const vector3df upVector)
@@ -1391,7 +1391,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* point = value between 0 and 1, describing the light source.
 	* If this is 1, it is a point light, if it is 0, it is a directional light. 
 	*/
-	auto ref CMatrix4!(T) buildShadowMatrix()(ref const vector3df light, ref const plane3df plane, float point = 1.0f)
+	auto ref Matrix4!(T) buildShadowMatrix()(ref const vector3df light, ref const plane3df plane, float point = 1.0f)
 	{
 		plane.Normal.normalize();
 		immutable float d = plane.Normal.dotProduct(light);
@@ -1423,7 +1423,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Builds a left-handed look-at matrix.
-	ref const CMatrix4!(T) buildCameraLookAtMatrixRH()(
+	ref const Matrix4!(T) buildCameraLookAtMatrixRH()(
 		ref const vector3df position,
 		ref const vector3df target,
 		ref const vector3df upVector)
@@ -1462,7 +1462,7 @@ pure nothrow @safe struct CMatrix4(T) {
 		return this;
 	}
 
-	auto ref CMatrix4!(T) buildCameraLookAtMatrixRH()(
+	auto ref Matrix4!(T) buildCameraLookAtMatrixRH()(
 		ref const vector3df position,
 		ref const vector3df target,
 		ref const vector3df upVector)
@@ -1505,7 +1505,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	/** 
 	* Used to scale (-1,-1)(1,1) to viewport, for example from (-1,-1) (1,1) to the viewport (0,0)(0,640) 
 	*/
-	auto ref CMatrix4!(T) buildNDCToDCMatrix()(ref const rect!int viewport, float zScale)
+	auto ref Matrix4!(T) buildNDCToDCMatrix()(ref const rect!int viewport, float zScale)
 	{
 		immutable float scaleX = (viewport.getWidth() - 0.75f ) * 0.5f;
 		immutable float scaleY = -(viewport.getHeight() - 0.75f ) * 0.5f;
@@ -1525,9 +1525,9 @@ pure nothrow @safe struct CMatrix4(T) {
 	* b = other matrix to interpolate with
 	* time = Must be a value between 0 and 1. 
 	*/
-	CMatrix4!(T) interpolate()(ref const CMatrix4!(T) b, float time)
+	Matrix4!(T) interpolate()(ref const Matrix4!(T) b, float time)
 	{
-		CMatrix4!(T) mat = CMatrix4!(T)( eConstructor.EM4CONST_NOTHING );
+		Matrix4!(T) mat = Matrix4!(T)( eConstructor.EM4CONST_NOTHING );
 
 		for (uint i=0; i < 16; i += 4)
 		{
@@ -1540,15 +1540,15 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Gets transposed matrix
-	CMatrix4!(T) getTransposed() const
+	Matrix4!(T) getTransposed() const
 	{
-		CMatrix4!(T) t = CMatrix4!(T)( eConstructor.EM4CONST_NOTHING );
+		Matrix4!(T) t = Matrix4!(T)( eConstructor.EM4CONST_NOTHING );
 		getTransposed ( t );
 		return t;
 	}
 
 	/// Gets transposed matrix
-	void getTransposed(out CMatrix4!(T) dest) const
+	void getTransposed(out Matrix4!(T) dest) const
 	{
 		dest[ 0] = M[ 0];
 		dest[ 1] = M[ 4];
@@ -1582,7 +1582,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	*
 	* See_Also: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToMatrix/index.htm
 	*/
-	auto ref CMatrix4!(T) buildRotateFromTo()(ref const vector3df from, ref const vector3df to)
+	auto ref Matrix4!(T) buildRotateFromTo()(ref const vector3df from, ref const vector3df to)
 	{
 		// unit vectors
 		vector3df f = vector3df(from);
@@ -1709,7 +1709,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	*/
 
 	/// Set to a texture transformation matrix with the given parameters.	
-	auto ref CMatrix4!(T) buildTextureTransform()( float rotateRad,
+	auto ref Matrix4!(T) buildTextureTransform()( float rotateRad,
 			ref const vector2df rotatecenter,
 			ref const vector2df translate,
 			ref const vector2df scale)
@@ -1752,7 +1752,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* 
 	* Returns: Altered matrix 
 	*/
-	auto ref CMatrix4!(T) setTextureRotationCenter()( float rotateRad )
+	auto ref Matrix4!(T) setTextureRotationCenter()( float rotateRad )
 	{
 		immutable float c = cosf(rotateRad);
 		immutable float s = sinf(rotateRad);
@@ -1780,7 +1780,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	*
 	* Returns: Altered matrix 
 	*/
-	auto ref CMatrix4!(T) setTextureTranslate()( float x, float y )
+	auto ref Matrix4!(T) setTextureTranslate()( float x, float y )
 	{
 		M[8] = cast(T)x;
 		M[9] = cast(T)y;
@@ -1800,7 +1800,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* 
 	* Returns: Altered matrix 
 	*/
-	auto ref CMatrix4!(T) setTextureTranslateTransposed()( float x, float y )
+	auto ref Matrix4!(T) setTextureTranslateTransposed()( float x, float y )
 	{
 		M[2] = cast(T)x;
 		M[6] = cast(T)y;
@@ -1820,7 +1820,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	*
 	* Returns: Altered matrix. 
 	*/
-	auto ref CMatrix4!(T) setTextureScale(float sx, float sy) {
+	auto ref Matrix4!(T) setTextureScale(float sx, float sy) {
 		M[0] = cast(T)sx;
 		M[5] = cast(T)sy;
 
@@ -1839,7 +1839,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	* 
 	* Returns: Altered matrix. 
 	*/
-	auto ref CMatrix4!(T) setTextureScaleCenter(float sx, float sy) {
+	auto ref Matrix4!(T) setTextureScaleCenter(float sx, float sy) {
 		M[0] = cast(T)sx;
 		M[5] = cast(T)sy;
 		M[8] = cast(T)(0.5f - 0.5f * sx);
@@ -1852,7 +1852,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Sets all matrix data members at once
-	auto ref CMatrix4!(T) setM(const T[16] data) {
+	auto ref Matrix4!(T) setM(const T[16] data) {
 		M[] = data[];
 
 		static if (USE_MATRIX_TEST)
@@ -1876,7 +1876,7 @@ pure nothrow @safe struct CMatrix4(T) {
 	}
 
 	/// Compare two matrices using the equal method
-	bool equals(ref const CMatrix4!(T) other, const T tolerance = cast(T)double.epsilon) {
+	bool equals(ref const Matrix4!(T) other, const T tolerance = cast(T)double.epsilon) {
 		static if (USE_MATRIX_TEST) {
 			if (definitelyIdentityMatrix && other.definitelyIdentityMatrix)
 				return true;
@@ -1899,7 +1899,7 @@ private:
 	}
 }
 
-alias matrix4 = CMatrix4!(float);
+alias matrix4 = Matrix4!(float);
 
 unittest
 {

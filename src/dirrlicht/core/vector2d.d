@@ -26,26 +26,36 @@
 
 module dirrlicht.core.vector2d;
 
+import dirrlicht.core.dimension2d;
 import std.traits;
 
-pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float))) {
-	@disable this();
-	
+/+++
+ + 2d vector template class with lots of operators and methods.
+ +/
+pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
+	/// Constructor with two different values
 	this(T x, T y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/// Constructor with the same value for both members
 	this(T n) {
 		this.x = n;
 		this.y = n;
 	}
 
-	this(Vector2D!(T) rhs) {
-		x = cast(T)rhs.x;
-		y = cast(T)rhs.y;
+	/// Copy constructor
+	this(ref const Vector2D!(T) other) {
+		x = cast(T)other.x;
+		y = cast(T)other.y;
 	}
-	
+
+	this(ref const Dimension2D!T other) {
+		x = other.Width;
+		y = other.Height;
+	}
+		
 	/// internal use only
     static if (is (T == float)) {
     	this(irr_vector2df v) {
@@ -63,30 +73,73 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 
 	Vector2D!(T) opUnary(string op)() const
 	if (op == "-") {
-		return Vector2D!(T)(-x, -y);
+		return Vector2D!(-x, -y);
 	}
 
-	Vector2D!(T) opBinary(string op)(Vector2D!(T) rhs) const {
+	Vector2D!(T) opBinary(string op)(ref const Vector2D!(T) rhs) const {
     	mixin("return Vector2D!(T)(x" ~op~ "cast(T)rhs.x, y" ~op~ "cast(T)rhs.y);");
     }
 
-    Vector2D!(T) opBinary(string op)(T scalar) const {
+	Vector2D!(T) opBinary(string op)(ref const Dimension2D!(T) rhs) const {
+    	mixin("return Vector2D!(T)(x" ~op~ "cast(T)rhs.Width, y" ~op~ "cast(T)rhs.Height);");
+    }
+    
+    Vector2D!(T) opBinary(string op)(const T scalar) const {
 		mixin("return Vector2D!(T)(x" ~op~ "cast(T)scalar, y" ~op~ "cast(T)scalar);");
     }
 
-    void opOpAssign(string op)(T scalar) {
+    Vector2D!(T) opOpAssign(string op)(const T scalar) {
         mixin("x" ~ op ~ "=scalar;");
         mixin("y" ~ op ~ "=scalar;");
+        return this;
     }
     
-    void opOpAssign(string op)(Vector2D!(T) rhs) {
+    Vector2D!(T) opOpAssign(string op)(ref const Vector2D!(T) rhs) {
         mixin("x" ~ op ~ "=rhs.x;");
         mixin("y" ~ op ~ "=rhs.y;");
+        return this;
     }
 
-    bool opEquals(Vector2D!(T) rhs) const {
+    Vector2D!(T) opOpAssign(string op)(ref const Dimension2D!(T) rhs) {
+        mixin("x" ~ op ~ "=rhs.Width;");
+        mixin("y" ~ op ~ "=rhs.Height;");
+        return this;
+    }
+
+	/// sort in order X, Y. Equality with rounding tolerance.
+	int opCmp(ref const Vector2D!T other) const {
+		if ((x<other.x && x != other.x) ||
+			(x != other.x && y<other.y && y != other.y)) {
+			return -1;
+		}
+		
+		if ((x>other.x && x != other.x) ||
+			(x == other.x && y>other.y && y != other.y)) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	bool opEquals(Vector2D!(T) rhs) const {
     	return (x == cast(T)rhs.x, y == cast(T)rhs.y);
     }
+    
+    bool opEquals(ref const Vector2D!(T) rhs) const {
+    	return (x == cast(T)rhs.x, y == cast(T)rhs.y);
+    }
+	
+	/***
+	 * Checks if this vector equals ther other one.
+	 *	Takes floating point rounding errors into account.
+	 *	Params:
+	 *	other = Vector to compare with.
+	 *
+	 *   Returns: True if the two vector are (almost) equal, else false.
+	 */
+	bool equals(ref const Vector2D!(T) other) const {
+		return x == other.x && y == other.y;
+	}
 
     Vector2D!(T) set(T nx, T ny) {
 		x = nx;
@@ -94,24 +147,40 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 		return this;
 	}
 
-	Vector2D!(T) set(Vector2D!(T) other) {
+	Vector2D!(T) set(ref const Vector2D!(T) other) {
 		x = cast(T)other.x;
 		y = cast(T)other.y;
 		return this;
 	}
 
+	private enum RADTODEG64 = 57.2957795;
 	
     @property {
+		/***
+		 * Gets the length of the vector.
+		 *	Returns: The length of the vector.
+		 */
 		T length() const {
 			import std.math, std.conv;
 			return cast(T)sqrt(cast(float)(x*x + y*y));
 		}
-
+	
+		/***
+		 * Get the squared length of this vector
+		 *	This is useful vecause it is much faster than getLength().
+		 *	Returns: The squared length of the vector.
+		 */
 		T lengthSQ() const {
 			import std.math;
 			return x*x + y*y;
 		}
-
+	
+		/***
+		 * Calculates the angle of this vector in degrees in the trigonometric sense.
+		 * 0 is to the right (3 o'clock), values increase counter-clockwise.
+		 * This method has been suggested by Pr3t3nd3r.
+		 * Returns: a value between 0 and 360.
+		 */
 		double angleTrig() const {
 			import std.math;
 			if (y == 0)
@@ -131,7 +200,12 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 				else
 					return 180.0+atan(-cast(double)y/-cast(double)x) * 180.0/PI;
 		}
-		
+	
+		/***
+		 * Calculates the angle or this vector in degrees in the counter trigonometric sense.
+		 * 0 is to the right (3 o'clock), values increase clockwise.
+		 * Returns: a value between 0 and 360.
+		 */
 		double angle() const {
 			import std.math, std.algorithm;
 			if (x == 0)
@@ -158,7 +232,12 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 			return angle;
 		}
 	
-		Vector2D!(T) normalize() {
+		/***
+		 * Normalize the vector
+		 * The null vector is left untouched.
+		 * Returns: Reference to this vector, after normalization.
+		 */
+		ref Vector2D!(T) normalize() {
 			import std.math : sqrt;
 			if (length == 0 )
 				return this;
@@ -182,20 +261,56 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 	    	alias ptr this;
     	}
     }
-
-	T dot(Vector2D!(T) other) {
+	
+	/***
+	 * Get the dot product of this vector with another.
+	 *	Params: 
+	 *	other = Other vector to take dot product with.
+	 *
+	 *	Returns: The dot product of the two vectors.
+	 */
+	T dot(ref const Vector2D!(T) other) const {
 		return x*other.x + y*other.y;
 	}
 
-	T distanceFrom(Vector2D!(T) other) {
+	/// ditto
+	T dot(Vector2D!(T) other) const {
+		return dot(other);
+	}
+	
+	/***
+	 * Gets distance from another point.
+	 * Here, the vector is interpreted as a point in 2-dimensional space.
+	 * Params:
+	 * other = Other vector to measure from.
+	 *
+	 * Returns: Distance from other point.
+	 */
+	T distanceFrom(ref const Vector2D!(T) other) const {
 		return Vector2D!(T)(x - other.x, y - other.y).length;
 	}
-
-	T distanceFromSQ(Vector2D!(T) other) {
+	
+	/***
+	 * Returns squared distance from another point
+	 * Here, the vector is interpreted as a pint in 2-dimensional space.
+	 * Params:
+	 * other = Other vector to measure from.
+	 *
+	 * Returns: Squared distance from other point.
+	 */
+	T distanceFromSQ(ref const Vector2D!(T) other) const {
 		return Vector2D!(T)(x - other.x, y - other.y).lengthSQ;
 	}
-
-	Vector2D!(T) rotateBy(double degrees, Vector2D!(T) center) {
+	
+	/***
+	 * Rotates the point anticlockwise around a center by an amount of degrees.
+	 * Params:
+	 * degrees = Amount of degrees to rotate by, anticlockwise.
+	 * center = center
+	 *
+	 * Returns: This vector after transformation.
+	 */
+	Vector2D!(T) rotateBy(double degrees, ref const Vector2D!(T) center) {
 		import std.math : cos, sin, PI;
 		degrees *= PI/180;
 		const double cs = cos(degrees);
@@ -211,7 +326,19 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 		return this;
 	}
 
-	double getAngleWith(Vector2D!(T) b) const {
+	/// ditto
+	Vector2D!(T) rotateBy(double degrees, Vector2D!(T) center) {
+		return rotateBy(degrees, center);
+	}
+	
+	/***
+	 * Calculates the angle between this vector and antoer one in degree.
+	 * Params:
+	 * b = Other vector to test with.
+	 * 
+	 * Returns: a value between 0 and 90.
+	 */
+	double getAngleWith(ref const Vector2D!(T) b) const {
 		import std.math : sqrt, atan, PI;
 		double tmp = cast(double)(x*b.x + y*b.y);
 
@@ -224,10 +351,18 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 		if ( tmp > 1.0 )
 			tmp = 1.0;
 
-		return atan(sqrt(1 - tmp*tmp) / tmp) * 180.0/PI;
+		return atan(sqrt(1 - tmp*tmp) / tmp) * RADTODEG64;
 	}
 	
-	bool isBetweenPoints(Vector2D!(T) begin, Vector2D!(T) end) const {
+	/***
+	 * Returns if this vector interpreted as a poin is on a line between two other points.
+	 * It is assumed that the point is on the line
+	 * Params:
+	 * begin = Beginning vector to compare between.
+	 * end = Ending vector to compare between.
+	 * Returns: True if this vector is between begin and end, false if not.
+	 */
+	bool isBetweenPoints(ref const Vector2D!(T) begin, ref const Vector2D!(T) end) const {
 		if (begin.x != end.y)	{
 			return ((begin.x <= x && x <= end.x) ||
 				(begin.x >= x && x >= end.x));
@@ -238,12 +373,32 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 		}
 	}
 	
-	Vector2D!(T) getInterpolated(Vector2D!(T) other, double d) const {
+	/***
+	 * Creates an interpolated vector between this vector and another vector.
+	 * Params: 
+	 *  other = The other vector to interpolate with.
+	 *  d = Interpolation value between 0.0f (all the other vector) and 1.0f (all this vector).
+	 * 
+	 * Note that this is the opposite direction of interpolation to getInterpolated_quadratic()
+	 *
+	 * Returns: An interpolated vector.  This vector is not modified. 
+	 */
+	Vector2D!(T) getInterpolated(ref const Vector2D!(T) other, double d) const {
 		double inv = 1.0f - d;
 		return Vector2D!(T)(cast(T)(other.x*inv + x*d), cast(T)(other.y*inv + x*d));
 	}
 	
-	Vector2D!(T) getInterpolated_quadratic(Vector2D!(T) v2, Vector2D!(T) v3, double d) const {
+	/***
+	 * Creates a quadratically interpolated vector between this and two other vectors.
+	 * Params: 
+	 *  v2 = Second vector to interpolate with.
+	 *  v3 = Third vector to interpolate with (maximum at 1.0f)
+	 *  d = Interpolation value between 0.0f (all this vector) and 1.0f (all the 3rd vector).
+	 * 
+	 * Note that this is the opposite direction of interpolation to getInterpolated() and interpolate()
+	 * Returns: An interpolated vector. This vector is not modified. 
+	 */
+	Vector2D!(T) getInterpolated_quadratic(ref const Vector2D!(T) v2, ref const Vector2D!(T) v3, double d) const {
 			const double inv = 1.0f - d;
 			const double mul0 = inv * inv;
 			const double mul1 = 2.0f * d * inv;
@@ -253,13 +408,31 @@ pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is 
 						cast(T)(y * mul0 + v2.y * mul1 + v3.y * mul2));
 	}
 	
-    Vector2D!(T) interpolate(Vector2D!(T) a, Vector2D!(T) b, double d) {
+	/***
+	 *  Sets this vector to the linearly interpolated vector between a and b.
+	 * Params:
+	 * a = first vector to interpolate with, maximum at 1.0f
+	 * b = second vector to interpolate with, maximum at 0.0f
+	 * d = Interpolation value between 0.0f (all vector b) and 1.0f (all vector a)
+	 *
+	 * Note that this is the opposite direction of interpolation to getInterpolated_quadratic()
+	 */
+    Vector2D!(T) interpolate(ref const Vector2D!(T) a, ref const Vector2D!(T) b, double d) {
 		x = cast(T)(cast(double)b.x + ( ( a.x - b.x ) * d ));
 		y = cast(T)(cast(double)b.y + ( ( a.y - b.y ) * d ));
 		return this;
 	}
-	
-    T x, y;
+
+	Vector2D!(T) opBinaryRight(string op)(const T scalar) const
+	if(op == "*") {
+		return this*scalar;
+	}
+
+	/// X coordinate of vector;
+    T x;
+    
+    /// Y coordinate of vector;
+    T y;
 }
 
 alias vector2df = Vector2D!(float);
@@ -295,7 +468,7 @@ unittest {
 	squareVec(vector2df(4,4), vector2df(4,4)).writeln;
 
 	auto vecs = vector2df(vector2df(2,2));
-	auto n = vecs.dot = squareVec(vector2df(4,4), vector2df(4,4));
+	auto n = vecs.dot(squareVec(vector2df(4,4), vector2df(4,4)));
 	n.writeln;
 
 	vecs.rotateBy(64, vector2df(4,4));

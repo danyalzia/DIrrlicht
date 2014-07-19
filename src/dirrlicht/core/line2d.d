@@ -28,12 +28,13 @@ module dirrlicht.core.line2d;
 
 import dirrlicht.core.vector2d;
 
+import std.math;
 import std.traits;
 
 /+++
  + 2D line between two points with intersection methods.
  +/
-pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T == uint) || is (T == float))) {
 	/// Constructor for line between the two points.
 	this(T xa, T ya, T xb, T yb) {
 		start = Vector2D!(T)(xa, xb);
@@ -41,47 +42,47 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	}
 
 	/// Constructor for line between the two points given as vectors.
-	this(Vector2D!(T) start, Vector2D!(T) end) {
+	this(ref const Vector2D!(T) start, ref const Vector2D!(T) end) {
 		this.start = start;
 		this.end = end;
 	}
 
 	/// Copy constructor.
-	this(Line2D!(T) other) {
+	this(ref const Line2D!(T) other) {
 		start = other.start;
 		end = other.end;
 	}
 
-	Line2D!(T) opBinary(string op)(Vector2D!(T) point) const
+	Line2D!(T) opBinary(string op)(ref const Vector2D!(T) point) const
 	if(op == "+" || op == "-") {
 		return Line2D!(T)(mixin("start"~op~"point"), mixin("end"~op~"point"));
 	}
 
-	Line2D!(T) opOpAssign(string op)(Vector2D!(T) point)
+	Line2D!(T) opOpAssign(string op)(ref const Vector2D!(T) point) const
 	if(op == "+" || op == "-") {
 		mixin("start"~op~"= point;");
 		mixin("end"~op~"= point;");
 		return this;
 	}
 
-	bool opEqual()(Line2D!(T) other) {
+	bool opEqual()(ref const Line2D!(T) other) const {
 		return (start==other.start && end==other.end) ||
 		(end==other.start && start==other.end);
 	}
 
 	/// Set this line to new line going through the two points.
-	void setLine()(const T xa, const T ya, const T xb, const T yb) {
+	void setLine(ref const T xa, ref const T ya, ref const T xb, ref const T yb) {
 		start.set(xa, ya); end.set(xb, yb);
 	}
 
 	/// Set this line to new line going through the two points.
-	void setLine()(Vector2D!(T) nstart, Vector2D!(T) nend) {
+	void setLine(ref const Vector2D!(T) nstart, ref const Vector2D!(T) nend) {
 		start.set(nstart);
 		end.set(nend);
 	}
 
 	/// Set this line to new line given as parameter.
-	void setLine()(Line2D!(T) line) {
+	void setLine(ref const Line2D!(T) line) {
 		start.set(line.start);
 		end.set(line.end);
 	}
@@ -90,7 +91,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Get length of line
 	 * Returns: Length of the line.
 	 */
-	T length() {
+	T length() const {
 		return start.distanceFrom(end);
 	}
 
@@ -98,7 +99,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Get squared length of the line
 	 * Returns: Squared length of line.
 	 */
-	T lengthSQ() {
+	T lengthSQ() const {
 		return start.distanceFromSQ(end);
 	}
 
@@ -106,7 +107,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Get middle of the line
 	 * Returns: center of the line.
 	 */
-	Vector2D!(T) getMiddle() {
+	Vector2D!(T) getMiddle() const {
 		return (start + end)/cast(T)2;
 	}
 
@@ -114,7 +115,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Get the vector of the line.
 	 * Returns: The vector of the line.
 	 */
-	Vector2D!(T) getVector() {
+	Vector2D!(T) getVector() const {
 		return Vector2D!(T)(end.x - start.x, end.y - start.y);
 	}
 
@@ -128,7 +129,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * intersection will be stored in this vector.
 	 * Returns: True if there is an intersection, false if not.
 	 */
-	bool intersectWith()(Line2D!(T) l, out Vector2D!(T) outVec, bool checkOnlySegments=true) {
+	bool intersectWith(ref const Line2D!(T) l, ref Vector2D!(T) outVec, bool checkOnlySegments=true) const {
 		// Uses the method given at:
 		// http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
 		immutable float commonDenominator = cast(float)(l.end.y - l.start.y)*(end.x - start.x) -
@@ -208,11 +209,11 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 		// Get the point of intersection on this line, checking that
 		// it is within the line segment.
 		immutable float uA = numeratorA / commonDenominator;
-		if(checkOnlySegments && (uA < 0.f || uA > 1.f) )
+		if(checkOnlySegments && (uA < 0 || uA > 1) )
 			return false; // Outside the line segment
 
 		immutable float uB = numeratorB / commonDenominator;
-		if(checkOnlySegments && (uB < 0.f || uB > 1.f))
+		if(checkOnlySegments && (uB < 0 || uB > 1))
 			return false; // Outside the line segment
 
 		// Calculate the intersection point.
@@ -225,8 +226,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Get unit vector of the line.
 	 * Returns: Unit vector of this line.
 	 */
-	Vector2D!(T) getUnitVector()
-	{
+	Vector2D!(T) getUnitVector() const {
 		T len = cast(T)(1.0 / length);
 		return Vector2D!(T)((end.x - start.x) * len, (end.y - start.y) * len);
 	}
@@ -237,7 +237,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * l= Other line for test.
 	 * Returns: Angle in degrees.
 	 */
-	double getAngleWith()(Line2D!(T) l) {
+	double getAngleWith()(ref const Line2D!(T) l) const {
 		Vector2D!(T) vect = getVector();
 		Vector2D!(T) vect2 = l.getVector();
 		return vect.getAngleWith(vect2);
@@ -248,7 +248,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Returns: 0 if the point is on the line
 	 * <0 if to the left, or >0 if to the right.
 	 */
-	T getPointOrientation()(Vector2D!(T) point) {
+	T getPointOrientation(ref const Vector2D!(T) point) const {
 		return ((end.x - start.x) * (point.y - start.y) -
 		(point.x - start.x) * (end.y - start.y));
 	}
@@ -257,7 +257,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Check if the given point is a member of the line
 	 * Returns: True if point is between start and end, else false.
 	 */
-	bool isPointOnLine()(Vector2D!(T) point) {
+	bool isPointOnLine(ref const Vector2D!(T) point) const {
 		T d = getPointOrientation(point);
 		return (d == 0 && point.isBetweenPoints(start, end));
 	}
@@ -266,7 +266,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 * Check if the given point is between start and end of the line.
 	 * Assumes that the point is already somewhere on the line.
 	 */
-	bool isPointBetweenStartAndEnd()(Vector2D!(T) point) {
+	bool isPointBetweenStartAndEnd(ref const Vector2D!(T) point) const {
 		return point.isBetweenPoints(start, end);
 	}
 
@@ -277,7 +277,7 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	 *  checkOnlySegments = Default (true) is to return a point on the line-segment (between begin and end) of the line.
 	 * When set to false the function will check for the first the closest point on the the line even when outside the segment.
 	 */
-	Vector2D!(T) getClosestPoint()(Vector2D!(T) point, bool checkOnlySegments=true) {
+	Vector2D!(T) getClosestPoint(ref const Vector2D!(T) point, bool checkOnlySegments=true) const {
 		auto c = Vector2D!double(cast(double)(point.x-start.x), cast(double)(point.y- start.y));
 		auto v = Vector2D!double(cast(double)(end.x-start.x), cast(double)(end.y-start.y));
 		double d = v.length;
@@ -300,6 +300,15 @@ pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T 
 	/// End point of the line.
 	Vector2D!(T) end;
 }
+
+/// Alias for float line2d
+alias line2df = Line2D!float;
+
+/// Alias for int line2d
+alias line2di = Line2D!int;
+
+/// Alias for uint line2d
+alias line2du = Line2D!uint;
 
 extern (C):
 

@@ -30,6 +30,15 @@ import dirrlicht.core.vector2d;
 
 import std.traits;
 
+/+++
+ + Rectangle template.
+ + Mostly used by 2D GUI elements and for 2D drawing methods.
+ + It has 2 positions instead of position and dimension and a fast
+ + method for collision detection with other rectangles and points.
+ + 
+ + Coordinates are (0,0) for top-left corner, and increasing to the right
+ + and to the bottom.
+ +/
 pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
 	/// Constructor with two corners
 	this(T x, T y, T x2, T y2) {
@@ -37,26 +46,33 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 		LowerRightCorner = Vector2D!(T)(x2, y2);
 	}
 
+	/// Constructor with two corners
+	this(ref const Vector2D!(T) upperLeft, ref const Vector2D!(T) lowerRight) {
+		UpperLeftCorner = upperLeft;
+		LowerRightCorner = lowerRight;
+	}
+	
 	/// Constructor with upper left corner and dimension
-	this(U)(Vector2D!(T) pos, Dimension2D!(U) size) {
+	this(U)(ref const Vector2D!(T) pos, ref const Dimension2D!(U) size) {
 		UpperLeftCorner = pos;
 		LowerRightCorner = Vector2D!(T)(pos.x + size.Width, pos.y + size.Height);
 	}
 
 	/// Move right/left by given numbers
-	Rect!(T) opBinary(string op)(Vector2D!(T) pos)
+	Rect!(T) opBinary(string op)(ref const Vector2D!(T) pos)
 	if(op == "+" || op == "-") {
 		rect!T ret = this;
 		mixin("return ret "~op~"= pos;");
 	}
 
+	/// Questionable!!!!!!!
 	Rect!(T) opBinary(string op)(Rect!(T) rhs)
 	if(op == "+" || op == "-") {
 		return Rect!(T)(mixin("UpperLeftCorner.x" ~op~ "rhs.UpperLeftCorner.x"), mixin("UpperLeftCorner.y" ~op~ "rhs.UpperLeftCorner.y"));
 	}
 	
 	/// Move right/left by given numbers
-	Rect!(T) opOpAssign(string op)(Vector2D!(T) pos)
+	ref Rect!(T) opOpAssign(string op)(ref const Vector2D!(T) pos)
 	if(op == "+" || op == "-")
 	{
 		mixin("UpperLeftCorner "~op~"= pos;");
@@ -64,6 +80,7 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 		return this;
 	}
 
+	/// Questionable!!!!!!!
 	Rect!(T) opOpAssign(string op)(Rect!(T) rhs)
 	if(op == "+" || op == "-")
 	{
@@ -73,18 +90,17 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	}
 	
 	/// equality operator
-	bool opEqual()(Rect!(T) other)
-	{
+	bool opEqual(ref const Rect!(T) other) const {
 		return (UpperLeftCorner == other.UpperLeftCorner &&
 			LowerRightCorner == other.LowerRightCorner);
 	}
 
 	/// Compares by areas
-	bool opCmp()(Rect!(T) other)
-	{
+	int opCmp(ref const Rect!(T) other) const {
 		if (getArea() < other.getArea()) {
 			return -1;
-		} else if (getArea() > other.getArea()) {
+		}
+		else if (getArea() > other.getArea()) {
 			return 1;
 		}
 		
@@ -92,21 +108,19 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	}
 
 	/// Returns size of rectangle
-	T getArea()
-	{
+	T getArea() const {
 		return getWidth() * getHeight();
 	}
 
 	/***
 	 * Returns if a 2d point is within this rectangle.
 	 *	Params:
-	 *	pos Position to test if it lies within this rectangle.
+	 *	pos = Position to test if it lies within this rectangle.
 	 *
 	 *	Returns:
 	 *	True if the position is within the rectangle, false if not.
 	 */
-	bool isPointInside()(auto ref const Vector2D!(T) pos) const
-	{
+	bool isPointInside(ref const Vector2D!(T) pos) const {
 		return (UpperLeftCorner.x <= pos.x &&
 			UpperLeftCorner.y <= pos.y &&
 			LowerRightCorner.x >= pos.x &&
@@ -116,12 +130,11 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	/***
 	 * Check if the rectangle collides with another rectangle.
 	 *	Params:
-	 *	other	Rectangle to test collision with
+	 *	other = Rectangle to test collision with
 	 *	
 	 *	Returns: True if the rectangles collide.
 	 */
-	bool isRectCollided()(auto ref const rect!T other) const
-	{
+	bool isRectCollided(ref const Rect!T other) const {
 		return (LowerRightCorner.y > other.UpperLeftCorner.y &&
 			UpperLeftCorner.y < other.LowerRightCorner.y &&
 			LowerRightCorner.x > other.UpperLeftCorner.x &&
@@ -131,9 +144,9 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	/***
 	 * Clips this rectangle with another one.
 	 *	Params:
-	 *	other	Rectangle to clip with
+	 *	other = Rectangle to clip with
 	 */
-	void clipAgainst()(Rect!(T) other) {
+	void clipAgainst(ref const Rect!(T) other) {
 		if (other.LowerRightCorner.x < LowerRightCorner.x)
 			LowerRightCorner.x = other.LowerRightCorner.x;
 		if (other.LowerRightCorner.y < LowerRightCorner.y)
@@ -155,7 +168,7 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	 * Moves this rectangle to fit inside another one.
 	 * Returns: True on success, false if not possible.
 	 */
-	bool constrainTo()(Rect!(T) other) {
+	bool constrainTo(ref const Rect!(T) other) {
 		if (other.getWidth() < getWidth() || other.getHeight() < getHeight())
 			return false;
 
@@ -187,12 +200,12 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	}
 
 	/// Get width of rectangle
-	T getWidth() {
+	T getWidth() const {
 		return LowerRightCorner.x - UpperLeftCorner.x;
 	}
 
 	/// Get height of rectangle
-	T getHeight() {
+	T getHeight() const {
 		return LowerRightCorner.y - UpperLeftCorner.y;
 	}
 
@@ -212,20 +225,20 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	 * It would be invalid if the UpperLeftCorner is lower or more
 	 * right than the LowerRightCorner.
 	 */
-	bool isValid() {
+	bool isValid() const {
 		return ((LowerRightCorner.x >= UpperLeftCorner.x) &&
 			(LowerRightCorner.y >= UpperLeftCorner.y));
 	}
 
 	/// Get the center of the rectangle
-	Vector2D!(T) getCenter() {
+	Vector2D!(T) getCenter() const {
 		return Vector2D!(T)(
 			(UpperLeftCorner.x + LowerRightCorner.x) / 2,
 			(UpperLeftCorner.y + LowerRightCorner.y) / 2);
 	}
 
 	/// Get the dimensions of the rectangle
-	Vector2D!(T) getSize() {
+	Vector2D!(T) getSize() const {
 		return Vector2D!(T)(getWidth(), getHeight());
 	}
 	
@@ -235,9 +248,9 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	 * the box.
 	 *
 	 * Params:
-	 * p 	Point to add to the box.
+	 * p = Point to add to the box.
 	 */
-	void addInternalPoint()(Vector2D!(T) p) {
+	void addInternalPoint(ref const Vector2D!(T) p) {
 		addInternalPoint(p.x, p.y);
 	}
 
@@ -247,8 +260,8 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 	 * ther box.
 	 *
 	 * Params:
-	 * x 	X-Coordinate of the point to add to this box.
-	 * y 	Y-Coordinate of the point ot add to this box.
+	 * x = X-Coordinate of the point to add to this box.
+	 * y = Y-Coordinate of the point ot add to this box.
 	 */
 	void addInternalPoint(T x, T y) {
 		if (x > LowerRightCorner.x)
@@ -296,8 +309,7 @@ alias recti = Rect!(int);
 alias rectf = Rect!(float);
 
 ///
-unittest
-{
+unittest {
     auto rec = recti(4, 4, 4, 4);
     assert(rec.x == 4 || rec.y == 4 || rec.x1 == 4 || rec.y1 == 4);
     rec += recti(4,4,4,4);

@@ -29,50 +29,53 @@ module dirrlicht.core.dimension2d;
 import dirrlicht.core.vector2d;
 import std.traits;
 
-pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float))) {
+/+++
+ + Specifies a 2 dimensional size
+ +/
+pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
     /// Constructor with width and height
 	this(const T width, const T height) {
 		Width = width;
 		Height = height;
 	}
 
-	this(Vector2D!(T) other) {	
+	this(ref const Vector2D!(T) other) {	
 		Width = other.x;
 		Height = other.y;
 	}
 
 	/// Use this constructor only where you are sure that 
 	/// conversion is valid.
-	this(U)(auto ref const Dimension2D!(U) other) {
+	this(U)(ref const Dimension2D!(U) other) {
 		Width = cast(T)other.Width;
 		Height = cast(T)other.Height;
 	}
 
-	auto ref Dimension2D!(T) opAssign(U)(Dimension2D!(U) other) {
+	ref Dimension2D!(T) opAssign(U)(ref const Dimension2D!(U) other) {
 		Width = cast(T)other.Width;
 		Height = cast(T)other.Height;
 		return this;
 	}
 
 	/// Equality operator
-	bool opEqual(Dimension2D!(T) other) {
+	bool opEqual(ref const Dimension2D!(T) other) const {
 		return Width == other.Width &&
 			Height == other.Height;
 	}
 
-	bool opEqual(Vector2D!(T) other) {
+	bool opEqual(ref const Vector2D!(T) other) const {
 		return other.x == Width && other.y == Height;
 	}
 
 	/// Set to new values
-	Dimension2D!(T) set(const T width, const T height) {
+	Dimension2D!(T) set(ref const T width, ref const T height) {
 		Width = width;
 		Height = height;
 		return this;
 	}
 
 	/// Divide width and height by scalar
-	auto ref Dimension2D!(T) opOpAssign(string op)(T scale)
+	ref Dimension2D!(T) opOpAssign(string op)(ref const T scale)
 		if(op == "/") {
 		Width /= scale;
 		Height /= scale;
@@ -86,7 +89,7 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	}
 
 	/// Multiply width and height by scalar
-	auto ref Dimension2D!(T) opOpAssign(string op)(T scale)
+	ref Dimension2D!(T) opOpAssign(string op)(ref const T scale) const
 		if(op == "*") {
 		Width *= scale;
 		Height *= scale;
@@ -94,13 +97,13 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	}
 
 	/// Multiply width and height by scalar
-	Dimension2D!(T) opBinary(string op)(const T scale)
+	Dimension2D!(T) opBinary(string op)(ref const T scale) const
 		if(op == "*") {
 		return Dimension2D!(T)(Width*sacle, Height*scale);
 	}
 
 	/// Add another dimension to this one
-	auto ref Dimension2D!(T) opOpAssign(string op)(auto ref const Dimension2D other)
+	auto ref Dimension2D!(T) opOpAssign(string op)(const Dimension2D other)
 		if(op == "+") {
 		Width += other.Width;
 		Height += other.Height;
@@ -108,94 +111,81 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	}
 
 	/// Add two dimensions
-	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other)
-		if(op == "+")
-	{
+	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other) const
+		if(op == "+") {
 		return Dimension2D!(T)(Width+other.Width, Height+other.Height);
 	}
 
 	/// Subtract a dimension from this one
-	auto ref Dimension2D!(T) opOpAssign(string op)(auto ref const Dimension2D!(T) other)
-		if(op == "-")
-	{
+	auto ref Dimension2D!(T) opOpAssign(string op)(const Dimension2D!(T) other)
+		if(op == "-") {
 		Width -=  other.Width;
 		Height -= other.Height;
 		return this;
 	}
 
 	/// Subtract a dimension from another
-	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other)
-	{
+	Dimension2D!(T) opBinary(string op)(const Dimension2D!(T) other) const {
 		return Dimension2D!(T)(Width-other.Width, Height-other.Height);
 	}
 
 	/// Get area
-	T getArea()
-	{
+	T getArea() const {
 		return Width*Height;
 	}
-
-	/// Get the optimal size according to some properties
-	/** 
-	* This is a function often used for texture dimension
-	* calculations. The function returns the next larger or
-	* smaller dimension which is a power-of-two dimension
-	* (2^n,2^m) and/or square (Width=Height).
-	* Params:
-	* requirePowerOfTwo 	Forces the result to use only
-	* powers of two as values.
-	* requireSquare 		Makes width==height in the result
-	* larger 				Choose whether the result is larger or
-	* smaller than the current dimension. If one dimension
-	* need not be changed it is kept with any value of larger.
-	* maxValue 				Maximum texturesize. if value > 0 size is
-	* clamped to maxValue
-	* 
-	* Returns: The optimal dimension under the given
-	* constraints. 
-	*/
+	
+	/***
+	 * Get the optimal size according to some properties
+	 * This is a function often used for texture dimension
+	 * calculations. The function returns the next larger or
+	 * smaller dimension which is a power-of-two dimension
+	 * (2^n,2^m) and/or square (Width=Height).
+	 * Params:
+	 *  requirePowerOfTwo = Forces the result to use only
+	 *  powers of two as values.
+	 *  requireSquare = Makes width==height in the result
+	 *  larger = Choose whether the result is larger or
+	 *  smaller than the current dimension. If one dimension
+	 *  need not be changed it is kept with any value of larger.
+	 *  maxValue = Maximum texturesize. if value > 0 size is
+	 *  clamped to maxValue
+	 * 
+	 * Returns: The optimal dimension under the given
+	 * constraints. 
+	 */
 	Dimension2D!(T) getOptimalSize(
 		bool requirePowerOfTwo = true,
 		bool requireSquare = false,
 		bool larger = true,
-		uint maxValue = 0)
-	{
+		uint maxValue = 0) const {
+			
 		uint i = 1;
 		uint j = 1;
 
-		if(requirePowerOfTwo)
-		{
-			while(i < cast(uint)Width)
-			{
+		if(requirePowerOfTwo) {
+			while(i < cast(uint)Width) {
 				i <<= 1;
 			}
-			if(!larger && i!=1 && i!=cast(uint)Width)
-			{
+			if(!larger && i!=1 && i!=cast(uint)Width) {
 				i >>= 1;
 			}
 
-			while(j < cast(uint)Height)
-			{
+			while(j < cast(uint)Height) {
 				j <<= 1;
 			}
-			if(!larger && j!=1 && j!=cast(uint)Height)
-			{
+			if(!larger && j!=1 && j!=cast(uint)Height) {
 				j >>= 1;
 			}
-		} else
-		{
+		} else {
 			i = cast(uint)Width;
 			j = cast(uint)Height;
 		}
 
-		if(requireSquare)
-		{
-			if((larger && (i>j)) || (!larger && (i<j)))
-			{
+		if(requireSquare) {
+			if((larger && (i>j)) || (!larger && (i<j))) {
 				j = i;
 			}
-			else
-			{
+			else {
 				i = j;
 			}
 		}
@@ -208,16 +198,16 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 
 		return Dimension2D!(T)(cast(T)i, cast(T)j);
 	}
-
-	/// Get the interpolated dimension
-	/** 
-	* Params:
-	* other 	Other dimension to interpolate with.
-	* d 		Value between 0.0f and 1.0f.
-	*
-	* Returns: Interpolated dimension. 
-	*/
-	Dimension2D!(T) getInterpolated(const Dimension2D!(T) other, float d) {
+	
+	/***
+	 * Get the interpolated dimension
+	 * Params:
+	 *  other = Other dimension to interpolate with.
+	 *  d = Value between 0.0f and 1.0f.
+	 *
+	 * Returns: Interpolated dimension. 
+	 */
+	Dimension2D!(T) getInterpolated(const Dimension2D!(T) other, float d) const {
 		float inv = (1.0f - d);
 		return Dimension2D!(T)( cast(T)(other.Width*inv + Width*d), cast(T)(other.Height*inv + Height*d));
 	}
@@ -230,12 +220,24 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	    	}
 	    	alias ptr this;
 	    }
-	    else {
-	    	irr_dimension2du ptr() {
-	    		return irr_dimension2du(Width, Height);
+	    else static if (is (T == double)) {
+	    	irr_dimension2df ptr() {
+	    		return irr_dimension2df(cast(float)Width, cast(float)Height);
 	    	}
 	    	alias ptr this;
 	    }
+	    else static if (is (T == int)) {
+	    	irr_dimension2di ptr() {
+	    		return irr_dimension2di(Width, Height);
+	    	}
+	    	alias ptr this;
+	    }
+	    else {
+			irr_dimension2du ptr() {
+	    		return irr_dimension2du(Width, Height);
+	    	}
+	    	alias ptr this;
+		}
     }
 
     /// Width of the dimension
@@ -245,10 +247,16 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	T Height;
 }
 
+alias dimension2di = Dimension2D!(int);
 alias dimension2du = Dimension2D!(uint);
 alias dimension2df = Dimension2D!(float);
 
 package extern(C):
+
+struct irr_dimension2di {
+    int Width;
+    int Height;
+}
 
 struct irr_dimension2du {
     uint Width;
