@@ -26,11 +26,12 @@
 
 module dirrlicht.core.quaternion;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 import dirrlicht.core.matrix4;
 
-pure nothrow @safe struct Quaternion {
+pure nothrow struct Quaternion {
 	/// Constructor
 	this(float x, float y, float z, float w) {
 		x = x;
@@ -532,4 +533,10 @@ pure nothrow @safe struct Quaternion {
 	float y = 0.0f;
 	float z = 0.0f;
 	float w = 0.0f; // real part
+}
+
+unittest {
+	mixin(Core_TestBegin);
+
+	mixin(Core_TestEnd);
 }

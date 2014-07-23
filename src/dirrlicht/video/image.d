@@ -33,7 +33,6 @@ class Image
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IImage* ptr;
 }
 package extern (C):

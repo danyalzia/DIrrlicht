@@ -34,7 +34,6 @@ class LightSceneNode : SceneNode {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ILightSceneNode* ptr;
 }
 

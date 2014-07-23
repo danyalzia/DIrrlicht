@@ -44,7 +44,6 @@ class CameraSceneNode : SceneNode {
     	irrPtr = cast(irr_ISceneNode*)ptr;
     }
     
-    alias ptr this;
     irr_ICameraSceneNode* ptr;
 }
 

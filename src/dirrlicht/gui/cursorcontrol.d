@@ -41,7 +41,6 @@ class CursorControl {
         irr_ICursorControl_setVisible(ptr, value);
     }
     
-    alias ptr this;
     irr_ICursorControl* ptr;
 }
 

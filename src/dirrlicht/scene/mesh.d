@@ -85,7 +85,6 @@ class Mesh {
         irr_IMesh_setDirty(ptr, buffer);
     }
     
-    alias ptr this;
     irr_IMesh* ptr;
 }
 
@@ -95,11 +94,11 @@ unittest
     mixin(TestPrerequisite);
 
     /// smgr.getMesh() gives IAnimatedMesh instead so will test IMesh only
-    auto mesh = smgr.getMesh("../../media/sydney.md2");
-    checkNull(mesh);
+    //auto mesh = smgr.getMesh("../../media/sydney.md2");
+    //checkNull(mesh);
 
-    auto count = mesh.getMeshBufferCount();
-    debug writeln("BufferCount: ", count);
+    //auto count = mesh.getMeshBufferCount();
+    //debug writeln("BufferCount: ", count);
 }
 
 package extern(C):

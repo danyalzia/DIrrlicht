@@ -31,7 +31,6 @@ class MD3QuaternionTag {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_SMD3QuaternionTag* ptr;
 }
 

@@ -43,7 +43,6 @@ class FileSystem {
         irr_IFileSystem_addFileArchive(ptr, toStringz(file));
     }
     
-    alias ptr this;
     irr_IFileSystem* ptr;
 }
 

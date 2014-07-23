@@ -62,14 +62,13 @@ class MeshSceneNode : SceneNode {
         return irr_IMeshSceneNode_isReadOnlyMaterials(ptr);
     }
     
-    alias ptr this;
     irr_IMeshSceneNode* ptr;
 }
 
 unittest
 {
     mixin(TestPrerequisite);
-    auto mesh = smgr.getMesh("../../media/sydney.md2");
+    //auto mesh = smgr.getMesh("../../media/sydney.md2");
 }
 
 extern (C):

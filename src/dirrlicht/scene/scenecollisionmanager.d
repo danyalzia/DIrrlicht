@@ -32,7 +32,6 @@ class SceneCollisionManager {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ISceneCollisionManager* ptr;
 }
 extern (C):

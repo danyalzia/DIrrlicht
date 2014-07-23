@@ -150,16 +150,14 @@ class AnimatedMesh : Mesh {
         return AnimatedMeshType.Unknown;
     }
     
-    alias ptr this;
     irr_IAnimatedMesh* ptr;
 }
 
-unittest
-{
+unittest{
     mixin(TestPrerequisite);
 
     /// IAnimatedMesh test starts here
-    auto mesh = smgr.getMesh("../../media/sydney.md2");
+    auto mesh = smgr.getMesh("../media/sydney.md2");
     assert(mesh !is null);
     assert(mesh.ptr != null);
 

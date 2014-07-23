@@ -33,7 +33,6 @@ class GUIFont {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_IGUIFont* ptr;
 }
 

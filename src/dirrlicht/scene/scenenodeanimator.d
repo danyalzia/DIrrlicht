@@ -31,7 +31,6 @@ class SceneNodeAnimator {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_ISceneNodeAnimator* ptr;
 }
 

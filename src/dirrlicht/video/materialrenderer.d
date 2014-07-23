@@ -31,7 +31,6 @@ class MaterialRenderer {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IMaterialRenderer* ptr;
 }
 

@@ -31,7 +31,6 @@ class MeshCache {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IMeshCache* ptr;
 }
 extern (C):

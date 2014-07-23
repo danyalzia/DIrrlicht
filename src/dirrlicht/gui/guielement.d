@@ -31,7 +31,6 @@ class GUIElement {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IGUIElement* ptr;
 }
 

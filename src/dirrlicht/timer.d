@@ -38,8 +38,8 @@ import dirrlicht.irrlichtdevice;
  +/ 
 class Timer {
     this(irr_ITimer* ptr)
-    out(result) {
-		assert(result.ptr != null);
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
@@ -122,15 +122,29 @@ class Timer {
     	irr_ITimer_tick(ptr);
     }
     
-    alias ptr this;
-	package irr_ITimer* ptr;
+	irr_ITimer* ptr;
 }
 
 unittest {
 	mixin(TestPrerequisite);
 	auto timer = device.timer;
-	checkNull(timer);
+	assert(timer !is null);
+	assert(timer.ptr != null);
+
+	with (timer) {
+		getRealTime().writeln;
+		getRealTimeAndDate().writeln;
+		getTime().writeln;
+		setTime(2);
+		stop();
+		start();
+		setSpeed(2);
+		getSpeed().writeln;
+		isStopped().writeln;
+		tick();
+	}
 }
+
 package extern(C):
 
 struct irr_ITimer;

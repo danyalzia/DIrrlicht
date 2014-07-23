@@ -124,7 +124,6 @@ class GUIStaticText {
         return irr_IGUIStaticText_isRightToLeft(ptr);
     }
     
-    alias ptr this;
 	irr_IGUIStaticText* ptr;
 }
 

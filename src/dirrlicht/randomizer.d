@@ -26,13 +26,16 @@
 
 module dirrlicht.randomizer;
 
+import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
-/// Class for generating random numbers
+/+++
+ + Class for generating random number
+ +/
 class Randomizer {
 	this(irr_IRandomizer* ptr)
-    out(result) {
-		assert(result.ptr != null);
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
@@ -41,7 +44,7 @@ class Randomizer {
     /***
      * resets the randomizer
 	 * Params:
-     *			 value =  Initialization value (seed)
+     *  value =  Initialization value (seed)
      */
     void reset(int value=0x0f0f0f0f) {
     	return irr_IRandomizer_reset(ptr, value);
@@ -62,8 +65,21 @@ class Randomizer {
     	return irr_IRandomizer_randMax(ptr);
     }
     
-	alias ptr this;
-	package irr_IRandomizer* ptr;
+	irr_IRandomizer* ptr;
+}
+
+unittest {
+	mixin(TestPrerequisite);
+	auto randomizer = device.randomizer;
+	assert(randomizer !is null);
+	assert(randomizer.ptr != null);
+
+	with (randomizer) {
+		reset();
+		rand.writeln;
+		frand.writeln;
+		randMax.writeln;
+	}
 }
 
 package extern (C):

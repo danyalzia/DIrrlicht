@@ -63,7 +63,6 @@ class BoneSceneNode : SceneNode {
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
-	alias ptr this;
 	irr_IBoneSceneNode* ptr;
 }
 

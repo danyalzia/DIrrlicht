@@ -26,6 +26,7 @@
 
 module dirrlicht.core.line2d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector2d;
 
 import std.math;
@@ -34,7 +35,7 @@ import std.traits;
 /+++
  + 2D line between two points with intersection methods.
  +/
-pure nothrow @safe struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T == uint) || is (T == float))) {
+pure nothrow struct Line2D(T) if(isNumeric!(T) && (is (T == int) || is (T == uint) || is (T == float))) {
 	/// Constructor for line between the two points.
 	this(T xa, T ya, T xb, T yb) {
 		start = Vector2D!(T)(xa, xb);
@@ -309,6 +310,11 @@ alias line2di = Line2D!int;
 
 /// Alias for uint line2d
 alias line2du = Line2D!uint;
+
+unittest {
+	mixin(Core_TestBegin);
+	mixin(Core_TestEnd);
+}
 
 extern (C):
 

@@ -18,10 +18,26 @@ version(LDC)
 else
     enum LDC = false;
 
-void checkNull(T)(T name, int line = __LINE__) {
-	assert(name !is null);
-	assert(name.ptr != null);
-}
+enum Core_TestBegin =
+`
+	import std.stdio;
+	writeln();
+    writeln("=====================");
+    writeln("TESTING BEGIN: ", __MODULE__);
+    writeln(__TIME__);
+    writeln("=====================");
+    writeln();
+`;
+
+enum Core_TestEnd =
+`
+	writeln();
+    writeln("=====================");
+    writeln("TESTING END: ", __MODULE__);
+    writeln(__TIME__);
+    writeln("=====================");
+    writeln();
+`;
 
 enum TestPrerequisite =
 `
@@ -30,20 +46,24 @@ enum TestPrerequisite =
     
     writeln();
     writeln("=====================");
-    writeln("TESTING ", __MODULE__);
+    writeln("TESTING BEGIN: ", __MODULE__);
     writeln(__TIME__);
     writeln("=====================");
     writeln();
 
     auto device = createDevice(DriverType.OpenGL, dimension2du(800,600));
-	checkNull(device);
+	assert(device !is null);
+	assert(device.ptr != null);
 
     auto driver = device.videoDriver;
-    checkNull(driver);
+    assert(driver !is null);
+	assert(driver.ptr != null);
 
     auto smgr = device.sceneManager;
-    checkNull(smgr);
+    assert(smgr !is null);
+	assert(smgr.ptr != null);
 
     auto gui = device.guiEnvironment;
-    checkNull(gui);
+    assert(gui !is null);
+	assert(gui.ptr != null);
 `;

@@ -35,7 +35,6 @@ class ShadowVolumeSceneNode : SceneNode {
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
-	alias ptr this;
 	irr_IShadowVolumeSceneNode* ptr;
 }
 

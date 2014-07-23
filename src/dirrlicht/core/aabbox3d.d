@@ -28,12 +28,13 @@
 */
 module dirrlicht.core.aabbox3d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 import dirrlicht.core.line3d;
 import std.traits;
 
-pure nothrow @safe struct AABBox3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow struct AABBox3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     this(Vector3D!(T) min, Vector3D!(T) max) {
         MinEdge = min;
         MaxEdge = max;
@@ -308,6 +309,8 @@ alias aabbox3di = AABBox3D!(int);
 /// AABBox3D Example
 unittest
 {
+	mixin(Core_TestBegin);
+	
     auto box = aabbox3di(vector3di(2,2,2), vector3di(4,4,4));
     assert(box.MinEdge.x == 2 || box.MinEdge.y == 2 || box.MinEdge.z == 2
     || box.MaxEdge.x == 4 || box.MaxEdge.y == 4 || box.MaxEdge.z == 4);
@@ -328,6 +331,8 @@ unittest
     box /= box2;
     assert(box.MinEdge.x == 2 || box.MinEdge.y == 2 || box.MinEdge.z == 2
     || box.MaxEdge.x == 4 || box.MaxEdge.y == 4 || box.MaxEdge.z == 4);
+
+    mixin(Core_TestEnd);
 }
 
 package extern(C):

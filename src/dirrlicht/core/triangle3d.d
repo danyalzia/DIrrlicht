@@ -26,12 +26,13 @@
 
 module dirrlicht.core.triangle3d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.simdmath;
 import dirrlicht.core.vector3d;
 
 import std.traits;
 
-pure nothrow @safe struct Triangle3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow struct Triangle3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     /// Constructor for triangle with given three vertices
 	this(Vector3D!(T) v1, Vector3D!(T) v2, Vector3D!(T) v3) {
 		pointA = v1;
@@ -278,6 +279,12 @@ pure nothrow @safe struct Triangle3D(T) if(isNumeric!(T) && (is (T == int) || is
 		}
 		return (res >= 0.0f);
 	}
+}
+
+unittest {
+	mixin(Core_TestBegin);
+
+	mixin(Core_TestEnd);
 }
 
 package extern (C):

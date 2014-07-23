@@ -111,7 +111,6 @@ class AnimatedMeshMD2 : AnimatedMesh {
         return to!string(str);
     }
     
-    alias ptr this;
     irr_IAnimatedMeshMD2* ptr;
 }
 
@@ -122,5 +121,5 @@ struct irr_IAnimatedMeshMD2;
 void irr_IAnimatedMeshMD2_getFrameLoop(irr_IAnimatedMeshMD2* mesh, AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS);
 bool irr_IAnimatedMeshMD2_getFrameLoopByName(irr_IAnimatedMeshMD2* mesh, const char* name, ref int outBegin, ref int outEnd, ref int outFPS);
 int irr_IAnimatedMeshMD2_getAnimationCount(irr_IAnimatedMeshMD2* mesh);
-const char* irr_IAnimatedMeshMD2_getAnimationName(irr_IAnimatedMeshMD2* mesh, int nr);
+const(char*) irr_IAnimatedMeshMD2_getAnimationName(irr_IAnimatedMeshMD2* mesh, int nr);
 

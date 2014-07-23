@@ -26,6 +26,7 @@
 
 module dirrlicht.core.plane3d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector3d;
 import dirrlicht.core.simdmath;
 
@@ -48,7 +49,7 @@ enum EIntersectionRelation3D
  + passed in has to be normalized in advance. No change to the normal will be
  + made by any of the class methods.
  +/
-pure nothrow @safe struct Plane3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow struct Plane3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     this(Vector3D!(T) MPoint, Vector3D!(T) Normal) {
 		this.Normal = Normal;
 		recalculateD(MPoint);
@@ -275,6 +276,12 @@ pure nothrow @safe struct Plane3D(T) if(isNumeric!(T) && (is (T == int) || is (T
 
 alias plane3df = Plane3D!(float);
 alias plane3di = Plane3D!(int);
+
+unittest {
+	mixin(Core_TestBegin);
+
+	mixin(Core_TestEnd);
+}
 
 extern (C):
 

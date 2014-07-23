@@ -26,6 +26,7 @@
 
 module dirrlicht.core.matrix4;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector3d;
 import dirrlicht.core.vector2d;
 import dirrlicht.core.plane3d;
@@ -37,7 +38,7 @@ private enum USE_MATRIX_TEST = true;
 
 import std.math;
 
-pure nothrow @safe struct Matrix4(T) {
+pure nothrow struct Matrix4(T) {
     /// Constructor flags
 	enum eConstructor
 	{
@@ -1888,7 +1889,6 @@ pure nothrow @safe struct Matrix4(T) {
 
 		return true;
 	}
-
 private:
 	/// Matrix data, strored in row-major order
 	T[16] M;
@@ -1903,8 +1903,7 @@ alias matrix4 = Matrix4!(float);
 
 unittest
 {
-    import std.stdio;
-
+	mixin(Core_TestBegin);
     matrix4 mat;
     foreach(i; 0..16)
     {
@@ -1912,6 +1911,8 @@ unittest
     }
 
     writeln(mat);
+
+    mixin(Core_TestEnd);
 }
 
 extern (C):

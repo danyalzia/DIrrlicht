@@ -57,10 +57,21 @@ import std.utf : toUTFz;
  + time.
  +/
 class IrrlichtDevice {
-    this(DriverType type, dimension2du dim, uint bits, bool fullscreen, bool stencilbuffer, bool vsync) {
-        ptr = irr_createDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
+	invariant() {
+		assert(ptr != null);
+	}
+	
+    this(irr_IrrlichtDevice* ptr)
+    in {
+		assert(ptr != null);
+	}
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
     }
-    
+	
     ~this() {
     	drop();
     }
@@ -80,13 +91,13 @@ class IrrlichtDevice {
 	 * (recommended), use the slightly enhanced code shown at isWindowActive().
 
 	 * Note if you are running Irrlicht inside an external, custom
-	 * created window: Calling Device->run() will cause Irrlicht to
+	 * created window: Calling IrrlichtDevice.run() will cause Irrlicht to
 	 * dispatch windows messages internally.
 	 * If you are running Irrlicht in your own custom window, you can
 	 * also simply use your own message loop using GetMessage,
 	 * DispatchMessage and whatever and simply don't use this method.
 	 * But note that Irrlicht will not be able to fetch user input
-	 * then. See irr::SIrrlichtCreationParameters::WindowId for more
+	 * then. See IrrlichtCreationParameters.WindowId for more
 	 * informations and example code.
 	 */
     bool run() {
@@ -220,7 +231,7 @@ class IrrlichtDevice {
 		 *  randomizer = Pointer to the new IRandomizer object. This object is
 		 * grab()'ed by the engine and will be released upon the next randomizer
 		 * call or upon device destruction. */
-	    void randomizer(Randomizer randomizer) in { assert(randomizer.ptr != null); } body { irr_IrrlichtDevice_setRandomizer(ptr, randomizer); }
+	    void randomizer(Randomizer randomizer) in { assert(randomizer.ptr != null); } body { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
     }
 
 
@@ -319,7 +330,7 @@ class IrrlichtDevice {
         const char* str = irr_IrrlichtDevice_getVersion(ptr);
         return to!string(str);
     }
-
+	
 	/***
 	 * Sends a user created event to the engine.
 	 * Is is usually not necessary to use this. However, if you
@@ -340,7 +351,7 @@ class IrrlichtDevice {
 	 *  smgr =  New scene manager to be used.
 	 */
     void setInputReceivingSceneManager(SceneManager smgr) {
-        irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr);
+        irr_IrrlichtDevice_setInputReceivingSceneManager(ptr, smgr.ptr);
     }
 
     /***
@@ -358,7 +369,7 @@ class IrrlichtDevice {
      * It does set the drawing/clientDC size of the window, the window decorations are added to that.
      * You get the current window size with getScreenSize() (might be unified in future)
 	 */
-    @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim); }
+    @property void windowSize(dimension2du dim) { irr_IrrlichtDevice_setWindowSize(ptr, dim.ptr); }
 
 	/// Minimizes the window if possible
     void minimizeWindow() {
@@ -456,7 +467,7 @@ class IrrlichtDevice {
         irr_IrrlichtDevice_drop(ptr);
     }
     
-    alias ptr this;
+    //alias ptr this;
 	irr_IrrlichtDevice* ptr;
 
 private:
@@ -473,7 +484,7 @@ private:
 }
 
 auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
-	return new IrrlichtDevice(type, dim, bits, fullscreen, stencilbuffer, vsync);
+	return new IrrlichtDevice(irr_createDevice(type, dim.ptr, bits, fullscreen, stencilbuffer, vsync, null));
 }
 
 /// IrrlichtDevice example
@@ -484,37 +495,47 @@ unittest {
         with (device) {
             run();
             yield();
-            sleep(1);
+            //sleep(1);
             auto videodriver = videoDriver;
-            checkNull(videodriver);
+            assert(videodriver !is null);
+            assert(videodriver.ptr != null);
 
             auto filesystem = fileSystem;
-            checkNull(filesystem);
+            assert(filesystem !is null);
+            assert(filesystem.ptr != null);
 
             auto guienv = guiEnvironment;
-            checkNull(guienv);
+			assert(guienv !is null);
+            assert(guienv.ptr != null);
 
             auto scenemgr = sceneManager;
-            checkNull(scenemgr);
+            assert(scenemgr !is null);
+            assert(scenemgr.ptr != null);
 
             auto cursorcontrol = cursorControl;
-            checkNull(cursorcontrol);
+            assert(cursorcontrol !is null);
+            assert(cursorcontrol.ptr != null);
 
             auto Logger = logger;
-            checkNull(Logger);
+            assert(Logger !is null);
+            assert(Logger.ptr != null);
 
             auto videolist = videoModeList;
-            checkNull(videolist);
+            assert(videolist !is null);
+            assert(videolist.ptr != null);
 
             auto OSoperator = osOperator;
-            checkNull(OSoperator);
+            assert(OSoperator !is null);
+            assert(OSoperator.ptr != null);
 
             auto Timer = timer;
-            checkNull(Timer);
+            assert(Timer !is null);
+            assert(Timer.ptr != null);
 
             auto randomizer1 = randomizer;
-            checkNull(randomizer1);
-
+            assert(randomizer1 !is null);
+            assert(randomizer1.ptr != null);
+            
             randomizer = randomizer;
             createDefaultRandomizer();
             windowCaption = "Hello";
@@ -537,7 +558,7 @@ package extern (C):
 
 struct irr_IrrlichtDevice;
 
-irr_IrrlichtDevice* irr_createDevice(DriverType driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, irr_IEventReceiver* receiver=null);
+irr_IrrlichtDevice* irr_createDevice(DriverType driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, EventReceiver receiver=null);
 bool irr_IrrlichtDevice_run(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_yield(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_sleep(irr_IrrlichtDevice* device, uint timeMs, bool pauseTimer=false);
@@ -560,9 +581,9 @@ bool irr_IrrlichtDevice_isWindowMinimized(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_isFullscreen(irr_IrrlichtDevice* device);
 ColorFormat irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
-const char* irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
-void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
-irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
+const(char*) irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
+//void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
+//irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, Event event);
 void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
 void irr_IrrlichtDevice_setResizable(irr_IrrlichtDevice* device, bool value = false);

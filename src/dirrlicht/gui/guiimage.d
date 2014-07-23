@@ -91,14 +91,13 @@ class GUIImage {
         return rectf(temp.x, temp.y, temp.x1, temp.y1);
     }
     
-    alias ptr this;
 	irr_IGUIImage* ptr;
 }
 
 unittest {
     mixin(TestPrerequisite);
 
-    gui.addImage(driver.getTexture("../../media/wall.bmp"), vector2di(20,20));
+    //gui.addImage(driver.getTexture("../media/wall.bmp"), vector2di(20,20));
 }
 
 extern (C):

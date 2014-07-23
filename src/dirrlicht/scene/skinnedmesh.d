@@ -31,7 +31,6 @@ class SkinnedMesh {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ISkinnedMesh* ptr;
 }
 

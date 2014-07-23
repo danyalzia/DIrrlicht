@@ -31,7 +31,6 @@ class ImageLoader {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IImageLoader* ptr;
 }
 

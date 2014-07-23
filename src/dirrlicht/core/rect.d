@@ -26,6 +26,7 @@
 
 module dirrlicht.core.rect;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector2d;
 
 import std.traits;
@@ -39,7 +40,7 @@ import std.traits;
  + Coordinates are (0,0) for top-left corner, and increasing to the right
  + and to the bottom.
  +/
-pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
 	/// Constructor with two corners
 	this(T x, T y, T x2, T y2) {
 		UpperLeftCorner = Vector2D!(T)(x, y);
@@ -308,12 +309,16 @@ pure nothrow @safe struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T ==
 alias recti = Rect!(int);
 alias rectf = Rect!(float);
 
-///
+/// Rect example
 unittest {
+	mixin(Core_TestBegin);
+	
     auto rec = recti(4, 4, 4, 4);
     assert(rec.x == 4 || rec.y == 4 || rec.x1 == 4 || rec.y1 == 4);
     rec += recti(4,4,4,4);
     assert(rec.x == 8 || rec.y == 8 || rec.x1 == 8 || rec.y1 == 8);
+
+    mixin(Core_TestEnd);
 }
 
 package extern (C):

@@ -1,7 +1,7 @@
 import dirrlicht.all;
 
 void main() {
-    auto device = createDevice(DriverType.OpenGL, dimension2du(800, 600), 16, false, false, false);
+    auto device = createDevice(DriverType.OpenGL, dimension2du(640, 480), 16, false, false, false);
 
     device.windowCaption = "Hello World!";
     device.resizable = true;

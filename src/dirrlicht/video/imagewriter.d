@@ -31,7 +31,6 @@ class ImageWriter {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IImageWriter* ptr;
 }
 

@@ -75,17 +75,16 @@ class OSOperator {
     bool getSystemMemory(uint* Total, uint* Avail) {
     	return irr_IOSOperator_getSystemMemory(ptr, Total, Avail);
     }
-    
-    alias ptr this;
-    package irr_IOSOperator* ptr;
+
+    irr_IOSOperator* ptr;
 }
 
 package extern (C):
 
 struct irr_IOSOperator;
 
-const char* irr_IOSOperator_getOperatingSystemVersion(irr_IOSOperator* op);
-void irr_IOSOperator_copyToClipboard(irr_IOSOperator* op, const char* text);
-const char* irr_IOSOperator_getTextFromClipboard(irr_IOSOperator* op);
+const(char*) irr_IOSOperator_getOperatingSystemVersion(irr_IOSOperator* op);
+void irr_IOSOperator_copyToClipboard(irr_IOSOperator* op, const(char*) text);
+const(char*) irr_IOSOperator_getTextFromClipboard(irr_IOSOperator* op);
 bool irr_IOSOperator_getProcessorSpeedMHz(irr_IOSOperator* op, uint* MHz);
 bool irr_IOSOperator_getSystemMemory(irr_IOSOperator* op, uint* Total, uint* Avail);

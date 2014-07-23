@@ -31,7 +31,6 @@ class LightManager {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ILightManager* ptr;
 }
 

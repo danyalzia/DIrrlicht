@@ -111,7 +111,6 @@ class Texture {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_ITexture* ptr;
 }
 

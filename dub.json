@@ -14,5 +14,5 @@
 	"dflags" : ["-Dddoc/Ddoc/"],
 	"lflags": ["-LCIrrlicht/lib/", "-L../irrlicht/lib/Linux"],
 	"libs": ["CIrrlicht", "Irrlicht"],
-	"libs-posix": ["stdc++", "GL", "X11", "Xxf86vm"],
+	"libs-posix": ["stdc++", "GL", "X11", "Xxf86vm"]
 }

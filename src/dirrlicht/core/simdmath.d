@@ -91,14 +91,6 @@ bool iszero(T)(const T a, const T tolerance = 0)
 	return cast(T)fmax(fmin(val, maxv), minv);
 }
 
-/// DMD doesn't support simd types for x86, the padding in GDC isn't working yet!
-static if (DigitalMars || GDC)
-{
-    alias float4 = float[4];
-    alias double4 = double[4];
-    alias int4 = int[4];
-}
-
 pure nothrow @trusted float SQRT(float n)
 {
     static if(DigitalMars || LDC)

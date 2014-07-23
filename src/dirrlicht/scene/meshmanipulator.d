@@ -31,7 +31,6 @@ class MeshManipulator {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IMeshManipulator* ptr;
 }
 extern (C):

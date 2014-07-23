@@ -41,8 +41,8 @@ import std.utf;
 
 class GUIEnvironment {
     this(irr_IGUIEnvironment* ptr)
-    out(result) {
-		assert(result.ptr != null);
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
@@ -61,8 +61,7 @@ class GUIEnvironment {
     void drawAll() {
         irr_IGUIEnvironment_drawAll(ptr);
     }
-    
-    alias ptr this;
+	
     irr_IGUIEnvironment* ptr;
 }
 

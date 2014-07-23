@@ -33,7 +33,6 @@ class GPUProgrammingServices
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IGPUProgrammingServices* ptr;
 }
 

@@ -26,6 +26,7 @@
 
 module dirrlicht.core.line3d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector3d;
 
 import std.math;
@@ -34,7 +35,7 @@ import std.traits;
 /+++
  + 3D line between two points with intersection methods.
  +/
-pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
+pure nothrow struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T == float))) {
     this(T xa, T ya, T za, T xb, T yb, T zb) {
         start = Vector3D!(T)(xa, ya, za);
         end = Vector3D!(T)(xb, yb, zb);
@@ -186,6 +187,11 @@ pure nothrow @safe struct Line3D(T) if(isNumeric!(T) && (is (T == int) || is (T 
     Vector3D!(T) start;
     /// End point of line
     Vector3D!(T) end;
+}
+
+unittest {
+	mixin(Core_TestBegin);
+	mixin(Core_TestEnd);
 }
 
 extern (C):

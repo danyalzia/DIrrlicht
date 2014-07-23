@@ -31,7 +31,6 @@ class GeometryCreator {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IGeometryCreator* ptr;
 }
 

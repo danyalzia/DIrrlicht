@@ -1,10 +1,5 @@
 {
 	"name": "dirrlicht",
-	"description": "D Bindings for Irrlicht Engine",
-	"authors": ["Danyal Zia"],
-	"homepage": "http://github.com/Artisitc-Games/DIrrlicht",
-	"license": "zlib",
-	
 	"targetName": "Movement",
 	"targetType": "executable",
 	"targetPath": "../bin",
@@ -12,7 +7,7 @@
 	"sourcePaths": ["../../src/dirrlicht", "."],
 	"importPaths": ["../../src", "."],
 	
-	"lflags":["-L../../CIrrlicht/lib/",  "-L/home/danyalzia/irrlicht/lib/Linux"],
+	"lflags":["-L../../CIrrlicht/lib/",  "-L../../../irrlicht/lib/Linux"],
 	"libs": [ "CIrrlicht", "Irrlicht" ],
 	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"],
 

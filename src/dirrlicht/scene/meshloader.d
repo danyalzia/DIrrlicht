@@ -31,7 +31,6 @@ class MeshLoader {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IMeshLoader* ptr;
 }
 extern (C):

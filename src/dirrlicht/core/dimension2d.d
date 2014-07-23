@@ -26,13 +26,14 @@
 
 module dirrlicht.core.dimension2d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.vector2d;
 import std.traits;
 
 /+++
  + Specifies a 2 dimensional size
  +/
-pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
+pure nothrow struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
     /// Constructor with width and height
 	this(const T width, const T height) {
 		Width = width;
@@ -218,13 +219,11 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 	    	irr_dimension2df ptr() {
 	    		return irr_dimension2df(Width, Height);
 	    	}
-	    	alias ptr this;
 	    }
 	    else static if (is (T == double)) {
 	    	irr_dimension2df ptr() {
 	    		return irr_dimension2df(cast(float)Width, cast(float)Height);
 	    	}
-	    	alias ptr this;
 	    }
 	    else static if (is (T == int)) {
 	    	irr_dimension2di ptr() {
@@ -236,7 +235,6 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 			irr_dimension2du ptr() {
 	    		return irr_dimension2du(Width, Height);
 	    	}
-	    	alias ptr this;
 		}
     }
 
@@ -250,6 +248,12 @@ pure nothrow @safe struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || 
 alias dimension2di = Dimension2D!(int);
 alias dimension2du = Dimension2D!(uint);
 alias dimension2df = Dimension2D!(float);
+
+unittest {
+	mixin(Core_TestBegin);
+
+	mixin(Core_TestEnd);
+}
 
 package extern(C):
 

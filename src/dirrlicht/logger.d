@@ -26,6 +26,7 @@
 
 module dirrlicht.logger;
 
+import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
 import std.utf : toUTFz;
@@ -154,8 +155,17 @@ class Logger {
     	irr_ILogger_log5(ptr, text.toUTFz!(const(dchar)*), ll);
     }
     
-    alias ptr this;
-	package irr_ILogger* ptr;
+    irr_ILogger* ptr;
+}
+
+unittest {
+    mixin(TestPrerequisite);
+    auto logg = device.logger;
+    with (logg) {
+        getLogLevel();
+        setLogLevel(LogLevel.Debug);
+        log("Logging.."); 
+    }
 }
 
 package extern (C):

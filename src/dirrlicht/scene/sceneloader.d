@@ -31,7 +31,6 @@ class SceneLoader {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ISceneLoader* ptr;
 }
 extern (C):

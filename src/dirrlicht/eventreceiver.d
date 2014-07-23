@@ -241,13 +241,6 @@ enum GUIEventType
     treeViewNodeCollapse,
 }
 
-interface EventReceiver
-{
-	bool OnEvent(Event event);
-	@property void eventptr(irr_IEventReceiver* ptr);
-	@property irr_IEventReceiver* eventptr();
-}
-
 /// Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
 struct JoystickInfo
 {
@@ -284,20 +277,6 @@ struct JoystickInfo
 		/// The presence or absence of a hat cannot be determined.
 		unknown
 	}
-}
-
-unittest
-{
-	import std.stdio;
-	try {
-		mixin(TestPrerequisite);
-	}
-	catch (std.exception.ErrnoException exc) {
-		
-		writeln("Line: ", __LINE__);
-	}
-	
-	scope(failure) "Failed".writeln;
 }
 
 alias Event = irr_SEvent;
@@ -467,9 +446,14 @@ struct irr_SEvent
 		irr_SLogEvent LogEvent;
 		irr_SUserEvent UserEvent;
 	};
+}
 
-};
+interface EventReceiver : IEventReceiver {
+	extern(C++)bool OnEvent(const ref Event event);
+}
 
-struct irr_IEventReceiver;
-
-bool irr_IEventReceiver_OnEvent(irr_IEventReceiver* receiver, Event event);
+extern (C++) {
+  interface IEventReceiver {
+    bool OnEvent(const ref Event event);
+  }
+}

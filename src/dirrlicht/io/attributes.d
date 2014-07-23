@@ -35,7 +35,6 @@ class Attributes {
         return 0;
     }
     
-    alias ptr this;
     irr_IAttributes* ptr;
 }
 

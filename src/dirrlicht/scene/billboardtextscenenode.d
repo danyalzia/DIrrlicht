@@ -36,7 +36,6 @@ class BillboardTextSceneNode : SceneNode
 		irrPtr = cast(irr_ISceneNode*)ptr;
 	}
 	
-	alias ptr this;
 	irr_IBillboardTextSceneNode* ptr;
 }
 extern (C):

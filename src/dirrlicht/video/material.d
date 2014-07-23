@@ -37,7 +37,6 @@ class Material {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_SMaterial* ptr;
 }
 

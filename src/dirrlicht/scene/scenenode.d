@@ -231,14 +231,18 @@ unittest
     mixin(TestPrerequisite);
 
 
-    auto mesh = smgr.getMesh("../../media/sydney.md2");
-    checkNull(mesh);
+    auto mesh = smgr.getMesh("../media/sydney.md2");
+    assert(mesh !is null);
+    assert(mesh.ptr != null); 
     
     auto node = smgr.addAnimatedMeshSceneNode(mesh);
-    checkNull(node);
+    assert(node !is null);
+    assert(node.ptr != null);
+
     with(node)
     {
         setMaterialFlag(MaterialFlag.Lighting, false);
+        
     }
 }
 

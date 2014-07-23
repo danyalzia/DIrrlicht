@@ -37,7 +37,6 @@ class VideoModeList {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_IVideoModeList* ptr;
 }
 

@@ -31,7 +31,6 @@ class VolumeLightSceneNode {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IVolumeLightSceneNode* ptr;
 }
 

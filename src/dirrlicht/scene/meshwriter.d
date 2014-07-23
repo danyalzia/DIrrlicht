@@ -31,7 +31,6 @@ class MeshWriter {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_IMeshWriter* ptr;
 }
 

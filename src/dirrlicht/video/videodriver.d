@@ -208,7 +208,7 @@ class VideoDriver {
     }
     
     void setMaterial(Material material) {
-    	irr_IVideoDriver_setMaterial(ptr, material);
+    	irr_IVideoDriver_setMaterial(ptr, material.ptr);
     }
     
     Texture getTexture(string file) {
@@ -226,28 +226,28 @@ class VideoDriver {
     }
     
     void renameTexture(Texture texture, string newName) {
-    	irr_IVideoDriver_renameTexture(ptr, texture, newName.toStringz);
+    	irr_IVideoDriver_renameTexture(ptr, texture.ptr, newName.toStringz);
     }
     
     Texture addTexture(dimension2du size, string name, ColorFormat format) {
-    	auto temp = irr_IVideoDriver_addTexture(ptr, size, name.toStringz, format);
+    	auto temp = irr_IVideoDriver_addTexture(ptr, size.ptr, name.toStringz, format);
     	return new Texture(temp);
     }
     
     void makeColorKeyTexture(Texture texture, Color color, bool zeroTexels) {
-    	irr_IVideoDriver_makeColorKeyTexture(ptr, texture, color, zeroTexels);
+    	irr_IVideoDriver_makeColorKeyTexture(ptr, texture.ptr, color, zeroTexels);
     }
     
     void makeColorKeyTexture(Texture texture, vector2di colorKeyPixelPos, bool zeroTexels) {
-    	irr_IVideoDriver_makeColorKeyTexture2(ptr, texture, colorKeyPixelPos, zeroTexels);
+    	irr_IVideoDriver_makeColorKeyTexture2(ptr, texture.ptr, colorKeyPixelPos, zeroTexels);
     }
     
     void makeNormalMapTexture(Texture texture, float amplitude=1.0f) {
-    	irr_IVideoDriver_makeNormalMapTexture(ptr, texture, amplitude);
+    	irr_IVideoDriver_makeNormalMapTexture(ptr, texture.ptr, amplitude);
     }
     
     void setRenderTarget(Texture texture, bool clearBackBuffer, bool clearZBuffer, Color color) {
-    	irr_IVideoDriver_setRenderTarget(ptr, texture, clearBackBuffer, clearZBuffer, color);
+    	irr_IVideoDriver_setRenderTarget(ptr, texture.ptr, clearBackBuffer, clearZBuffer, color);
     }
     
     @property int fps() { return irr_IVideoDriver_getFPS(ptr); }
@@ -259,7 +259,7 @@ class VideoDriver {
     }
     
     void fillMaterialStructureFromAttributes(out Material outMaterial, out Attributes attributes) {
-    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial, attributes);
+    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial.ptr, attributes.ptr);
     }
     
     // irr_IVideoDriver_getExposedVideoData
@@ -335,8 +335,7 @@ class VideoDriver {
     void convertColor(const void* sP, ColorFormat sF, int sN, void* dP, ColorFormat dF) {
     	irr_IVideoDriver_convertColor(ptr, sP, sF, sN, dP, dF);
     }
-    
-	alias ptr this;
+	
     irr_IVideoDriver* ptr;
 }
 
@@ -364,18 +363,17 @@ unittest
     driver.beginScene(false, false, Color(0, 0, 0, 255));
     driver.endScene();
     auto shader2 = driver.queryFeature(DriverFeature.PixelShader_2_0);
-    
-    assert(shader2 == true);
     driver.disableFeature(DriverFeature.PixelShader_2_0, false);
 
     auto att = driver.getDriverAttributes();
-    checkNull(att);
+    assert(att !is null);
+	assert(att.ptr != null);
 
     driver.checkDriverReset();
     driver.setTransform(TransformationState.World, matrix4());
 
-    auto texture = driver.getTexture("../../media/wall.bmp");
-    auto texture2 = driver.getTexture("../../media/t351sml.jpg");
+    auto texture = driver.getTexture("../media/wall.bmp");
+    auto texture2 = driver.getTexture("../media/t351sml.jpg");
     driver.fps;
     auto driverName = driver.name;
     debug writeln("Driver Name: ", driverName);
@@ -456,7 +454,7 @@ void irr_IVideoDriver_OnResize(irr_IVideoDriver* driver, irr_dimension2du size);
 int irr_IVideoDriver_addMaterialRenderer(irr_IVideoDriver* driver, irr_IMaterialRenderer* renderer, const char* name);
 irr_IMaterialRenderer* irr_IVideoDriver_getMaterialRenderer(irr_IVideoDriver* driver, uint idx);
 uint irr_IVideoDriver_getMaterialRendererCount(irr_IVideoDriver* driver);
-const char* irr_IVideoDriver_getMaterialRendererName(irr_IVideoDriver* driver, uint idx);
+const(char*) irr_IVideoDriver_getMaterialRendererName(irr_IVideoDriver* driver, uint idx);
 void irr_IVideoDriver_setMaterialRendererName(irr_IVideoDriver* driver, int idx, const char* name);
 irr_IAttributes* irr_IVideoDriver_createAttributesFromMaterial(irr_IVideoDriver* driver, irr_SMaterial* material, irr_SAttributeReadWriteOptions* options);
 void irr_IVideoDriver_fillMaterialStructureFromAttributes(irr_IVideoDriver* driver, irr_SMaterial* outMaterial, irr_IAttributes* attributes);

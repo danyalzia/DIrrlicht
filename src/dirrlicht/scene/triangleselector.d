@@ -33,7 +33,6 @@ class TriangleSelector {
     	this.ptr = ptr;
     }
     
-    alias ptr this;
     irr_ITriangleSelector* ptr;
 }
 

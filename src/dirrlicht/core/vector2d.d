@@ -26,13 +26,14 @@
 
 module dirrlicht.core.vector2d;
 
+import dirrlicht.compileconfig;
 import dirrlicht.core.dimension2d;
 import std.traits;
 
 /+++
  + 2d vector template class with lots of operators and methods.
  +/
-pure nothrow @safe struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
+pure nothrow struct Vector2D(T) if(isNumeric!(T) && (is (T == uint) || is (T == int) || is (T == float) || is (T == double))) {
 	/// Constructor with two different values
 	this(T x, T y) {
 		this.x = x;
@@ -440,6 +441,8 @@ alias vector2di = Vector2D!(int);
 
 /// vector2d example
 unittest {
+	mixin(Core_TestBegin);
+	
     auto veci = vector2di(2, 4);
     assert(veci.x == 2 && veci.y == 4);
 	assert(veci == vector2di(2, 4));
@@ -467,11 +470,7 @@ unittest {
 	import std.stdio;
 	squareVec(vector2df(4,4), vector2df(4,4)).writeln;
 
-	auto vecs = vector2df(vector2df(2,2));
-	auto n = vecs.dot(squareVec(vector2df(4,4), vector2df(4,4)));
-	n.writeln;
-
-	vecs.rotateBy(64, vector2df(4,4));
+	mixin(Core_TestEnd);
 }
 
 package extern (C):

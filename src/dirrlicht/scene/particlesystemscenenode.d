@@ -36,7 +36,6 @@ class ParticleSystemSceneNode : SceneNode {
 		irrPtr = cast(irr_ISceneNode*)this.ptr;
 	}
 	
-	alias ptr this;
 	irr_IParticleSystemSceneNode* ptr;
 }
 

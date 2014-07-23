@@ -31,7 +31,6 @@ class SceneNodeFactory {
 		this.ptr = ptr;
 	}
 	
-	alias ptr this;
 	irr_ISceneNodeFactory* ptr;
 }
 extern (C):
