@@ -53,7 +53,7 @@ enum EventType {
     /// A key input event.
     /** Like mouse events, keyboard events are created by the device and passed to
     IrrlichtDevice::postEventFromUser. They take the same path as mouse events. */
-    key,
+    Key,
 
     /// A joystick (joypad, gamepad) input event.
     /** Joystick events are created by polling all connected joysticks once per
@@ -63,12 +63,12 @@ enum EventType {
     Linux: Implemented, with POV hat issues.
     MacOS / Other: Not yet implemented.
     */
-    joystick,
+    Joystick,
 
     /// A log event
     /** Log events are only passed to the user receiver if there is one. If they are absorbed by the
     user receiver then no text will be sent to the console. */
-    log,
+    Log,
 
     /// A user event with user data.
     /** This is not used by Irrlicht and can be used to send user
@@ -83,60 +83,60 @@ enum EventType {
     	casted to s32 and used as UserData1 and UserData2.
     MacOS: Not yet implemented
     */
-    user
+    User
 }
 
 /// Enumeration for all mouse input events
 enum MouseEventType
 {
     /// Left mouse button was pressed down.
-    leftDown = 0,
+    LeftDown = 0,
 
     /// Right mouse button was pressed down.
-    rightDown,
+    RightDown,
 
     /// Middle mouse button was pressed down.
-    middleDown,
+    MiddleDown,
 
     /// Left mouse button was left up.
-    leftUp,
+    LeftUp,
 
     /// Right mouse button was left up.
-    rightUp,
+    RightUp,
 
     /// Middle mouse button was left up.
-    middleUp,
+    MiddleUp,
 
     /// The mouse cursor changed its position.
-    move,
+    Move,
 
     /// The mouse wheel was moved. Use Wheel value in event data to find out
     /// in what direction and how fast.
-    wheel,
+	Wheel,
 
     /// Left mouse button double click.
     /// This event is generated after the second EMIE_LMOUSE_PRESSED_DOWN event.
-    leftDoubleClick,
+    LeftDoubleClick,
 
     /// Right mouse button double click.
     /// This event is generated after the second EMIE_RMOUSE_PRESSED_DOWN event.
-    rightDoubleClick,
+    RightDoubleClick,
 
     /// Middle mouse button double click.
     /// This event is generated after the second EMIE_MMOUSE_PRESSED_DOWN event.
-    middleDoubleClick,
+    MiddleDoubleClick,
 
     /// Left mouse button triple click.
     /// This event is generated after the third EMIE_LMOUSE_PRESSED_DOWN event.
-    leftTripleClick,
+    LeftTripleClick,
 
     /// Right mouse button triple click.
     /// This event is generated after the third EMIE_RMOUSE_PRESSED_DOWN event.
-    rightTripleClick,
+    RightTripleClick,
 
     /// Middle mouse button triple click.
     /// This event is generated after the third EMIE_MMOUSE_PRESSED_DOWN event.
-    middleTripleClick
+    MiddleTripleClick
 }
 
 /// Enumeration for all events which are sendable by the gui system
@@ -145,105 +145,104 @@ enum GUIEventType
     /// A gui element has lost its focus.
     /** GUIEvent.Caller is losing the focus to GUIEvent.Element.
     If the event is absorbed then the focus will not be changed. */
-    elementFocusLost = 0,
+    ElementFocusLost = 0,
 
     /// A gui element has got the focus.
     /** If the event is absorbed then the focus will not be changed. */
-    elementFocused,
+    ElementFocused,
 
     /// The mouse cursor hovered over a gui element.
     /** If an element has sub-elements you also get this message for the subelements */
-    elementMouseHovered,
+    ElementMouseHovered,
 
     /// The mouse cursor left the hovered element.
     /** If an element has sub-elements you also get this message for the subelements */
-    elementMouseLeft,
+    ElementMouseLeft,
 
     /// An element would like to close.
     /** Windows and context menus use this event when they would like to close,
     this can be cancelled by absorbing the event. */
-    elementClosed,
+    ElementClosed,
 
     /// A button was clicked.
-    buttonClicked,
+    ButtonClicked,
 
     /// A scrollbar has changed its position.
-    scrollBarChanged,
+    ScrollBarChanged,
 
     /// A checkbox has changed its check state.
-    checkBoxChanged,
+    CheckBoxChanged,
 
     /// A new item in a listbox was selected.
     /** NOTE: You also get this event currently when the same item was clicked again after more than 500 ms. */
-    listBoxChanged,
+    ListBoxChanged,
 
     /// An item in the listbox was selected, which was already selected.
     /** NOTE: You get the event currently only if the item was clicked again within 500 ms or selected by "enter" or "space". */
-    listBoxSelectedAgain,
+    ListBoxSelectedAgain,
 
     /// A file has been selected in the file dialog
-    fileDialogFileSelected,
+    FileDialogFileSelected,
 
     /// A directory has been selected in the file dialog
-    fileDialogDirectorySelected,
+    FileDialogDirectorySelected,
 
     /// A file open dialog has been closed without choosing a file
-    fileDialogCancelled,
+    FileDialogCancelled,
 
     /// 'Yes' was clicked on a messagebox
-    messageBoxYes,
+    MessageBoxYes,
 
     /// 'No' was clicked on a messagebox
-    messageBoxNo,
+    MessageBoxNo,
 
     /// 'OK' was clicked on a messagebox
-    messageBoxOK,
+    MessageBoxOK,
 
     /// 'Cancel' was clicked on a messagebox
-    messageBoxCancel,
+    MessageBoxCancel,
 
     /// In an editbox 'ENTER' was pressed
-    editBoxEnter,
+    EditBoxEnter,
 
     /// The text in an editbox was changed. This does not include automatic changes in text-breaking.
-    editBoxChanged,
+    EditBoxChanged,
 
     /// The marked area in an editbox was changed.
-    editBoxMarkingChanged,
+    EditBoxMarkingChanged,
 
     /// The tab was changed in an tab control
-    tabChanged,
+    TabChanged,
 
     /// A menu item was selected in a (context) menu
-    menuItemSelected,
+    MenuItemSelected,
 
     /// The selection in a combo box has been changed
-    comboBoxChanged,
+    ComboBoxChanged,
 
     /// The value of a spin box has changed
-    spinBoxChanged,
+    SpinBoxChanged,
 
     /// A table has changed
-    tableChanged,
-    tableHeaderChanged,
-    tableSelectedAgain,
+    TableChanged,
+    TableHeaderChanged,
+    TableSelectedAgain,
 
     /// A tree view node lost selection. See IGUITreeView::getLastEventNode().
-    treeViewNodeDeselect,
+    TreeViewNodeDeselect,
 
     /// A tree view node was selected. See IGUITreeView::getLastEventNode().
-    treeViewNodeSelect,
+    TreeViewNodeSelect,
 
     /// A tree view node was expanded. See IGUITreeView::getLastEventNode().
-    treeViewNodeExpand,
+    TreeViewNodeExpand,
 
     /// A tree view node was collapsed. See IGUITreeView::getLastEventNode().
-    treeViewNodeCollapse,
+    TreeViewNodeCollapse,
 }
 
 /// Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
-struct JoystickInfo
-{
+struct JoystickInfo {
 	/***
 	 * The ID of the joystick
 	 * This is an internal Irrlicht index; it does not map directly
@@ -266,24 +265,32 @@ struct JoystickInfo
 	/// An indication of whether the joystick has a POV hat.
 	/// A Windows device will identify the presence or absence or the POV hat.  A
 	/// Linux device cannot, and will always return POV_HAT_UNKNOWN.
-	enum PovHat
-	{
+	enum PovHat {
 		/// A hat is definitely present.
-		present,
+		Present,
 
 		/// A hat is definitely not present.
-		absent,
+		Absent,
 
 		/// The presence or absence of a hat cannot be determined.
-		unknown
+		Unknown
 	}
+}
+
+interface EventReceiver : IEventReceiver {
+	extern(C++)bool OnEvent(const ref Event event);
+}
+
+extern (C++) {
+  interface IEventReceiver {
+    bool OnEvent(const ref Event event);
+  }
 }
 
 alias Event = irr_SEvent;
 extern (C):
 
-enum EEVENT_TYPE
-{
+enum EEVENT_TYPE {
 	EET_GUI_EVENT = 0,
 	EET_MOUSE_INPUT_EVENT,
 	EET_KEY_INPUT_EVENT,
@@ -293,8 +300,7 @@ enum EEVENT_TYPE
 
 };
 
-enum EMOUSE_INPUT_EVENT
-{
+enum EMOUSE_INPUT_EVENT {
 	EMIE_LMOUSE_PRESSED_DOWN = 0,
 	EMIE_RMOUSE_PRESSED_DOWN,
 	EMIE_MMOUSE_PRESSED_DOWN,
@@ -437,8 +443,7 @@ struct irr_SEvent
 	};
 
 	EEVENT_TYPE EventType;
-	union
-	{
+	union {
 		irr_SGUIEvent GUIEvent;
 		irr_SMouseInput MouseInput;
 		irr_SKeyInput KeyInput;
@@ -446,14 +451,4 @@ struct irr_SEvent
 		irr_SLogEvent LogEvent;
 		irr_SUserEvent UserEvent;
 	};
-}
-
-interface EventReceiver : IEventReceiver {
-	extern(C++)bool OnEvent(const ref Event event);
-}
-
-extern (C++) {
-  interface IEventReceiver {
-    bool OnEvent(const ref Event event);
-  }
 }

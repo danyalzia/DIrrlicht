@@ -52,6 +52,13 @@ pure nothrow struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T 
 		Height = cast(T)other.Height;
 	}
 
+	static if (is(T==uint)) {
+		this(irr_dimension2du d) {
+			Width = d.Width;
+			Height = d.Height;
+		}
+	}
+	
 	ref Dimension2D!(T) opAssign(U)(ref const Dimension2D!(U) other) {
 		Width = cast(T)other.Width;
 		Height = cast(T)other.Height;
@@ -219,11 +226,13 @@ pure nothrow struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T 
 	    	irr_dimension2df ptr() {
 	    		return irr_dimension2df(Width, Height);
 	    	}
+	    	alias ptr this;
 	    }
 	    else static if (is (T == double)) {
 	    	irr_dimension2df ptr() {
 	    		return irr_dimension2df(cast(float)Width, cast(float)Height);
 	    	}
+	    	alias ptr this;
 	    }
 	    else static if (is (T == int)) {
 	    	irr_dimension2di ptr() {
@@ -235,6 +244,7 @@ pure nothrow struct Dimension2D(T) if(isNumeric!(T) && (is (T == uint) || is (T 
 			irr_dimension2du ptr() {
 	    		return irr_dimension2du(Width, Height);
 	    	}
+	    	alias ptr this;
 		}
     }
 

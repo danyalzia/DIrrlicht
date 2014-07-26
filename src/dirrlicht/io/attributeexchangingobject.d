@@ -27,6 +27,7 @@
 module dirrlicht.io.attributeexchangingobject;
 
 import dirrlicht.io.attributes;
+import std.string : toStringz;
 
 /// Enumeration flags passed through SAttributeReadWriteOptions to the IAttributeExchangingObject object
 enum AttributeReadWriteFlag {
@@ -46,7 +47,14 @@ struct AttributeReadWriteOptions {
     int Flags;
 
     ///  Optional filename
-    const char* Filename;
+    string Filename;
+
+    //@property irr_SAttributeReadWriteOptions ptr() {
+		//irr_SAttributeReadWriteOptions temp;
+		//temp.Flags = Flags;
+		//temp.Filename = Filename.toStringz;
+		//return temp;
+	//}
 }
 
 /// An object which is able to serialize and deserialize its attributes into an attributes object
@@ -68,4 +76,9 @@ public:
 
 package extern (C):
 
-struct irr_SAttributeReadWriteOptions;
+struct irr_SAttributeReadWriteOptions {
+	int Flags;
+	const char* Filename;
+}
+
+
