@@ -59,6 +59,13 @@ pure nothrow struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T == float
 		LowerRightCorner = Vector2D!(T)(pos.x + size.Width, pos.y + size.Height);
 	}
 
+	static if (is(T==int) || is(T==uint)) {
+		this(irr_recti r) {
+			UpperLeftCorner = Vector2D!(T)(r.x, r.y);
+			LowerRightCorner = Vector2D!(T)(r.x1, r.y1);
+		}
+	}
+	
 	/// Move right/left by given numbers
 	Rect!(T) opBinary(string op)(ref const Vector2D!(T) pos)
 	if(op == "+" || op == "-") {

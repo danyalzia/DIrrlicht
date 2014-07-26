@@ -1,12 +1,11 @@
 {
-	"name": "dirrlicht",
-	"targetName": "HelloWorld",
+	"name": "HelloWorld",
+	"targetName" : "HelloWorld",
 	"targetType": "executable",
 	"targetPath": "../bin",
 	"sourcePaths": ["../../src/dirrlicht", "."],
 	"importPaths": ["../../src", "."],
 	
-	"lflags":["-L../../CIrrlicht/lib/",  "-L../../../irrlicht/lib/Linux"],
-	"libs": ["CIrrlicht", "Irrlicht"],
+	"libs": ["CIrrlicht"],
 	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"]
 }

@@ -18,6 +18,12 @@ version(LDC)
 else
     enum LDC = false;
 
+static if (DigitalMars || LDC) {
+	enum x86_Assembly = true;
+} else {
+	enum x86_Assembly = false;
+}
+
 enum Core_TestBegin =
 `
 	import std.stdio;
