@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Dirrlicht : D Bindings of Irrlicht Engine" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Dirrlicht</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Artistic-Games/DIrrlicht">View on GitHub</a>
+
+          <h1 id="project_title">Dirrlicht</h1>
+          <h2 id="project_tagline">D Bindings of Irrlicht Engine</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Artistic-Games/DIrrlicht/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Artistic-Games/DIrrlicht/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><a href="https://travis-ci.org/Artistic-Games/DIrrlicht"><img src="https://travis-ci.org/Artistic-Games/DIrrlicht.png?branch=master" alt="Build Status"></a>
+<a href="https://waffle.io/artistic-games/dirrlicht"><img src="https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&amp;title=Ready" alt="Stories in Ready"></a>
+<a href="https://gitter.im/Artistic-Games/DIrrlicht"><img src="https://badges.gitter.im/Artistic-Games/DIrrlicht.png" alt="Gitter chat"></a></p>
+
+<h1>
+<a name="dirrlicht---d-bindings-of-irrlicht-engine" class="anchor" href="#dirrlicht---d-bindings-of-irrlicht-engine"><span class="octicon octicon-link"></span></a>DIrrlicht - D Bindings of Irrlicht Engine</h1>
+
+<h2>
+<a name="details" class="anchor" href="#details"><span class="octicon octicon-link"></span></a>Details</h2>
+
+<p>DIrrlicht is the D Bindings and semi-port of Irrlicht 3D Graphics Engine which makes it possible to use Irrlicht Engine from D programming language. It copies the API of Irrlicht Engine, but in a way that makes sense in D.</p>
+
+<h2>
+<a name="status" class="anchor" href="#status"><span class="octicon octicon-link"></span></a>Status</h2>
+
+<p>It's in very early beta stage. Several functions still aren't wrapped. It is subject to API changes.</p>
+
+<p>Checkout the <a href="https://github.com/Artistic-Games/DIrrlicht/wiki/Roadmap">Road Map</a> for the list of things that still needs to be done.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Clone the repository:</p>
+
+<pre><code>$ git clone git://github.com/Artistic-Games/DIrrlicht.git DIrrlicht
+</code></pre>
+
+<p>DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to not forget to update submodules:</p>
+
+<pre><code>$ cd DIrrlicht
+$ git submodule update --init
+</code></pre>
+
+<p>On Linux, it assumes that Irrlicht is installed in "$HOME" directory, so you have to place the irrlicht's folder in that directory. To create dynamic libray, in <code>CIrrlicht</code> do:</p>
+
+<pre><code>$ sudo make sharedlib
+</code></pre>
+
+<p>It will create a library in <code>lib</code>.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>As DIrrlicht is based on Irrlicht, it tries to separate the implementation from user. You aren't supposed to directly instantiate several classes, but you access them through different managers. Following is the short example that can be used to test DIrrlicht, it shows the simple window with a black background that can be minimized, resized and closed:</p>
+
+<hr><div class="highlight highlight-D"><pre><span class="k">import</span> <span class="n">dirrlicht</span><span class="p">.</span><span class="n">all</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">device</span> <span class="p">=</span> <span class="n">createDevice</span><span class="p">(</span><span class="n">DriverType</span><span class="p">.</span><span class="n">OpenGL</span><span class="p">,</span> <span class="n">dimension2du</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span><span class="mi">600</span><span class="p">));</span>
+    <span class="n">device</span><span class="p">.</span><span class="n">windowCaption</span> <span class="p">=</span> <span class="s">"DIrrlicht Test!"</span><span class="p">;</span>
+    <span class="n">device</span><span class="p">.</span><span class="n">resizable</span> <span class="p">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">driver</span> <span class="p">=</span> <span class="n">device</span><span class="p">.</span><span class="n">videoDriver</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">device</span><span class="p">.</span><span class="n">run</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">driver</span><span class="p">.</span><span class="n">beginScene</span><span class="p">();</span>
+        <span class="n">driver</span><span class="p">.</span><span class="n">endScene</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>See <a href="https://github.com/Artistic-Games/DIrrlicht/wiki/">wiki</a> for more usage and tutorials.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>DIrrlicht aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.</p>
+
+<p>Before making a commit, please try to adhere to the <a href="https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md">coding style</a> of DIrrlicht.</p>
+
+<h2>
+<a name="unit-tests" class="anchor" href="#unit-tests"><span class="octicon octicon-link"></span></a>Unit Tests</h2>
+
+<p>Unit Tests are being aggressively tested through Travis Cl on every push. It uses only those resources that are in repository. To run them offline, do <code>dub test</code>. You can pass an extra flag for other compilers (i.e. GDC and LDC) such as <code>--compiler gdc</code> and <code>--compiler ldc2</code>.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>It is released under permissive zlib license same as Irrlicht Engine.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Dirrlicht maintained by <a href="https://github.com/Artistic-Games">Artistic-Games</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
