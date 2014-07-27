@@ -66,8 +66,8 @@ class AnimatedEndCallBack {
 	this(irr_IAnimationEndCallBack* ptr) {
 		this.ptr = ptr;
 	}
-	
-	alias ptr this;
+
+private:
 	irr_IAnimationEndCallBack* ptr;
 }
 
@@ -81,7 +81,7 @@ class AnimatedMeshSceneNode : SceneNode {
 
 	this(irr_IAnimatedMeshSceneNode* ptr) {
     	this.ptr = ptr;
-    	irrPtr = cast(irr_ISceneNode*)this.ptr;
+    	c_ptr = cast(void*)this.ptr;
     }
     
     void setCurrentFrame(float frame) {
@@ -148,7 +148,7 @@ class AnimatedMeshSceneNode : SceneNode {
     		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr);
     	}
     	else {
-    		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
+    		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr, cast(irr_IMesh*)(shadowMesh.c_ptr), id, zfailmethod, infinity);
     	}
     	
     	return new ShadowVolumeSceneNode(temp);
@@ -244,7 +244,7 @@ class AnimatedMeshSceneNode : SceneNode {
      * Sets a new mesh
      */
     void setMesh(AnimatedMesh mesh) {
-    	irr_IAnimatedMeshSceneNode_setMesh(ptr, mesh.ptr);
+    	irr_IAnimatedMeshSceneNode_setMesh(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr));
     }
     
     /***
@@ -254,7 +254,9 @@ class AnimatedMeshSceneNode : SceneNode {
      */
     AnimatedMesh getMesh() {
     	auto temp = irr_IAnimatedMeshSceneNode_getMesh(ptr);
-    	return new AnimatedMesh(temp);
+    	AnimatedMesh mesh;
+    	mesh.c_ptr = temp;
+    	return mesh;
     }
     
     /***
@@ -312,13 +314,21 @@ class AnimatedMeshSceneNode : SceneNode {
     void setRenderFromIdentity(bool On) {
     	irr_IAnimatedMeshSceneNode_setRenderFromIdentity(ptr, On);
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+	
+private:
     irr_IAnimatedMeshSceneNode* ptr;
 }
 
 /// example IAnimatedMeshSceneNode
-unittest
-{
+unittest {
     mixin(TestPrerequisite);
 
     /// IAnimatedMesh test starts here

@@ -33,7 +33,15 @@ class LightSceneNode : SceneNode {
 	this(irr_ILightSceneNode* ptr) {
 		this.ptr = ptr;
 	}
-	
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
 	irr_ILightSceneNode* ptr;
 }
 

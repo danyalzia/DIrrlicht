@@ -37,20 +37,22 @@ class MeshSceneNode : SceneNode {
 	
     this(irr_IMeshSceneNode* ptr) {
     	this.ptr = ptr;
-    	irrPtr = cast(irr_ISceneNode*)ptr;
+    	c_ptr = cast(irr_ISceneNode*)ptr;
     }
     
     void setMesh(Mesh mesh) {
-        irr_IMeshSceneNode_setMesh(ptr, mesh.ptr);
+        irr_IMeshSceneNode_setMesh(ptr, cast(irr_IMesh*)(mesh.c_ptr));
     }
 
     Mesh getMesh() {
         auto mesh = irr_IMeshSceneNode_getMesh(ptr);
-        return new Mesh(mesh);
+        Mesh m;
+        m.c_ptr = mesh;
+        return m;
     }
 
     ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f){
-        auto shadow = irr_IMeshSceneNode_addShadowVolumeSceneNode(ptr, shadowMesh.ptr, id, zfailmethod, infinity);
+        auto shadow = irr_IMeshSceneNode_addShadowVolumeSceneNode(ptr, cast(irr_IMesh*)(shadowMesh.c_ptr), id, zfailmethod, infinity);
         return new ShadowVolumeSceneNode(shadow);
     }
 
@@ -61,7 +63,15 @@ class MeshSceneNode : SceneNode {
     bool isReadOnlyMaterials() {
         return irr_IMeshSceneNode_isReadOnlyMaterials(ptr);
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_IMeshSceneNode* ptr;
 }
 

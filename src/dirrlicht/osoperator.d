@@ -31,29 +31,15 @@ import dirrlicht.irrlichtdevice;
 /+++
  + The Operating system operator provides operation system specific methods and informations.
  +/
-class OSOperator {
-    this(irr_IOSOperator* ptr)
-    out(result) {
-		assert(result.ptr != null);
-	}
-	body {
-    	this.ptr = ptr;
-    }
-    
+interface OSOperator {
     /// Get the current operation system version as string.
-    string getOperatingSystemVersion() {
-    	return irr_IOSOperator_getOperatingSystemVersion(ptr).to!string;
-    }
+    string getOperatingSystemVersion();
     
     /// Copies text to the clipboard
-    void copyToClipboard(string text) {
-    	irr_IOSOperator_copyToClipboard(ptr, text.toStringz);
-    }
+    void copyToClipboard(string text);
     
     /// Get text from the clipboard
-    string getTextFromClipboard() {
-    	return irr_IOSOperator_getTextFromClipboard(ptr).to!string;
-    }
+    string getTextFromClipboard();
     
     /***
      * Get the processor speed in megahertz
@@ -61,9 +47,7 @@ class OSOperator {
      *			 MHz = The integer variable to store the speed in.
 	 * Return: True if successful, false if not
      */
-    bool getProcessorSpeedMHz(uint* MHz) {
-    	return irr_IOSOperator_getProcessorSpeedMHz(ptr, MHz);
-    }
+    bool getProcessorSpeedMHz(uint* MHz);
     
     /***
      * Get the total and available system RAM
@@ -72,10 +56,49 @@ class OSOperator {
      *			 Avail = will contain the available memory
 	 * Return: 	 True if successful, false if not
      */
+    bool getSystemMemory(uint* Total, uint* Avail);
+
+    @property void* c_ptr();
+    @property void c_ptr(void* ptr);
+}
+
+class COSOperator : OSOperator {
+    this(irr_IOSOperator* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
+    }
+    
+    string getOperatingSystemVersion() {
+    	return irr_IOSOperator_getOperatingSystemVersion(ptr).to!string;
+    }
+    
+    void copyToClipboard(string text) {
+    	irr_IOSOperator_copyToClipboard(ptr, text.toStringz);
+    }
+    
+    string getTextFromClipboard() {
+    	return irr_IOSOperator_getTextFromClipboard(ptr).to!string;
+    }
+	
+    bool getProcessorSpeedMHz(uint* MHz) {
+    	return irr_IOSOperator_getProcessorSpeedMHz(ptr, MHz);
+    }
+	
     bool getSystemMemory(uint* Total, uint* Avail) {
     	return irr_IOSOperator_getSystemMemory(ptr, Total, Avail);
     }
 
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_IOSOperator* ptr;
 }
 

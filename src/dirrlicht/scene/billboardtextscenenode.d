@@ -33,9 +33,17 @@ class BillboardTextSceneNode : SceneNode
 	mixin DefaultSceneNode;
 	this(irr_IBillboardTextSceneNode* ptr) {
 		this.ptr = ptr;
-		irrPtr = cast(irr_ISceneNode*)ptr;
+		c_ptr = cast(irr_ISceneNode*)ptr;
 	}
-	
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
 	irr_IBillboardTextSceneNode* ptr;
 }
 extern (C):

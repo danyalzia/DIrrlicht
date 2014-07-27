@@ -61,12 +61,7 @@ enum AnimationTypeMD2 {
     Count
 }
 
-class AnimatedMeshMD2 : AnimatedMesh {
-	this(irr_IAnimatedMeshMD2* ptr) {
-    	this.ptr = ptr;
-    	super(cast(irr_IAnimatedMesh*)this.ptr);
-    }
-    
+interface AnimatedMeshMD2 {
     /***
      * Get frame loop data for a default MD2 animation type.
      *
@@ -76,9 +71,7 @@ class AnimatedMeshMD2 : AnimatedMesh {
      *			outEnd = The returned ending frame for the animation type specified.
      *			outFPS = The number of frames per second, this animation should be played at.
      */
-    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS) {
-        irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
-    }
+    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS);
     
     /***
      * Get frame loop data for a special MD2 animation type, identified by name.
@@ -89,16 +82,12 @@ class AnimatedMeshMD2 : AnimatedMesh {
      *			outEnd = The returned ending frame for the animation type specified.
      *			outFPS = The number of frames per second, this animation should be played at.
      */
-    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS) {
-        return irr_IAnimatedMeshMD2_getFrameLoopByName(ptr, toStringz(name), outBegin, outEnd, outFPS);
-    }
+    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS);
     
     /***
      * Get amount of md2 animations in this file.
      */
-    int getAnimationCount() {
-        return irr_IAnimatedMeshMD2_getAnimationCount(ptr);
-    }
+    int getAnimationCount();
     
     /***
      * Get name of md2 animation.
@@ -106,11 +95,59 @@ class AnimatedMeshMD2 : AnimatedMesh {
      * Params:
      *			nr: Zero based index of animation.
      */
+    string getAnimationName(int nr);
+
+    @property void* c_ptr();
+    @property void c_ptr(void* ptr);
+}
+
+/+++ 
+ + Stub for AnimatedMeshMD2
+ +/
+mixin template DefaultAnimatedMeshMD2() {
+	mixin DefaultMesh;
+	
+    void getFrameLoop(AnimationTypeMD2 l, ref int outBegin, ref int outEnd, ref int outFPS) {
+        irr_IAnimatedMeshMD2_getFrameLoop(ptr, l, outBegin, outEnd, outFPS);
+    }
+	
+    bool getFrameLoop(string name, ref int outBegin, ref int outEnd, ref int outFPS) {
+        return irr_IAnimatedMeshMD2_getFrameLoopByName(ptr, toStringz(name), outBegin, outEnd, outFPS);
+    }
+    
+    int getAnimationCount() {
+        return irr_IAnimatedMeshMD2_getAnimationCount(ptr);
+    }
+	
     string getAnimationName(int nr) {
         auto str = irr_IAnimatedMeshMD2_getAnimationName(ptr, nr);
         return to!string(str);
     }
+}
+
+/+++ 
+ + Implementation for AnimatedMeshMD2
+ +/
+class CAnimatedMeshMD2 : AnimatedMeshMD2 {
+	mixin DefaultAnimatedMeshMD2;
+
+	this(irr_IAnimatedMeshMD2* ptr)
+    in {
+		assert(ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
+    }
     
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+	
+private:
     irr_IAnimatedMeshMD2* ptr;
 }
 

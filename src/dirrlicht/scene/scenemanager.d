@@ -130,8 +130,8 @@ enum SceneNodeRenderPass {
 
 class SceneManager {
     this(irr_ISceneManager* ptr)
-    out(result) {
-		assert(result.ptr != null);
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
@@ -139,7 +139,7 @@ class SceneManager {
 	
     AnimatedMesh getMesh(string filename) {
     	auto temp = irr_ISceneManager_getMesh(ptr, filename.toStringz);
-        return new AnimatedMesh(temp);
+    	return new CAnimatedMesh(temp);
     }
 
     MeshCache getMeshCache() {
@@ -163,7 +163,7 @@ class SceneManager {
     }
 
     VolumeLightSceneNode addVolumeLightSceneNode(SceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, Color foot = Color(51, 0, 230, 180).reverse, Color tail = Color(0, 0, 0, 0).reverse, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f)) {
-        auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, parent.irrPtr, id, subdivU, subdivV, foot.ptr, tail.ptr, position.ptr, rotation.ptr, scale.ptr);
+        auto node = irr_ISceneManager_addVolumeLightSceneNode(ptr, cast(irr_ISceneNode*)(parent.c_ptr), id, subdivU, subdivV, foot.ptr, tail.ptr, position.ptr, rotation.ptr, scale.ptr);
         return new VolumeLightSceneNode(node);
     }
 
@@ -172,7 +172,7 @@ class SceneManager {
         if (parent is null)
             node = irr_ISceneManager_addCubeSceneNode(ptr, size);
         else
-            node = irr_ISceneManager_addCubeSceneNode(ptr, size, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
+            node = irr_ISceneManager_addCubeSceneNode(ptr, size, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr);
 
         return new MeshSceneNode(node);
     }
@@ -182,7 +182,7 @@ class SceneManager {
         if (parent is null)
             node = irr_ISceneManager_addSphereSceneNode(ptr);
         else
-            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
+            node = irr_ISceneManager_addSphereSceneNode(ptr, radius, polycount, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr);
 
         return new MeshSceneNode(node);
     }
@@ -190,9 +190,9 @@ class SceneManager {
     AnimatedMeshSceneNode addAnimatedMeshSceneNode(AnimatedMesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false) {
     	irr_IAnimatedMeshSceneNode* temp;
     	if (parent is null)
-    		temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, mesh.ptr);
+    		temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr));
     	else
-    		temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, mesh.ptr, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
+    		temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr), cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
         
         return new AnimatedMeshSceneNode(temp);
     }
@@ -204,9 +204,9 @@ class SceneManager {
 
         irr_IMeshSceneNode* temp = null;
         if (parent is null)
-            temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addMeshSceneNode(ptr, cast(irr_IMesh*)(mesh.c_ptr), null, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addMeshSceneNode(ptr, mesh.ptr, parent.irrPtr, id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addMeshSceneNode(ptr, cast(irr_IMesh*)(mesh.c_ptr), cast(irr_ISceneNode*)(parent.c_ptr), id, temppos, temprot, tempscale, alsoAddIfMeshPointerZero);
 
         return new MeshSceneNode(temp);
     }
@@ -223,9 +223,9 @@ class SceneManager {
 
         irr_ISceneNode* temp = null;
         if (parent is null)
-            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, null, id, temppos, temprot, tempscale);
+            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, cast(irr_IMesh*)(mesh.c_ptr), waveHeight, waveSpeed, waveLength, null, id, temppos, temprot, tempscale);
         else
-            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, mesh.ptr, waveHeight, waveSpeed, waveLength, parent.irrPtr, id, temppos, temprot, tempscale);
+            temp = irr_ISceneManager_addWaterSurfaceSceneNode(ptr, cast(irr_IMesh*)(mesh.c_ptr), waveHeight, waveSpeed, waveLength, cast(irr_ISceneNode*)(parent.c_ptr), id, temppos, temprot, tempscale);
             
             
         SceneNode* node; 
@@ -235,9 +235,9 @@ class SceneManager {
     MeshSceneNode addOctreeSceneNode(AnimatedMesh mesh, SceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false) {
         irr_IMeshSceneNode* temp = null;
         if (parent is null)
-            temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr), null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addOctreeSceneNode(ptr, mesh.ptr, parent.irrPtr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr), cast(irr_ISceneNode*)(parent.c_ptr), id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
         return new MeshSceneNode(temp);
     }
@@ -245,9 +245,9 @@ class SceneManager {
     MeshSceneNode addOctreeSceneNode(Mesh mesh, SceneNode parent=null, int id=-1, int minimalPolysPerNode=512, bool alsoAddIfMeshPointerZero=false) {
         irr_IMeshSceneNode* temp = null;
         if (parent is null)
-            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, cast(irr_IMesh*)(mesh.c_ptr), null, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
         else
-            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, mesh.ptr, parent.irrPtr, id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
+            temp = irr_ISceneManager_addOctreeSceneNode2(ptr, cast(irr_IMesh*)(mesh.c_ptr), cast(irr_ISceneNode*)(parent.c_ptr), id, minimalPolysPerNode, alsoAddIfMeshPointerZero);
 
         return new MeshSceneNode(temp);
     }
@@ -271,7 +271,7 @@ class SceneManager {
         if (parent is null)
             temp = irr_ISceneManager_addLightSceneNode(ptr);
         else
-            temp = irr_ISceneManager_addLightSceneNode(ptr, parent.irrPtr, position.ptr, color.ptr, radius, id);
+            temp = irr_ISceneManager_addLightSceneNode(ptr, cast(irr_ISceneNode*)(parent.c_ptr), position.ptr, color.ptr, radius, id);
 
         return new LightSceneNode(temp);
     }
@@ -279,7 +279,7 @@ class SceneManager {
     BillboardSceneNode addBillboardSceneNode(SceneNode parent =null, dimension2df size = dimension2df(10.0, 10.0),
     		vector3df position = vector3df(0,0,0), int id=-1,
     		Color colorTop = Color(0, 0, 0, 0), Color colorBottom = Color(0, 0, 0, 0)) {
-    	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, parent.irrPtr, size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
+    	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, cast(irr_ISceneNode*)(parent.c_ptr), size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
     	return new BillboardSceneNode(temp);
     }
     
@@ -287,7 +287,7 @@ class SceneManager {
     		vector3df position = vector3df(0, 0, 0),
     		vector3df rotation = vector3df(0, 0, 0),
     		vector3df scale = vector3df(1.0, 1.0, 1.0)) {
-    	auto temp = irr_ISceneManager_addParticleSystemSceneNode(ptr, withDefaultEmitter, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr);
+    	auto temp = irr_ISceneManager_addParticleSystemSceneNode(ptr, withDefaultEmitter, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr);
     	return new ParticleSystemSceneNode(temp);
     }
     
@@ -299,14 +299,14 @@ class SceneManager {
     		Color vertexColor = Color(255,255,255,255),
     		int maxLOD=5, TerrainPatchSize patchSize=TerrainPatchSize._17, int smoothFactor=0,
     		bool addAlsoIfHeightmapEmpty = false) {
-    	auto temp = irr_ISceneManager_addTerrainSceneNode(ptr, heightMapFileName.toStringz, parent.irrPtr, id, position.ptr, rotation.ptr, scale.ptr, vertexColor.ptr, maxLOD, patchSize, smoothFactor, addAlsoIfHeightmapEmpty);
+    	auto temp = irr_ISceneManager_addTerrainSceneNode(ptr, heightMapFileName.toStringz, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr, vertexColor.ptr, maxLOD, patchSize, smoothFactor, addAlsoIfHeightmapEmpty);
     	return new TerrainSceneNode(temp);
     }
     
     SceneNode* addSkyBoxSceneNode(Texture top, Texture bottom,
     		Texture left, Texture right, Texture front,
     		Texture back, SceneNode parent = null, int id=-1) {
-    	auto temp = irr_ISceneManager_addSkyBoxSceneNode(ptr, top.ptr, bottom.ptr, back.ptr, left.ptr, right.ptr, front.ptr, parent.irrPtr, id);
+    	auto temp = irr_ISceneManager_addSkyBoxSceneNode(ptr, top.ptr, bottom.ptr, back.ptr, left.ptr, right.ptr, front.ptr, cast(irr_ISceneNode*)(parent.c_ptr), id);
     	SceneNode* node;
     	return node;
     }
@@ -315,7 +315,7 @@ class SceneManager {
     		uint horiRes=16, uint vertRes=8,
     		float texturePercentage=0.9, float spherePercentage=2.0,float radius = 1000,
     		SceneNode parent=null, int id=-1) {
-    	auto temp = irr_ISceneManager_addSkyDomeSceneNode(ptr, texture.ptr, horiRes, vertRes, texturePercentage, spherePercentage, radius, parent.irrPtr, id);
+    	auto temp = irr_ISceneManager_addSkyDomeSceneNode(ptr, texture.ptr, horiRes, vertRes, texturePercentage, spherePercentage, radius, cast(irr_ISceneNode*)(parent.c_ptr), id);
     	SceneNode* node;
     	return node;
     }
@@ -371,7 +371,7 @@ class SceneManager {
     }
     
     void addToDeletionQueue(SceneNode node) {
-    	irr_ISceneManager_addToDeletionQueue(ptr, node.irrPtr);
+    	irr_ISceneManager_addToDeletionQueue(ptr, cast(irr_ISceneNode*)(node.c_ptr));
     }
     
     bool postEventFromUser(Event event) {
@@ -438,13 +438,13 @@ class SceneManager {
     }
 
     SceneNode* addSceneNode(string sceneNodeTypeName, SceneNode parent=null) {
-        auto temp  = irr_ISceneManager_addSceneNode(ptr, toStringz(sceneNodeTypeName), parent.irrPtr);
+        auto temp  = irr_ISceneManager_addSceneNode(ptr, toStringz(sceneNodeTypeName), cast(irr_ISceneNode*)(parent.c_ptr));
         SceneNode* node;
     	return node;
     }
 
     SceneNodeAnimator createSceneNodeAnimator(string typeName, SceneNode target=null) {
-        auto temp  = irr_ISceneManager_createSceneNodeAnimator(ptr, toStringz(typeName), target.irrPtr);
+        auto temp  = irr_ISceneManager_createSceneNodeAnimator(ptr, toStringz(typeName), cast(irr_ISceneNode*)(target.c_ptr));
         return new SceneNodeAnimator(temp);
     }
 
@@ -454,11 +454,11 @@ class SceneManager {
     }
 
     bool saveScene(string filename, ISceneUserDataSerializer userDataSerializer=null, SceneNode node=null) {
-        return irr_ISceneManager_saveScene(ptr, toStringz(filename), userDataSerializer.ptr, node.irrPtr);
+        return irr_ISceneManager_saveScene(ptr, toStringz(filename), userDataSerializer.ptr, cast(irr_ISceneNode*)(node.c_ptr));
     }
 
     bool loadScene(string filename, ISceneUserDataSerializer userDataSerializer=null, SceneNode rootNode=null) {
-        return irr_ISceneManager_loadScene(ptr, toStringz(filename), userDataSerializer.ptr, rootNode.irrPtr);
+        return irr_ISceneManager_loadScene(ptr, toStringz(filename), userDataSerializer.ptr, cast(irr_ISceneNode*)(rootNode.c_ptr));
     }
 
     MeshWriter createMeshWriter(MeshWriterFlags type) {
@@ -494,7 +494,7 @@ class SceneManager {
     }
 
     bool isCulled(SceneNode node) {
-        return irr_ISceneManager_isCulled(ptr, node.irrPtr);
+        return irr_ISceneManager_isCulled(ptr, cast(irr_ISceneNode*)(node.c_ptr));
     }
     
     irr_ISceneManager* ptr;

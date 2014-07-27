@@ -81,22 +81,15 @@ enum AnimatedMeshType {
 }
 
 /+++ 
- + Class for an animated mesh.
+ + Interface for an animated mesh.
  +/
-class AnimatedMesh : Mesh {
-    this(irr_IAnimatedMesh* ptr) {
-    	this.ptr = ptr;
-    	super(cast(irr_IMesh*)this.ptr);
-    }
-    
+interface AnimatedMesh {
     /***
      * Gets the frame count of the animated mesh.
 	 * Returns: The amount of frames. If the amount is 1,
 	 * 			it is a static, non animated mesh.
      */
-    uint getFrameCount() {
-        return irr_IAnimatedMesh_getFrameCount(ptr);
-    }
+    uint getFrameCount();
     
     /***
      * Gets the animation speed of the animated mesh.
@@ -104,9 +97,7 @@ class AnimatedMesh : Mesh {
 	 *			animation with by default. If the amount is 0,
 	 * 			it is a static, non animated mesh.
      */
-    float getAnimationSpeed() {
-        return irr_IAnimatedMesh_getAnimationSpeed(ptr);
-    }
+    float getAnimationSpeed();
     
     /**
      * Sets the animation speed of the animated mesh.
@@ -116,9 +107,7 @@ class AnimatedMesh : Mesh {
 	 *			it is not animated. The actual speed is set in the
 	 *			scene node the mesh is instantiated in.
      */
-    void setAnimationSpeed(float fps) {
-        irr_IAnimatedMesh_setAnimationSpeed(ptr, fps);
-    }
+    void setAnimationSpeed(float fps);
     
     /***
      *	Returns the IMesh interface for a frame.
@@ -141,15 +130,65 @@ class AnimatedMesh : Mesh {
 	 *
 	 * Returns: the animated mesh based on a detail level.
      */
+    Mesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1);
+
+    AnimatedMeshType getMeshType();
+
+	@property void* c_ptr();
+    @property void c_ptr(void* ptr);
+}
+
+/+++ 
+ + Stub for AnimatedMesh
+ +/
+mixin template DefaultAnimatedMesh() {
+	mixin DefaultMesh;
+    
+    uint getFrameCount() {
+        return irr_IAnimatedMesh_getFrameCount(cast(irr_IAnimatedMesh*)(ptr));
+    }
+    
+    float getAnimationSpeed() {
+        return irr_IAnimatedMesh_getAnimationSpeed(cast(irr_IAnimatedMesh*)(ptr));
+    }
+    
+    void setAnimationSpeed(float fps) {
+        irr_IAnimatedMesh_setAnimationSpeed(cast(irr_IAnimatedMesh*)(ptr), fps);
+    }
+    
     Mesh getMesh(int frame, int detailLevel=255, int startFrameLoop=-1, int endFrameLoop=-1) {
-        auto temp = irr_IAnimatedMesh_getMesh(ptr, detailLevel, startFrameLoop, endFrameLoop);
-        return new Mesh(temp);
+        auto temp = irr_IAnimatedMesh_getMesh(cast(irr_IAnimatedMesh*)(ptr), detailLevel, startFrameLoop, endFrameLoop);
+		return new CMesh(temp);
     }
 
     AnimatedMeshType getMeshType() {
         return AnimatedMeshType.Unknown;
     }
+}
+
+/+++ 
+ + Implementation for AnimatedMesh
+ +/
+class CAnimatedMesh : AnimatedMesh {
+	mixin DefaultAnimatedMesh;
+
+	this(irr_IAnimatedMesh* ptr)
+    in {
+		assert(ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
+    }
     
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+	
+private:
     irr_IAnimatedMesh* ptr;
 }
 
@@ -159,7 +198,7 @@ unittest{
     /// IAnimatedMesh test starts here
     auto mesh = smgr.getMesh("../media/sydney.md2");
     assert(mesh !is null);
-    assert(mesh.ptr != null);
+    assert(mesh.c_ptr != null);
 
     auto count = mesh.getFrameCount();
     debug writeln("Framecount: ", count);
@@ -170,7 +209,7 @@ unittest{
     mesh.setAnimationSpeed(60);
     auto mesh2 = mesh.getMesh(60);
     assert(mesh2 !is null);
-    assert(mesh2.ptr != null);
+    assert(mesh2.c_ptr != null);
 }
 
 package extern (C):

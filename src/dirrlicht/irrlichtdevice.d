@@ -175,7 +175,7 @@ class IrrlichtDevice {
 		 * Return: Pointer to the logger.
 		 */
 	    Logger logger() {
-			logger_ = new Logger(irr_IrrlichtDevice_getLogger(ptr));
+			logger_ = new CLogger(irr_IrrlichtDevice_getLogger(ptr));
 			return logger_;
 		}
 		
@@ -204,7 +204,7 @@ class IrrlichtDevice {
 		 * Return: Pointer to the OS operator.
 		 */
 	    OSOperator osOperator() {
-			osOperator_ = new OSOperator(irr_IrrlichtDevice_getOSOperator(ptr));
+			osOperator_ = new COSOperator(irr_IrrlichtDevice_getOSOperator(ptr));
 			return osOperator_;
 		}
 
@@ -215,7 +215,7 @@ class IrrlichtDevice {
 		 * Return: Pointer to the ITimer object.
 		 */
 	    Timer timer() {
-			timer_ = new Timer(irr_IrrlichtDevice_getTimer(ptr));
+			timer_ = new CTimer(irr_IrrlichtDevice_getTimer(ptr));
 			return timer_;
 		}
 
@@ -223,7 +223,7 @@ class IrrlichtDevice {
 		 * Provides access to the engine's currently set randomizer.
 		 * Return: Pointer to the IRandomizer object.
 		 */
-	    Randomizer randomizer() { return new Randomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+	    Randomizer randomizer() { return new CRandomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
 
 		/***
 		 * Sets a new randomizer.
@@ -231,7 +231,7 @@ class IrrlichtDevice {
 		 *  randomizer = Pointer to the new IRandomizer object. This object is
 		 * grab()'ed by the engine and will be released upon the next randomizer
 		 * call or upon device destruction. */
-	    void randomizer(Randomizer randomizer) in { assert(randomizer.ptr != null); } body { irr_IrrlichtDevice_setRandomizer(ptr, randomizer.ptr); }
+	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, cast(irr_IRandomizer*)randomizer.c_ptr); }
     }
 
 
@@ -243,7 +243,7 @@ class IrrlichtDevice {
 	 */
     Randomizer createDefaultRandomizer() {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
-        return new Randomizer(randomizer);
+        return new CRandomizer(randomizer);
     }
 
 	/***
@@ -518,7 +518,7 @@ unittest {
 
             auto Logger = logger;
             assert(Logger !is null);
-            assert(Logger.ptr != null);
+            assert(Logger.c_ptr != null);
 
             auto videolist = videoModeList;
             assert(videolist !is null);
@@ -526,15 +526,15 @@ unittest {
 
             auto OSoperator = osOperator;
             assert(OSoperator !is null);
-            assert(OSoperator.ptr != null);
+            assert(OSoperator.c_ptr != null);
 
             auto Timer = timer;
             assert(Timer !is null);
-            assert(Timer.ptr != null);
+            assert(Timer.c_ptr != null);
 
             auto randomizer1 = randomizer;
             assert(randomizer1 !is null);
-            assert(randomizer1.ptr != null);
+            assert(randomizer1.c_ptr != null);
             
             randomizer = randomizer;
             createDefaultRandomizer();

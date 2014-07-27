@@ -455,12 +455,12 @@ class VideoDriver {
 	 * Use node for identification and mesh for occlusion test.
 	 */
 	void addOcclusionQuery(SceneNode node, Mesh mesh) {
-		irr_IVideoDriver_addOcclusionQuery(ptr, node.irrPtr, mesh.ptr);
+		irr_IVideoDriver_addOcclusionQuery(ptr, cast(irr_ISceneNode*)(node.c_ptr), cast(irr_IMesh*)(mesh.c_ptr));
 	}
 
 	/// Remove occlusion query.
 	void removeOcclusionQuery(SceneNode node) {
-		irr_IVideoDriver_removeOcclusionQuery(ptr, node.irrPtr);
+		irr_IVideoDriver_removeOcclusionQuery(ptr, cast(irr_ISceneNode*)(node.c_ptr));
 	}
 
 	/// Remove all occlusion queries.
@@ -474,7 +474,7 @@ class VideoDriver {
 	 * overrideMaterial to disable the color and depth buffer.
 	 */
 	void runOcclusionQuery(SceneNode node, bool visible) {
-		irr_IVideoDriver_runOcclusionQuery(ptr, node.irrPtr, visible);
+		irr_IVideoDriver_runOcclusionQuery(ptr, cast(irr_ISceneNode*)(node.c_ptr), visible);
 	}
 
 	/***
@@ -492,7 +492,7 @@ class VideoDriver {
 	 * Update might not occur in this case, though
 	 */
 	void updateOcclusionQuery(SceneNode node, bool block) {
-		irr_IVideoDriver_updateOcclusionQuery(ptr, node.irrPtr, block);
+		irr_IVideoDriver_updateOcclusionQuery(ptr, cast(irr_ISceneNode*)(node.c_ptr), block);
 	}
 
 	/***
@@ -511,7 +511,7 @@ class VideoDriver {
 	 * actual value of pixels.
 	 */
 	uint getOcclusionQueryResult(SceneNode node) {
-		return irr_IVideoDriver_getOcclusionQueryResult(ptr, node.irrPtr);
+		return irr_IVideoDriver_getOcclusionQueryResult(ptr, cast(irr_ISceneNode*)(node.c_ptr));
 	}
 
 	/***

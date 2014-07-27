@@ -53,20 +53,10 @@ enum LogLevel {
 	None
 }
 
-/// Class for logging messages, warnings and errors
-class Logger {
-    this(irr_ILogger* ptr)
-    out(result) {
-		assert(result.ptr != null);
-	}
-	body {
-    	this.ptr = ptr;
-    }
-    
+/// Interface for logging messages, warnings and errors
+interface Logger {
     /// Returns the current set log level.
-    LogLevel getLogLevel() {
-    	return irr_ILogger_getLogLevel(ptr);
-    }
+    LogLevel getLogLevel();
     
     /***
      * Sets a new log level.
@@ -78,9 +68,7 @@ class Logger {
 	 * Params:
      *			 ll = new log level filter value.
      */
-    void setLogLevel(LogLevel ll) {
-    	irr_ILogger_setLogLevel(ptr, ll);
-    }
+    void setLogLevel(LogLevel ll);
     
     /***
      * Prints out a text into the log
@@ -92,69 +80,108 @@ class Logger {
 	 * filtered with these levels. If you want to be a text displayed,
 	 * independent on what level filter is set, use None.
      */
+    void log(string text, LogLevel ll=LogLevel.Information);
+    
+    /***
+     * Prints out a text into the log
+	 * Params: 
+     *			text = Text to print out.
+     *			hint = Additional info. This string is added after a " :" to the string.
+     *			ll = Log level of the text. If the text is an error, set
+	 * it to Error, if it is warning set it to Warning, and if it
+	 * is just an informational text, set it to Information. Texts are
+	 * filtered with these levels. If you want to be a text displayed,
+	 * independent on what level filter is set, use None.
+     */
+    void log(string text, string hint, LogLevel ll=LogLevel.Information);
+    
+    /***
+     * Prints out a text into the log
+	 * Params: 
+     *			text = Text to print out.
+     *			hint = Additional info. This string is added after a " :" to the string.
+     *			ll = Log level of the text. If the text is an error, set
+	 * it to Error, if it is warning set it to Warning, and if it
+	 * is just an informational text, set it to Information. Texts are
+	 * filtered with these levels. If you want to be a text displayed,
+	 * independent on what level filter is set, use None.
+     */
+    void log(string text, dstring hint, LogLevel ll=LogLevel.Information);
+    
+    /***
+     * Prints out a text into the log
+	 * Params: 
+     *			text = Text to print out.
+     *			hint = Additional info. This string is added after a " :" to the string.
+     *			ll = Log level of the text. If the text is an error, set
+	 * it to Error, if it is warning set it to Warning, and if it
+	 * is just an informational text, set it to Information. Texts are
+	 * filtered with these levels. If you want to be a text displayed,
+	 * independent on what level filter is set, use None.
+     */
+    void log(dstring text, dstring hint, LogLevel ll=LogLevel.Information);
+    
+    /***
+     * Prints out a text into the log
+	 * Params: 
+     *			text = Text to print out.
+     *			ll = Log level of the text. If the text is an error, set
+	 * it to Error, if it is warning set it to Warning, and if it
+	 * is just an informational text, set it to Information. Texts are
+	 * filtered with these levels. If you want to be a text displayed,
+	 * independent on what level filter is set, use None.
+     */
+    void log(dstring text, LogLevel ll=LogLevel.Information);
+
+    @property void* c_ptr();
+    @property void c_ptr(void* ptr);
+}
+
+class CLogger : Logger {
+    this(irr_ILogger* ptr)
+    out(result) {
+		assert(result.ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
+    }
+    
+    LogLevel getLogLevel() {
+    	return irr_ILogger_getLogLevel(ptr);
+    }
+	
+    void setLogLevel(LogLevel ll) {
+    	irr_ILogger_setLogLevel(ptr, ll);
+    }
+	
     void log(string text, LogLevel ll=LogLevel.Information) {
     	irr_ILogger_log1(ptr, text.toStringz, ll);
     }
     
-    /***
-     * Prints out a text into the log
-	 * Params: 
-     *			text = Text to print out.
-     *			hint = Additional info. This string is added after a " :" to the string.
-     *			ll = Log level of the text. If the text is an error, set
-	 * it to Error, if it is warning set it to Warning, and if it
-	 * is just an informational text, set it to Information. Texts are
-	 * filtered with these levels. If you want to be a text displayed,
-	 * independent on what level filter is set, use None.
-     */
     void log(string text, string hint, LogLevel ll=LogLevel.Information) {
     	irr_ILogger_log2(ptr, text.toStringz, hint.toStringz, ll);
     }
     
-    /***
-     * Prints out a text into the log
-	 * Params: 
-     *			text = Text to print out.
-     *			hint = Additional info. This string is added after a " :" to the string.
-     *			ll = Log level of the text. If the text is an error, set
-	 * it to Error, if it is warning set it to Warning, and if it
-	 * is just an informational text, set it to Information. Texts are
-	 * filtered with these levels. If you want to be a text displayed,
-	 * independent on what level filter is set, use None.
-     */
     void log(string text, dstring hint, LogLevel ll=LogLevel.Information) {
     	irr_ILogger_log3(ptr, text.toStringz, hint.toUTFz!(const(dchar)*), ll);
     }
-    
-    /***
-     * Prints out a text into the log
-	 * Params: 
-     *			text = Text to print out.
-     *			hint = Additional info. This string is added after a " :" to the string.
-     *			ll = Log level of the text. If the text is an error, set
-	 * it to Error, if it is warning set it to Warning, and if it
-	 * is just an informational text, set it to Information. Texts are
-	 * filtered with these levels. If you want to be a text displayed,
-	 * independent on what level filter is set, use None.
-     */
+	
     void log(dstring text, dstring hint, LogLevel ll=LogLevel.Information) {
     	irr_ILogger_log4(ptr, text.toUTFz!(const(dchar)*), hint.toUTFz!(const(dchar)*), ll);
     }
-    
-    /***
-     * Prints out a text into the log
-	 * Params: 
-     *			text = Text to print out.
-     *			ll = Log level of the text. If the text is an error, set
-	 * it to Error, if it is warning set it to Warning, and if it
-	 * is just an informational text, set it to Information. Texts are
-	 * filtered with these levels. If you want to be a text displayed,
-	 * independent on what level filter is set, use None.
-     */
+	
     void log(dstring text, LogLevel ll=LogLevel.Information) {
     	irr_ILogger_log5(ptr, text.toUTFz!(const(dchar)*), ll);
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_ILogger* ptr;
 }
 

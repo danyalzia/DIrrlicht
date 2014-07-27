@@ -24,19 +24,78 @@
        source distribution.
 */
 
-/+ A timer module useful for time dependent tasks
-+
-+/
-
 module dirrlicht.timer;
 
 import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
 /+++
- + Class for getting and manipulating the virtual time
- +/ 
-class Timer {
+ + Interface for getting and manipulating the virtual time
+ +/
+interface Timer {
+    uint getRealTime();
+    RealTimeDate getRealTimeAndDate();
+    /***
+     * Returns current virtual time in milliseconds.
+	 * This value starts with 0 and can be manipulated using setTime(),
+	 * stopTimer(), startTimer(), etc. This value depends on the set speed of
+	 * the timer if the timer is stopped, etc. If you need the system time,
+	 * use getRealTime()
+     */
+    uint getTime();
+    
+    /// sets current virtual time
+    void setTime(uint time);
+    
+    /***
+     * Stops the virtual timer.
+	 * The timer is reference counted, which means everything which calls
+	 * stop() will also have to call start(), otherwise the timer may not
+	 * start/stop correctly again.
+     */
+    void stop();
+    
+    /***
+     * Starts the virtual timer.
+	 * The timer is reference counted, which means everything which calls
+	 * stop() will also have to call start(), otherwise the timer may not
+	 * start/stop correctly again.
+     */
+    void start();
+    
+    /***
+     * Sets the speed of the timer
+	 * The speed is the factor with which the time is running faster or
+	 * slower then the real system time.
+     */
+    void setSpeed(float speed = 1.0f);
+    
+    /***
+     * Returns current speed of the timer
+	 * The speed is the factor with which the time is running faster or
+	 * slower then the real system time.
+     */
+    float getSpeed();
+    
+    /// Returns if the virtual timer is currently stopped
+    bool isStopped();
+    
+    /***
+     * Advances the virtual time
+	 * Makes the virtual timer update the time value based on the real
+	 * time. This is called automatically when calling IrrlichtDevice::run(),
+	 * but you can call it manually if you don't use this method.
+     */
+    void tick();
+
+    @property void* c_ptr();
+    @property void c_ptr(void* ptr);
+}
+
+/+++
+ + Implementation of Timer
+ +/
+class CTimer : Timer {
     this(irr_ITimer* ptr)
     in {
 		assert(ptr != null);
@@ -52,76 +111,48 @@ class Timer {
     RealTimeDate getRealTimeAndDate() {
     	return irr_ITimer_getRealTimeAndDate(ptr);
     }
-    
-    /***
-     * Returns current virtual time in milliseconds.
-	 * This value starts with 0 and can be manipulated using setTime(),
-	 * stopTimer(), startTimer(), etc. This value depends on the set speed of
-	 * the timer if the timer is stopped, etc. If you need the system time,
-	 * use getRealTime()
-     */
+	
     uint getTime() {
     	return irr_ITimer_getTime(ptr);
     }
     
-    /// sets current virtual time
     void setTime(uint time) {
     	irr_ITimer_setTime(ptr, time);
     }
     
-    /***
-     * Stops the virtual timer.
-	 * The timer is reference counted, which means everything which calls
-	 * stop() will also have to call start(), otherwise the timer may not
-	 * start/stop correctly again.
-     */
     void stop() {
     	irr_ITimer_stop(ptr);
     }
-    
-    /***
-     * Starts the virtual timer.
-	 * The timer is reference counted, which means everything which calls
-	 * stop() will also have to call start(), otherwise the timer may not
-	 * start/stop correctly again.
-     */
+	
     void start() {
     	irr_ITimer_start(ptr);
     }
-    
-    /***
-     * Sets the speed of the timer
-	 * The speed is the factor with which the time is running faster or
-	 * slower then the real system time.
-     */
+	
     void setSpeed(float speed = 1.0f) {
     	return irr_ITimer_setSpeed(ptr, speed);
     }
-    
-    /***
-     * Returns current speed of the timer
-	 * The speed is the factor with which the time is running faster or
-	 * slower then the real system time.
-     */
+	
     float getSpeed() {
     	return irr_ITimer_getSpeed(ptr);
     }
     
-    /// Returns if the virtual timer is currently stopped
     bool isStopped() {
     	return irr_ITimer_isStopped(ptr);
     }
-    
-    /***
-     * Advances the virtual time
-	 * Makes the virtual timer update the time value based on the real
-	 * time. This is called automatically when calling IrrlichtDevice::run(),
-	 * but you can call it manually if you don't use this method.
-     */
+	
     void tick() {
     	irr_ITimer_tick(ptr);
     }
-    
+
+    @property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+	
+private:
 	irr_ITimer* ptr;
 }
 
@@ -129,7 +160,7 @@ unittest {
 	mixin(TestPrerequisite);
 	auto timer = device.timer;
 	assert(timer !is null);
-	assert(timer.ptr != null);
+	assert(timer.c_ptr != null);
 
 	with (timer) {
 		getRealTime().writeln;

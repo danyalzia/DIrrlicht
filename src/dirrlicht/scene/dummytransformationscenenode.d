@@ -33,9 +33,17 @@ class DummyTranformationSceneNode : SceneNode {
 	
 	this(irr_IDummyTransformationSceneNode* ptr) {
 		this.ptr = ptr;
-		irrPtr = cast(irr_ISceneNode*)this.ptr;
+		c_ptr = cast(irr_ISceneNode*)this.ptr;
 	}
-	
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
 	irr_IDummyTransformationSceneNode* ptr;
 }
 extern (C):
