@@ -228,7 +228,7 @@ unittest {
     assert(node.c_ptr != null);
 
     with(node) {
-        setMaterialFlag(MaterialFlag.Lighting, false);
+		node.setMaterialFlag(MaterialFlag.Lighting, false);
     }
 }
 

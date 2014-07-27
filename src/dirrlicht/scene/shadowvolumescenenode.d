@@ -28,7 +28,12 @@ module dirrlicht.scene.shadowvolumescenenode;
 
 import dirrlicht.scene.scenenode;
 
-class ShadowVolumeSceneNode : SceneNode {
+interface ShadowVolumeSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CShadowVolumeSceneNode : ShadowVolumeSceneNode {
 	mixin DefaultSceneNode;
 	this(irr_IShadowVolumeSceneNode* ptr) {
 		this.ptr = ptr;

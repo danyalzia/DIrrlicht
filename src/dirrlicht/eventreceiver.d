@@ -277,18 +277,30 @@ struct JoystickInfo {
 	}
 }
 
-interface EventReceiver : IEventReceiver {
-	extern(C++)bool OnEvent(const ref Event event);
+class EventReceiver : IEventReceiver {
+	private irrEventReceiver receiver;
+
+	this(irrEventReceiver receiver) {
+		this.receiver = receiver;
+	}
+	
+	extern(C++)bool OnEvent(const ref Event event) {
+		return receiver.OnEvent(event);
+	}
 }
 
-extern (C++) {
-  interface IEventReceiver {
-    bool OnEvent(const ref Event event);
-  }
+interface irrEventReceiver {
+	bool OnEvent(const ref Event event);
 }
 
-alias Event = irr_SEvent;
+extern (C++) interface IEventReceiver {
+	bool OnEvent(const ref Event event);
+}
+
+alias Event = SEvent;
 extern (C):
+
+struct irr_IEventReceiver;
 
 enum EEVENT_TYPE {
 	EET_GUI_EVENT = 0,
@@ -369,7 +381,7 @@ enum EGUI_EVENT_TYPE
 };
 
 
-struct irr_SEvent
+struct SEvent
 {
 	struct irr_SGUIEvent
 	{

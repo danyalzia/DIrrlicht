@@ -1,16 +1,11 @@
 {
 	"name": "Movement",
+	"targetName" : "Movement",
 	"targetType": "executable",
 	"targetPath": "../bin",
-
 	"sourcePaths": ["../../src/dirrlicht", "."],
 	"importPaths": ["../../src", "."],
 	
 	"libs": ["CIrrlicht"],
-	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"],
-
-	"dependencies": 
-    {
-        "dsfml:window": "~master"
-    }
+	"libs-linux": ["stdc++", "GL", "Xxf86vm", "X11"]
 }

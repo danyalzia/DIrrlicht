@@ -50,21 +50,6 @@ void main() {
         if (device.isWindowActive) {
 			auto nodepos = node.position;
 			
-			import dsfml.window;
-			if(Keyboard.isKeyPressed(Keyboard.Key.W)) {
-				nodepos.y = nodepos.y + 5;
-			}
-			else if (Keyboard.isKeyPressed(Keyboard.Key.S)) {
-				nodepos.y = nodepos.y - 5;
-			}
-
-			if(Keyboard.isKeyPressed(Keyboard.Key.A)) {
-				nodepos.x = nodepos.x + 5;
-			}
-			else if (Keyboard.isKeyPressed(Keyboard.Key.D)) {
-				nodepos.x = nodepos.x - 5;
-			}
-			
 			node.position = nodepos;
             driver.beginScene(true, true, dirrlicht.video.Color(133,113,113,255));
             smgr.drawAll();

@@ -194,7 +194,7 @@ class SceneManager {
     	else
     		temp = irr_ISceneManager_addAnimatedMeshSceneNode(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr), cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr, alsoAddIfMeshPointerZero);
         
-        return new AnimatedMeshSceneNode(temp);
+        return new CAnimatedMeshSceneNode(temp);
     }
 
     MeshSceneNode addMeshSceneNode(Mesh mesh, SceneNode parent=null, int id=-1, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f), bool alsoAddIfMeshPointerZero=false) {
@@ -254,13 +254,13 @@ class SceneManager {
 
     CameraSceneNode addCameraSceneNode(SceneNode parent, vector3df pos, vector3df lookAt, int id=-1, bool makeActive=true) {
         auto temp = irr_ISceneManager_addCameraSceneNode(ptr, null, pos.ptr, lookAt.ptr, id, makeActive);
-        return new CameraSceneNode(temp);
+        return new CCameraSceneNode(temp);
     }
 
     CameraSceneNode addCameraSceneNodeFPS() {
         auto temp = irr_ISceneManager_addCameraSceneNodeFPS(ptr);
         
-        return new CameraSceneNode(temp);
+        return new CCameraSceneNode(temp);
     }
 
     LightSceneNode addLightSceneNode(SceneNode parent = null,
@@ -273,14 +273,14 @@ class SceneManager {
         else
             temp = irr_ISceneManager_addLightSceneNode(ptr, cast(irr_ISceneNode*)(parent.c_ptr), position.ptr, color.ptr, radius, id);
 
-        return new LightSceneNode(temp);
+        return new CLightSceneNode(temp);
     }
     
     BillboardSceneNode addBillboardSceneNode(SceneNode parent =null, dimension2df size = dimension2df(10.0, 10.0),
     		vector3df position = vector3df(0,0,0), int id=-1,
     		Color colorTop = Color(0, 0, 0, 0), Color colorBottom = Color(0, 0, 0, 0)) {
     	auto temp = irr_ISceneManager_addBillboardSceneNode(ptr, cast(irr_ISceneNode*)(parent.c_ptr), size.ptr, position.ptr, id, colorTop.ptr, colorBottom.ptr);
-    	return new BillboardSceneNode(temp);
+    	return new CBillboardSceneNode(temp);
     }
     
     ParticleSystemSceneNode addParticleSystemSceneNode(bool withDefaultEmitter=true, SceneNode parent=null, int id=-1,
@@ -288,7 +288,7 @@ class SceneManager {
     		vector3df rotation = vector3df(0, 0, 0),
     		vector3df scale = vector3df(1.0, 1.0, 1.0)) {
     	auto temp = irr_ISceneManager_addParticleSystemSceneNode(ptr, withDefaultEmitter, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr);
-    	return new ParticleSystemSceneNode(temp);
+    	return new CParticleSystemSceneNode(temp);
     }
     
     TerrainSceneNode addTerrainSceneNode(string heightMapFileName,
@@ -300,7 +300,7 @@ class SceneManager {
     		int maxLOD=5, TerrainPatchSize patchSize=TerrainPatchSize._17, int smoothFactor=0,
     		bool addAlsoIfHeightmapEmpty = false) {
     	auto temp = irr_ISceneManager_addTerrainSceneNode(ptr, heightMapFileName.toStringz, cast(irr_ISceneNode*)(parent.c_ptr), id, position.ptr, rotation.ptr, scale.ptr, vertexColor.ptr, maxLOD, patchSize, smoothFactor, addAlsoIfHeightmapEmpty);
-    	return new TerrainSceneNode(temp);
+    	return new CTerrainSceneNode(temp);
     }
     
     SceneNode* addSkyBoxSceneNode(Texture top, Texture bottom,

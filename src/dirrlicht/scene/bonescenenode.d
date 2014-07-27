@@ -56,7 +56,12 @@ enum BoneSkinningSpace
 
 import dirrlicht.scene.scenenode;
 
-class BoneSceneNode : SceneNode {
+interface BoneSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CBoneSceneNode : BoneSceneNode {
 	mixin DefaultSceneNode;
 	this(irr_IBoneSceneNode* ptr) {
 		this.ptr = ptr;

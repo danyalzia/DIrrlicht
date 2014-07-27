@@ -76,17 +76,9 @@ private:
  + The shadow is optional: If a shadow should be displayed too, just
  + call createShadowVolumeSceneNode().
  +/
-class AnimatedMeshSceneNode : SceneNode {
-	mixin DefaultSceneNode;
-
-	this(irr_IAnimatedMeshSceneNode* ptr) {
-    	this.ptr = ptr;
-    	c_ptr = cast(void*)this.ptr;
-    }
+interface AnimatedMeshSceneNode : SceneNode {
     
-    void setCurrentFrame(float frame) {
-    	irr_IAnimatedMeshSceneNode_setCurrentFrame(ptr, frame);
-    }
+    void setCurrentFrame(float frame);
 		
 	/***
      * The default is 0 - MaximalFrameCount of the mesh.
@@ -96,25 +88,19 @@ class AnimatedMeshSceneNode : SceneNode {
 	 *
 	 * Returns: True if successful, false if not.		
      */
-    bool setFrameLoop(int begin, int end) {
-    	return irr_IAnimatedMeshSceneNode_setFrameLoop(ptr, begin, end);
-    }
+    bool setFrameLoop(int begin, int end);
     
     /***
      * Sets the speed with which the animation is played.
      * Params:
      *			framesPerSecond = Frames per second played.
      */
-    void setAnimationSpeed(float framesPerSecond) {
-    	irr_IAnimatedMeshSceneNode_setAnimationSpeed(ptr, framesPerSecond);
-    }
+    void setAnimationSpeed(float framesPerSecond);
     
     /***
      * Gets the speed with which the animation is played.
      */
-    float getAnimationSpeed() {
-    	return irr_IAnimatedMeshSceneNode_getAnimationSpeed(ptr);
-    }
+    float getAnimationSpeed();
     
     /***
      * Creates shadow volume scene node as child of this node.
@@ -142,6 +128,200 @@ class AnimatedMeshSceneNode : SceneNode {
      *		
      */
     ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null,
+			int id=-1, bool zfailmethod=true, float infinity=1000.0f);
+
+    /***
+     * Get a pointer to a joint in the mesh (if the mesh is a bone based mesh).
+     * With this method it is possible to attach scene nodes to
+     * joints for example possible to attach a weapon to the left hand
+     * of an animated model. This example shows how:
+     * auto hand =
+     * 		yourAnimatedMeshSceneNode->getJointNode("LeftHand");
+     * 		hand->addChild(weaponSceneNode);
+     * Please note that the joint returned by this method may not exist
+     * before this call and the joints in the node were created by it.
+     * Params:
+     *  jointName = Name of the joint.
+     * Return: Pointer to the scene node which represents the joint
+     * 		with the specified name. Returns 0 if the contained mesh is not
+     * 		an skinned mesh or the name of the joint could not be found.
+     */
+    BoneSceneNode getJointNode(string jointName);
+
+    /// same as getJointNode(const c8* jointName), but based on id
+    BoneSceneNode getJointNode(uint jointID);
+
+    /***
+     * Gets joint count.
+	 * Return: Amount of joints in the mesh.
+	 */
+    uint getJointCount();
+
+    /***
+     * Starts a default MD2 animation.
+     * With this method it is easily possible to start a Run,
+     * Attack, Die or whatever animation, if the mesh contained in
+     * this scene node is an md2 mesh. Otherwise, nothing happens.
+     * Params:
+     *  anim = An MD2 animation type, which should be played, for
+     * 		example Stand for the standing animation.
+     * Return: True if successful, and false if not, for example if
+     * 		the mesh in the scene node is not a md2 mesh.
+     */
+    void setMD2Animation(AnimationTypeMD2 anim);
+
+    /***
+     * Starts a special MD2 animation.
+     * With this method it is easily possible to start a Run,
+     * Attack, Die or whatever animation, if the mesh contained in
+     * this scene node is an md2 mesh. Otherwise, nothing happens.
+     * This method uses a character string to identify the animation.
+     * If the animation is a standard md2 animation, you might want to
+     * start this animation with the EMD2_ANIMATION_TYPE enumeration
+     * instead.
+     * Params:
+     * 	animationName = Name of the animation which should be
+     * 		played.
+     * Return: Returns true if successful, and false if not, for
+     * 		example if the mesh in the scene node is not an md2 mesh, or no
+     * 		animation with this name could be found.
+     */
+    bool setMD2Animation(string animationName);
+    
+    /***
+     * Returns the currently displayed frame number.
+     */
+    float getFrameNr();
+    
+    /***
+     * Returns the current start frame number.
+     */
+    int getStartFrame();
+    
+    /***
+     * Returns the current end frame number.
+     */
+    int getEndFrame();
+    
+    /***
+     * Sets looping mode which is on by default.
+	 * If set to false, animations will not be played looped.
+     */
+    void setLoopMode(bool playAnimationLooped);
+    
+    /***
+     * returns the current loop mode
+	 * When true the animations are played looped
+	 */
+    bool getLoopMode();
+    
+    /***
+     * Sets a callback interface which will be called if an animation playback has ended.
+	 * Set this to 0 to disable the callback again.
+	 * Please note that this will only be called when in non looped
+	 * mode, see setLoopMode().
+     */
+    void setAnimationEndCallback(AnimatedEndCallBack callback=null);
+    
+    /***
+     * Sets if the scene node should not copy the materials of the mesh but use them in a read only style.
+     * In this way it is possible to change the materials a mesh
+	 * causing all mesh scene nodes referencing this mesh to change
+	 * too.
+     */
+    void setReadOnlyMaterials(bool readonly);
+    
+    /***
+     * Returns if the scene node should not copy the materials of the mesh but use them in a read only style
+     */
+    bool isReadOnlyMaterials();
+    
+    /***
+     * Sets a new mesh
+     */
+    void setMesh(AnimatedMesh mesh);
+    
+    /***
+     * Returns the current mesh
+     *
+     * Returns: Mesh		
+     */
+    AnimatedMesh getMesh();
+    
+    /***
+     * Get the absolute transformation for a special MD3 Tag if the mesh is a md3 mesh, or the absolutetransformation if it's a normal scenenode
+     *
+     * Params:
+     *			tagname = name
+     */
+	MD3QuaternionTag getMD3TagTransformation(string tagname);
+    
+    /***
+     * Set how the joints should be updated on render
+     *
+     * Params:
+     *			mode = mode
+     */
+    void setJointMode(JointUpdateOnRender mode);
+    
+    /***
+     * Sets the transition time in seconds
+     * 
+	 * Note: This needs to enable joints, and setJointmode set to
+	 * EJUOR_CONTROL. You must call animateJoints(), or the mesh will
+	 * not animate.
+	 *
+     * Params:
+     *			time = transition time
+     */
+    void setTransitionTime(float time);
+    
+	/***
+     * Animates the joints in the mesh based on the current frame.
+     * 
+	 * Also takes in to account transitions.
+	 *
+     * Params:
+     *			CalculateAbsolutePositions = set flag
+     */
+    void animateJoints(bool CalculateAbsolutePositions=true);
+    
+    /***
+     * Render mesh ignoring its transformation. Culling is unaffected.
+     * Params:
+     *			On = set flag
+     */
+    void setRenderFromIdentity(bool On);
+
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CAnimatedMeshSceneNode : AnimatedMeshSceneNode {
+	mixin DefaultSceneNode;
+
+	this(irr_IAnimatedMeshSceneNode* ptr) {
+    	this.ptr = ptr;
+    	c_ptr = cast(void*)this.ptr;
+    }
+    
+    void setCurrentFrame(float frame) {
+    	irr_IAnimatedMeshSceneNode_setCurrentFrame(ptr, frame);
+    }
+	
+    bool setFrameLoop(int begin, int end) {
+    	return irr_IAnimatedMeshSceneNode_setFrameLoop(ptr, begin, end);
+    }
+	
+    void setAnimationSpeed(float framesPerSecond) {
+    	irr_IAnimatedMeshSceneNode_setAnimationSpeed(ptr, framesPerSecond);
+    }
+    
+    float getAnimationSpeed() {
+    	return irr_IAnimatedMeshSceneNode_getAnimationSpeed(ptr);
+    }
+    
+    ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null,
 			int id=-1, bool zfailmethod=true, float infinity=1000.0f) {
     	irr_IShadowVolumeSceneNode* temp;
     	if (shadowMesh is null) {
@@ -151,17 +331,17 @@ class AnimatedMeshSceneNode : SceneNode {
     		temp = irr_IAnimatedMeshSceneNode_addShadowVolumeSceneNode(ptr, cast(irr_IMesh*)(shadowMesh.c_ptr), id, zfailmethod, infinity);
     	}
     	
-    	return new ShadowVolumeSceneNode(temp);
+    	return new CShadowVolumeSceneNode(temp);
     }
     
     BoneSceneNode getJointNode(string jointName) {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNode(ptr, jointName.toStringz);
-    	return new  BoneSceneNode(temp);
+    	return new CBoneSceneNode(temp);
     }
     
     BoneSceneNode getJointNode(uint jointID) {
     	auto temp = irr_IAnimatedMeshSceneNode_getJointNodeByID(ptr, jointID);
-    	return new  BoneSceneNode(temp);
+    	return new CBoneSceneNode(temp);
     }
     
     uint getJointCount() {
@@ -175,142 +355,67 @@ class AnimatedMeshSceneNode : SceneNode {
     bool setMD2Animation(string animationName) {
     	return irr_IAnimatedMeshSceneNode_setMD2AnimationByName(ptr, animationName.toStringz);
     }
-    
-    /***
-     * Returns the currently displayed frame number.
-     */
+	
     float getFrameNr() {
     	return irr_IAnimatedMeshSceneNode_getFrameNr(ptr);
     }
     
-    /***
-     * Returns the current start frame number.
-     */
     int getStartFrame() {
     	return irr_IAnimatedMeshSceneNode_getStartFrame(ptr);
     }
-    
-    /***
-     * Returns the current end frame number.
-     */
+	
     int getEndFrame() {
     	return irr_IAnimatedMeshSceneNode_getEndFrame(ptr);
     }
-    
-    /***
-     * Sets looping mode which is on by default.
-	 * If set to false, animations will not be played looped.
-     */
+	
     void setLoopMode(bool playAnimationLooped) {
     	irr_IAnimatedMeshSceneNode_setLoopMode(ptr, playAnimationLooped);
     }
     
-    /***
-     * returns the current loop mode
-	 * When true the animations are played looped
-	 */
     bool getLoopMode() {
     	return irr_IAnimatedMeshSceneNode_getLoopMode(ptr);
     }
-    
-    /***
-     * Sets a callback interface which will be called if an animation playback has ended.
-	 * Set this to 0 to disable the callback again.
-	 * Please note that this will only be called when in non looped
-	 * mode, see setLoopMode().
-     */
+	
     void setAnimationEndCallback(AnimatedEndCallBack callback=null) {
     	irr_IAnimatedMeshSceneNode_setAnimationEndCallback(ptr, callback.ptr);
     }
-    
-    /***
-     * Sets if the scene node should not copy the materials of the mesh but use them in a read only style.
-     * In this way it is possible to change the materials a mesh
-	 * causing all mesh scene nodes referencing this mesh to change
-	 * too.
-     */
+	
     void setReadOnlyMaterials(bool readonly) {
     	irr_IAnimatedMeshSceneNode_setReadOnlyMaterials(ptr, readonly);
     }
-    
-    /***
-     * Returns if the scene node should not copy the materials of the mesh but use them in a read only style
-     */
+	
     bool isReadOnlyMaterials() {
     	return irr_IAnimatedMeshSceneNode_isReadOnlyMaterials(ptr);
     }
-    
-    /***
-     * Sets a new mesh
-     */
+	
     void setMesh(AnimatedMesh mesh) {
     	irr_IAnimatedMeshSceneNode_setMesh(ptr, cast(irr_IAnimatedMesh*)(mesh.c_ptr));
     }
-    
-    /***
-     * Returns the current mesh
-     *
-     * Returns: Mesh		
-     */
+	
     AnimatedMesh getMesh() {
     	auto temp = irr_IAnimatedMeshSceneNode_getMesh(ptr);
     	AnimatedMesh mesh;
     	mesh.c_ptr = temp;
     	return mesh;
     }
-    
-    /***
-     * Get the absolute transformation for a special MD3 Tag if the mesh is a md3 mesh, or the absolutetransformation if it's a normal scenenode
-     *
-     * Params:
-     *			tagname = name
-     */
+	
 	MD3QuaternionTag getMD3TagTransformation(string tagname) {
     	auto temp = irr_IAnimatedMeshSceneNode_getMD3TagTransformation(ptr, tagname.toStringz);
     	return new MD3QuaternionTag(cast(irr_SMD3QuaternionTag*)temp);
     }
     
-    /***
-     * Set how the joints should be updated on render
-     *
-     * Params:
-     *			mode = mode
-     */
     void setJointMode(JointUpdateOnRender mode) {
     	irr_IAnimatedMeshSceneNode_setJointMode(ptr, mode);
     }
     
-    /***
-     * Sets the transition time in seconds
-     * 
-	 * Note: This needs to enable joints, and setJointmode set to
-	 * EJUOR_CONTROL. You must call animateJoints(), or the mesh will
-	 * not animate.
-	 *
-     * Params:
-     *			time = transition time
-     */
     void setTransitionTime(float time) {
     	irr_IAnimatedMeshSceneNode_setTransitionTime(ptr, time);
     }
     
-	/***
-     * Animates the joints in the mesh based on the current frame.
-     * 
-	 * Also takes in to account transitions.
-	 *
-     * Params:
-     *			CalculateAbsolutePositions = set flag
-     */
     void animateJoints(bool CalculateAbsolutePositions=true) {
     	irr_IAnimatedMeshSceneNode_animateJoints(ptr, CalculateAbsolutePositions);
     }
     
-    /***
-     * Render mesh ignoring its transformation. Culling is unaffected.
-     * Params:
-     *			On = set flag
-     */
     void setRenderFromIdentity(bool On) {
     	irr_IAnimatedMeshSceneNode_setRenderFromIdentity(ptr, On);
     }
@@ -332,16 +437,22 @@ unittest {
     mixin(TestPrerequisite);
 
     /// IAnimatedMesh test starts here
-    //auto mesh = smgr.getMesh("../../media/sydney.md2");
-    //assert(mesh !is null);
-    //assert(mesh.ptr != null);
+    auto mesh = smgr.getMesh("../media/sydney.md2");
+    assert(mesh !is null);
+    assert(mesh.c_ptr != null);
 
-    //auto node = smgr.addAnimatedMeshSceneNode(mesh);
-    //assert(node !is null);
-    //assert(node.ptr != null);
+    auto node = smgr.addAnimatedMeshSceneNode(mesh);
+    assert(node !is null);
+    assert(node.c_ptr != null);
 
-    //node.setMD2Animation(AnimationTypeMD2.Stand);
-    //node.setMaterialFlag(MaterialFlag.Lighting, false);
+	with(node) {
+		setCurrentFrame(5);
+		setFrameLoop(5,10);
+		setAnimationSpeed(10);
+		getAnimationSpeed.writeln;
+		
+		setMaterialFlag(MaterialFlag.Lighting, false);
+	}
 }
 
 package extern (C):

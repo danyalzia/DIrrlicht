@@ -26,13 +26,32 @@
 
 module dirrlicht.scene.terrainscenenode;
 
-class TerrainSceneNode {
-	this(irr_ITerrainSceneNode* ptr) {
-		this.ptr = ptr;
-	}
-	
-	irr_ITerrainSceneNode* ptr;
+import dirrlicht.scene.scenenode;
+
+interface TerrainSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
 }
+
+class CTerrainSceneNode : TerrainSceneNode {
+	mixin DefaultSceneNode;
+	
+    this(irr_ITerrainSceneNode* ptr) {
+    	this.ptr = ptr;
+    	c_ptr = cast(irr_ISceneNode*)ptr;
+    }
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_ITerrainSceneNode* ptr;
+}
+
 extern (C):
 
 struct irr_ITerrainSceneNode;

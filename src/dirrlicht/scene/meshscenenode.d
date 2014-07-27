@@ -53,7 +53,7 @@ class MeshSceneNode : SceneNode {
 
     ShadowVolumeSceneNode addShadowVolumeSceneNode(Mesh shadowMesh=null, int id=-1, bool zfailmethod=true, float infinity=1000.0f){
         auto shadow = irr_IMeshSceneNode_addShadowVolumeSceneNode(ptr, cast(irr_IMesh*)(shadowMesh.c_ptr), id, zfailmethod, infinity);
-        return new ShadowVolumeSceneNode(shadow);
+        return new CShadowVolumeSceneNode(shadow);
     }
 
     void setReadOnlyMaterials(bool readonly) {

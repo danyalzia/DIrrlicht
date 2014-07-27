@@ -36,7 +36,12 @@ import dirrlicht.scene.scenenode;
 import dirrlicht.scene.animatedmeshscenenode;
 import dirrlicht.core.vector3d;
 
-class CameraSceneNode : SceneNode {
+interface CameraSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CCameraSceneNode : CameraSceneNode {
 	mixin DefaultSceneNode;
 	
     this(irr_ICameraSceneNode* ptr) {

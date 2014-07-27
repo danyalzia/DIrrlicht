@@ -28,7 +28,12 @@ module dirrlicht.scene.billboardscenenode;
 
 import dirrlicht.scene.scenenode;
 
-class BillboardSceneNode : SceneNode {
+interface BillboardSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CBillboardSceneNode : BillboardSceneNode {
 	mixin DefaultSceneNode;
 	
 	this(irr_IBillboardSceneNode* ptr) {

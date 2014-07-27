@@ -28,7 +28,12 @@ module dirrlicht.scene.particlesystemscenenode;
 
 import dirrlicht.scene.scenenode;
 
-class ParticleSystemSceneNode : SceneNode {
+interface ParticleSystemSceneNode : SceneNode {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CParticleSystemSceneNode : ParticleSystemSceneNode {
 	mixin DefaultSceneNode;
 	
 	this(irr_IParticleSystemSceneNode* ptr) {
