@@ -159,7 +159,7 @@ class SceneManager {
 
     FileSystem getFileSystem() {
         auto file = irr_ISceneManager_getFileSystem(ptr);
-        return new FileSystem(file);
+        return new CFileSystem(file);
     }
 
     VolumeLightSceneNode addVolumeLightSceneNode(SceneNode parent=null, int id=-1, uint subdivU = 32, uint subdivV = 32, Color foot = Color(51, 0, 230, 180).reverse, Color tail = Color(0, 0, 0, 0).reverse, vector3df position = vector3df(0,0,0), vector3df rotation = vector3df(0,0,0), vector3df scale = vector3df(1.0f, 1.0f, 1.0f)) {

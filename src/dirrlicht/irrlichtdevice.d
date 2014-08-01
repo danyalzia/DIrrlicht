@@ -139,7 +139,7 @@ class IrrlichtDevice {
 		 * Return: Pointer to the file system.
 		 */
 	    FileSystem fileSystem() {
-			filesystem_ = new FileSystem(irr_IrrlichtDevice_getFileSystem(ptr));
+			filesystem_ = new CFileSystem(irr_IrrlichtDevice_getFileSystem(ptr));
 			return filesystem_;
 		}
 
@@ -471,7 +471,6 @@ class IrrlichtDevice {
         irr_IrrlichtDevice_drop(ptr);
     }
     
-    //alias ptr this;
 	irr_IrrlichtDevice* ptr;
 
 private:
@@ -506,7 +505,7 @@ unittest {
 
             auto filesystem = fileSystem;
             assert(filesystem !is null);
-            assert(filesystem.ptr != null);
+            assert(filesystem.c_ptr != null);
 
             auto guienv = guiEnvironment;
 			assert(guienv !is null);
