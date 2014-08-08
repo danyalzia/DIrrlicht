@@ -30,11 +30,11 @@ import dirrlicht.core.array;
 import std.conv : to;
 import std.utf : toUTFz;
 
-/***
- * Interface providing methods for making it easier to write XML files.
- * This XML Writer writes xml files using in the platform dependent
- * wchar_t format and sets the xml-encoding correspondingly.
- */
+/+++
+ + Interface providing methods for making it easier to write XML files.
+ + This XML Writer writes xml files using in the platform dependent
+ + wchar_t format and sets the xml-encoding correspondingly.
+ +/
 interface XMLWriter {
 	/***
 	 * Writes an xml 1.0 header.
