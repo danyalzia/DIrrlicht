@@ -331,9 +331,9 @@ class IrrlichtDevice {
         return to!string(str);
     }
 
-	void setEventReceiver(IEventReceiver receiver) {
-		irr_IrrlichtDevice_setEventReceiver(ptr, receiver);
-	}
+	//void setEventReceiver(EventReceiver receiver) {
+		//irr_IrrlichtDevice_setEventReceiver(ptr, receiver);
+	//}
 	
 	/***
 	 * Sends a user created event to the engine.
@@ -585,7 +585,7 @@ bool irr_IrrlichtDevice_isFullscreen(irr_IrrlichtDevice* device);
 ColorFormat irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
 const(char*) irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
-void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, IEventReceiver receiver);
+//void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
 //irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
 bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, Event event);
 void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
