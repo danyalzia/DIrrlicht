@@ -28,16 +28,34 @@ module dirrlicht.video.videomodelist;
 
 import dirrlicht.irrlichtdevice;
 
-class VideoModeList {
-    this(irr_IVideoModeList* ptr)
-    out(result) {
-		assert(result.ptr != null);
+interface VideoModeList {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CVideoModeList : VideoModeList {
+	this(irr_IVideoModeList* ptr)
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
     }
-    
+	
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_IVideoModeList* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

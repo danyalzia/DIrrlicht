@@ -384,7 +384,7 @@ class SceneManager {
     
     Attributes getParameters() {
     	auto temp = irr_ISceneManager_getParameters(ptr);
-    	return new Attributes(temp);
+    	return new CAttributes(temp);
     }
     
     SceneNodeRenderPass getSceneNodeRenderPass() {

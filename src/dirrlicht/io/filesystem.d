@@ -583,7 +583,7 @@ class CFileSystem : FileSystem {
 	
 	Attributes createEmptyAttributes(VideoDriver driver=null) {
 		auto temp = irr_IFileSystem_createEmptyAttributes(ptr, driver.ptr);
-		return new Attributes(temp);
+		return new CAttributes(temp);
 	}
 	
 	@property void* c_ptr() {

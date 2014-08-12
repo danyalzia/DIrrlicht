@@ -230,7 +230,7 @@ class VideoDriver {
 	 */
 	Attributes getDriverAttributes() {
         auto att = irr_IVideoDriver_getDriverAttributes(ptr);
-        return new Attributes(att);
+        return new CAttributes(att);
     }
 
 	/***
@@ -293,7 +293,7 @@ class VideoDriver {
      */
     ImageLoader getImageLoader(uint n) {
     	auto temp = irr_IVideoDriver_getImageLoader(ptr, n);
-    	return new ImageLoader(temp);
+    	return new CImageLoader(temp);
     }
 
     /***
@@ -313,7 +313,7 @@ class VideoDriver {
      */
     ImageWriter getImageWriter(uint n) {
     	auto temp = irr_IVideoDriver_getImageWriter(ptr, n);
-    	return new ImageWriter(temp);
+    	return new CImageWriter(temp);
     }
 
     /***
@@ -755,7 +755,7 @@ class VideoDriver {
 	 *  loader = Pointer to the external loader created.
 	 */
 	void addExternalImageLoader(ImageLoader loader) {
-		irr_IVideoDriver_addExternalImageLoader(ptr, loader.ptr);
+		irr_IVideoDriver_addExternalImageLoader(ptr, cast(irr_IImageLoader*)loader.c_ptr);
 	}
 
 	/***
@@ -769,7 +769,7 @@ class VideoDriver {
 	 *  writer = Pointer to the external writer created.
 	 */
 	void addExternalImageWriter(ImageWriter writer) {
-		irr_IVideoDriver_addExternalImageWriter(ptr, writer.ptr);
+		irr_IVideoDriver_addExternalImageWriter(ptr, cast(irr_IImageWriter*)writer.c_ptr);
 	}
 
 	/***
@@ -823,7 +823,7 @@ class VideoDriver {
 	 */
 	Image createImageFromFile(string file) {
 		auto temp = irr_IVideoDriver_createImageFromFile(ptr, file.toStringz);
-		return new Image(temp);
+		return new CImage(temp);
 	}
 
 	/***
@@ -838,7 +838,7 @@ class VideoDriver {
 	 * Return: True on successful write.
 	 */
 	bool writeImageToFile(Image image, string filename, uint param = 0) {
-		return irr_IVideoDriver_writeImageToFile(ptr, image.ptr, filename.toStringz, param);
+		return irr_IVideoDriver_writeImageToFile(ptr, cast(irr_IImage*)image.c_ptr, filename.toStringz, param);
 	}
 	
 	//  bool irr_IVideoDriver_writeImageToFile(irr_IVideoDriver* driver, irr_IImage* image, irr_IWriteFile* file, uint param =0);
@@ -864,7 +864,7 @@ class VideoDriver {
 	 */
 	Image createImageFromData(ColorFormat format, dimension2du size, void *data, bool ownForeignMemory=false, bool deleteMemory=true) {
 		auto temp = irr_IVideoDriver_createImageFromData(ptr, format, size, data, ownForeignMemory, deleteMemory);
-		return new Image(temp);
+		return new CImage(temp);
 	}
 
 	/***
@@ -879,7 +879,7 @@ class VideoDriver {
 	 */
 	Image createEmptyImage(ColorFormat format, dimension2du size) {
 		auto temp = irr_IVideoDriver_createEmptyImage(ptr, format, size);
-		return new Image(temp);
+		return new CImage(temp);
 	}
 
 	/***
@@ -895,7 +895,7 @@ class VideoDriver {
 	 */
 	Image createImage(Texture texture, vector2di pos, dimension2du size) {
 		auto temp = irr_IVideoDriver_createImage(ptr, texture.ptr, pos, size);
-		return new Image(temp);
+		return new CImage(temp);
 	}
 
 	/***
@@ -1014,7 +1014,7 @@ class VideoDriver {
      *  attributes = The attributes to read from.
      */
     void fillMaterialStructureFromAttributes(out Material outMaterial, out Attributes attributes) {
-    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial.ptr, attributes.ptr);
+    	irr_IVideoDriver_fillMaterialStructureFromAttributes(ptr, outMaterial.ptr, cast(irr_IAttributes*)attributes.c_ptr);
     }
     
     // irr_IVideoDriver_getExposedVideoData
@@ -1035,7 +1035,7 @@ class VideoDriver {
      */
     GPUProgrammingServices getGPUProgrammingServices() {
     	auto temp = irr_IVideoDriver_getGPUProgrammingServices(ptr);
-    	return new GPUProgrammingServices(temp);
+    	return new CGPUProgrammingServices(temp);
     }
 
     /// Returns a pointer to the mesh manipulator.
@@ -1062,7 +1062,7 @@ class VideoDriver {
 	 */
     Image createScreenShot(ColorFormat format, RenderTarget target) {
     	auto temp = irr_IVideoDriver_createScreenShot(ptr, format, target);
-    	return new Image(temp);
+    	return new CImage(temp);
     }
 
     /***
@@ -1228,7 +1228,7 @@ unittest {
 
         auto att = getDriverAttributes();
         assert(att !is null);
-        assert(att.ptr != null);
+        assert(att.c_ptr != null);
 
         checkDriverReset();
         setTransform(TransformationState.World, matrix4());

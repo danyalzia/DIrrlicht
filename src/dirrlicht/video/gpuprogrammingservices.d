@@ -26,14 +26,34 @@
 
 module dirrlicht.video.gpuprogrammingservices;
 
-class GPUProgrammingServices
-{
+interface GPUProgrammingServices {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CGPUProgrammingServices : GPUProgrammingServices {
 	this(irr_IGPUProgrammingServices* ptr)
-	{
-		this.ptr = ptr;
+    in {
+		assert(ptr != null);
 	}
+	body {
+    	this.ptr = ptr;
+    }
 	
-	irr_IGPUProgrammingServices* ptr;
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_IGPUProgrammingServices* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

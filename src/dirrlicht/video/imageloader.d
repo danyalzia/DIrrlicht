@@ -26,12 +26,34 @@
 
 module dirrlicht.video.imageloader;
 
-class ImageLoader {
-	this(irr_IImageLoader* ptr) {
-		this.ptr = ptr;
+interface ImageLoader {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CImageLoader : ImageLoader{
+	this(irr_IImageLoader* ptr)
+    in {
+		assert(ptr != null);
 	}
+	body {
+    	this.ptr = ptr;
+    }
 	
-	irr_IImageLoader* ptr;
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_IImageLoader* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

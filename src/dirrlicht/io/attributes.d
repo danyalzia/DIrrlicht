@@ -26,16 +26,34 @@
 
 module dirrlicht.io.attributes;
 
-class Attributes {	
-	this(irr_IAttributes* ptr) {
-		this.ptr = ptr;
+interface Attributes {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CAttributes : Attributes {	
+	this(irr_IAttributes* ptr)
+    in {
+		assert(ptr != null);
 	}
-	
-    uint getAttributeCount() {
-        return 0;
+	body {
+    	this.ptr = ptr;
     }
     
+    @property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_IAttributes* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern(C):

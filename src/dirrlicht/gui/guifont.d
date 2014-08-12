@@ -28,12 +28,30 @@ module dirrlicht.gui.guifont;
 
 import dirrlicht.gui.guistatictext;
 
-class GUIFont {
+interface GUIFont {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CGUIFont : GUIFont {
     this(irr_IGUIFont* ptr) {
     	this.ptr = ptr;
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
     irr_IGUIFont* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

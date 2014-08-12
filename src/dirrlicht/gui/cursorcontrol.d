@@ -28,10 +28,15 @@ module dirrlicht.gui.cursorcontrol;
 
 import dirrlicht.irrlichtdevice;
 
-class CursorControl {
+interface CursorControl {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CCursorControl : CursorControl {
     this(irr_ICursorControl* ptr)
-    out(result) {
-		assert(result.ptr != null);
+    in {
+		assert(ptr != null);
 	}
 	body {
     	this.ptr = ptr;
@@ -40,8 +45,22 @@ class CursorControl {
     @property void visible(bool value) {
         irr_ICursorControl_setVisible(ptr, value);
     }
-    
+
+    @property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+
+private:
     irr_ICursorControl* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

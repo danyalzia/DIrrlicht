@@ -50,12 +50,12 @@ class GUIEnvironment {
     
     GUIStaticText addStaticText(dstring text, recti rec, bool border=false) {
         auto temp = irr_IGUIEnvironment_addStaticText(ptr, toUTFz!(const(dchar)*)(text), rec.ptr, border);
-        return new GUIStaticText(temp);
+        return new CGUIStaticText(temp);
     }
 
     GUIImage addImage(Texture texture, vector2di pos) {
         auto temp = irr_IGUIEnvironment_addImage(ptr, texture.ptr, pos.ptr);
-        return new GUIImage(temp);
+        return new CGUIImage(temp);
     }
 
     void drawAll() {
@@ -63,6 +63,11 @@ class GUIEnvironment {
     }
 	
     irr_IGUIEnvironment* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

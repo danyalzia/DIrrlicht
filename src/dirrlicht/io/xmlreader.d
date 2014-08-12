@@ -76,6 +76,11 @@ private:
     irr_IXMLReaderUTF8* ptr;
 }
 
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
+}
+
 package extern(C):
 
 struct irr_IXMLReader;

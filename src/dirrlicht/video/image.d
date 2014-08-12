@@ -26,15 +26,36 @@
 
 module dirrlicht.video.image;
 
-class Image
-{
-	this(irr_IImage* ptr)
-	{
-		this.ptr = ptr;
-	}
-	
-	irr_IImage* ptr;
+interface Image {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
 }
+
+class CImage : Image {
+	this(irr_IImage* ptr)
+    in {
+		assert(ptr != null);
+	}
+	body {
+    	this.ptr = ptr;
+    }
+	
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_IImage* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
+}
+
 package extern (C):
 
 struct irr_IImage;

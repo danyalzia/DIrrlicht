@@ -26,12 +26,34 @@
 
 module dirrlicht.video.materialrenderer;
 
-class MaterialRenderer {
-	this(irr_IMaterialRenderer* ptr) {
-		this.ptr = ptr;
+interface MaterialRenderer {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CMaterialRenderer : MaterialRenderer {
+	this(irr_IMaterialRenderer* ptr)
+    in {
+		assert(ptr != null);
 	}
+	body {
+    	this.ptr = ptr;
+    }
 	
-	irr_IMaterialRenderer* ptr;
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_IMaterialRenderer* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):

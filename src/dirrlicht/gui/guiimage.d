@@ -26,14 +26,30 @@
 
 module dirrlicht.gui.guiimage;
 
-import dirrlicht.compileconfig;
 import dirrlicht.gui.guienvironment;
 import dirrlicht.video.texture;
 import dirrlicht.video.color;
 import dirrlicht.core.vector2d;
 import dirrlicht.core.rect;
 
-class GUIImage {
+interface GUIImage {
+    void setImage(Texture texture);
+    Texture getImage();
+    void setColor(Color col);
+    void setScaleImage(bool scale);
+    void setUseAlphaChannel(bool use);
+    Color getColor();
+    bool isImageScaled();
+    bool isAlphaChannelUsed();
+    void setSourceRect(recti sourceRect);
+    recti getSourceRect();
+    void setDrawBounds(rectf drawBoundUVs);
+    rectf getDrawBounds();
+    @property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CGUIImage : GUIImage {
     this(irr_IGUIImage* ptr) {
     	this.ptr = ptr;
     }
@@ -90,14 +106,21 @@ class GUIImage {
         auto temp = irr_IGUIImage_getDrawBounds(ptr);
         return rectf(temp.x, temp.y, temp.x1, temp.y1);
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
 	irr_IGUIImage* ptr;
 }
 
 unittest {
-    mixin(TestPrerequisite);
-
-    //gui.addImage(driver.getTexture("../media/wall.bmp"), vector2di(20,20));
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 extern (C):

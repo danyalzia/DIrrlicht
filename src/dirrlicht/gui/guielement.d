@@ -47,6 +47,11 @@ private:
 	irr_IGUIElement* ptr;
 }
 
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
+}
+
 extern (C):
 
 struct irr_IGUIElement;

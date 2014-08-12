@@ -26,32 +26,55 @@
 
 module dirrlicht.gui.guistatictext;
 
-import dirrlicht.compileconfig;
 import dirrlicht.gui.guienvironment;
 import dirrlicht.gui.guifont;
 import dirrlicht.gui.guialignment;
 import dirrlicht.core.rect;
 import dirrlicht.video.color;
 
-import std.utf;
+interface GUIStaticText {
+    void setOverrideFont(GUIFont font);
+    GUIFont getOverrideFont();
+    GUIFont getActiveFont();
+    void setOverrideColor(Color col);
+    Color getOverrideColor();
+    void enableOverrideColor(bool enable);
+    bool isOverrideColorEnabled();
+    void setBackgroundColor(Color color);
+    bool isDrawBackgroundEnabled();
+    Color getBackgroundColor();
+    void setDrawBorder(bool draw);
+    bool isDrawBorderEnabled();
+    void setTextAlignment(GUIAlignment horizontal, GUIAlignment vertical);
+    void setWordWrap(bool enable);
+    bool isWordWrapEnabled();
+    @property int Height();
+    @property int Width();
+    bool isTextRestrainedInside();
+    void setRightToLeft(bool rtl);
+    bool isRightToLeft();
 
-class GUIStaticText {
+    @property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CGUIStaticText : GUIStaticText {
     this(irr_IGUIStaticText* ptr) {
     	this.ptr = ptr;
     }
     
     void setOverrideFont(GUIFont font) {
-        irr_IGUIStaticText_setOverrideFont(ptr, font.ptr);
+        irr_IGUIStaticText_setOverrideFont(ptr, cast(irr_IGUIFont*)font.c_ptr);
     }
 
     GUIFont getOverrideFont() {
         auto temp = irr_IGUIStaticText_getOverrideFont(ptr);
-        return new GUIFont(temp);
+        return new CGUIFont(temp);
     }
 
     GUIFont getActiveFont() {
         auto temp = irr_IGUIStaticText_getActiveFont(ptr);
-        return new GUIFont(temp);
+        return new CGUIFont(temp);
     }
 
     void setOverrideColor(Color col) {
@@ -104,11 +127,11 @@ class GUIStaticText {
         return irr_IGUIStaticText_isWordWrapEnabled(ptr);
     }
 
-    @property Height() {
+    @property int Height() {
         return irr_IGUIStaticText_getTextHeight(ptr);
     }
     
-    @property Width() {
+    @property int Width() {
         return irr_IGUIStaticText_getTextWidth(ptr);
     }
 
@@ -123,13 +146,21 @@ class GUIStaticText {
     bool isRightToLeft() {
         return irr_IGUIStaticText_isRightToLeft(ptr);
     }
-    
+
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
 	irr_IGUIStaticText* ptr;
 }
 
-unittest
-{
-    mixin(TestPrerequisite);
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 
 //    auto text = gui.addStaticText("Hello World!", recti(20,20,200,200), true);
 //    assert(text !is null);

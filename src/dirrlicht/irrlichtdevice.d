@@ -166,7 +166,7 @@ class IrrlichtDevice {
 		 * Return: Pointer to the mouse cursor control interface.
 		 */
 	    CursorControl cursorControl() {
-			cursorctl_ = new CursorControl(irr_IrrlichtDevice_getCursorControl(ptr));
+			cursorctl_ = new CCursorControl(irr_IrrlichtDevice_getCursorControl(ptr));
 			return cursorctl_;
 		}
 
@@ -517,7 +517,7 @@ unittest {
 
             auto cursorcontrol = cursorControl;
             assert(cursorcontrol !is null);
-            assert(cursorcontrol.ptr != null);
+            assert(cursorcontrol.c_ptr != null);
 
             auto Logger = logger;
             assert(Logger !is null);

@@ -26,12 +26,34 @@
 
 module dirrlicht.video.imagewriter;
 
-class ImageWriter {
-	this(irr_IImageWriter* ptr) {
-		this.ptr = ptr;
+interface ImageWriter {
+	@property void* c_ptr();
+	@property void c_ptr(void* ptr);
+}
+
+class CImageWriter : ImageWriter {
+	this(irr_IImageWriter* ptr)
+    in {
+		assert(ptr != null);
 	}
+	body {
+    	this.ptr = ptr;
+    }
 	
-	irr_IImageWriter* ptr;
+	@property void* c_ptr() {
+		return ptr;
+	}
+
+	@property void c_ptr(void* ptr) {
+		this.ptr = cast(typeof(this.ptr))(ptr);
+	}
+private:
+    irr_IImageWriter* ptr;
+}
+
+unittest {
+	import dirrlicht.compileconfig;
+	mixin(TestPrerequisite);
 }
 
 package extern (C):
