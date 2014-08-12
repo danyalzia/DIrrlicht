@@ -931,7 +931,7 @@ class VideoDriver {
 	 * not accept material renderers.
 	 */
 	int addMaterialRenderer(MaterialRenderer renderer, string name) {
-		return irr_IVideoDriver_addMaterialRenderer(ptr, renderer.ptr, name.toStringz);
+		return irr_IVideoDriver_addMaterialRenderer(ptr, cast(irr_IMaterialRenderer*)renderer.c_ptr, name.toStringz);
 	}
 
 	/***
@@ -945,7 +945,7 @@ class VideoDriver {
 	 */
 	MaterialRenderer getMaterialRenderer(uint idx) {
 		auto temp = irr_IVideoDriver_getMaterialRenderer(ptr, idx);
-		return new MaterialRenderer(temp);
+		return new CMaterialRenderer(temp);
 	}
 
 	/***

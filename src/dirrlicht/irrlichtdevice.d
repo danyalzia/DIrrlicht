@@ -191,7 +191,7 @@ class IrrlichtDevice {
 		 * by the gfx adapter.
 		 */
 	    VideoModeList videoModeList() {
-			videoModeList_ = new VideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr));
+			videoModeList_ = new CVideoModeList(irr_IrrlichtDevice_getVideoModeList(ptr));
 			return videoModeList_;
 		}
 
@@ -525,7 +525,7 @@ unittest {
 
             auto videolist = videoModeList;
             assert(videolist !is null);
-            assert(videolist.ptr != null);
+            assert(videolist.c_ptr != null);
 
             auto OSoperator = osOperator;
             assert(OSoperator !is null);
