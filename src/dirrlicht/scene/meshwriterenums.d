@@ -26,6 +26,8 @@
 
 module dirrlicht.scene.meshwriterenums;
 
+import dirrlicht.irrtypes;
+
 /// An enumeration for all supported types of built-in mesh writers
 /** A scene mesh writers is represented by a four character code
 such as 'irrm' or 'coll' instead of simple numbers, to avoid
@@ -33,19 +35,19 @@ name clashes with external mesh writers.*/
 enum WriterType
 {
     /// Irrlicht native mesh writer, for static .irrmesh files.
-    IrrMesh,
+    IrrMesh = MAKE_DIRR_ID('i','r','r','m'),
 
     /// COLLADA mesh writer for .dae and .xml files
-    COLLADA,
+    COLLADA = MAKE_DIRR_ID('c','o','l','l'),
 
     /// STL mesh writer for .stl files
-    STL,
+    STL = MAKE_DIRR_ID('s','t','l',0),
 
     /// OBJ mesh writer for .obj files
-    OBJ,
+    OBJ = MAKE_DIRR_ID('o','b','j',0),
 
     /// PLY mesh writer for .ply files
-    PLY,
+    PLY = MAKE_DIRR_ID('p','l','y',0)
 }
 
 

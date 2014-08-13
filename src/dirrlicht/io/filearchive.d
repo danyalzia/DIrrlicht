@@ -26,6 +26,7 @@
 
 module dirrlicht.io.filearchive;
 
+import dirrlicht.irrtypes;
 import dirrlicht.io.readfile;
 import dirrlicht.io.filelist;
 
@@ -38,28 +39,28 @@ enum EFileSystemType {
 /// Contains the different types of archives
 enum FileArchiveType {
 	/// A PKZIP archive
-	ZIP,
+	ZIP = MAKE_DIRR_ID('Z','I','P', 0),
 
 	/// A gzip archive
-	GZIP,
+	GZIP = MAKE_DIRR_ID('g','z','i','p'),
 
 	/// A virtual directory
-	Folder,
+	Folder = MAKE_DIRR_ID('f','l','d','r'),
 
 	/// An ID Software PAK archive
-	PAK,
+	PAK = MAKE_DIRR_ID('P','A','K', 0),
 
 	/// A Nebula Device archive
-	NPK,
+	NPK = MAKE_DIRR_ID('N','P','K', 0),
 
 	/// A Tape ARchive
-	TAR,
+	TAR = MAKE_DIRR_ID('T','A','R', 0),
 
 	/// A wad Archive, Quake2, Halflife
-	WAD,
+	WAD = MAKE_DIRR_ID('W','A','D', 0),
 
 	/// The type of this archive is unknown
-	Unknown
+	Unknown = MAKE_DIRR_ID('u','n','k','n')
 }
 
 /+++

@@ -24,17 +24,10 @@
        source distribution.
 */
 
-module dirrlicht;
+module dirrlicht.irrtypes;
 
-public {
-    import dirrlicht.eventreceiver;
-    import dirrlicht.logger;
-    import dirrlicht.osoperator;
-    import dirrlicht.randomizer;
-    import dirrlicht.irrlichtdevice;
-    import dirrlicht.timer;
-    import dirrlicht.irrtypes;
-    import dirrlicht.keycodes;
-    import dirrlicht.irrcreationparameters;
-    import dirrlicht.keymap;
+/// creates four CC codes used in Irrlicht for simple ids
+static uint MAKE_DIRR_ID(ubyte c0, ubyte c1, ubyte c2, ubyte c3) {
+	return cast(uint)c0 | (cast(uint)c1 << 8) | 
+		(cast(uint)c2 << 16) | (cast(uint)c3 << 24);
 }
