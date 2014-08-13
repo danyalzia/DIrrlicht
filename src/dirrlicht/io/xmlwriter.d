@@ -71,16 +71,34 @@ interface XMLWriter {
 			string attr4Name = null, string attr4Value = null,
 			string attr5Name = null, string attr5Value = null);
 
+	/// ditto
+	void writeElement(dstring name, bool empty=false,
+			dstring attr1Name = null, dstring attr1Value = null,
+			dstring attr2Name = null, dstring attr2Value = null,
+			dstring attr3Name = null, dstring attr3Value = null,
+			dstring attr4Name = null, dstring attr4Value = null,
+			dstring attr5Name = null, dstring attr5Value = null);
+			
 	/// Writes an xml element with any number of attributes
 	void writeElement(string name, bool empty,
 				string[] names, string[] values);
 
+	/// ditto
+	void writeElement(dstring name, bool empty,
+				dstring[] names, dstring[] values);
+				
 	/// Writes a comment into the xml file
 	void writeComment(string comment);
 
+	/// ditto
+	void writeComment(dstring comment);
+	
 	/// Writes the closing tag for an element. Like "</foo>"
 	void writeClosingTag(string name);
 
+	/// ditto
+	void writeClosingTag(dstring name);
+	
 	/***
 	 * Writes a text into the file.
 	 * All occurrences of special characters such as
@@ -89,6 +107,9 @@ interface XMLWriter {
 	 */
 	void writeText(string text);
 
+	/// ditto
+	void writeText(dstring text);
+	
 	/// Writes a line break
 	void writeLineBreak();
 	@property void* c_ptr();
@@ -116,8 +137,24 @@ class CXMLWriter : XMLWriter {
 			string attr5Name = null, string attr5Value = null) {
 		irr_IXMLWriter_writeElement(ptr, name.toUTFz!(const(dchar)*), empty, attr1Name.toUTFz!(const(dchar)*), attr1Value.toUTFz!(const(dchar)*), attr2Name.toUTFz!(const(dchar)*), attr2Value.toUTFz!(const(dchar)*), attr3Name.toUTFz!(const(dchar)*), attr3Value.toUTFz!(const(dchar)*), attr4Name.toUTFz!(const(dchar)*), attr4Value.toUTFz!(const(dchar)*), attr5Name.toUTFz!(const(dchar)*), attr5Value.toUTFz!(const(dchar)*));
 	}
-			
+
+	void writeElement(dstring name, bool empty=false,
+			dstring attr1Name = null, dstring attr1Value = null,
+			dstring attr2Name = null, dstring attr2Value = null,
+			dstring attr3Name = null, dstring attr3Value = null,
+			dstring attr4Name = null, dstring attr4Value = null,
+			dstring attr5Name = null, dstring attr5Value = null) {
+		irr_IXMLWriter_writeElement(ptr, name.toUTFz!(const(dchar)*), empty, attr1Name.toUTFz!(const(dchar)*), attr1Value.toUTFz!(const(dchar)*), attr2Name.toUTFz!(const(dchar)*), attr2Value.toUTFz!(const(dchar)*), attr3Name.toUTFz!(const(dchar)*), attr3Value.toUTFz!(const(dchar)*), attr4Name.toUTFz!(const(dchar)*), attr4Value.toUTFz!(const(dchar)*), attr5Name.toUTFz!(const(dchar)*), attr5Value.toUTFz!(const(dchar)*));
+	}
+	
 	void writeElement(string name, bool empty, string[] names, string[] values) {
+		irr_array tempnames, tempvalues;
+		tempnames.data = names.ptr;
+		tempvalues.data = values.ptr;
+		irr_IXMLWriter_writeElement2(ptr, name.toUTFz!(const(dchar)*), empty, &tempnames, &tempvalues);
+	}
+
+	void writeElement(dstring name, bool empty, dstring[] names, dstring[] values) {
 		irr_array tempnames, tempvalues;
 		tempnames.data = names.ptr;
 		tempvalues.data = values.ptr;
@@ -127,12 +164,24 @@ class CXMLWriter : XMLWriter {
 	void writeComment(string comment) {
 		irr_IXMLWriter_writeComment(ptr, comment.toUTFz!(const(dchar)*));
 	}
+
+	void writeComment(dstring comment) {
+		irr_IXMLWriter_writeComment(ptr, comment.toUTFz!(const(dchar)*));
+	}
 	
 	void writeClosingTag(string name) {
 		irr_IXMLWriter_writeClosingTag(ptr, name.toUTFz!(const(dchar)*));
 	}
+
+	void writeClosingTag(dstring name) {
+		irr_IXMLWriter_writeClosingTag(ptr, name.toUTFz!(const(dchar)*));
+	}
 	
 	void writeText(string text) {
+		irr_IXMLWriter_writeText(ptr, text.toUTFz!(const(dchar)*));
+	}
+
+	void writeText(dstring text) {
 		irr_IXMLWriter_writeText(ptr, text.toUTFz!(const(dchar)*));
 	}
 	
