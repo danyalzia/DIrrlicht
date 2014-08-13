@@ -286,13 +286,13 @@ pure nothrow struct Rect(T) if(isNumeric!(T) && (is (T == int) || is (T == float
 	@property {
 		T x() { return UpperLeftCorner.x; }
 		T y() { return UpperLeftCorner.y; }
-		T x1() { return UpperLeftCorner.x; }
-		T y1() { return UpperLeftCorner.y; }
+		T x1() { return LowerRightCorner.x; }
+		T y1() { return LowerRightCorner.y; }
 
 		T x(T _x) { return UpperLeftCorner.x = _x; }
 		T y(T _y) { return UpperLeftCorner.y = _y; }
-		T x1(T _x1) { return UpperLeftCorner.x = _x1; }
-		T y1(T _y1) { return UpperLeftCorner.y = _y1; }
+		T x1(T _x1) { return LowerRightCorner.x = _x1; }
+		T y1(T _y1) { return LowerRightCorner.y = _y1; }
 
 		static if (is(T == int)) {
 			irr_recti ptr() {
