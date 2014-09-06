@@ -29,6 +29,7 @@ module dirrlicht.gui.cursorcontrol;
 import dirrlicht.irrlichtdevice;
 
 interface CursorControl {
+	@property void visible(bool value);
 	@property void* c_ptr();
 	@property void c_ptr(void* ptr);
 }

@@ -214,8 +214,8 @@ class IrrlichtDevice {
 		 * well as the virtual time, which also can be manipulated.
 		 * Return: Pointer to the ITimer object.
 		 */
-	    Timer timer() {
-			timer_ = new CTimer(irr_IrrlichtDevice_getTimer(ptr));
+	    ITimer timer() {
+			timer_ = cast(ITimer)(irr_IrrlichtDevice_getTimer(ptr));
 			return timer_;
 		}
 
@@ -223,7 +223,7 @@ class IrrlichtDevice {
 		 * Provides access to the engine's currently set randomizer.
 		 * Return: Pointer to the IRandomizer object.
 		 */
-	    Randomizer randomizer() { return new CRandomizer(irr_IrrlichtDevice_getRandomizer(ptr)); }
+	    IRandomizer randomizer() { return cast(IRandomizer)(irr_IrrlichtDevice_getRandomizer(ptr)); }
 
 		/***
 		 * Sets a new randomizer.
@@ -231,7 +231,7 @@ class IrrlichtDevice {
 		 *  randomizer = Pointer to the new IRandomizer object. This object is
 		 * grab()'ed by the engine and will be released upon the next randomizer
 		 * call or upon device destruction. */
-	    void randomizer(Randomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, cast(irr_IRandomizer*)randomizer.c_ptr); }
+	    void randomizer(IRandomizer randomizer) { irr_IrrlichtDevice_setRandomizer(ptr, cast(irr_IRandomizer*)randomizer); }
     }
 
 
@@ -241,9 +241,9 @@ class IrrlichtDevice {
 	 * Irrlicht versions and is the initial randomizer set on device creation.
 	 * Return: Pointer to the default Randomizer object.
 	 */
-    Randomizer createDefaultRandomizer() {
+    IRandomizer createDefaultRandomizer() {
         auto randomizer = irr_IrrlichtDevice_createDefaultRandomizer(ptr);
-        return new CRandomizer(randomizer);
+        return cast(IRandomizer)(randomizer);
     }
 
 	/***
@@ -482,12 +482,18 @@ private:
 	Logger logger_;
 	VideoModeList videoModeList_;
 	OSOperator osOperator_;
-	Timer timer_;
-	Randomizer randomizer_;
+	ITimer timer_;
+	IRandomizer randomizer_;
 }
 
 auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
-	return new IrrlichtDevice(irr_createDevice(type, dim.ptr, bits, fullscreen, stencilbuffer, vsync, null));
+	import std.conv : emplace;
+	import core.stdc.stdlib : malloc;
+	import core.memory : GC;
+	
+	enum size = __traits(classInstanceSize, IrrlichtDevice);
+	auto memory = malloc(size)[0 .. size];
+	return emplace!IrrlichtDevice(memory, irr_createDevice(type, dim.ptr, bits, fullscreen, stencilbuffer, vsync, null));
 }
 
 /// IrrlichtDevice example
@@ -533,11 +539,9 @@ unittest {
 
             auto Timer = timer;
             assert(Timer !is null);
-            assert(Timer.c_ptr != null);
 
             auto randomizer1 = randomizer;
             assert(randomizer1 !is null);
-            assert(randomizer1.c_ptr != null);
             
             randomizer = randomizer;
             createDefaultRandomizer();
@@ -561,7 +565,7 @@ package extern (C):
 
 struct irr_IrrlichtDevice;
 
-irr_IrrlichtDevice* irr_createDevice(DriverType driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, EventReceiver receiver=null);
+irr_IrrlichtDevice* irr_createDevice(DriverType driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, irr_IEventReceiver* receiver=null);
 bool irr_IrrlichtDevice_run(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_yield(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_sleep(irr_IrrlichtDevice* device, uint timeMs, bool pauseTimer=false);

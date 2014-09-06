@@ -48,7 +48,7 @@ class GUIEnvironment {
     	this.ptr = ptr;
     }
     
-    GUIStaticText addStaticText(dstring text, recti rec, bool border=false) {
+    GUIStaticText addStaticText(string text, recti rec, bool border=false) {
         auto temp = irr_IGUIEnvironment_addStaticText(ptr, toUTFz!(const(dchar)*)(text), rec.ptr, border);
         return new CGUIStaticText(temp);
     }

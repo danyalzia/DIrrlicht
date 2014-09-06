@@ -26,7 +26,6 @@
 
 module dirrlicht.logger;
 
-import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
 import std.utf : toUTFz;
@@ -186,6 +185,7 @@ private:
 }
 
 unittest {
+	import dirrlicht.compileconfig;
     mixin(TestPrerequisite);
     auto logg = device.logger;
     with (logg) {

@@ -161,7 +161,7 @@ struct IrrlichtCreationParameters {
 	bool HighPrecisionFPU;
 
 	//! A user created event receiver.
-	EventReceiver* Eventreceiver;
+	IEventReceiver Eventreceiver;
 
 	//! Window Id.
 	/** If this is set to a value other than 0, the Irrlicht Engine

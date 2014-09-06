@@ -26,8 +26,7 @@
 
 module dirrlicht.eventreceiver;
 
-import dirrlicht.compileconfig;
-import dirrlicht.irrlichtdevice;
+//import dirrlicht.irrlichtdevice;
 import dirrlicht.keycodes;
 import dirrlicht.gui.guielement;
 import dirrlicht.logger;
@@ -277,24 +276,16 @@ struct JoystickInfo {
 	}
 }
 
-class EventReceiver : IEventReceiver {
-	private irrEventReceiver receiver;
-
-	this(irrEventReceiver receiver) {
-		this.receiver = receiver;
+extern(C++) {
+	import dirrlicht.irrlichtdevice;
+	extern(C++, irr) {
+		interface IEventReceiver {
+			void _destructorDoNotUse();
+			bool OnEvent(const ref SEvent event);
+		}
 	}
-	
-	extern(C++)bool OnEvent(const ref Event event) {
-		return receiver.OnEvent(event);
-	}
-}
 
-interface irrEventReceiver {
-	bool OnEvent(const ref Event event);
-}
-
-extern (C++) interface IEventReceiver {
-	bool OnEvent(const ref Event event);
+	void setEventReceiver(irr_IrrlichtDevice* device, IEventReceiver receiver);
 }
 
 alias Event = SEvent;

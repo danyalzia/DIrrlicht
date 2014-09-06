@@ -102,6 +102,25 @@ private:
     irr_IOSOperator* ptr;
 }
 
+unittest {
+	import dirrlicht.compileconfig;
+    mixin(TestPrerequisite);
+    auto os = device.osOperator;
+    with (os) {
+		getOperatingSystemVersion.writeln;
+		copyToClipboard("Awesome!");
+		getTextFromClipboard.writeln;
+		uint a;
+		getProcessorSpeedMHz(&a);
+		writeln("Process Speed: ", a);
+		uint m;
+		getSystemMemory(&m, &a);
+		writeln("Total Memory: ", m);
+		writeln("Avail Memory: ", a);
+	}
+}
+
+
 package extern (C):
 
 struct irr_IOSOperator;
