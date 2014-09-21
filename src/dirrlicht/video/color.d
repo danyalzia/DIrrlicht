@@ -91,7 +91,7 @@ struct Color {
 	}
 	
 	@property Color reverse() {
-		return Color(a,b,g,r);
+		return Color(a,r,g,b);
 	}
 	
     uint r = 0;
@@ -100,7 +100,6 @@ struct Color {
     uint a = 255;
     
     alias ptr this;
-	
 	@property irr_SColor ptr() {
 		return irr_SColor(a,r,g,b);
 	}
@@ -108,13 +107,13 @@ struct Color {
 
 struct Colorf {
     float r;
-    float b;
     float g;
+    float b;
     float a;
     
     alias ptr this;
     @property irr_SColorf ptr() {
-		return irr_SColorf(a,r,g,b);
+		return irr_SColorf(r,g,b,a);
 	}
 }
 
@@ -123,13 +122,13 @@ package extern (C):
 struct irr_SColor {
     uint a;
     uint r;
-    uint b;
     uint g;
+    uint b;
 }
 
 struct irr_SColorf {
-    float a;
     float r;
-    float b;
     float g;
+    float b;
+    float a;
 }

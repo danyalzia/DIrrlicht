@@ -64,7 +64,7 @@ void main() {
 
 	gui.addImage(driver.getTexture("../../media/irrlichtlogoalpha2.tga"), vector2di(10,20));
 	auto diagnostics = gui.addStaticText("", recti(10, 10, 400, 20));
-	diagnostics.setOverrideColor(Color(255, 255, 255, 0));
+	diagnostics.setOverrideColor(Color(0, 255, 255, 255));
 	
     int lastFPS = -1;
 	
@@ -98,7 +98,7 @@ void main() {
 		}
 	
 		node.position = nodepos;
-		driver.beginScene(true, true, dirrlicht.video.Color(133,113,113,255));
+		driver.beginScene(true, true, dirrlicht.video.Color(113,113,133,255));
 		smgr.drawAll();
 		gui.drawAll();
 		driver.endScene();
