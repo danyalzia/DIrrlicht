@@ -3,6 +3,19 @@
  +/
 module dirrlicht.compileconfig;
 
+static if (__VERSION__ < 2066L) {
+	static assert(0, "Please upgrade your compiler to v2.066 or later");
+}
+
+//destructor output for mixing in.
+enum destructorOutput =`
+version (DIrrlicht_NoDestructorLog) {
+}
+else {
+	import std.stdio : writeln;
+	writeln("Destroying ", typeof(this).stringof);
+}`;
+	
 version(DigitalMars)
     enum DigitalMars = true;
 else
@@ -24,6 +37,11 @@ static if (DigitalMars || LDC) {
 	enum x86_Assembly = false;
 }
 
+version(Posix)
+    alias wchar_t = dchar;
+version(Windows)    
+    alias wchar_t = wchar;
+    
 enum Core_TestBegin =
 `
 	import std.stdio;

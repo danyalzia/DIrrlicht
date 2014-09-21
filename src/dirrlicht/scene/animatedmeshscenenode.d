@@ -395,7 +395,7 @@ class CAnimatedMeshSceneNode : AnimatedMeshSceneNode {
     AnimatedMesh getMesh() {
     	auto temp = irr_IAnimatedMeshSceneNode_getMesh(ptr);
     	AnimatedMesh mesh;
-    	mesh.c_ptr = temp;
+    	//mesh.c_ptr = temp;
     	return mesh;
     }
 	

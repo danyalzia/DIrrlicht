@@ -1,8 +1,9 @@
 import dirrlicht.all;
 
 void main() {
-    auto device = createDevice(DriverType.OpenGL, dimension2du(640, 480), 16, false, false, false);
-
+	// The class is allocated on heap and is not garbage collected
+    auto device = createDevice(DriverType.OpenGL, dimension2du(640, 480));
+	
     device.windowCaption = "Hello World!";
     device.resizable = true;
 
@@ -27,4 +28,5 @@ void main() {
         gui.drawAll();
         driver.endScene();
     }
+	// Class will be destroyed with destructor
 }

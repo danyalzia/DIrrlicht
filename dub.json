@@ -12,6 +12,5 @@
 	"sourcePaths": ["src/dirrlicht"],
 	"importPaths": ["src"],
 	"libs": ["CIrrlicht"],
-	"lflags" : ["cpp.o"],
 	"libs-posix": ["stdc++", "GL", "X11", "Xxf86vm"]
 }

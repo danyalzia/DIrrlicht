@@ -104,9 +104,9 @@ private:
 
 unittest {
 	import dirrlicht.compileconfig;
-    mixin(TestPrerequisite);
-    auto os = device.osOperator;
-    with (os) {
+    mixin(Irr_TestBegin);
+    
+    with (device.osOperator) {
 		getOperatingSystemVersion.writeln;
 		copyToClipboard("Awesome!");
 		getTextFromClipboard.writeln;
@@ -118,10 +118,11 @@ unittest {
 		writeln("Total Memory: ", m);
 		writeln("Avail Memory: ", a);
 	}
+
+	mixin(Irr_TestEnd);
 }
 
-
-package extern (C):
+@nogc nothrow package extern (C):
 
 struct irr_IOSOperator;
 

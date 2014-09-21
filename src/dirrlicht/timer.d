@@ -29,7 +29,7 @@ module dirrlicht.timer;
 import dirrlicht.compileconfig;
 import dirrlicht.irrlichtdevice;
 
-extern(C++, irr) {
+@nogc nothrow extern(C++, irr) {
 	/// Interface for getting and manipulating the virtual time
 	interface ITimer {
 		/// Returns current real time in milliseconds of the system.
@@ -160,6 +160,6 @@ unittest {
 	mixin(Irr_TestEnd);
 }
 
-package extern(C):
+@nogc nothrow package extern(C):
 
 struct irr_ITimer;

@@ -47,7 +47,7 @@ class MeshSceneNode : SceneNode {
     Mesh getMesh() {
         auto mesh = irr_IMeshSceneNode_getMesh(ptr);
         Mesh m;
-        m.c_ptr = mesh;
+        //m.c_ptr = mesh;
         return m;
     }
 

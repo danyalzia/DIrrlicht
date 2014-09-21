@@ -26,7 +26,7 @@
 
 module dirrlicht.randomizer;
 
-extern(C++, irr) {
+@nogc nothrow extern(C++, irr) {
 	/// Interface for generating random numbers
 	interface IRandomizer {
 		/// resets the randomizer
@@ -61,6 +61,6 @@ unittest {
 	mixin(Irr_TestEnd);
 }
 
-package extern (C):
+@nogc nothrow package extern (C):
 
 struct irr_IRandomizer;

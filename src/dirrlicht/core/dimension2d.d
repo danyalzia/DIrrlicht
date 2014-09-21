@@ -265,7 +265,7 @@ unittest {
 	mixin(Core_TestEnd);
 }
 
-package extern(C):
+package nothrow extern(C):
 
 struct irr_dimension2di {
     int Width;

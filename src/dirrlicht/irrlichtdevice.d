@@ -56,7 +56,7 @@ import std.utf : toUTFz;
  + this class.  There should be only one instance of this class at any
  + time.
  +/
-class IrrlichtDevice {
+@nogc nothrow class IrrlichtDevice {
 	invariant() {
 		assert(ptr != null);
 	}
@@ -73,6 +73,8 @@ class IrrlichtDevice {
     }
 	
     ~this() {
+		debug import dirrlicht.compileconfig;
+		debug mixin(destructorOutput);
     	drop();
     }
 	
@@ -174,8 +176,8 @@ class IrrlichtDevice {
 		 * Provides access to the message logger.
 		 * Return: Pointer to the logger.
 		 */
-	    Logger logger() {
-			logger_ = new CLogger(irr_IrrlichtDevice_getLogger(ptr));
+	    ILogger logger() {
+			logger_ = cast(ILogger)(irr_IrrlichtDevice_getLogger(ptr));
 			return logger_;
 		}
 		
@@ -331,8 +333,9 @@ class IrrlichtDevice {
         return to!string(str);
     }
 
-	//void setEventReceiver(EventReceiver receiver) {
-		//irr_IrrlichtDevice_setEventReceiver(ptr, receiver);
+	//@property void receiver(bool delegate(const ref irr_SEvent event) _OnEvent) {
+		//this._OnEvent = _OnEvent;
+		//irr_IrrlichtDevice_setEventReceiver(ptr, this._OnEvent.funcptr);
 	//}
 	
 	/***
@@ -343,9 +346,9 @@ class IrrlichtDevice {
 	 * the engine. Internally, this method only delegates the events
 	 * further to the scene manager and the GUI environment.
 	 */
-    bool postEventFromUser(Event event) {
-        return irr_IrrlichtDevice_postEventFromUser(ptr, event);
-    }
+    //bool postEventFromUser(SEvent event) {
+        //return irr_IrrlichtDevice_postEventFromUser(ptr, event);
+    //}
 
 	/***
 	 * Sets the input receiving scene manager.
@@ -406,11 +409,11 @@ class IrrlichtDevice {
      *  joystickInfo =  On return, this will contain an array of each joystick that was found and activated.
      * return true if joysticks are supported on this device and false if joysticks are not supported or support is compiled out.
 	 */
-    bool activateJoysticks(JoystickInfo[] joystickInfo) {
-    	irr_array temp;
-    	temp.data = joystickInfo.ptr;
-    	return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
-    }
+    //bool activateJoysticks(SJoystickInfo[] joystickInfo) {
+    	//irr_array temp;
+    	//temp.data = joystickInfo.ptr;
+    	//return irr_IrrlichtDevice_activateJoysticks(ptr, &temp);
+    //}
     
     /// Set the current Gamma Value for the Display
     bool setGammaRamp(float red, float green, float blue, float relativebrightness, float relativecontrast) {
@@ -468,37 +471,46 @@ class IrrlichtDevice {
     }
     
     void drop() {
-        irr_IrrlichtDevice_drop(ptr);
+		import core.stdc.stdlib : free;
+
+		irr_IrrlichtDevice_drop(ptr);
+		destroy(this);
+		free(cast(void*)this);
     }
     
 	irr_IrrlichtDevice* ptr;
-
 private:
 	VideoDriver driver_;
 	FileSystem filesystem_;
 	GUIEnvironment gui_;
 	SceneManager smgr_;
 	CursorControl cursorctl_;
-	Logger logger_;
+	ILogger logger_;
 	VideoModeList videoModeList_;
 	OSOperator osOperator_;
 	ITimer timer_;
 	IRandomizer randomizer_;
 }
 
-auto createDevice(DriverType type, dimension2du dim, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
+nothrow auto createDevice(DriverType type, dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false) {
 	import std.conv : emplace;
 	import core.stdc.stdlib : malloc;
 	import core.memory : GC;
 	
-	enum size = __traits(classInstanceSize, IrrlichtDevice);
-	auto memory = malloc(size)[0 .. size];
-	return emplace!IrrlichtDevice(memory, irr_createDevice(type, dim.ptr, bits, fullscreen, stencilbuffer, vsync, null));
+	try {
+		enum size = __traits(classInstanceSize, IrrlichtDevice);
+		auto memory = malloc(size)[0 .. size];
+		return emplace!IrrlichtDevice(memory, irr_createDevice(type, res.Width, res.Height, bits, fullscreen, stencilbuffer, vsync, null));
+	}
+
+	catch(Throwable) {
+		assert(0);
+	}
 }
 
 /// IrrlichtDevice example
 unittest {
-    mixin(TestPrerequisite);
+    mixin(Irr_TestBegin);
 
     try {
         with (device) {
@@ -527,8 +539,7 @@ unittest {
 
             auto Logger = logger;
             assert(Logger !is null);
-            assert(Logger.c_ptr != null);
-
+            
             auto videolist = videoModeList;
             assert(videolist !is null);
             assert(videolist.c_ptr != null);
@@ -559,13 +570,19 @@ unittest {
     catch (std.exception.ErrnoException exc) {
         writeln("Error: IrrlichtDevice");
     }
+
+    mixin(Irr_TestEnd);
 }
 
-package extern (C):
+extern(C) @property void eventReceiver(IrrlichtDevice device, bool function(const ref SEvent) event) {
+	irr_IrrlichtDevice_setEventReceiver(device.ptr, event);
+}
+
+@nogc nothrow package extern (C):
 
 struct irr_IrrlichtDevice;
 
-irr_IrrlichtDevice* irr_createDevice(DriverType driver, irr_dimension2du res, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, irr_IEventReceiver* receiver=null);
+irr_IrrlichtDevice* irr_createDevice(DriverType driver, uint resX, uint resY, uint bits = 16, bool fullscreen = false, bool stencilbuffer = false, bool vsync = false, irr_IEventReceiver* receiver=null);
 bool irr_IrrlichtDevice_run(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_yield(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_sleep(irr_IrrlichtDevice* device, uint timeMs, bool pauseTimer=false);
@@ -589,9 +606,8 @@ bool irr_IrrlichtDevice_isFullscreen(irr_IrrlichtDevice* device);
 ColorFormat irr_IrrlichtDevice_getColorFormat(irr_IrrlichtDevice* device);
 void irr_IrrlichtDevice_closeDevice(irr_IrrlichtDevice* device);
 const(char*) irr_IrrlichtDevice_getVersion(irr_IrrlichtDevice* device);
-//void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, irr_IEventReceiver* receiver);
-//irr_IEventReceiver* irr_IrrlichtDevice_getEventReceiver(irr_IrrlichtDevice* device);
-bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, Event event);
+void irr_IrrlichtDevice_setEventReceiver(irr_IrrlichtDevice* device, bool function(const ref irr_SEvent event));
+//bool irr_IrrlichtDevice_postEventFromUser(irr_IrrlichtDevice* device, SEvent event);
 void irr_IrrlichtDevice_setInputReceivingSceneManager(irr_IrrlichtDevice* device, irr_ISceneManager* smgr);
 void irr_IrrlichtDevice_setResizable(irr_IrrlichtDevice* device, bool value = false);
 void irr_IrrlichtDevice_setWindowSize(irr_IrrlichtDevice* device, irr_dimension2du size);

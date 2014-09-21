@@ -25,9 +25,7 @@
 */
 
 /+ Enums representing keys on standard keyboard
-+ Authors:
-Irrlicht Developers
-+/
+ +/
 
 module dirrlicht.keycodes;
 
@@ -184,5 +182,5 @@ enum KeyCode {
     Zoom             = 0xFB,  /// Zoom key
     PA1              = 0xFD,  /// PA1 key
     OEM_Clear        = 0xFE,
-    Count
+    Count			 = 0xFF
 }

@@ -26,10 +26,19 @@
 
 module dirrlicht.eventreceiver;
 
-//import dirrlicht.irrlichtdevice;
 import dirrlicht.keycodes;
 import dirrlicht.gui.guielement;
 import dirrlicht.logger;
+
+import std.bitmanip;
+
+interface EventReceiver {
+	bool OnEvent(const ref SEvent event);
+}
+
+extern (C):
+
+struct irr_IEventReceiver;
 
 enum EventType {
     /***
@@ -86,8 +95,7 @@ enum EventType {
 }
 
 /// Enumeration for all mouse input events
-enum MouseEventType
-{
+enum MouseEventType {
     /// Left mouse button was pressed down.
     LeftDown = 0,
 
@@ -138,9 +146,17 @@ enum MouseEventType
     MiddleTripleClick
 }
 
+enum E_MOUSE_BUTTON_STATE_MASK {
+	EMBSM_LEFT    = 0x01,
+	EMBSM_RIGHT   = 0x02,
+	EMBSM_MIDDLE  = 0x04,
+	EMBSM_EXTRA1  = 0x08,
+	EMBSM_EXTRA2  = 0x10,
+	EMBSM_FORCE_32_BIT = 0x7fffffff
+}
+
 /// Enumeration for all events which are sendable by the gui system
-enum GUIEventType
-{
+enum GUIEventType {
     /// A gui element has lost its focus.
     /** GUIEvent.Caller is losing the focus to GUIEvent.Element.
     If the event is absorbed then the focus will not be changed. */
@@ -240,175 +256,42 @@ enum GUIEventType
     TreeViewNodeCollapse,
 }
 
-/// Information on a joystick, returned from @ref irr::IrrlichtDevice::activateJoysticks()
-struct JoystickInfo {
-	/***
-	 * The ID of the joystick
-	 * This is an internal Irrlicht index; it does not map directly
-	 * to any particular hardware joystick. It corresponds to the
-	 * SJoystickEvent Joystick ID.
-	 */
-	ubyte joystick;
+alias SEvent = irr_SEvent;
 
-	/// The name that the joystick uses to identify itself.
-	string name;
-
-	/// The number of buttons that the joystick has.
-	uint buttons;
-
-	/// The number of axes that the joystick has, i.e. X, Y, Z, R, U, V.
-	/// Note: with a Linux device, the POV hat (if any) will use two axes. These
-	/// will be included in this count.
-	uint axes;
-
-	/// An indication of whether the joystick has a POV hat.
-	/// A Windows device will identify the presence or absence or the POV hat.  A
-	/// Linux device cannot, and will always return POV_HAT_UNKNOWN.
-	enum PovHat {
-		/// A hat is definitely present.
-		Present,
-
-		/// A hat is definitely not present.
-		Absent,
-
-		/// The presence or absence of a hat cannot be determined.
-		Unknown
-	}
-}
-
-extern(C++) {
-	import dirrlicht.irrlichtdevice;
-	extern(C++, irr) {
-		interface IEventReceiver {
-			void _destructorDoNotUse();
-			bool OnEvent(const ref SEvent event);
-		}
-	}
-
-	void setEventReceiver(irr_IrrlichtDevice* device, IEventReceiver receiver);
-}
-
-alias Event = SEvent;
-extern (C):
-
-struct irr_IEventReceiver;
-
-enum EEVENT_TYPE {
-	EET_GUI_EVENT = 0,
-	EET_MOUSE_INPUT_EVENT,
-	EET_KEY_INPUT_EVENT,
-	EET_JOYSTICK_INPUT_EVENT,
-	EET_LOG_TEXT_EVENT,
-	EET_USER_EVENT
-
-};
-
-enum EMOUSE_INPUT_EVENT {
-	EMIE_LMOUSE_PRESSED_DOWN = 0,
-	EMIE_RMOUSE_PRESSED_DOWN,
-	EMIE_MMOUSE_PRESSED_DOWN,
-	EMIE_LMOUSE_LEFT_UP,
-	EMIE_RMOUSE_LEFT_UP,
-	EMIE_MMOUSE_LEFT_UP,
-	EMIE_MOUSE_MOVED,
-	EMIE_MOUSE_WHEEL,
-	EMIE_LMOUSE_DOUBLE_CLICK,
-	EMIE_RMOUSE_DOUBLE_CLICK,
-	EMIE_MMOUSE_DOUBLE_CLICK,
-	EMIE_LMOUSE_TRIPLE_CLICK,
-	EMIE_RMOUSE_TRIPLE_CLICK,
-	EMIE_MMOUSE_TRIPLE_CLICK,
-	EMIE_COUNT
-};
-
-enum E_MOUSE_BUTTON_STATE_MASK
-{
-	EMBSM_LEFT    = 0x01,
-	EMBSM_RIGHT   = 0x02,
-	EMBSM_MIDDLE  = 0x04,
-	EMBSM_EXTRA1  = 0x08,
-	EMBSM_EXTRA2  = 0x10,
-	EMBSM_FORCE_32_BIT = 0x7fffffff
-};
-
-
-struct irr_IGUIElement;
-
-enum EGUI_EVENT_TYPE
-{
-	EGET_ELEMENT_FOCUS_LOST = 0,
-	EGET_ELEMENT_FOCUSED,
-	EGET_ELEMENT_HOVERED,
-	EGET_ELEMENT_LEFT,
-	EGET_ELEMENT_CLOSED,
-	EGET_BUTTON_CLICKED,
-	EGET_SCROLL_BAR_CHANGED,
-	EGET_CHECKBOX_CHANGED,
-	EGET_LISTBOX_CHANGED,
-	EGET_LISTBOX_SELECTED_AGAIN,
-	EGET_FILE_SELECTED,
-	EGET_DIRECTORY_SELECTED,
-	EGET_FILE_CHOOSE_DIALOG_CANCELLED,
-	EGET_MESSAGEBOX_YES,
-	EGET_MESSAGEBOX_NO,
-	EGET_MESSAGEBOX_OK,
-	EGET_MESSAGEBOX_CANCEL,
-	EGET_EDITBOX_ENTER,
-	EGET_EDITBOX_CHANGED,
-	EGET_EDITBOX_MARKING_CHANGED,
-	EGET_TAB_CHANGED,
-	EGET_MENU_ITEM_SELECTED,
-	EGET_COMBO_BOX_CHANGED,
-	EGET_SPINBOX_CHANGED,
-	EGET_TABLE_CHANGED,
-	EGET_TABLE_HEADER_CHANGED,
-	EGET_TABLE_SELECTED_AGAIN,
-	EGET_TREEVIEW_NODE_DESELECT,
-	EGET_TREEVIEW_NODE_SELECT,
-	EGET_TREEVIEW_NODE_EXPAND,
-	EGET_TREEVIEW_NODE_COLLAPSE,
-	EGET_TREEVIEW_NODE_COLLAPS = EGET_TREEVIEW_NODE_COLLAPSE,
-	EGET_COUNT
-};
-
-
-struct SEvent
-{
-	struct irr_SGUIEvent
-	{
+struct irr_SEvent {
+	struct irr_SGUIEvent {
 		irr_IGUIElement* Caller;
 		irr_IGUIElement* Element;
-		EGUI_EVENT_TYPE EventType;
+		GUIEventType EventType;
+	}
 
-	};
-
-	struct irr_SMouseInput
-	{
+	struct irr_SMouseInput {
 		int X;
 		int Y;
 		float Wheel;
-		bool Shift;
-		bool Control;
+		mixin(bitfields!(
+		bool, "Shift", 1,
+		bool, "Control", 1,
+		uint, "", 6));
 		uint ButtonStates;
 		bool isLeftPressed() const { return 0 != ( ButtonStates & E_MOUSE_BUTTON_STATE_MASK.EMBSM_LEFT ); }
 		bool isRightPressed() const { return 0 != ( ButtonStates & E_MOUSE_BUTTON_STATE_MASK.EMBSM_RIGHT ); }
 		bool isMiddlePressed() const { return 0 != ( ButtonStates & E_MOUSE_BUTTON_STATE_MASK.EMBSM_MIDDLE ); }
-		EMOUSE_INPUT_EVENT Event;
-	};
+		MouseEventType Event;
+	}
 
-	struct irr_SKeyInput
-	{
-		wchar Char;
+	struct irr_SKeyInput {
+		dchar Char;
 		KeyCode Key;
-		bool PressedDown;
-		bool Shift;
-		bool Control;
-	};
+		mixin(bitfields!(
+		bool, "PressedDown", 1,
+		bool, "Shift", 1,
+		bool, "Control", 1,
+		uint, "", 5));
+	}
 
-	struct irr_SJoystickEvent
-	{
-		enum
-		{
+	struct irr_SJoystickEvent {
+		enum {
 			NUMBER_OF_BUTTONS = 32,
 
 			AXIS_X = 0,	// e.g. analog stick 1 left to right
@@ -418,34 +301,31 @@ struct SEvent
 			AXIS_U,
 			AXIS_V,
 			NUMBER_OF_AXES
-		};
+		}
 
 		uint ButtonStates;
 		short Axis[NUMBER_OF_AXES];
 		short POV;
 		char Joystick;
-		bool IsButtonPressed(uint button) const
-		{
+		bool IsButtonPressed(uint button) const {
 			if(button >= cast(uint)NUMBER_OF_BUTTONS)
 				return false;
 
 			return (ButtonStates & (1 << button)) ? true : false;
 		}
-	};
+	}
 
-	struct irr_SLogEvent
-	{
+	struct irr_SLogEvent {
 		const char* Text;
 		int Level;
-	};
+	}
 
-	struct irr_SUserEvent
-	{
+	struct irr_SUserEvent {
 		int UserData1;
 		int UserData2;
-	};
+	}
 
-	EEVENT_TYPE EventType;
+	EventType eventType;
 	union {
 		irr_SGUIEvent GUIEvent;
 		irr_SMouseInput MouseInput;
@@ -453,5 +333,5 @@ struct SEvent
 		irr_SJoystickEvent JoystickEvent;
 		irr_SLogEvent LogEvent;
 		irr_SUserEvent UserEvent;
-	};
+	}
 }

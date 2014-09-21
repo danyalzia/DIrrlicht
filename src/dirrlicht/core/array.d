@@ -1,9 +1,11 @@
-/**** Just a placeholder
- */
 module dirrlicht.core.array;
 
-extern (C):
+struct array(T) {
+	
+}
+
+extern(C):
 
 struct irr_array {
-    void* data;
+	void* data;
 }

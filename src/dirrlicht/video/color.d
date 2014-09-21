@@ -83,7 +83,6 @@ enum ColorFormat {
 }
 
 struct Color {
-	@disable this();
 	this(uint r, uint g, uint b, uint a) {
 		this.r = r;
 		this.g = g;
@@ -92,30 +91,30 @@ struct Color {
 	}
 	
 	@property Color reverse() {
-		return Color(a,b,g,a);
+		return Color(a,b,g,r);
 	}
 	
-    uint r;
-    uint g;
-    uint b;
-    uint a;
+    uint r = 0;
+    uint g = 0;
+    uint b = 0;
+    uint a = 255;
     
     alias ptr this;
 	
 	@property irr_SColor ptr() {
-		return irr_SColor(a,b,g,r);
+		return irr_SColor(a,r,g,b);
 	}
 }
 
 struct Colorf {
-    float a;
+    float r;
     float b;
     float g;
-    float r;
+    float a;
     
     alias ptr this;
     @property irr_SColorf ptr() {
-		return irr_SColorf(a,b,g,r);
+		return irr_SColorf(a,r,g,b);
 	}
 }
 
@@ -123,14 +122,14 @@ package extern (C):
 
 struct irr_SColor {
     uint a;
+    uint r;
     uint b;
     uint g;
-    uint r;
 }
 
 struct irr_SColorf {
     float a;
+    float r;
     float b;
     float g;
-    float r;
 }

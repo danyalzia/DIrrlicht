@@ -1,11 +1,34 @@
 import dirrlicht.all;
 
 import std.conv : to;
+import std.stdio : writeln;
+
+bool[KeyCode.Count] KeyIsDown;
+
+bool IsKeyDown(KeyCode keyCode) {
+	return KeyIsDown[keyCode];
+}
+
+extern(C) bool OnEvent(const ref SEvent event) {
+	if (event.eventType == EventType.Key) {
+		KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
+            
+        return false;
+	}
+	
+	return false;
+}
 
 void main() {
     auto device = createDevice(DriverType.OpenGL, dimension2du(640, 480), 16, false, false, false);
-
+	
     device.resizable = true;
+    
+    for (uint i = 0; i < KeyCode.Count; ++i)
+		KeyIsDown[i] = false;
+		
+	
+	device.eventReceiver = &OnEvent;
 	
     auto driver = device.videoDriver;
     auto smgr = device.sceneManager;
@@ -44,31 +67,51 @@ void main() {
 	diagnostics.setOverrideColor(Color(255, 255, 255, 0));
 	
     int lastFPS = -1;
-
-	//uint then = device.timer.getTime;
+	
+	uint then = device.timer.getTime;
+	const float MOVEMENT_SPEED = 5.0f;
+	
     while (device.run) {
-        if (device.isWindowActive) {
-			auto nodepos = node.position;
-			
-			node.position = nodepos;
-            driver.beginScene(true, true, dirrlicht.video.Color(133,113,113,255));
-            smgr.drawAll();
-            gui.drawAll();
-            driver.endScene();
+		const now = device.timer.getTime;
+		const frameDeltaTime = cast(float)(now - then) / 1000.0f;
+		then = now;
+		auto nodepos = node.position;
+		
+		if (IsKeyDown(KeyCode.KeyW)) {
+			"W".writeln;
+			nodepos.y = nodepos.y + (MOVEMENT_SPEED * frameDeltaTime);
+		}
+		
+		else if (IsKeyDown(KeyCode.KeyS)) {
+			"S".writeln;
+			nodepos.y = nodepos.y - (MOVEMENT_SPEED * frameDeltaTime);
+		}
+		
+		if (IsKeyDown(KeyCode.KeyA)) {
+			"A".writeln;
+			nodepos.x = nodepos.x - (MOVEMENT_SPEED * frameDeltaTime);
+		}
+		
+		else if (IsKeyDown(KeyCode.KeyD)) {
+			"D".writeln;
+			nodepos.x = nodepos.x + (MOVEMENT_SPEED * frameDeltaTime);
+		}
+	
+		node.position = nodepos;
+		driver.beginScene(true, true, dirrlicht.video.Color(133,113,113,255));
+		smgr.drawAll();
+		gui.drawAll();
+		driver.endScene();
 
-            int fps = driver.fps;
+		int fps = driver.fps;
 
-            if (lastFPS != fps) {
-                string str = "DIrrlicht - Movement Example[";
-                str ~= driver.name;
-				str ~= "] FPS:";
-				str ~= to!string(fps);
-				device.windowCaption = str;
-                lastFPS = fps;
-            }
-        }
-        else {
-            device.yield();
+		if (lastFPS != fps) {
+			string str = "DIrrlicht - Movement Example[";
+			str ~= driver.name;
+			str ~= "] FPS:";
+			str ~= to!string(fps);
+			device.windowCaption = str;
+			lastFPS = fps;
 		}
     }
 }

@@ -374,7 +374,7 @@ class SceneManager {
     	irr_ISceneManager_addToDeletionQueue(ptr, cast(irr_ISceneNode*)(node.c_ptr));
     }
     
-    bool postEventFromUser(Event event) {
+    bool postEventFromUser(SEvent event) {
     	return irr_ISceneManager_postEventFromUser(ptr, event);
     }
     
@@ -710,7 +710,7 @@ irr_ISceneLoader* irr_ISceneManager_getSceneLoader(irr_ISceneManager* smgr, uint
 irr_ISceneCollisionManager* irr_ISceneManager_getSceneCollisionManager(irr_ISceneManager* smgr);
 irr_IMeshManipulator* irr_ISceneManager_getMeshManipulator(irr_ISceneManager* smgr);
 void irr_ISceneManager_addToDeletionQueue(irr_ISceneManager* smgr, irr_ISceneNode* node);
-bool irr_ISceneManager_postEventFromUser(irr_ISceneManager* smgr, Event event);
+bool irr_ISceneManager_postEventFromUser(irr_ISceneManager* smgr, SEvent event);
 void irr_ISceneManager_clear(irr_ISceneManager* smgr);
 irr_IAttributes* irr_ISceneManager_getParameters(irr_ISceneManager* smgr);
 SceneNodeRenderPass irr_ISceneManager_getSceneNodeRenderPass(irr_ISceneManager* smgr);

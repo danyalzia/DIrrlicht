@@ -45,7 +45,7 @@ struct KeyMap {
     KeyCode keyCode;
 }
 
-extern (C):
+@nogc nothrow extern (C):
 
 struct irr_SKeyMap {
     KeyAction action;
