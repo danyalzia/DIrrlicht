@@ -10,6 +10,8 @@ Details
 
 DIrrlicht is the D Bindings and semi-port of Irrlicht 3D Graphics Engine which makes it possible to use Irrlicht Engine from D programming language. It copies the API of Irrlicht Engine, but in a way that makes sense in D.
 
+There are some notable changes in API, mostly due to the library being designed for D. See [this](https://github.com/Artistic-Games/DIrrlicht/wiki/Changes-from-Irrlicht).
+
 Status
 ------
 
@@ -23,23 +25,22 @@ Installation
 Clone the repository:
 
 ```
-$ git clone git://github.com/Artistic-Games/DIrrlicht.git DIrrlicht
+$ git clone git://github.com/Artistic-Games/DIrrlicht
 ```
 
-DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to not forget to update submodules:
+DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to update submodules:
 
 ```
 $ cd DIrrlicht
 $ git submodule update --init
 ```
 
-On Linux, it assumes that Irrlicht is installed in "$HOME" directory, so you have to place the irrlicht's folder in that directory. To create dynamic libray, in `CIrrlicht` do:
+Note however that Irrlicht isn't provided with CIrrlicht, so you have to get that and compile shared library of CIrrlicht.
 
+Once you compile shared library of CIrrlicht, you can add the dub package locally:
 ```
-$ sudo make sharedlib
+$ dub add-local .
 ```
-
-It will create a library in `lib`.
 
 Usage
 -----
@@ -68,7 +69,7 @@ See [wiki](https://github.com/Artistic-Games/DIrrlicht/wiki/) for more usage and
 Contributing
 ------------
 
-DIrrlicht aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.
+DIrrlicht at most time aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.
 
 Before making a commit, please try to adhere to the [coding style](https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
 
