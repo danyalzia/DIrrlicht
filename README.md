@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/Artistic-Games/DIrrlicht.png?branch=master)](https://travis-ci.org/Artistic-Games/DIrrlicht)
-[![Stories in Ready](https://badge.waffle.io/artistic-games/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/artistic-games/dirrlicht)
-[![Gitter chat](https://badges.gitter.im/Artistic-Games/DIrrlicht.png)](https://gitter.im/Artistic-Games/DIrrlicht)
+[![Build Status](https://travis-ci.org/danyalzia/DIrrlicht.png?branch=master)](https://travis-ci.org/danyalzia/DIrrlicht)
+[![Stories in Ready](https://badge.waffle.io/danyalzia/dirrlicht.png?label=ready&title=Ready)](https://waffle.io/danyalzia/dirrlicht)
+[![Gitter chat](https://badges.gitter.im/danyalzia/DIrrlicht.png)](https://gitter.im/danyalzia/DIrrlicht)
 
 DIrrlicht - D Bindings of Irrlicht Engine
 =========================================================
@@ -10,14 +10,14 @@ Details
 
 DIrrlicht is the D Bindings and semi-port of Irrlicht 3D Graphics Engine which makes it possible to use Irrlicht Engine from D programming language. It copies the API of Irrlicht Engine, but in a way that makes sense in D.
 
-There are some notable changes in API, mostly due to the library being designed for D. See [this](https://github.com/Artistic-Games/DIrrlicht/wiki/Changes-from-Irrlicht).
+There are some notable changes in API, mostly due to the library being designed for D. See [this](https://github.com/danyalzia/DIrrlicht/wiki/Changes-from-Irrlicht).
 
 Status
 ------
 
 It's in very early beta stage. Several functions still aren't wrapped. It is subject to API changes.
 
-Checkout the [Road Map](https://github.com/Artistic-Games/DIrrlicht/wiki/Roadmap) for the list of things that still needs to be done.
+Checkout the [Road Map](https://github.com/danyalzia/DIrrlicht/wiki/Roadmap) for the list of things that still needs to be done.
 
 Installation
 ------------
@@ -25,7 +25,7 @@ Installation
 Clone the repository:
 
 ```
-$ git clone git://github.com/Artistic-Games/DIrrlicht
+$ git clone git://github.com/danyalzia/DIrrlicht
 ```
 
 DIrrlicht relies on CIrrlicht. Fortunately, it is already included as a submodule, just make sure to update submodules:
@@ -64,14 +64,14 @@ void main() {
 }
 ```
 
-See [wiki](https://github.com/Artistic-Games/DIrrlicht/wiki/) for more usage and tutorials.
+See [wiki](https://github.com/danyalzia/DIrrlicht/wiki/) for more usage and tutorials.
 
 Contributing
 ------------
 
 DIrrlicht at most time aims to be a community driven project. It needs your help to grow up. Any kind of help will be fully appreciated. Feel free to open issues, send pull requests or just send me an email. If you provide some good pull requests and moral support, you may be given the rights to commit directly.
 
-Before making a commit, please try to adhere to the [coding style](https://github.com/Artistic-Games/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
+Before making a commit, please try to adhere to the [coding style](https://github.com/danyalzias/DIrrlicht/blob/master/CONTRIBUTING.md) of DIrrlicht.
 
 Unit Tests
 ----------
